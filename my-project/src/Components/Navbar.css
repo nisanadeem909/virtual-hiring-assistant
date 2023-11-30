@@ -11,7 +11,7 @@
   }
   
   nav{
-    background: #0E312F;
+    background: #012641;
     height: 50px;
     width: 100%;
     position: sticky;
@@ -20,7 +20,7 @@
   }
   .navb_logo{
     padding-top: 6px;
-    width: 150px;
+    width: 100px;
     height: 45px;
     margin-left: 50px;
 
@@ -46,7 +46,7 @@
    
   }
   nav .navb_ul .navb_li a.active,nav .navb_ul .navb_li a:hover{
-    background: #027e74;
+    background: #60b3d1;
     transition: .5s;
   }
   .navb_checkbtn{
@@ -95,7 +95,7 @@
     }
     nav .navb_ul .navb_li a:hover,nav .navb_ul .navb_li a.active{
       background: none;
-      color: #027e74;
+      color: #60b3d1;
     }
     #navb_check:checked ~ ul{
       left: 0;
@@ -259,7 +259,7 @@ background: none;
 
 #cvbutton_navbar {
   background-color: white;
-  color:#027e74;
+  color:#60b3d1;
 }
 
 #cvbutton_navbar:hover {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import './Navbar.css';
-import logo1 from './logo1.png';
+import logo2 from './vhalogo.png';
 import nabhumanicon from './personcircle.png';
 import nablogouticon from './nab-logout-icon.png';
 import nabprofileicon from './nab-profile-icon.png';
@@ -239,7 +239,7 @@ const Layout = (props) => {
       <label for="navb_check" class="navb_checkbtn">
         <i class="navb_fas navb_fa-bars"></i>
       </label>
-      <img class="navb_logo" src={logo1}/>
+      <img class="navb_logo" src={logo2}/>
         {navlayout}
       </nav>
 

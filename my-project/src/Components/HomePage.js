@@ -1,6 +1,7 @@
 import React from 'react';
 import './HomePage.css';
 import home from './finalhome.png';
+import home2 from './hp5.png';
 import Slideshow from './Slideshow';
 import Footer from './Footer';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +23,7 @@ function HomePage() {
         </div>
 
         <div className="box2">
-          <img className="img1" src={home} alt="" />
+          <img className="img1" src={home2} alt="" />
         </div>
       </div>
 
