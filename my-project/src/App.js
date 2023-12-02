@@ -12,6 +12,9 @@ import HomePage from './Components/HomePage'
 import AboutUs from './Components/AboutUs'
 import Error from './Components/ErrorPage'
 
+import RejectionEmailPage from './Components/Email_Notif/RejectionEmailPage.js'
+import NotificationPage from './Components/Email_Notif/NotificationPage.js'
+
 
 function App() {
   return (
@@ -23,10 +26,6 @@ function App() {
           <Route path="login" element={<Login/>}></Route>
           <Route path="about" element={<AboutUs/>}></Route>
           <Route path="*" element={<Error/>}></Route>
-          {/*<Route path="blogs" element={<Blogs />} />
-          <Route path="contact" element={<Contact />} />
-          
-  <Route path="*" element={<NoPage />} />*/}
         </Route>
 
         <Route path="/applicant" element={<Navbar type="user"/>}>
@@ -40,6 +39,8 @@ function App() {
         <Route path="/recruiter" element={<Navbar type="company"/>}>
           
             
+            <Route path="job/rejectionemail" element={<RejectionEmailPage/>}></Route>
+            <Route path="notifications" element={<NotificationPage/>}></Route>
             
             <Route path="*" element={<Error/>}></Route>
             

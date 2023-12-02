@@ -1,7 +1,7 @@
 import React from 'react' 
 import './Error.css';
 import Footer from './Footer'
-import icon from './error_icon.png'
+import icon from './images/error2.png'
 
 export default function ViewApp() {
 
