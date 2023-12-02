@@ -3,9 +3,10 @@ import './RejectionEmail.css';
 
 export default function RejectionEmailPage() {
 
-    const [defaultEmail,setEmail] = useState("Dear <Applicant's Name>, \n\nThank you for your interest in the <Job Title> role at <Company>. We appreciate the time and effort you invested in your application. \n\nAfter careful consideration, we regret to inform you that we have chosen another candidate for this position. While we were impressed with your qualifications, the competition was high. \n\nWe will keep your resume for future opportunities that match your skills. Please continue to check our career page for new openings. \n\nWe wish you the best in your job search and future endeavors. \n\nBest regards, \n\n<Name> \n<Designation> \n<Company>");
     const [jobTitle,setJobTitle] = useState("Graphic Designer");
-    const [emailSubject, setSubject] = useState("Regarding Your Application for <Position> at <Company>");
+    const [company,setCompany] = useState("Manafa Technologies");
+    const [defaultEmail,setEmail] = useState("Dear <name>, \n\nThank you for your interest in the "+ jobTitle+ " role at "+ company+ ". We appreciate the time and effort you invested in your application. \n\nAfter careful consideration, we regret to inform you that we have chosen another candidate for this position. While we were impressed with your qualifications, the competition was high. \n\nWe will keep your resume for future opportunities that match your skills. Please continue to check our career page for new openings. \n\nWe wish you the best in your job search and future endeavors. \n\nBest regards, \n\nRecruitment Team \n"+ company);
+    const [emailSubject, setSubject] = useState("Regarding Your Application for "+ jobTitle+ " at "+ company);
 
     const handleEmailSubjectChange = (event) => {
         setSubject(event.target.value);

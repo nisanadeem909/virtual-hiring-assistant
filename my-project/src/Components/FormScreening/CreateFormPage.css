@@ -1,0 +1,57 @@
+.kcreateformpage-con {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-areas: 'header' 'main' 'footer';
+    grid-template-rows: auto 1fr auto;
+    grid-gap: 0;
+}
+
+.kcreateformpage-main {
+    grid-area: main;
+    width: 73%;
+    margin-left: 13%;
+    margin-bottom: 2vh;
+}
+
+.kcreateformpage-footer {
+    grid-area: footer;
+}
+
+.kcreateformpage-header {
+    grid-area: header;
+    background-color: #012641;
+    color: white;
+    width: 73%;
+    margin-left: 13%;
+    border-radius: 2vh;
+    padding: 2vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.kcreateformpage-header-title {
+    font-size: xx-large;
+}
+
+.kcreateformpage-header hr {
+    margin: 1vh 0vh;
+    border:none;
+    height: 1px;
+    background-color: white;
+}
+
+.kcreateformpage-header-job {
+    font-size: large;
+}
+
+.kformquestion-con {
+    background-color: white;
+    width: 100%;
+    border-radius: 2vh;
+    padding: 2vh;
+    margin-top: 2vh;
+    display: flex;
+    flex-direction: column;
+    border-left:1vh solid white;
+}
