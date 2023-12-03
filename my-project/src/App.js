@@ -14,7 +14,7 @@ import Error from './Components/ErrorPage'
 
 import RejectionEmailPage from './Components/Email_Notif/RejectionEmailPage.js'
 import NotificationPage from './Components/Email_Notif/NotificationPage.js'
-import CreateFormPage from './Components/FormScreening/CreateFormPage.js'
+import CreateFormPageNew from './Components/FormScreening/CreateFormPageNew.js'
 
 
 
@@ -43,7 +43,7 @@ function App() {
             
             <Route path="job/rejectionemail" element={<RejectionEmailPage/>}></Route>
             <Route path="notifications" element={<NotificationPage/>}></Route>
-            <Route path="job/createform" element={<CreateFormPage/>}></Route>
+            <Route path="job/createform" element={<CreateFormPageNew/>}></Route>
             
             <Route path="*" element={<Error/>}></Route>
             
