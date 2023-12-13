@@ -8,7 +8,7 @@ import Login from './Components/login.js'
 
 import LandingPage from './Components/LandingPage'
 import HomePage from './Components/HomePage'
-
+import Signup from './Components/Signup'
 import AboutUs from './Components/AboutUs'
 import Error from './Components/ErrorPage'
 
@@ -33,6 +33,7 @@ function App() {
       <Route path="/" element={<Navbar />}>
           <Route index element={<HomePage />} />
           <Route path="login" element={<Login/>}></Route>
+          <Route path="signup" element={<Signup/>}></Route>
           <Route path="about" element={<AboutUs/>}></Route>
           <Route path="*" element={<Error/>}></Route>
         </Route>

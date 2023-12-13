@@ -1,6 +1,6 @@
 import React from 'react';
 import './Footer.css';
-import logo1 from './logo1.png';
+import logo1 from './vhalogo.png';
 import icons from './icons.png';
 
 export default function Footer() {
@@ -11,20 +11,7 @@ export default function Footer() {
 <div class="footer-left">
 
 <img class="logo" src={logo1}/>
-
- {/* <p class="footer-links">
-    <a href="#" class="link-1">Home</a>
-    
-    <a href="#">Blog</a>
   
-    <a href="#">Pricing</a>
-  
-    <a href="#">About</a>
-    
-    <a href="#">Contact</a>
-  </p>*/}
-
-  <p class="footer-company-name">Jobify © 2015</p>
 </div>
 
 <div class="footer-center">
@@ -41,7 +28,7 @@ export default function Footer() {
 
   <div>
     <i class="fa fa-envelope"></i>
-    <p><a href="mailto:support@jobify.com">support@jobify.com</a></p>
+    <p><a href="mailto:support@jobify.com">support@vha.com</a></p>
   </div>
 
 </div>
@@ -49,8 +36,8 @@ export default function Footer() {
 <div class="footer-right">
 
   <p class="footer-company-about">
-    <span>About JOBIFY</span>
-    Jobify: Your ultimate destination for finding the perfect job. Discover, search, and apply for a wide range of career opportunities in various industries, connecting job seekers with their dream positions.
+    <span>About VHA</span>
+    VHA: Your ultimate destination for finding the perfect job. Discover, search, and apply for a wide range of career opportunities in various industries, connecting job seekers with their dream positions.
   </p>
 
   <div class="footer-icons">
