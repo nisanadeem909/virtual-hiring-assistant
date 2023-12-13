@@ -11,7 +11,7 @@ import { useEffect } from "react";
 const person = 'person.png';
 
 const Layout = (props) => {
-  
+
  /* useEffect(()=>{
       // if ((props.type == "user" || props.type == "company") && !sessionStorage.getItem("sessionID"))
       // {
