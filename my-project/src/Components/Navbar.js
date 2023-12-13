@@ -11,30 +11,30 @@ import { useEffect } from "react";
 const person = 'person.png';
 
 const Layout = (props) => {
-  
-//   useEffect(()=>{
-//       if ((props.type == "user" || props.type == "company") && !sessionStorage.getItem("sessionID"))
-//       {
-//         navigate('/login');
-//       }
-//   },[])
 
-//   useEffect(()=>{
-//     if (props.type == "user" || props.type == "company")
-//     {
-//     var username = sessionStorage.getItem('sessionID');
-//     //alert(username);
-//     //const t = sessionStorage.getItem('userType');
+ /* useEffect(()=>{
+      // if ((props.type == "user" || props.type == "company") && !sessionStorage.getItem("sessionID"))
+      // {
+      //   navigate('/login');
+      // }
+  },[])
+
+  useEffect(()=>{
+    if (props.type == "user" || props.type == "company")
+    {
+    var username = sessionStorage.getItem('sessionID');
+    //alert(username);
+    //const t = sessionStorage.getItem('userType');
     
-//         axios.get(`http://localhost:8000/finduser/${username}`)
-//           .then(res => {
-//             setUser(res.data);
-//             //alert(JSON.stringify(res.data));
-//             //alert(JSON.stringify(currUser));
-//           });
-//     }
-// },[props])
-
+        // axios.get(`http://localhost:8000/finduser/${username}`)
+        //   .then(res => {
+        //     setUser(res.data);
+        //     //alert(JSON.stringify(res.data));
+        //     //alert(JSON.stringify(currUser));
+        //   });
+    }
+},[props])
+*/
   const navigate = useNavigate(); 
   const [img1,setImg1] = useState();
   const [currUser,setUser] = useState([]);
