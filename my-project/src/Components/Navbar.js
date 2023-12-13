@@ -78,9 +78,6 @@ const Layout = (props) => {
   var navlayout = 
     <ul className="navb_ul">
           <li className="navb_li">
-            <Link to="/cvviewer" id="cvbutton_navbar">Build CV</Link>
-          </li>
-          <li className="navb_li">
             <Link to="/">Home</Link>
           </li>
           <li className="navb_li">

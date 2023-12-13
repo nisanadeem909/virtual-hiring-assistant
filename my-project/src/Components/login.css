@@ -10,10 +10,27 @@
 	display: flex;
 }
 #emerald{
-    width:900px;
-    height:200px;
+    width:90%;
+    height:90%;
     margin-left: 100px;
 }
+
+.nab-wrapper-login::before {
+    content: "";
+    position: absolute;
+    top: 250px;
+    left: -650px;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('./design6.svg'); /* Replace with the correct path */
+    background-size: 1000px 800px; /* Adjust as needed */
+    background-repeat: no-repeat;
+    z-index: -1;
+    transform: rotate(180deg);
+    animation: moveBackground 4s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite alternate;
+  }
+
 #nab-login-username{
     width: 60%;
     margin-left: 20%;
@@ -42,19 +59,19 @@
 	border: 1px solid #008080;
 	margin-top: 1.5em;
 	margin-bottom: 1em;*/
-    background-color: #41A45D;
+    background-color: #3498db;
     border-radius: 4px;
    
     border: none;
-    color: black;
+    color: white;
     text-align: center;
-   border: 1px solid black;
 
-    width: 30%;
-    height:20%;
+
+    width: 20%;
+    height:40%;
     transition: all 0.5s;
     cursor: pointer;
-    margin-left:35%;
+    margin-left:40%;
     font-size:18px;
 }
 #welcomeback{

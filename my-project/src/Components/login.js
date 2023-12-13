@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './login.css';
-import img from './loginnew.gif';
+import img from './LoginFinal.svg';
 import Footer from './Footer';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
