@@ -11,8 +11,12 @@ import HomePage from './Components/HomePage'
 
 import AboutUs from './Components/AboutUs'
 import Error from './Components/ErrorPage'
-
-
+import CVCollectionForm from './Components/ApplicantCVForm/cvcollectionform.js'
+import FormScreening from './Components/ApplicantFormScreening/formscreening.js'
+import RecruiterProfile from './Components/RecruiterProfile/profile.js'
+import FormCollectionEmail from './Components/RecruiterPhase2Email/FormCollectionEmailPage.js'
+import FormResponsesPage from './Components/RecruiterFormResponses/formresponses.js';
+import ShortlistedFormResponsesPage from './Components/RecruiterFormResponses/shortlistedformresponses.js';
 function App() {
   return (
    
@@ -31,8 +35,10 @@ function App() {
 
         <Route path="/applicant" element={<Navbar type="user"/>}>
   
-            <Route path="*" element={<Error/>}></Route>
-                   
+            
+            <Route path="cvcollection" element={<CVCollectionForm/>}></Route>
+            <Route path="formcollection" element={<FormScreening/>}></Route>
+            <Route path="*" element={<Error/>}></Route>      
 
 
         </Route>
@@ -40,7 +46,10 @@ function App() {
         <Route path="/recruiter" element={<Navbar type="company"/>}>
           
             
-            
+            <Route path="profile" element={<RecruiterProfile/>}></Route>
+            <Route path="phase2email" element={<FormCollectionEmail/>}></Route>
+            <Route path="phase1responses" element={<FormResponsesPage/>}></Route>
+            <Route path="shortlistedphase1responses" element={<ShortlistedFormResponsesPage/>}></Route>
             <Route path="*" element={<Error/>}></Route>
             
             
