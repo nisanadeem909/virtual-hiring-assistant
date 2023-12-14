@@ -54,9 +54,7 @@ export default function Profile() {
 
             
         </div>
-        <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
-        <br></br><br></br><br></br><br></br><br></br><br></br><br></br>
-        <br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+        
          <div className="ft"> <Footer />        </div> 
 
         
