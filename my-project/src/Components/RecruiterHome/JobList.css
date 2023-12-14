@@ -1,0 +1,64 @@
+.nisa-joblist-con {
+    width: 100%;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    text-align: center;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    border-radius: 18px;
+    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20%;
+  }
+ 
+
+  .nisa-joblists-head{
+    font-size: 50px;
+  }
+
+  .job-row {
+    display: flex;
+    align-items:flex-start;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    min-width: 85%;
+    margin-top: 10px; 
+  }
+  
+  .job-details {
+    display: flex;
+    flex-grow: 1; 
+    flex-direction: column;
+    align-items: flex-start; 
+  }
+  
+  .job-title {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .job-status {
+    font-size: 14px;
+    text-align: left;
+  }
+  
+  .open-job-button {
+    background-color: #012641;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px; 
+    width: 150px;
+  }
+
+  .job-icon{
+    width: 80px;
+    height: 80px;
+    margin-right: 32%;
+    margin-bottom: 1%;
+    margin-top: -10%;
+  }
+  
