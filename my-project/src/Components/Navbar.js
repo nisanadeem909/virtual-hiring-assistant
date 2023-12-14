@@ -120,7 +120,7 @@ const Layout = (props) => {
                            <div class="nab-dropdown-content" id="myDropdown">
                            <div id="nab-dropdown-items">
                                 <div id="profile-head-section">
-                                  <img src={`http://localhost:8000/profilepictures/${currUser.user?.profilePicture || currUser.company?.profilePicture || person}`} id="nab-human-icon"></img>
+                                  {/* <img src={`http://localhost:8000/profilepictures/${currUser.user?.profilePicture || currUser.company?.profilePicture || person}`} id="nab-human-icon"></img> */}
                                   &nbsp;&nbsp;
                                   <label>{getUserName()}</label>
                                   
@@ -180,7 +180,7 @@ const Layout = (props) => {
                            <div class="nab-dropdown-content" id="myDropdown">
                            <div id="nab-dropdown-items">
                                 <div id="profile-head-section">
-                                  <img src={`http://localhost:8000/profilepictures/${currUser.user?.profilePicture || currUser.company?.profilePicture || person}`} id="nab-human-icon"></img>
+                                  {/* <img src={`http://localhost:8000/profilepictures/${currUser.user?.profilePicture || currUser.company?.profilePicture || person}`} id="nab-human-icon"></img> */}
                                   &nbsp;&nbsp;
                                   <label>{getUserName()}</label>
                                   

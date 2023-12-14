@@ -59,8 +59,8 @@ function App() {
             <Route path="postjob" element={<PostJobPage/>}></Route>
             <Route path="profile" element={<RecruiterProfile/>}></Route>
             <Route path="phase2email" element={<FormCollectionEmail/>}></Route>
-            <Route path="phase1responses" element={<FormResponsesPage/>}></Route>
-            <Route path="shortlistedphase1responses" element={<ShortlistedFormResponsesPage/>}></Route>
+            <Route path="phase2responses" element={<FormResponsesPage/>}></Route>
+            <Route path="shortlistedphase2responses" element={<ShortlistedFormResponsesPage/>}></Route>
 
             <Route path="*" element={<Error/>}></Route>
             

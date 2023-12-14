@@ -5,16 +5,31 @@ import './cvcollectionform.css';
 // import Slideshow from './Slideshow';
 import Footer from '../Footer.js';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 function CVCollectionForm() {
  // const navigate=useNavigate();
 
  
- const [jobrole,setJobRole] = useState("Associate Software Engineer")
+  const [jobrole,setJobRole] = useState("Associate Software Engineer")
+  const [jobDes,setJobDes] = useState("Thank you for your interest in this position. The ideal candidates will have strong creative skills and a portfolio of work which demonstrates their passion."
+    + "Skills Required:Photoshop, Illustrator/Corel Draw, AdobeXD, Figma and others within Adobe Creative Cloud Suite."
+  )
+  useEffect(()=>{
+    // alert("hi")
+
+    // setJobDes First here
+
+    // setJobRole here
+  },[])
+ 
   return (
     <div id="nab-cv-outer-div">
       <div id="nab-cv-form">
-        <div id="nab-cv-heading">Recruitment Phase 1: CV Collection for {jobrole}</div>
+        <div id="nab-cv-heading">CV Application for {jobrole}</div>
+        <hr id="nab-cv-hr" />
+        
+        <label id="nab-cv-label-fullname" for="fullName">{jobDes}<span id="nab-cv-required-field"></span>:</label>
+        
         <hr id="nab-cv-hr" />
         <form>
             
@@ -26,13 +41,13 @@ function CVCollectionForm() {
           <div id="nab-cv-fullname-div">
             
             <div id="nab-form-group1">
-                <input id="nab-cv-input1" type="text" name="firstName" required />
-                <span id="nab-cv-label-below-firstname">First Name</span>
+                <input id="nab-cv-input1" type="text" name="firstName" placeholder='First Name'required />
+                {/* <span id="nab-cv-label-below-firstname">First Name</span> */}
             </div>
 
             <div id="nab-form-group2">
-                <input type="text" id="nab-cv-input2" name="lastName" required />
-                <span id="nab-cv-label-below-lastname">Last Name</span>
+                <input type="text" id="nab-cv-input2" name="lastName" required placeholder='Last Name'/>
+                {/* <span id="nab-cv-label-below-lastname">Last Name</span> */}
             </div>
           
           </div>
