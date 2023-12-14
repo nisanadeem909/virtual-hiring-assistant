@@ -7,11 +7,12 @@ import Login from './Components/login.js'
 
 
 import LandingPage from './Components/LandingPage'
+import RecruiterProjile from './Components/RecruiterHome/RecruiterHomePage.js';
 import HomePage from './Components/HomePage'
 import Signup from './Components/Signup'
 import AboutUs from './Components/AboutUs'
 import Error from './Components/ErrorPage'
-
+import PostJobPage from './Components/PostJob/PostJobPage.js';
 import RejectionEmailPage from './Components/Email_Notif/RejectionEmailPage.js'
 import NotificationPage from './Components/Email_Notif/NotificationPage.js'
 import CreateFormPageNew from './Components/FormScreening/CreateFormPageNew.js'
@@ -50,12 +51,12 @@ function App() {
 
         <Route path="/recruiter" element={<Navbar type="company"/>}>
           
-            
+            <Route path="home" element={<RecruiterProjile/>}></Route>
             <Route path="job/rejectionemail" element={<RejectionEmailPage/>}></Route>
             <Route path="notifications" element={<NotificationPage/>}></Route>
             <Route path="job/createform" element={<CreateFormPageNew/>}></Route>
             <Route path="job" element={<JobDashboardPage/>}></Route>
-          
+            <Route path="postjob" element={<PostJobPage/>}></Route>
             <Route path="profile" element={<RecruiterProfile/>}></Route>
             <Route path="phase2email" element={<FormCollectionEmail/>}></Route>
             <Route path="phase1responses" element={<FormResponsesPage/>}></Route>
