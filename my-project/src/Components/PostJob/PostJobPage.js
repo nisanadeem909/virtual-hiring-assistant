@@ -20,7 +20,7 @@ export default function PostJobPage() {
   });
 
   const handleNext = () => {
-    if (phase < 5) {
+    if (phase < 2) {
       setPhase(phase + 1);
     }
   };
@@ -67,19 +67,9 @@ export default function PostJobPage() {
                 onChange={handleInputChange}
               />
 
-              <label htmlFor="applicantsSelected">No of Applicants Selected</label>
-              <input
-                type="number"
-                id="applicantsSelected"
-                value={formData.applicantsSelected}
-                onChange={handleInputChange}
-              />
-
               <button onClick={handleNext}>Next</button>
             </div>
           )}
-
-          {/* ... (similar changes for other phases) */}
 
           {phase === 1 && (
             <div className="phase-details">
@@ -93,7 +83,7 @@ export default function PostJobPage() {
               />
 
               <label htmlFor="phase1Percentage">
-                Percentage of Applicants to Select for Phase 1
+                Acceptable CV to JD Match Percentage
               </label>
               <input
                 type="number"
@@ -103,40 +93,12 @@ export default function PostJobPage() {
               />
 
               <button onClick={handleBack}>Back</button>
-              {phase < 4 && <button onClick={handleNext}>Next</button>}
-            </div>
-          )}
-
-          {/* ... (similar changes for other phases) */}
-
-          {phase === 4 && (
-            <div className="phase-details">
-              <h1 className="nisa-phase4">Phase {phase} - Video Interview</h1>
-              <label htmlFor="phase4Deadline">Phase 4 Deadline</label>
-              <input
-                type="date"
-                id="phase4Deadline"
-                value={formData.phase4Deadline}
-                onChange={handleInputChange}
-              />
-
-              <label htmlFor="phase4Percentage">
-                Percentage of Applicants to Select for Phase 4
-              </label>
-              <input
-                type="number"
-                id="phase4Percentage"
-                value={formData.phase4Percentage}
-                onChange={handleInputChange}
-              />
-
-              <button onClick={handleBack}>Back</button>
-              {phase < 4 && <button onClick={handleNext}>Next</button>}
-              {phase === 4 && (
+              {phase === 1 && (
                 <button onClick={() => alert('Submit logic here')}>Submit</button>
               )}
             </div>
           )}
+
         </div>
 
         <div className="right-content">
