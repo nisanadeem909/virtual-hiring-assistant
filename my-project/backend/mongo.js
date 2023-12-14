@@ -33,7 +33,22 @@ const recruiterSchema = new Schema({
     minlength: 6
   }
   ,
-  
+  name: {
+    type: String,
+    required: true,
+    minlength: 6
+  }
+  ,
+  designation: {
+    type: String,
+    required: true,
+    minlength: 6
+  }
+  ,
+  profilePic: {
+    type: String
+  }
+  ,
 
 }, {
   timestamps: true,
@@ -41,7 +56,94 @@ const recruiterSchema = new Schema({
 
 const Recruiter = mongoose.model('Recruiter', recruiterSchema);
 
+
+
+const jobApplicationSchema = new Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
+  }
+  ,
+  name: {
+    type: String,
+    required: true,
+    minlength: 6
+  }
+  ,
+  status: {
+    type: Number,
+    required: true,
+    default: 1
+  }
+  ,
+  selectionStatus: {
+    type: Boolean
+  }
+  ,
+  CVPath: {
+    type: String,
+    required: true
+  }
+  ,
+  CVMatchScore: {
+    type: Decimal128,
+    required: true
+  }
+  ,
+  jobID: {
+    type: Number,
+    required: true
+  }
+  ,
+
+
+}, {
+  timestamps: true,
+});
+
+const JobApplication = mongoose.model('JobApplication', jobApplicationSchema);
+
+
+
+const jobSchema = new Schema({
+  jobTitle: {
+    type: String,
+    required: true
+  }
+  ,
+  jobDescription: {
+    type: String,
+    required: true
+  }
+  ,
+  CVDeadline: {
+    type: Date,
+    required: true
+  }
+  ,
+  AccCVScore: {
+    type: Decimal128,
+    required: true
+  }
+  ,
+  status: {
+    type: Number,
+    required: true,
+    default: 1
+  }
+  ,
+
+}, {
+  timestamps: true,
+});
+
+const Job = mongoose.model('Job', jobSchema);
+
 module.exports ={
   Recruiter,
-
+  JobApplication,
+  Job
 };
