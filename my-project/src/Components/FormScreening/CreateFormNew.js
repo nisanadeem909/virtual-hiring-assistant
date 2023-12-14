@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react' 
 import './CreateFormPage.css';
-import Select from 'react-select'
 
 export default function CreateForm(props) {
 
