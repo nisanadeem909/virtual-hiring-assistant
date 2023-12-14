@@ -2,15 +2,16 @@
 #nab-profile-outer-div{
     display: flex;
     padding: 2%;
-    position: absolute;
+    /* position: absolute; 
     top: 60%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); */
+    margin-left: 5%;
     font-family: Arial, sans-serif;
     width:90%;
     height: 90%;
 
-    background-color: #f0f0f8;
+    background-color: white; 
     
 }
 #change-prof-pic{
