@@ -6,6 +6,8 @@ import JobDetails from './JobDetails'
 import CVCollection from './CVCollection';
 import CVScreening from './CVScreening';
 import FormCreating from './FormCreating';
+import FormResponsesPage from '../RecruiterFormResponses/formresponses';
+import ShortlistedFormResponsesPage from '../RecruiterFormResponses/shortlistedformresponses';
 
 export default function JobDashboardPage() {
 
@@ -39,10 +41,11 @@ export default function JobDashboardPage() {
         }
         else if (index == 2){
             // if in phase 1/2 and form not created yet -> create form
-            setContent(<FormCreating></FormCreating>)
+            //setContent(<FormCreating></FormCreating>)
             // else if phase 2 ongoing
-
+            //setContent(<FormResponsesPage></FormResponsesPage>)
             // else phase 2 shortlisted
+            setContent(<ShortlistedFormResponsesPage></ShortlistedFormResponsesPage>)
         }
         else {
             setContent(<img src={loading} className='kjobdashboardpage-loading-img'></img>);
