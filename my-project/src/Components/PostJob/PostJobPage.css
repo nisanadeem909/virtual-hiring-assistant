@@ -1,0 +1,77 @@
+.post-job-container {
+    width: 80%;
+    height: 550px;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .content-container {
+    display: flex;
+    margin-left: 2%;
+    margin-top: 2%;
+  }
+  
+  .left-content {
+    flex: 1;
+  }
+
+  .nisa-post-img{
+    width: 600px;
+    height: 600px;
+    margin-top: -14%;
+    margin-left: 10%;
+  }
+  
+  .nisa-phase1{
+    color: #056487;
+    font-weight: bolder;
+  }
+
+  .right-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* ... existing styles ... */
+  
+  
+  .job-details,
+  .phase-details {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input,
+  textarea,
+  button {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+  }
+  
+  button {
+    background-color: #012641;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background-color: gray;
+  }
+  

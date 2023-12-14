@@ -11,8 +11,8 @@
 }
 #emerald{
     width:90%;
-    height:90%;
-    margin-left: 100px;
+    height:100%;
+    margin-left: 00px;
 }
 
 .nab-wrapper-login::before {
@@ -38,10 +38,19 @@
     border: 2px solid rgb(34, 33, 33,0.7);
     border-radius: 8px;
 }
+
+#nab-login-email{
+    width: 60%;
+    margin-left: 20%;
+    margin-top: 3%;
+    border: 2px solid rgb(34, 33, 33,0.7);
+    border-radius: 8px;
+}
+
 #nab-login-password{
     width: 60%;
     margin-left: 20%;
-    margin-top: 5%;
+    margin-top: 3%;
     border: 2px solid rgb(34, 33, 33,0.7);
     border-radius: 8px;
 }

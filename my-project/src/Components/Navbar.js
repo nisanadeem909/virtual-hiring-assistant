@@ -115,15 +115,7 @@ const Layout = (props) => {
                       <li className="navb_li">
                         <div class="nab-dropdown" >
                            
-                        <button class="nab-dropbtn" onClick={handleProfile}>
-                           Profile
-                            {/*<Link to="/user/ownprofile"> 
-                              Profile
-                              
-                            </Link>*/}
-                          
-                        </button>
-                           
+                        
                           
                            <div class="nab-dropdown-content" id="myDropdown">
                            <div id="nab-dropdown-items">
@@ -183,15 +175,7 @@ const Layout = (props) => {
                       <li className="navb_li">
                         <div class="nab-dropdown" >
                            
-                        <button class="nab-dropbtn" onClick={handleProfile}>
-                        Profile
-                          {/*<Link to="/company/ownprofile" onClick={handleProfile}>
-                              Profile
-                              
-                          </Link>*/}
-                          
-                        </button>
-                           
+                       
                           
                            <div class="nab-dropdown-content" id="myDropdown">
                            <div id="nab-dropdown-items">
