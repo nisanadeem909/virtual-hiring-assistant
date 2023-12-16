@@ -43,12 +43,14 @@ function App() {
         <Route path="/applicant" element={<Navbar type="user"/>}>
   
             
+
             <Route index element={<Error/>} />
-            <Route path="cvcollection" element={<CVCollectionForm/>}></Route>
+           <Route path="cvcollection/:cvcollectionid" element={<CVCollectionForm/>}></Route>
             <Route path="formcollection" element={<FormScreening/>}>
               <Route index element={<FormScreening/>} />
               <Route path=":formId" element={<FormScreening/>} />
             </Route>
+
             <Route path="*" element={<Error/>}></Route>      
 
 
@@ -63,10 +65,16 @@ function App() {
             <Route path="job" element={<JobDashboardPage/>}></Route>
             <Route path="home/postjob" element={<PostJobPage/>}></Route>
             <Route path="profile" element={<RecruiterProfile/>}></Route>
+
+            
+            
+            
+
             <Route path="home/postjob/setemail" element={<SetEmail/>}></Route>
             <Route path="home/postjob/setemail/phase2email" element={<FormCollectionEmail/>}></Route>
-            <Route path="phase1responses" element={<FormResponsesPage/>}></Route>
-            <Route path="shortlistedphase1responses" element={<ShortlistedFormResponsesPage/>}></Route>
+            
+           
+
 
             <Route path="*" element={<Error/>}></Route>
             
