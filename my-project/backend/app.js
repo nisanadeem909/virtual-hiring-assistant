@@ -1,4 +1,4 @@
-const {User,Company, Jobs, Post, Jobapplication, Notification, Connection, EmployeeRequests, CurrentEmployees} = require('./mongo');
+const {Job, Recruiter,JobApplication,Form} = require('./mongo');
 const fs = require('fs');
 const formidable = require('formidable');
 const cors=require('cors');
@@ -21,6 +21,23 @@ app.set('view engine', 'ejs');
 const cookieParser = require("cookie-parser");
 
 
+const createFormRoute = require('./routes/createform');
+const JobDashboardRoute = require('./routes/jobdashboard');
+const EditProfileRoute = require('./routes/editprofile');
+const LoginRoute = require('./routes/login');
+const SignupRoute = require('./routes/signup');
+const JobListRoute = require('./routes/joblist');
+const PostJobRoute = require('./routes/postjob');
+
+app.use('/komal', createFormRoute);
+app.use('/komal', JobDashboardRoute);
+app.use('/nabeeha', EditProfileRoute);
+app.use('/nisa', LoginRoute);
+app.use('/nisa', SignupRoute);
+app.use('/nisa', JobListRoute);
+app.use('/nisa', PostJobRoute);
+
+
 app.use(cookieParser());
 
 const session = require('express-session');
@@ -30,7 +47,6 @@ app.use(session({
  saveUninitialized: true,
  
 }));
-
 
 
 app.listen(8000, () => {

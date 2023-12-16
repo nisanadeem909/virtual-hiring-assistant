@@ -1,31 +1,62 @@
-import React, { useState } from 'react' 
+import React, { useEffect, useState } from 'react' 
 import './JobDashboard.css';
 import Footer from '../Footer'
 
-export default function JobDetails() {
+export default function JobDetails(props) {
 
-    const [job,setJob] = useState({'jobTitle':'Graphic Designer','CVFormLink':'ajhdskjfhdsk','acceptableCVScore':'70','appDeadline':'05/01/2024','status':'Collecting Applications','jobDesc':'The ideal candidates will have strong creative skills and a portfolio of work which demonstrates their passion. Minimum Education Required is a Bachelors degree in Computer Science,Software Engineering, IT, or related degree. Skills Required: Photoshop, Illustrator/Corel Draw, AdobeXD, Figma and others within Adobe Creative Cloud Suite. First-hand knowledge of: UX Design required. An understanding/appreciation for UX Basic Coding: An understanding of how creative sits within digital platforms such as: HTML, CSS and JavaScript. A good understanding of mobile first design is required. Responsibilities include creating design for pages of web applications using WordPress and creating web pages for fronted using HTML,CSS and JavaScript.'})
+    const [job,setJob] = useState({'jobTitle':'Loading..','CVFormLink':'Loading..','AccCVScore': { $numberDecimal: '0' },'CVDeadline':'dd/mm/yyyy','status':'0','jobDescription':'Loading..'})
+    const [jobStatus,setStatus] = useState("Loading..");
+    const [statusDiv,setDiv] = useState(<>Loading...</>);
+
+    useEffect(() => {
+        if (props.job)
+            setJob(props.job);
+      }, [props.job]);
+
+    useEffect(() => {
+        //alert(job.status)
+          if (job.status == 0)
+          {
+            setStatus("Loading..");
+            setDiv(<>Loading...</>);
+          }
+          else if (job.status == 1)
+          {
+              setStatus("Phase 1 (CV Screening)");
+              setDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link:</b> {job.CVFormLink}</label>
+              <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {job.AccCVScore.$numberDecimal.toString()}%</label>
+              <button className='kjobdetailspage-editcvscore'>Edit Acceptable Score</button></>);
+          }
+          else if (job.status == 2){
+            setStatus("Phase 2 (Form Screening)");
+            setDiv(<><label className='kjobdetailspage-cvlink'><b>Phase 2 form link:</b> {job.CVFormLink}</label></>);
+          }
+          else if (job.status == 3)
+            setStatus("Phase 3 (Video-Interview)")
+          else if (job.status == 4)
+            setStatus("Phase 4 (Technical Test)")
+          else if (job.status == 5)
+            setStatus("Shortlisted")
+        }, [job.status]);
 
     return (
       <div className='kjobdetailspage-con'>
         <div className='kjobdetailspage-header'>
             <label className='kjobdetailspage-jobtitle'>{job.jobTitle} Job Details</label>
-            <label className='kjobdetailspage-jobstatus'>Current status: {job.status}</label>
+            <label className='kjobdetailspage-jobstatus'>Current status: {jobStatus}</label>
         </div>
         <div className='kjobdetailspage-inner'>
             <div className='kjobdetailspage-deadline-div'>
-                <label className='kjobdetailspage-appdeadline'><b>Deadline for applications:</b> {job.appDeadline}</label>
+                <label className='kjobdetailspage-appdeadline'><b>Deadline for applications:</b> {new Date(job.CVDeadline).toLocaleDateString('en-GB')}</label>
                 <button className='kjobdetailspage-editdeadline'>Edit Deadline</button>
             </div>
             <div className='kjobdetailspage-cv-div'>
-                <label className='kjobdetailspage-cvlink'><b>CV collection form link:</b> {job.CVFormLink}</label>
-                <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {job.acceptableCVScore}%</label>
-                <button className='kjobdetailspage-editcvscore'>Edit Acceptable Score</button>
+                {statusDiv}
             </div>
             <div className='kjobdetailspage-jd-div'>
                 <label className='kjobdetailspage-jd-title'>Job Description</label>
                 <hr className='kjobdetailspage-jd-hr'></hr>
-                <p className='kjobdetailspage-jd'>{job.jobDesc}</p>
+                <p className='kjobdetailspage-jd'>{job.jobDescription}</p>
             </div>
         </div>
       </div>

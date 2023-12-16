@@ -94,7 +94,7 @@ const jobApplicationSchema = new Schema({
   }
   ,
   jobID: {
-    type: Number,
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   }
   ,
@@ -135,6 +135,32 @@ const jobSchema = new Schema({
     default: 1
   }
   ,
+  postedby: {
+    type: String,
+    required: true
+  },
+  CVFormLink: {
+    type: String
+  },
+  P2FormLink: {
+    type: String
+  },
+  rejectEmailSub: {
+    type: String,
+  }
+  ,
+  rejectEmailBody: {
+    type: String,
+  }
+  ,
+  formEmailSub: {
+    type: String,
+  }
+  ,
+  formEmailBody: {
+    type: String,
+  }
+  ,
 
 }, {
   timestamps: true,
@@ -142,8 +168,70 @@ const jobSchema = new Schema({
 
 const Job = mongoose.model('Job', jobSchema);
 
+const formSchema = new Schema({
+  jobTitle: {
+    type: String,
+    required: true
+  }
+  ,
+  jobID: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  }
+  ,
+  formDeadline: {
+    type: Date
+  }
+  ,
+  questions:[{
+    answer: Number,
+    options: [String],
+    question: String
+  }],
+
+}, {
+  timestamps: true,
+});
+
+const Form = mongoose.model('Form', formSchema);
+
+
+
+
+
+const notificationSchema = new Schema({
+  jobTitle: {
+    type: String
+  }
+  ,
+  notifText: {
+    type: String,
+    required: true
+  }
+  ,
+  recruiterUsername: {
+    type: String,
+    required: true
+  }
+  ,
+  jobStatus: {
+    type: Number
+  }
+  ,
+  jobID: {
+    type: mongoose.Schema.Types.ObjectId
+  }
+  ,
+
+}, {
+  timestamps: true,
+});
+
+const Notification = mongoose.model('Notification', notificationSchema);
+
 module.exports ={
   Recruiter,
   JobApplication,
-  Job
+  Job,
+  Form
 };

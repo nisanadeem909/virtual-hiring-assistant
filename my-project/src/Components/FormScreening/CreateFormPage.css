@@ -200,7 +200,16 @@
     padding: 1.5vh;
     border-radius: 2vh;
     display: flex;
-    justify-content: space-between;
+}
+
+.kcreateformpage-formdeadline {
+    font-size: large;
+    margin-top: 1vh;
+}
+
+.kcreateformpage-formdeadline-input {
+    width: 30%;
+    margin-left: 5%;
 }
 
 .kcreateformpage-savebtn {
@@ -224,6 +233,7 @@
     color: #012641;
     border-radius: 3vh;
     font-weight: bold;
+    margin-left: 18%;
 }
 
 .kformquestion-addbtn:hover, .kformquestion-question-delete:hover,.kcreateformpage-addq:hover,.kcreateformpage-cancelbtn:hover,.kcreateformpage-savebtn:hover{
