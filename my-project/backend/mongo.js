@@ -214,7 +214,7 @@ const notificationSchema = new Schema({
     required: true
   }
   ,
-  jobStatus: {
+  notifType: {
     type: Number
   }
   ,
@@ -233,5 +233,6 @@ module.exports ={
   Recruiter,
   JobApplication,
   Job,
-  Form
+  Form,
+  Notification
 };
