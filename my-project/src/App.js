@@ -42,7 +42,7 @@ function App() {
         <Route path="/applicant" element={<Navbar type="user"/>}>
   
             
-            <Route path="cvcollection" element={<CVCollectionForm/>}></Route>
+            <Route path="cvcollection/:cvcollectionid" element={<CVCollectionForm/>}></Route>
             <Route path="formcollection" element={<FormScreening/>}></Route>
             <Route path="*" element={<Error/>}></Route>      
 
