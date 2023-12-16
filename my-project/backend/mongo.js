@@ -145,6 +145,22 @@ const jobSchema = new Schema({
   P2FormLink: {
     type: String
   },
+  rejectEmailSub: {
+    type: String,
+  }
+  ,
+  rejectEmailBody: {
+    type: String,
+  }
+  ,
+  formEmailSub: {
+    type: String,
+  }
+  ,
+  formEmailBody: {
+    type: String,
+  }
+  ,
 
 }, {
   timestamps: true,

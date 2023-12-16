@@ -21,6 +21,23 @@ app.set('view engine', 'ejs');
 const cookieParser = require("cookie-parser");
 
 
+const createFormRoute = require('./routes/createform');
+const JobDashboardRoute = require('./routes/jobdashboard');
+const EditProfileRoute = require('./routes/editprofile');
+const LoginRoute = require('./routes/login');
+const SignupRoute = require('./routes/signup');
+const JobListRoute = require('./routes/joblist');
+const PostJobRoute = require('./routes/postjob');
+
+app.use('/komal', createFormRoute);
+app.use('/komal', JobDashboardRoute);
+app.use('/nabeeha', EditProfileRoute);
+app.use('/nisa', LoginRoute);
+app.use('/nisa', SignupRoute);
+app.use('/nisa', JobListRoute);
+app.use('/nisa', PostJobRoute);
+
+
 app.use(cookieParser());
 
 const session = require('express-session');
@@ -31,79 +48,6 @@ app.use(session({
  
 }));
 
-app.post("/getjob", async(req,res)=>{
-    console.log(req.body);
-
-    const id = req.body.jobId;
-
-    var msg;
-
-    try {
-
-        const job = await Job.findById(id);
-
-        if (!job)
-            msg = {"status": "not found"}
-        else 
-            msg = {"status": "success","job":job}
-        
-    }
-        catch (error) {
-            console.error('Error adding job:', error);
-            msg = {"status": "error"};
-
-    } 
-    console.log(msg);
-
-    res.json(msg);
-
-    res.end();
-
-})
-
-app.post("/createform", async(req,res)=>{
-    console.log(req.body);
-    const job = req.body.job;
-    const questions = req.body.questions;
-    const formdeadline = req.body.formdeadline;
-
-    const newForm = new Form({
-        jobTitle: job.jobTitle,
-        jobID: job._id,
-        formDeadline: formdeadline,
-        questions: questions
-      });
-
-    var msg;
-
-    try {
-
-        const existingForm = await Form.findOne({ jobID: job._id });
-
-        if (existingForm) {
-            msg = {"status": "error","error":"Form already created for this job!"};
-        }
-        else {
-
-            await newForm.save();
-            
-            const formLink = 'http://localhost:3000/applicant/formcollection/'+newForm._id;
-            await Job.findByIdAndUpdate(job._id, { P2FormLink: formLink });
-        
-            msg = { status: "success", "formLink": formLink };
-        }
-    }
-        catch (error) {
-            console.error('Error adding job:', error);
-            msg = {"status": "error","error":error};
-
-    } 
-
-    res.json(msg);
-
-    res.end();
-
-})
 
 app.listen(8000, () => {
     console.log("Server is running on port 8000"); 

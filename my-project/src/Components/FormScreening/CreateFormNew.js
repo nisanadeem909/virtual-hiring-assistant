@@ -160,7 +160,7 @@ export default function CreateForm(props) {
         if (flag)
         {
             var param = {'job':job,'formdeadline':formDeadline,'questions':questions};
-            axios.post("http://localhost:8000/createform",param).then((response) => {
+            axios.post("http://localhost:8000/komal/createform",param).then((response) => {
             // alert(JSON.stringify(response.data));
             if (response.data.status == "success"){
                 setMessage("Form has been saved and link for applicants is: "+response.data.formLink)

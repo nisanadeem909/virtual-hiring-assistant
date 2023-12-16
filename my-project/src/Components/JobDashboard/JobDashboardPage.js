@@ -17,14 +17,14 @@ export default function JobDashboardPage() {
     const [content,setContent] = useState(<img src={loading} className='kjobdashboardpage-loading-img'></img>)
     const [activeTab,setActiveTab] = useState(0);
 
-    var tempJobID = '657d8450b8b282677e3d4942';
+    var tempJobID = '657d9dd3d75435064f67d066';
     const [job,setJob] = useState(null);
 
     useEffect(() => {
         //openTab(0);
 
         var param = {'jobId':tempJobID};
-        axios.post("http://localhost:8000/getjob",param).then((response) => {
+        axios.post("http://localhost:8000/komal/getjob",param).then((response) => {
            // alert(JSON.stringify(response.data));
            if (response.data.status == "success"){
               setJob(response.data.job);
