@@ -179,6 +179,40 @@ const formSchema = new Schema({
 
 const Form = mongoose.model('Form', formSchema);
 
+
+
+
+
+const notificationSchema = new Schema({
+  jobTitle: {
+    type: String
+  }
+  ,
+  notifText: {
+    type: String,
+    required: true
+  }
+  ,
+  recruiterUsername: {
+    type: String,
+    required: true
+  }
+  ,
+  jobStatus: {
+    type: Number
+  }
+  ,
+  jobID: {
+    type: mongoose.Schema.Types.ObjectId
+  }
+  ,
+
+}, {
+  timestamps: true,
+});
+
+const Notification = mongoose.model('Notification', notificationSchema);
+
 module.exports ={
   Recruiter,
   JobApplication,
