@@ -182,7 +182,13 @@
     margin: 3vh 5vh ;
 }
 
-.kp2formcreating-header {
+.kformcreated-con {
+    display: flex;
+    flex-direction: column;
+    margin: 3vh 5vh ;
+}
+
+.kp2formcreating-header, .kformcreated-header {
     background-color: #012641;
     color: white;
     padding: 2vh 3vh;
@@ -196,6 +202,15 @@
     display: flex;
     justify-content: space-evenly;
     margin-top: 5vh;
+}
+
+.kformcreated-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5vh;
+    font-size: larger;
+    font-weight: bold;
 }
 
 .kp2formcreating-createbtn {
@@ -230,4 +245,12 @@
     background-color: #60B3D1;
     border-color: #519eba;
     color: white;
+}
+
+.kformcreated-header-job {
+    font-size: large;
+}
+
+.kformcreated-header hr {
+    margin: 1vh 0vh;
 }

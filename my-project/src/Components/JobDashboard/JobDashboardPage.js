@@ -64,12 +64,35 @@ export default function JobDashboardPage() {
             //setContent(<CVCollection></CVCollection>)
         }
         else if (index == 2){
-            // if in phase 1/2 and form not created yet -> create form
-            //setContent(<FormCreating></FormCreating>)
-            // else if phase 2 ongoing
-            //setContent(<FormResponsesPage></FormResponsesPage>)
-            // else phase 2 shortlisted
-            setContent(<ShortlistedFormResponsesPage></ShortlistedFormResponsesPage>)
+          
+            const currentDate = new Date().toISOString().split('T')[0]; // Get current date in 'yyyy-mm-dd' format
+            if (currentDate <= job.CVDeadline) {
+                if (!job.P2FormLink || job.P2FormLink.trim() == ''){ 
+                    setContent(<FormCreating job={job}></FormCreating>)
+                }
+                else { // form created and waiting for cv screening to complete
+                  setContent(<div className='kformcreated-con'>
+                    <div className='kformcreated-header'>
+                      <label className='kformcreated-header-title'><b>Form Screening</b></label>
+                      <hr></hr>
+                      <label className='kformcreated-header-job'><b>Job: </b>{job.jobTitle}</label>
+                    </div>
+                    <div className='kformcreated-content'>
+                      <label>Form has been created!</label>
+                      <label>Please wait till phase 1 (CV Screening) is completed to proceed to Form Screening.</label>
+                    </div>
+                  </div>)
+                }
+            }
+            else if (!job.P2FormLink || job.P2FormLink.trim() == ''){ // cv screening completed but form not created yet
+                setContent(<FormCreating job={job}></FormCreating>)
+            }
+            else {
+            // else if form has been created - form responses coming
+                setContent(<FormResponsesPage></FormResponsesPage>)
+            // else (phase 2 complete and apps shortlisted)
+            //setContent(<ShortlistedFormResponsesPage></ShortlistedFormResponsesPage>)
+            }
         }
         else {
             setContent(<img src={loading} className='kjobdashboardpage-loading-img'></img>);

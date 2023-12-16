@@ -6,6 +6,7 @@ export default function JobDetails(props) {
 
     const [job,setJob] = useState({'jobTitle':'Loading..','CVFormLink':'Loading..','AccCVScore': { $numberDecimal: '0' },'CVDeadline':'dd/mm/yyyy','status':'0','jobDescription':'Loading..'})
     const [jobStatus,setStatus] = useState("Loading..");
+    const [statusDiv,setDiv] = useState(<>Loading...</>);
 
     useEffect(() => {
         if (props.job)
@@ -15,11 +16,21 @@ export default function JobDetails(props) {
     useEffect(() => {
         //alert(job.status)
           if (job.status == 0)
-            setStatus("Loading..")
+          {
+            setStatus("Loading..");
+            setDiv(<>Loading...</>);
+          }
           else if (job.status == 1)
-              setStatus("Phase 1 (CV Screening)")
-          else if (job.status == 2)
-            setStatus("Phase 2 (Form Screening)")
+          {
+              setStatus("Phase 1 (CV Screening)");
+              setDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link:</b> {job.CVFormLink}</label>
+              <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {job.AccCVScore.$numberDecimal.toString()}%</label>
+              <button className='kjobdetailspage-editcvscore'>Edit Acceptable Score</button></>);
+          }
+          else if (job.status == 2){
+            setStatus("Phase 2 (Form Screening)");
+            setDiv(<><label className='kjobdetailspage-cvlink'><b>Phase 2 form link:</b> {job.CVFormLink}</label></>);
+          }
           else if (job.status == 3)
             setStatus("Phase 3 (Video-Interview)")
           else if (job.status == 4)
@@ -40,9 +51,7 @@ export default function JobDetails(props) {
                 <button className='kjobdetailspage-editdeadline'>Edit Deadline</button>
             </div>
             <div className='kjobdetailspage-cv-div'>
-                <label className='kjobdetailspage-cvlink'><b>CV collection form link:</b> {job.CVFormLink}</label>
-                <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {job.AccCVScore.$numberDecimal.toString()}%</label>
-                <button className='kjobdetailspage-editcvscore'>Edit Acceptable Score</button>
+                {statusDiv}
             </div>
             <div className='kjobdetailspage-jd-div'>
                 <label className='kjobdetailspage-jd-title'>Job Description</label>

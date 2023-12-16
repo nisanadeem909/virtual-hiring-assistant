@@ -140,8 +140,10 @@ const jobSchema = new Schema({
     required: true
   },
   CVFormLink: {
-    type: String,
-    required: true
+    type: String
+  },
+  P2FormLink: {
+    type: String
   },
 
 }, {
@@ -150,8 +152,36 @@ const jobSchema = new Schema({
 
 const Job = mongoose.model('Job', jobSchema);
 
+const formSchema = new Schema({
+  jobTitle: {
+    type: String,
+    required: true
+  }
+  ,
+  jobID: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  }
+  ,
+  formDeadline: {
+    type: Date
+  }
+  ,
+  questions:[{
+    answer: Number,
+    options: [String],
+    question: String
+  }],
+
+}, {
+  timestamps: true,
+});
+
+const Form = mongoose.model('Form', formSchema);
+
 module.exports ={
   Recruiter,
   JobApplication,
-  Job
+  Job,
+  Form
 };

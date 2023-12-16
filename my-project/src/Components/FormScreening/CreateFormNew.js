@@ -1,10 +1,29 @@
 import React, { useEffect, useState } from 'react' 
 import './CreateFormPage.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function CreateForm(props) {
 
+    const navigate = useNavigate();
+
     const [questions, setQuestions] = useState([{ question: '', options: [''] }]);
+    const [job,setJob] = useState({'jobTitle':'Loading..','CVFormLink':'Loading..','AccCVScore': { $numberDecimal: '0' },'CVDeadline':'dd/mm/yyyy','status':'0','jobDescription':'Loading..'})
+    const [formDeadline, setFormDeadline] = useState('');
+
+    const handleDeadlineChange = (event) => {
+      const selectedDate = event.target.value;
+      setFormDeadline(selectedDate);
+    };
+
+    useEffect(() => {
+        if (props.job){
+            setJob(props.job);
+
+        //alert(JSON.stringify(job))
+    }
+      }, [props.job]);
 
     const handleQuestionTextChange = (index,ev) =>{
         var text = ev.target.value;
@@ -55,6 +74,18 @@ export default function CreateForm(props) {
     const saveForm=()=>{
         var flag = true;
         var copy = [...questions];
+        const currentDate = new Date().toISOString().split('T')[0]; // Get current date in 'yyyy-mm-dd' format
+        const selectedDeadline = new Date(formDeadline).toISOString().split('T')[0]; // Convert formDeadline to 'yyyy-mm-dd' format
+
+        if (selectedDeadline <= currentDate) {
+            alert('Form deadline should be after the current date.');
+            return;
+        }
+
+        if (selectedDeadline <= job.CVDeadline) {
+            alert('Form deadline should be after the job CV deadline.');
+            return;
+        }
 
         if (copy.length < 1)
         {
@@ -98,14 +129,30 @@ export default function CreateForm(props) {
         }
 
         if (flag)
-            alert("Form saved!")
-
-        //save
+        {
+            var param = {'job':job,'formdeadline':formDeadline,'questions':questions};
+            axios.post("http://localhost:8000/createform",param).then((response) => {
+            // alert(JSON.stringify(response.data));
+            if (response.data.status == "success"){
+                alert("Form saved and link to form is: "+response.data.formLink)
+                navigate(-1);
+                }
+                else 
+                alert("Error: "+response.data.error);
+                //alert('hi');
+            })
+            .catch(function (error) {
+                alert("Axios Error:" + error);
+            });
+            
+        }
     }
 
     return (<div className='kcreateform-container'>
     <div className='kcreateformpage-btns'>
-      <button className='kcreateformpage-cancelbtn'>Discard Form</button>
+      <label className='kcreateformpage-formdeadline'>Form Deadline: </label>
+      <input type="date" className='kcreateformpage-formdeadline-input' value={formDeadline} onChange={handleDeadlineChange}></input>
+      <button className='kcreateformpage-cancelbtn' onClick={()=>navigate(-1)}>Discard Form</button>
       <button className='kcreateformpage-savebtn' onClick={saveForm}>Save Form</button>
     </div>
         <div className='kcreateform-questions'>
