@@ -135,7 +135,7 @@ const jobSchema = new Schema({
     default: 1
   }
   ,
-  recruiterUsername: {
+  postedby: {
     type: String,
     required: true
   },

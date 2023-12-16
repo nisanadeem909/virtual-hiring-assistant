@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './CreateFormPage.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import MessageModal from '../ModalWindows/MessageModal';
 
 
 export default function CreateForm(props) {
@@ -11,6 +12,10 @@ export default function CreateForm(props) {
     const [questions, setQuestions] = useState([{ question: '', options: [''] }]);
     const [job,setJob] = useState({'jobTitle':'Loading..','CVFormLink':'Loading..','AccCVScore': { $numberDecimal: '0' },'CVDeadline':'dd/mm/yyyy','status':'0','jobDescription':'Loading..'})
     const [formDeadline, setFormDeadline] = useState('');
+
+    const [message, setMessage] = useState('');
+    const [messageTitle, setMessageTitle] = useState('');
+    const [openModal, setOpenModal] = useState(false);
 
     const handleDeadlineChange = (event) => {
       const selectedDate = event.target.value;
@@ -74,37 +79,57 @@ export default function CreateForm(props) {
     const saveForm=()=>{
         var flag = true;
         var copy = [...questions];
+
+        if (!formDeadline || formDeadline.trim() == "")
+        {
+            setMessage('Please fill all fields!');
+            setMessageTitle('Error');
+            setOpenModal(true);
+            return;
+        }
+
         const currentDate = new Date().toISOString().split('T')[0]; // Get current date in 'yyyy-mm-dd' format
         const selectedDeadline = new Date(formDeadline).toISOString().split('T')[0]; // Convert formDeadline to 'yyyy-mm-dd' format
 
         if (selectedDeadline <= currentDate) {
-            alert('Form deadline should be after the current date.');
+            setMessage('Form deadline should be after the current date.');
+            setMessageTitle('Error');
+            setOpenModal(true);
             return;
         }
 
         if (selectedDeadline <= job.CVDeadline) {
-            alert('Form deadline should be after the job CV deadline.');
+            setMessage('Form deadline should be after the job CV deadline.');
+            setMessageTitle('Error');
+            setOpenModal(true);
             return;
         }
 
         if (copy.length < 1)
         {
             flag = false;
-            alert("Please enter at least 1 question!")
+            setMessage("Please enter at least 1 question!")
+            setMessageTitle('Error');
+            setOpenModal(true);
+            return;
         }
 
         for (var i = 0; i < copy.length; i++){
             if (!copy[i].question || copy[i].question.trim()=='')
             {
                 flag = false;
-                alert("Please fill all fields!")
+                setMessage("Please fill all fields!")
+                setMessageTitle('Error');
+                setOpenModal(true);
                 break;
             }
 
             if (copy[i].options.length < 2)
             {
                 flag = false;
-                alert("Please enter at least 2 options for each question!")
+                setMessage("Please enter at least 2 options for each question!")
+                setMessageTitle('Error');
+                setOpenModal(true);
                 break;
             }
 
@@ -112,7 +137,9 @@ export default function CreateForm(props) {
                 if (copy[i].options[j].trim()=='')
                 {
                     flag = false;
-                    alert("Please fill all fields!")
+                    setMessage("Please fill all fields!")
+                    setMessageTitle('Error');
+                    setOpenModal(true);
                     break;
                 }
             }
@@ -123,7 +150,9 @@ export default function CreateForm(props) {
             if (!copy[i].answer || copy[i].answer.trim()=='')
             {
                 flag = false;
-                alert("Please select acceptable option for all questions!")
+                setMessage("Please select acceptable option for all questions!")
+                setMessageTitle('Error');
+                setOpenModal(true);
                 break;
             }
         }
@@ -134,12 +163,14 @@ export default function CreateForm(props) {
             axios.post("http://localhost:8000/createform",param).then((response) => {
             // alert(JSON.stringify(response.data));
             if (response.data.status == "success"){
-                alert("Form saved and link to form is: "+response.data.formLink)
-                navigate(-1);
+                setMessage("Form has been saved and link for applicants is: "+response.data.formLink)
+                setMessageTitle('Form Saved');
+                setOpenModal(true);
                 }
-                else 
-                alert("Error: "+response.data.error);
-                //alert('hi');
+                else {
+                setMessage(response.data.error);
+                setMessageTitle('Error');
+                setOpenModal(true);}
             })
             .catch(function (error) {
                 alert("Axios Error:" + error);
@@ -205,6 +236,18 @@ export default function CreateForm(props) {
             +
           </button>
         </div>
+        <MessageModal
+        isOpen={openModal}
+        message={message}
+        title={messageTitle}
+        closeModal={() => {
+            setOpenModal(false);
+            //alert(messageTitle);
+            if (messageTitle === 'Form Saved') {
+            navigate(-1);
+            }
+        }}
+      />
       </div>
     )
   }
