@@ -28,10 +28,16 @@ const LoginRoute = require('./routes/login');
 const SignupRoute = require('./routes/signup');
 const JobListRoute = require('./routes/joblist');
 const PostJobRoute = require('./routes/postjob');
+const ApplicantCVCollectionForm = require('./routes/applicantcvcollectionform')
+
 
 app.use('/komal', createFormRoute);
 app.use('/komal', JobDashboardRoute);
+
 app.use('/nabeeha', EditProfileRoute);
+app.use('/nabeeha', ApplicantCVCollectionForm);
+
+ 
 app.use('/nisa', LoginRoute);
 app.use('/nisa', SignupRoute);
 app.use('/nisa', JobListRoute);

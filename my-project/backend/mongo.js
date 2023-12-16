@@ -93,6 +93,11 @@ const jobApplicationSchema = new Schema({
     required: true
   }
   ,
+  contactNumber:{
+    type: Number,
+    
+  }
+  ,
   jobID: {
     type: mongoose.Schema.Types.ObjectId,
     required: true

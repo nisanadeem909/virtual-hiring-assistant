@@ -16,7 +16,7 @@ router.post('/editprofile-getdetails', async (req, res) => {
       // const user = await Recruiter.findOne({ username: req.body.username });
       // res.json({"user": user });
       // res.end();
-      
+      console.log(req.body)
       const user = await Recruiter.findOne({ username: req.body.username });
       if (user) {
           res.json({ user });
