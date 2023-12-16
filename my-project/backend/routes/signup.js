@@ -2,6 +2,14 @@ const express = require('express');
 const router = express.Router();
 const {Job, Recruiter,JobApplication,Form} = require('../mongo');
 
+const session = require('express-session');
+router.use(session({
+ secret: '123456',
+ resave: true,
+ saveUninitialized: true,
+ 
+}));
+
 router.post('/signup', async (req, res) => {
     const { username, email, password, name, designation } = req.body;
   
