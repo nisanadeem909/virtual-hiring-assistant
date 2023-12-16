@@ -27,7 +27,7 @@ export default function Profile() {
 
         let param = {"username":username}; // this needs to be from the state
         
-        axios.post(`http://localhost:8000/editprofile-getdetails`,param).then(res => {
+        axios.post(`http://localhost:8000/nabeeha/editprofile-getdetails`,param).then(res => {
         //   setCons(res.data);
             if (res.data.user){
                
@@ -76,7 +76,7 @@ export default function Profile() {
         };
 
         try {
-            const response = await axios.post(`http://localhost:8000/editprofile-updatedetails`, {
+            const response = await axios.post(`http://localhost:8000/nabeeha/editprofile-updatedetails`, {
                 username,
                 updatedDetails,
             });
@@ -103,7 +103,7 @@ export default function Profile() {
         upload(username1)
 
         let param = {"username":username}; 
-        axios.post(`http://localhost:8000/getprofilepic`,param).then(res => {
+        axios.post(`http://localhost:8000/nabeeha/getprofilepic`,param).then(res => {
         //   setCons(res.data);
             if (res.data.profilePic){
                 alert(res.data.profilePic)
@@ -128,7 +128,7 @@ export default function Profile() {
           var fdata = new FormData();
           fdata.append("Image", img);
           fdata.append("username", username1); //THIS SHOULD BE FROM STATE
-          axios.post('http://localhost:8000/uploadprofilepic',fdata)
+          axios.post('http://localhost:8000/nabeeha/uploadprofilepic',fdata)
           .then(res => {
             // alert("Respnse" + JSON.stringify(res.data))
 
