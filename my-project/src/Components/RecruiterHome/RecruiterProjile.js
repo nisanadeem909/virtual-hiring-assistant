@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './RecruiterProfile.css';
 import img from './personcircle.png';
 
@@ -8,7 +8,16 @@ const RecruiterProfile = ({ data }) => {
     console.log('Edit Profile clicked');
   };
 
-  var person = data.profilePic;
+  const [person,setPerson] = useState(null);
+
+  useEffect(()=>{
+   // alert(JSON.stringify(data))
+      if (data)
+      {
+        setPerson(data.profilePic);
+      }
+  },[data])
+
   var person2 = 'personcircle.png';
   
   return (

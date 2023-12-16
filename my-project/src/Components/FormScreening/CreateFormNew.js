@@ -183,7 +183,7 @@ export default function CreateForm(props) {
     <div className='kcreateformpage-btns'>
       <label className='kcreateformpage-formdeadline'>Form Deadline: </label>
       <input type="date" className='kcreateformpage-formdeadline-input' value={formDeadline} onChange={handleDeadlineChange}></input>
-      <button className='kcreateformpage-cancelbtn' onClick={()=>navigate(-1)}>Discard Form</button>
+      <button className='kcreateformpage-cancelbtn' onClick={()=>navigate(-1,{state:{'jobID':job._id}})}>Discard Form</button>
       <button className='kcreateformpage-savebtn' onClick={saveForm}>Save Form</button>
     </div>
         <div className='kcreateform-questions'>
@@ -244,7 +244,7 @@ export default function CreateForm(props) {
             setOpenModal(false);
             //alert(messageTitle);
             if (messageTitle === 'Form Saved') {
-            navigate(-1);
+            navigate(-1,{state:{'jobID':job._id}});
             }
         }}
       />

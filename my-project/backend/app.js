@@ -28,9 +28,11 @@ const LoginRoute = require('./routes/login');
 const SignupRoute = require('./routes/signup');
 const JobListRoute = require('./routes/joblist');
 const PostJobRoute = require('./routes/postjob');
+const LogoutRoute = require('./routes/logout');
 
 app.use('/komal', createFormRoute);
 app.use('/komal', JobDashboardRoute);
+app.use('/komal', LogoutRoute);
 app.use('/nabeeha', EditProfileRoute);
 app.use('/nisa', LoginRoute);
 app.use('/nisa', SignupRoute);

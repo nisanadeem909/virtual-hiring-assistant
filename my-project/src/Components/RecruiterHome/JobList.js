@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import './JobList.css';
 import jobicon from './jobicon.png';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function JobList() {
   const [jobs, setJobs] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     
@@ -27,7 +29,7 @@ export default function JobList() {
                 <div className="job-status">Status: {job.status}</div>
               </div>
             </div>
-            <button className="open-job-button">Open Job</button>
+            <button className="open-job-button" onClick={()=>navigate('/recruiter/job',{state:{'jobID':job._id}})}>Open Job</button>
           </div>
         ))}
       </div>
