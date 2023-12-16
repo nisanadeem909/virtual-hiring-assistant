@@ -94,7 +94,7 @@ const jobApplicationSchema = new Schema({
   }
   ,
   jobID: {
-    type: Number,
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   }
   ,
@@ -135,6 +135,14 @@ const jobSchema = new Schema({
     default: 1
   }
   ,
+  recruiterUsername: {
+    type: String,
+    required: true
+  },
+  CVFormLink: {
+    type: String,
+    required: true
+  },
 
 }, {
   timestamps: true,
