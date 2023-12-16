@@ -25,6 +25,7 @@ import RecruiterProfile from './Components/RecruiterProfile/profile.js'
 import FormCollectionEmail from './Components/RecruiterPhase2Email/FormCollectionEmailPage.js'
 import FormResponsesPage from './Components/RecruiterFormResponses/formresponses.js';
 import ShortlistedFormResponsesPage from './Components/RecruiterFormResponses/shortlistedformresponses.js';
+import SetEmail from './Components/PostJob/SetEmail.js';
 
 function App() {
   return (
@@ -42,8 +43,14 @@ function App() {
         <Route path="/applicant" element={<Navbar type="user"/>}>
   
             
-            <Route path="cvcollection/:cvcollectionid" element={<CVCollectionForm/>}></Route>
-            <Route path="formcollection" element={<FormScreening/>}></Route>
+
+            <Route index element={<Error/>} />
+           <Route path="cvcollection/:cvcollectionid" element={<CVCollectionForm/>}></Route>
+            <Route path="formcollection" element={<FormScreening/>}>
+              <Route index element={<FormScreening/>} />
+              <Route path=":formId" element={<FormScreening/>} />
+            </Route>
+
             <Route path="*" element={<Error/>}></Route>      
 
 
@@ -52,15 +59,22 @@ function App() {
         <Route path="/recruiter" element={<Navbar type="company"/>}>
           
             <Route path="home" element={<RecruiterProjile/>}></Route>
-            <Route path="job/rejectionemail" element={<RejectionEmailPage/>}></Route>
+            <Route path="home/postjob/setemail/rejectionemail" element={<RejectionEmailPage/>}></Route>
             <Route path="notifications" element={<NotificationPage/>}></Route>
             <Route path="job/createform" element={<CreateFormPageNew/>}></Route>
             <Route path="job" element={<JobDashboardPage/>}></Route>
-            <Route path="postjob" element={<PostJobPage/>}></Route>
+            <Route path="home/postjob" element={<PostJobPage/>}></Route>
             <Route path="profile" element={<RecruiterProfile/>}></Route>
-            <Route path="phase2email" element={<FormCollectionEmail/>}></Route>
-            <Route path="phase2responses" element={<FormResponsesPage/>}></Route>
-            <Route path="shortlistedphase2responses" element={<ShortlistedFormResponsesPage/>}></Route>
+
+            
+            
+            
+
+            <Route path="home/postjob/setemail" element={<SetEmail/>}></Route>
+            <Route path="home/postjob/setemail/phase2email" element={<FormCollectionEmail/>}></Route>
+            
+           
+
 
             <Route path="*" element={<Error/>}></Route>
             

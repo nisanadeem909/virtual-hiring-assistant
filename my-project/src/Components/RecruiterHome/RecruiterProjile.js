@@ -2,20 +2,28 @@ import React from 'react';
 import './RecruiterProfile.css';
 import img from './personcircle.png';
 
-export default function RecruiterProjile() {
+const RecruiterProfile = ({ data }) => {
+  const handleEditProfile = () => {
+    
+    console.log('Edit Profile clicked');
+  };
+
+  var person = data.profilePic;
+  var person2 = 'personcircle.png';
+  
   return (
     <div>
-      
       <div className='nisa-profile-container'>
-            <img className='niss-profilepic' src={img}></img>
-            <h3>Nisa Nadeem</h3>
-            <h4 className='nisa-head'>HR Manager</h4>
-            <h4 className='nisa-head2'>nisanadeem90@gmail.com</h4>
-            
-
-
+        <img className='niss-profilepic' src={`http://localhost:8000/profilepictures/${person || person2}`} alt="Profile Pic" />
+        <h3>{data.name}</h3>
+        <h4 className='nisa-head'>@{data.username}</h4>
+        <h4 className='nisa-head2'>{data.designation}</h4>
+        <button className='edit-profile-btn' onClick={handleEditProfile}>
+          Edit Profile
+        </button>
       </div>
-
     </div>
-  )
-}
+  );
+};
+
+export default RecruiterProfile;

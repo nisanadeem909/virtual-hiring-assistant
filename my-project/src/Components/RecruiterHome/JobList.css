@@ -1,17 +1,19 @@
 .nisa-joblist-con {
-    width: 100%;
-    height: 500px;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    text-align: center;
-    justify-content: center; /* Center vertically */
-    align-items: center; /* Center horizontally */
-    border-radius: 18px;
-    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.2);
-    margin-bottom: 20%;
-  }
- 
+  width: 100%;
+  height: 570px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  text-align: center;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 18px;
+  box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.2);
+  overflow-y: scroll;
+  margin-bottom: 20%;
+  padding-top: 120px; 
+}
+
 
   .nisa-joblists-head{
     font-size: 50px;
@@ -41,6 +43,8 @@
   .job-status {
     font-size: 14px;
     text-align: left;
+    color: #60B3D1;
+    font-weight: bolder;
   }
   
   .open-job-button {
