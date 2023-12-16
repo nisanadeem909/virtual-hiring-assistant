@@ -73,12 +73,14 @@ app.post('/editprofile-updatedetails', async (req, res) => {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
     }
-});
+}); 
  
 
 app.post('/uploadprofilepic', function(req,res){
     // var name = req.body.name;
     console.log(req.body)
+    try{
+    
      var form = new formidable.IncomingForm();
      var newpath;
      form.parse(req,async function(err,fields,files){
@@ -143,8 +145,33 @@ app.post('/uploadprofilepic', function(req,res){
   
      res.json({data:{NewPath: newpath}});
      res.end();
-     
-  });
+
+    }
+    catch(ex)
+    {
+        console.log("unexpected error")
+    }
+      
+  });   
+
+app.post('/getprofilepic',async(req,res)=>{
+    
+    try {
+        const user = await Recruiter.findOne({ username: req.body.username });
+        if (user) { 
+            res.json({ profilePic: user.profilePic });
+            
+        } else { 
+            res.json({ error: 'Loading...' });
+            console.log("Profile Pic not found");
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+    
+      res.end();
+})
 app.listen(8000, () => {
     console.log("Server is running on port 8000"); 
 })

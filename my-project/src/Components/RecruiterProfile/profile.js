@@ -23,15 +23,14 @@ export default function Profile() {
 
     const [img,setImg] = useState('./profilepic.jpeg'); //this is the default profilepic
 
-    
-
     useEffect(()=>{
 
         let param = {"username":username}; // this needs to be from the state
-
+        
         axios.post(`http://localhost:8000/editprofile-getdetails`,param).then(res => {
         //   setCons(res.data);
             if (res.data.user){
+               
                 setFullName(res.data.user.name)
                 setEmail(res.data.user.email)
                 // setContact(res.data.user.contact)
@@ -40,7 +39,8 @@ export default function Profile() {
            
           
       })
-      .catch(error => alert(error)
+      .catch(
+        // error => alert(error)
       );
     
       },[])
@@ -101,6 +101,20 @@ export default function Profile() {
         
         
         upload(username1)
+
+        let param = {"username":username}; 
+        axios.post(`http://localhost:8000/getprofilepic`,param).then(res => {
+        //   setCons(res.data);
+            if (res.data.profilePic){
+                alert(res.data.profilePic)
+                setImg(res.data.profilePic)
+            }
+           
+          
+      })
+      .catch(
+        // error => alert(error)
+      );
         
     };
 
@@ -120,7 +134,10 @@ export default function Profile() {
 
            
         })
-          .catch(err=>{alert("ERROR IN UPLOADAXIOS : "+err)});
+          .catch(
+            err=>{
+                // alert("ERROR IN UPLOADAXIOS : "+err)
+            });
         }
 
         
@@ -128,17 +145,22 @@ export default function Profile() {
     }
     const HandleUpload=(t)=>{
         //console.log(t.handle.files);
-        //alert("image set");
+        
         setImg(t.target.files[0]);
+        
+        // alert("setting image=" + img)
+
+        
+
       }
  return (
     <div>
         <div id="nab-profile-outer-div">
             <div id="nab-profile-pic">
                         {/* <img id="nab-pic-circle" src={profilepic}></img> */}
-                        <img id="nab-pic-circle" src={`http://localhost:8000/profilepictures/` + img.name}/>
+                        <img id="nab-pic-circle" src={`http://localhost:8000/profilepictures/` + img}/>
                         <div className="profile-info">
-                            <div>
+                            <div> 
                                 
                                 {/* <button id="change-prof-pic">Upload Picture</button> */}
                                 <label>Upload Pic</label>
