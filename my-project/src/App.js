@@ -25,6 +25,7 @@ import RecruiterProfile from './Components/RecruiterProfile/profile.js'
 import FormCollectionEmail from './Components/RecruiterPhase2Email/FormCollectionEmailPage.js'
 import FormResponsesPage from './Components/RecruiterFormResponses/formresponses.js';
 import ShortlistedFormResponsesPage from './Components/RecruiterFormResponses/shortlistedformresponses.js';
+import SetEmail from './Components/PostJob/SetEmail.js';
 
 function App() {
   return (
@@ -52,13 +53,14 @@ function App() {
         <Route path="/recruiter" element={<Navbar type="company"/>}>
           
             <Route path="home" element={<RecruiterProjile/>}></Route>
-            <Route path="job/rejectionemail" element={<RejectionEmailPage/>}></Route>
+            <Route path="home/postjob/setemail/rejectionemail" element={<RejectionEmailPage/>}></Route>
             <Route path="notifications" element={<NotificationPage/>}></Route>
             <Route path="job/createform" element={<CreateFormPageNew/>}></Route>
             <Route path="job" element={<JobDashboardPage/>}></Route>
-            <Route path="postjob" element={<PostJobPage/>}></Route>
+            <Route path="home/postjob" element={<PostJobPage/>}></Route>
             <Route path="profile" element={<RecruiterProfile/>}></Route>
-            <Route path="phase2email" element={<FormCollectionEmail/>}></Route>
+            <Route path="home/postjob/setemail" element={<SetEmail/>}></Route>
+            <Route path="home/postjob/setemail/phase2email" element={<FormCollectionEmail/>}></Route>
             <Route path="phase1responses" element={<FormResponsesPage/>}></Route>
             <Route path="shortlistedphase1responses" element={<ShortlistedFormResponsesPage/>}></Route>
 

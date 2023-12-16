@@ -12,46 +12,37 @@ function LoginPage() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const user = { name: 'John Doe', email: 'johndoe@example.com' };
+  const viewRecruiter = () => {
+    const sessionID = sessionStorage.getItem('sessionID');
 
-  const viewUser = () => {
-    //navigate("/user", { state: { user } });
+    if (sessionID) {
+      navigate("/recruiter/home", { state: { sessionID } });
+    } else {
+      console.error("SessionID not found");
+    }
+    
   }
 
-  const viewCompany = () => {
-    //navigate("/company");
-  }
+  
 
   const handleLogin = async (e) => {
-    /*e.preventDefault();
 
-    axios.post('http://localhost:8000/login', { username, password })
+    e.preventDefault();
+    axios.post('http://localhost:8000/nisa/login', { username, password })
       .then(res => {
         const sessionID = res.data.sessionId;
-        const userType = res.data.userType;
-
         sessionStorage.setItem('sessionID', sessionID);
-        sessionStorage.setItem('userType', userType);
         setError(null); 
-        if (userType === 'user') {
-          setLoggedIn('user');
-        } else if (userType === 'company') {
-          setLoggedIn('company');
-        }
+        viewRecruiter();
+
       })
       .catch(err => {
         console.log(err);
         setError("Login failed. Please check your credentials."); 
-      });*/
+      });
+      
   };
-/*
-  if (loggedIn === "user") {
-    viewUser();
-  }
 
-  if (loggedIn === "company") {
-    viewCompany();
-  }*/
 
   return (
     <div id="nab-wraplogin">

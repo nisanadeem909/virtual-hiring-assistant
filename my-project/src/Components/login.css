@@ -54,6 +54,24 @@
     border: 2px solid rgb(34, 33, 33,0.7);
     border-radius: 8px;
 }
+
+#nab-login-designation{
+    width: 60%;
+    margin-left: 20%;
+    margin-top: 3%;
+    border: 2px solid rgb(34, 33, 33,0.7);
+    border-radius: 8px;
+}
+
+#nab-login-name{
+    width: 60%;
+    margin-left: 20%;
+    margin-top: 3%;
+    border: 2px solid rgb(34, 33, 33,0.7);
+    border-radius: 8px;
+}
+
+
 #nab-login-submit-btn{
     
     
@@ -111,6 +129,16 @@
     margin-left:10%;
     border: 7px solid rgb(44, 43, 43,0.3);
 }
+
+.nisa-login-right-innerbox{
+    margin-top: 8%;
+   /* background-color: rgb(181, 215, 205) ;*/
+    width:70%;
+    height:80vh;
+    border-radius: 4vh;
+    margin-left:10%;
+    border: 7px solid rgb(44, 43, 43,0.3);
+}
 .nab-login-left-side{
 	
     width: 100%;
@@ -151,4 +179,6 @@
 	box-shadow: 0 0 5px rgba(0,80,80,.4); 
 	border-radius: 4px;
 }
+
+
 

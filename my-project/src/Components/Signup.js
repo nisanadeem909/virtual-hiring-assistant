@@ -10,6 +10,8 @@ export default function Signup() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState(''); // Add state for name
+  const [designation, setDesignation] = useState(''); // Add state for designation
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -17,22 +19,30 @@ export default function Signup() {
     e.preventDefault();
 
     // Example: Validation logic
-    if (!username || !email || !password) {
+    if (!username || !email || !password || !name || !designation) {
       setError('Please fill in all fields.');
       return;
     }
 
-    // Example: Call your API to register the user
-    axios.post('http://localhost:8000/signup', { username, email, password })
-      .then(res => {
-        // Handle success
-        setLoggedIn('user'); // or 'company' based on the response
-      })
-      .catch(err => {
-        // Handle error
-        console.error(err);
-        setError("Signup failed. Please try again."); 
-      });
+    try {
+      
+      const response = await axios.post('http://localhost:8000/nisa/signup', { username, email, password, name, designation });
+
+      
+      if (response.data.user) {
+        // Set session ID in sessionStorage
+        sessionStorage.setItem('sessionID', response.data.user.username);
+
+        const sessionID = sessionStorage.getItem('sessionID');
+        navigate("/recruiter/home/", { state: { sessionID } });
+      } else {
+        setError('Signup failed. Please try again.');
+      }
+    } catch (err) {
+      
+      console.error(err);
+      setError('Signup failed. Please try again.');
+    }
   };
 
   return (
@@ -41,13 +51,19 @@ export default function Signup() {
         <div id="nab-wraplogin">
           <div className="nab-wrapper-login">
             <div className="nab-loginpage-right-side">
-              <div className="nab-login-right-innerbox">
+              <div className="nisa-login-right-innerbox">
                 <div>
                   <h1 id="welcomeback">Sign Up</h1>
                   <h3 id="welcomeback-subheading">Create a new account to get started.</h3>
                   <form onSubmit={handleSignup}>
                     <div>
                       <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} name="username" id="nab-login-username" className="nab-form__input" placeholder="Username" />
+                    </div>
+                    <div>
+                      <input type="text" value={name} onChange={(e) => setName(e.target.value)} name="name" id="nab-login-name" className="nab-form__input" placeholder="Name" />
+                    </div>
+                    <div>
+                      <input type="text" value={designation} onChange={(e) => setDesignation(e.target.value)} name="designation" id="nab-login-designation" className="nab-form__input" placeholder="Designation" />
                     </div>
                     <div>
                       <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} name="email" id="nab-login-email" className="nab-form__input" placeholder="Email" />
@@ -59,7 +75,7 @@ export default function Signup() {
                       <input type="submit" value="Sign Up" id="nab-login-submit-btn" />
                     </div>
                   </form>
-                  {error && <p style={{ color: 'red', marginLeft: '150px' }}>{error}</p>}
+                  {error && <p style={{ color: 'red', marginLeft: '200px' }}>{error}</p>}
                 </div>
               </div>
             </div>

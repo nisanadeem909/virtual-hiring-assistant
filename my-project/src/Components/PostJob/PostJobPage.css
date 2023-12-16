@@ -8,6 +8,18 @@
     box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.2);
   }
   
+.nisa-setemail-h{
+  text-align: center;
+  font-size: 50px;
+  margin-top: 5%;
+}
+
+.nisa-phase1-h{
+  color: #056487;
+  font-weight: bolder;
+  text-align: center;
+}
+
   .content-container {
     display: flex;
     margin-left: 2%;
@@ -22,6 +34,13 @@
     width: 600px;
     height: 600px;
     margin-top: -14%;
+    margin-left: 10%;
+  }
+  
+  .nisa-post-img2{
+    width: 500px;
+    height: 450px;
+    margin-top: 0%;
     margin-left: 10%;
   }
   
@@ -58,7 +77,7 @@
     margin-bottom: 15px;
   }
   
-  button {
+ .nisa-postJ-button {
     background-color: #012641;
     color: white;
     border: none;
@@ -69,9 +88,55 @@
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
+    margin-top: 20%;
+  }
+
+  .nisa-postJ2-button {
+    background-color: #012641;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+   
+  }
+
+  .nisa-postJ-button2 {
+    background-color: #012641;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 10%;
+    width: 200px;
+    margin-left: 30%;
+    margin-top: 6%;
+  }
+
+  .nisa-postJ-button3 {
+    background-color: #012641;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 10%;
+    width: 200px;
+    margin-left: 5%;
+    margin-top: 2%;
   }
   
-  button:hover {
-    background-color: gray;
-  }
-  
+ 
