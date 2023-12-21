@@ -34,7 +34,7 @@ function CVCollectionForm() {
   const [isError, setIsError] = useState(false);
 
   //Img is actually CV Here
-  const [resume,setResume] = useState(''); //this is the default profilepic
+  const [resume,setResume] = useState(''); 
   const [imgSet,setImgSet] = useState("false")
   
   useEffect(()=>{
@@ -54,11 +54,13 @@ function CVCollectionForm() {
     })
     .catch(error => {
       console.error('Error:', error);
+      //alert(error)
       setErrorMessage('An error occurred while fetching job details.');
     });
 
     if (errorMessage) {
       // Redirect to the error page or handle it as needed
+      alert(errorMessage)
       navigate('/error');
     }
 
@@ -97,7 +99,7 @@ function CVCollectionForm() {
       var fdata = new FormData();
       fdata.append("Resume", resume);
       fdata.append("email", email); //THIS SHOULD BE FROM STATE
-      axios.post('http://localhost:8000/nabeeha/uploadcv',fdata) //CHANGE FROM HERE
+      axios.post('http://localhost:8000/nabeeha/uploadcv',fdata) 
       .then(res => {
         // alert("Respnse" + JSON.stringify(res.data))
         // alert("CV Uploaded")
@@ -213,7 +215,7 @@ function CVCollectionForm() {
 
             
             <div>
-              {/* Your component content here */}
+              
               {isError && <p style={{ color: 'red' }}>Something went wrong. Please try again later.</p>}
             </div>
             <button type="submit" id="nab-cv-button">Submit</button>

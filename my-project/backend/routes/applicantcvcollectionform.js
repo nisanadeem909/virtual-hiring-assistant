@@ -28,10 +28,28 @@ router.post('/getjobdetailsforcvcollection', async (req, res) => {
             res.status(400).json({ error: 'Invalid job ID' });
             return;
         }
+        
         const job =  await Job.findById(req.body.jobID);
     
+        //add check if job.CVDeadline is greater than today's date then return an error
+        
         if (job) {
-            res.json({ job });
+            
+          const currentDate = new Date();
+          const jobDeadline = new Date(job.CVDeadline);
+
+          if (jobDeadline < currentDate) {
+            res.status(400).json({ error: 'Job Expired' });
+            console.log(currentDate) 
+            console.log(jobDeadline)
+            console.log("Job expired")
+            return;
+          }
+          
+          
+          res.json({ job });
+
+          
         } else {
             res.status(404).json({ error: 'Job not found' });
             console.log("Job not found");
