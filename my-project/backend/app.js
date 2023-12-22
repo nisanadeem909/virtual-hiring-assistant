@@ -30,7 +30,7 @@ const JobListRoute = require('./routes/joblist');
 const PostJobRoute = require('./routes/postjob');
 const LogoutRoute = require('./routes/logout');
 const NotificationRoute = require('./routes/notifications');
-const NotificationRoute = require('./routes/cvscreening');
+const CVScreeningRoute = require('./routes/cvscreening');
 const ApplicantCVCollectionForm = require('./routes/applicantcvcollectionform')
 const ApplicantFormCollection = require('./routes/applicantformcollection')
 
