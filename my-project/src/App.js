@@ -46,9 +46,9 @@ function App() {
 
             <Route index element={<Error/>} />
            <Route path="cvcollection/:cvcollectionid" element={<CVCollectionForm/>}></Route>
-            <Route path="formcollection" element={<FormScreening/>}>
-              <Route index element={<FormScreening/>} />
-              <Route path=":formId" element={<FormScreening/>} />
+            <Route path="formcollection/:formcollectionid" element={<FormScreening/>}>
+              {/* <Route index element={<FormScreening/>} />
+              <Route path=":formId" element={<FormScreening/>} /> */}
             </Route>
 
             <Route path="*" element={<Error/>}></Route>      

@@ -1,11 +1,20 @@
 import React from 'react';
 import './RecruiterProfile.css';
 import img from './personcircle.png';
+import { useNavigate } from 'react-router-dom';
 
 const RecruiterProfile = ({ data }) => {
+  const navigate = useNavigate();
+
   const handleEditProfile = () => {
-    
+    const sessionID = sessionStorage.getItem('sessionID');
     console.log('Edit Profile clicked');
+    if (sessionID) {
+      navigate("/recruiter/profile", { state: { sessionID } });
+    } else {
+      console.error("SessionID not found");
+    }
+
   };
 
   var person = data.profilePic;

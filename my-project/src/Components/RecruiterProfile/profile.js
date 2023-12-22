@@ -18,14 +18,18 @@ export default function Profile() {
     // const [contact,setContact] = useState("1234-567890") 
     const [jobDes,setJobDes] = useState("Head Talent Acquisition")  
  
-    const [username,setUsername] = useState("nabeeha") // this will be replaced by session username
+    const [username,setUsername] = useState("") // this will be replaced by session username
     
 
     const [img,setImg] = useState('./profilepic.jpeg'); //this is the default profilepic
-
+    const [imgSet,setImgSet] = useState("false")
+    
     useEffect(()=>{
 
-        let param = {"username":username}; // this needs to be from the state
+        const sessionID = sessionStorage.getItem('sessionID');
+        setUsername(sessionID)
+
+        let param = {"username":sessionID}; 
         
         axios.post(`http://localhost:8000/nabeeha/editprofile-getdetails`,param).then(res => {
         //   setCons(res.data);
@@ -41,6 +45,7 @@ export default function Profile() {
       })
       .catch(
         // error => alert(error)
+        
       );
     
       },[])
@@ -100,21 +105,28 @@ export default function Profile() {
         }
         
         
-        upload(username1)
 
-        let param = {"username":username}; 
-        axios.post(`http://localhost:8000/nabeeha/getprofilepic`,param).then(res => {
-        //   setCons(res.data);
-            if (res.data.profilePic){
-                alert(res.data.profilePic)
-                setImg(res.data.profilePic)
-            }
-           
-          
-      })
-      .catch(
-        // error => alert(error)
-      );
+        if (imgSet == "true"){
+            // alert(img.name)
+            upload(username1)
+            let param = {"username":username}; 
+            axios.post(`http://localhost:8000/nabeeha/getprofilepic`,param).then(res => {
+            //   setCons(res.data);
+                if (res.data.profilePic){
+                    // alert(res.data.profilePic)
+                    // setImg(res.data.profilePic)
+                    setImg(img.name)
+                }
+            
+            
+                })
+                .catch(
+                    // error => alert(error)
+                );
+
+            setImgSet("false")
+
+        }
         
     };
 
@@ -149,7 +161,7 @@ export default function Profile() {
         setImg(t.target.files[0]);
         
         // alert("setting image=" + img)
-
+        setImgSet("true")
         
 
       }
@@ -163,7 +175,7 @@ export default function Profile() {
                             <div> 
                                 
                                 {/* <button id="change-prof-pic">Upload Picture</button> */}
-                                <label>Upload Pic</label>
+                                {/* <label>Upload Pic</label> */}
                                 <input id="displaynone" type="file" onChange={HandleUpload}></input>
                             </div>
                             <br></br>
