@@ -93,11 +93,6 @@ const jobApplicationSchema = new Schema({
     required: true
   }
   ,
-  contactNumber:{
-    type: Number,
-    
-  }
-  ,
   jobID: {
     type: mongoose.Schema.Types.ObjectId,
     required: true
@@ -188,7 +183,6 @@ const formSchema = new Schema({
     type: Date
   }
   ,
-
   questions:[{
     _id: { //Added by Nabeeha
       type: mongoose.Schema.Types.ObjectId,
@@ -198,7 +192,7 @@ const formSchema = new Schema({
     options: [String],
     question: String,
     
-  }],
+  }]
 
 }, {
   timestamps: true,
@@ -225,7 +219,7 @@ const notificationSchema = new Schema({
     required: true
   }
   ,
-  jobStatus: {
+  notifType: {
     type: Number
   }
   ,
@@ -239,7 +233,6 @@ const notificationSchema = new Schema({
 });
 
 const Notification = mongoose.model('Notification', notificationSchema);
-
 
 //Added by Nabeeha
 const formResponses = new Schema({
@@ -273,5 +266,6 @@ module.exports ={
   JobApplication,
   Job,
   Form,
+  Notification,
   FormResponses
 };
