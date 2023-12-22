@@ -10,6 +10,7 @@ router.use(session({
  
 }));
 
+
 router.post('/signup', async (req, res) => {
     const { username, email, password, name, designation } = req.body;
   
