@@ -184,10 +184,15 @@ const formSchema = new Schema({
   }
   ,
   questions:[{
+    _id: { //Added by Nabeeha
+      type: mongoose.Schema.Types.ObjectId,
+      
+    },
     answer: Number,
     options: [String],
-    question: String
-  }],
+    question: String,
+    
+  }]
 
 }, {
   timestamps: true,
@@ -229,10 +234,38 @@ const notificationSchema = new Schema({
 
 const Notification = mongoose.model('Notification', notificationSchema);
 
+//Added by Nabeeha
+const formResponses = new Schema({
+  applicantEmail: {
+    type: String,
+    unique:true
+  }
+  ,
+  jobID: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
+  answers:[{
+    questionID: {
+      type: mongoose.Schema.Types.ObjectId,
+      default: mongoose.Types.ObjectId
+    },
+    question: String,
+    answerStatement: String
+  }],
+ 
+  
+
+}, {
+  timestamps: true,
+});
+
+const FormResponses = mongoose.model('FormResponses', formResponses);
+
 module.exports ={
   Recruiter,
   JobApplication,
   Job,
   Form,
-  Notification
+  Notification,
+  FormResponses
 };

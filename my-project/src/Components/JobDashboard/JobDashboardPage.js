@@ -62,9 +62,9 @@ export default function JobDashboardPage() {
         else if (index == 1)
         {
             // if deadline passed
-            setContent(<CVScreening></CVScreening>)
+            //setContent(<CVScreening></CVScreening>)
             // else
-            //setContent(<CVCollection></CVCollection>)
+            setContent(<CVCollection job={job}></CVCollection>)
         }
         else if (index == 2){
           
