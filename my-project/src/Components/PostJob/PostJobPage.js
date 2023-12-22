@@ -119,16 +119,18 @@ export default function PostJobPage() {
               <h1>Job Details</h1>
               {phase === 0 && (
                 <div className="job-details">
-                  <label htmlFor="jobTitle">Job Title</label>
+                  <label className='nisa-pj-label' htmlFor="jobTitle">Job Title</label>
                   <input
+                   className='nisa-pj-input'
                     type="text"
                     id="jobTitle"
                     value={formData.jobTitle}
                     onChange={handleInputChange}
                   />
 
-                  <label htmlFor="jobDescription">Job Description</label>
+                  <label className='nisa-pj-label' htmlFor="jobDescription">Job Description</label>
                   <textarea
+                  className='nisa-pj-textarea'
                     id="jobDescription"
                     rows="4"
                     value={formData.jobDescription}
@@ -146,16 +148,18 @@ export default function PostJobPage() {
               {phase === 1 && (
                 <div className="phase-details">
                   <h1 className="nisa-phase1">Phase {phase} - CV Screening</h1>
-                  <label htmlFor="phase1Deadline">Phase 1 Deadline</label>
+                  <label className='nisa-pj-label' htmlFor="phase1Deadline">Phase 1 Deadline</label>
                   <input
+                   className='nisa-pj-input'
                     type="date"
                     id="phase1Deadline"
                     value={formData.phase1Deadline}
                     onChange={handleInputChange}
                   />
 
-                  <label htmlFor="phase1Percentage">Acceptable CV to JD Match Percentage</label>
+                  <label className='nisa-pj-label' htmlFor="phase1Percentage">Acceptable CV to JD Match Percentage</label>
                   <input
+                   className='nisa-pj-input'
                     type="number"
                     id="phase1Percentage"
                     value={formData.phase1Percentage}
