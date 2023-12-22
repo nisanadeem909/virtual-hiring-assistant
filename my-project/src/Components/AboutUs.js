@@ -1,7 +1,7 @@
 import React from 'react' 
 import './AboutUs.css';
 import Footer from './Footer'
-import logo from './logo1.png';
+import logo from './vhalogo.png';
 
 export default function ViewApp() {
 
@@ -10,9 +10,9 @@ export default function ViewApp() {
           <div className='kaboutus-main'>
             <div className='kaboutus-section'>
                 <img src={logo} className='kaboutus-logo'></img>
-                <label className='kaboutus-title'>About Jobify</label>
+                <label className='kaboutus-title'>Virtual Hiring Assistant</label>
                 <hr className='kaboutus-hr'></hr>
-                <p className='kaboutus-paragraph'>Find your next opportunity with us - the ultimate job finder platform connecting professionals and businesses worldwide.</p>
+                <p className='kaboutus-paragraph'>Revolutionizing recruitment with an integrated platform, saving time and enhancing candidate experiences.</p>
             </div>
           </div>
           <div className='kaboutus-footer'>

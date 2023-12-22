@@ -13,14 +13,15 @@ export default function RecruiterHomePage() {
   const location = useLocation();
 
   useEffect(() => {
-    
-    if (location && location.state && location.state.sessionID) {
-      const sessionID = location.state.sessionID;
+    //if (location && location.state && location.state.sessionID) {
+      if (sessionStorage.getItem("sessionID")){
+      const sessionID = sessionStorage.getItem("sessionID");
 
       axios.get(`http://localhost:8000/nisa/recruiter/${sessionID}`)
         .then(res => {
           const data = res.data;
           setRecruiterData(data);
+         // alert(JSON.stringify(data));
         })
         .catch(err => {
           console.error(err);
@@ -28,7 +29,7 @@ export default function RecruiterHomePage() {
     } else {
       console.error("SessionID not found");
     }
-  }, [location]);
+  }, []);
 
   return (
     <div className="grid-container">

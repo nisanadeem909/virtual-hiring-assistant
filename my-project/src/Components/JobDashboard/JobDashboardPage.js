@@ -9,6 +9,7 @@ import FormCreating from './FormCreating';
 import FormResponsesPage from '../RecruiterFormResponses/formresponses';
 import axios from 'axios';
 import ShortlistedFormResponsesPage from '../RecruiterFormResponses/shortlistedformresponses';
+import { useLocation } from 'react-router-dom';
 
 export default function JobDashboardPage() {
 
@@ -17,13 +18,15 @@ export default function JobDashboardPage() {
     const [content,setContent] = useState(<img src={loading} className='kjobdashboardpage-loading-img'></img>)
     const [activeTab,setActiveTab] = useState(0);
 
-    var tempJobID = '657d9dd3d75435064f67d066';
+    const location = useLocation();
+
+   // var tempJobID = '657d9dd3d75435064f67d066';
     const [job,setJob] = useState(null);
 
     useEffect(() => {
         //openTab(0);
-
-        var param = {'jobId':tempJobID};
+        if (location.state){
+        var param = {'jobId':location.state.jobID};
         axios.post("http://localhost:8000/komal/getjob",param).then((response) => {
            // alert(JSON.stringify(response.data));
            if (response.data.status == "success"){
@@ -35,8 +38,8 @@ export default function JobDashboardPage() {
         })
         .catch(function (error) {
             alert("Axios Error:" + error);
-        });
-      }, []);
+        });}
+      }, [location]);
 
       useEffect(() => {
         if (job) {
@@ -59,9 +62,9 @@ export default function JobDashboardPage() {
         else if (index == 1)
         {
             // if deadline passed
-            setContent(<CVScreening></CVScreening>)
+            //setContent(<CVScreening></CVScreening>)
             // else
-            //setContent(<CVCollection></CVCollection>)
+            setContent(<CVCollection job={job}></CVCollection>)
         }
         else if (index == 2){
           

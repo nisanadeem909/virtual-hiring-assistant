@@ -8,71 +8,52 @@ import nabprofileicon from './nab-profile-icon.png';
 import axios from "axios";
 import { useEffect } from "react";
 
-const person = 'person.png';
+const person = 'personcircle.png';
 
 const Layout = (props) => {
 
- /* useEffect(()=>{
-      // if ((props.type == "user" || props.type == "company") && !sessionStorage.getItem("sessionID"))
-      // {
-      //   navigate('/login');
-      // }
-  },[])
-
-  useEffect(()=>{
-    if (props.type == "user" || props.type == "company")
-    {
-    var username = sessionStorage.getItem('sessionID');
-    //alert(username);
-    //const t = sessionStorage.getItem('userType');
-    
-        // axios.get(`http://localhost:8000/finduser/${username}`)
-        //   .then(res => {
-        //     setUser(res.data);
-        //     //alert(JSON.stringify(res.data));
-        //     //alert(JSON.stringify(currUser));
-        //   });
-    }
-},[props])
-*/
   const navigate = useNavigate(); 
   const [img1,setImg1] = useState();
   const [currUser,setUser] = useState([]);
-  const companyRouteChange =() =>{
-    let path = '/company/ownprofile'; 
-    navigate(path);
-    handleProfile();
-  }
-  const userRouteChange = () =>{ 
-    let path = '/user/ownprofile'; 
-    navigate(path);
-    handleProfile();
-  }
+
+  useEffect(()=>{
+      if (props.type == "recruiter" && !sessionStorage.getItem("sessionID"))
+      {
+        navigate('/login');
+      }
+  },[])
+
+  useEffect(()=>{
+    if (props.type == "recruiter")
+    {
+        var sessionID = sessionStorage.getItem('sessionID');
+        axios.get(`http://localhost:8000/nisa/recruiter/${sessionID}`)
+            .then(res => {
+              const data = res.data;
+              setUser(data);
+            })
+            .catch(err => {
+              console.error(err);
+            });
+    }
+},[props])
 
   const logoutSession = () =>{ 
-  
-  
- axios.get('http://localhost:8000/logout')
-  .then(response => {
-   
-    sessionStorage.removeItem("sessionID");
-   
-    sessionStorage.removeItem("userType");
 
-    navigate("/login");
-  })
-  .catch(error => {
-    console.error('Error logging out:', error);
-    
-  });
+      axios.get('http://localhost:8000/komal/logout')
+        .then(response => {
+        
+          sessionStorage.removeItem("sessionID");
+
+          navigate("/login");
+        })
+        .catch(error => {
+          console.error('Error logging out:', error);
+        });
   }
 
   const handleProfile = () =>{
     document.getElementById("myDropdown").classList.toggle("show");
-  }
-
-  const getUserName =() =>{
-    return sessionStorage.getItem("sessionID");
   }
 
   var navlayout = 
@@ -93,110 +74,43 @@ const Layout = (props) => {
 
   if (props.type)
   {
-    if (props.type == "user")
+    if (props.type == "applicant")
     {
-      navlayout = <ul className="navb_ul">
-                      <li className="navb_li">
-                        <Link to="/user">Home</Link>
-                      </li>
-                      <li className="navb_li">
-                        <Link to="/user/network">Network</Link>
-                      </li>
-                      <li className="navb_li">
-
-
-                        <Link to="/user/jobs">Jobs</Link>
-
-                      </li>
-                      <li className="navb_li">
-                        <Link to="/user/notifications">Notifications</Link>
-                      </li>
-                      
-                      <li className="navb_li">
-                        <div class="nab-dropdown" >
-                           
-                        
-                          
-                           <div class="nab-dropdown-content" id="myDropdown">
-                           <div id="nab-dropdown-items">
-                                <div id="profile-head-section">
-                                  {/* <img src={`http://localhost:8000/profilepictures/${currUser.user?.profilePicture || currUser.company?.profilePicture || person}`} id="nab-human-icon"></img> */}
-                                  &nbsp;&nbsp;
-                                  <label>{getUserName()}</label>
-                                  
-                                </div>
-                                <div id="profile-line-hr"></div>
-                                <div id="profile-head-section">
-                                  <img src={nabprofileicon} id="nab-profile-icon"></img>
-                                  &nbsp;&nbsp;
-                                  
-                                    <button class="editprofile-button" onClick={userRouteChange}>My Profile </button>
-                                  
-                                </div>
-                                <div id="profile-head-section">
-                                  <img src={nablogouticon} id="nab-logout-icon"></img>
-                                  &nbsp;&nbsp;
-                                  
-                                  <button onClick={logoutSession} class="editprofile-button" > <span>Logout </span></button>
-                                  
-                                </div>
-                                
-                                  
-                                
-                                  
-                                
-                              </div>
-                              
-                          </div>
-
-                        </div>
-
-                      </li>
-                  </ul>;
+      navlayout = <></>;
     }
-    else if (props.type == "company")
+    else if (props.type == "recruiter")
     {
       navlayout = <ul className="navb_ul">
                       <li className="navb_li">
-                        <Link to="/company">Home</Link>
+                        <Link to='/recruiter/home'>Home</Link>
                       </li>
                       <li className="navb_li">
-                        <Link to="/company/network">Network</Link>
-                      </li>
-                      <li className="navb_li">
-                        <Link to="/company/vacancies">Vacancies</Link>
-                      </li>
-                      <li className="navb_li">
-                        <Link to="/company/ManageEmployees">Employees</Link>
-                      </li>
-                      <li className="navb_li">
-                        <Link to="/company/notifications">Notifications</Link>
+                        <Link to='/recruiter/notifications'>Notifications</Link>
                       </li>
                       <li className="navb_li">
                         <div class="nab-dropdown" >
                            
-                       
+                        <button class="nab-dropbtn" onClick={handleProfile}>
+                           Profile
+                            
+                          </button>
                           
                            <div class="nab-dropdown-content" id="myDropdown">
                            <div id="nab-dropdown-items">
                                 <div id="profile-head-section">
-                                  {/* <img src={`http://localhost:8000/profilepictures/${currUser.user?.profilePicture || currUser.company?.profilePicture || person}`} id="nab-human-icon"></img> */}
-                                  &nbsp;&nbsp;
-                                  <label>{getUserName()}</label>
+                                  <img src={`http://localhost:8000/profilepictures/${currUser.profilePic || person}`} id="nab-human-icon"></img> 
+                                  <label className='knav-username'>{sessionStorage.getItem("sessionID")}</label>
                                   
                                 </div>
                                 <div id="profile-line-hr"></div>
                                 <div id="profile-head-section">
-                                  <img src={nabprofileicon} id="nab-profile-icon"></img>
-                                  &nbsp;&nbsp;
-                                  <button class="editprofile-button" onClick={companyRouteChange}> My Profile</button>
+                                  <button class="editprofile-button" onClick={()=>navigate('/recruiter/profile')}><img src={nabprofileicon} id="nab-profile-icon"></img> My Profile</button>
                                   
                                 </div>
                                 <div id="profile-head-section">
-                                  <img src={nablogouticon} id="nab-logout-icon"></img>
-                                  &nbsp;&nbsp;
                                   
-                                  <button onClick={logoutSession} class="editprofile-button" > <span>Logout </span></button>
+                                  <button onClick={logoutSession} class="editprofile-button" >
+                                  <img src={nablogouticon} id="nab-logout-icon"></img> <span>Logout </span></button>
                                   
                                 </div>
                                 

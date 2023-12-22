@@ -66,3 +66,10 @@
 .knotif-desc {
     margin-left: 1vh;
 }
+
+.knotif-loading-img {
+    margin-left: 47%;
+    margin-top: 12vh;
+    width: 10vh;
+    height: 10vh;
+}

@@ -40,7 +40,7 @@ function App() {
           <Route path="*" element={<Error/>}></Route>
         </Route>
 
-        <Route path="/applicant" element={<Navbar type="user"/>}>
+        <Route path="/applicant" element={<Navbar type="applicant"/>}>
   
             
 
@@ -56,7 +56,7 @@ function App() {
 
         </Route>
 
-        <Route path="/recruiter" element={<Navbar type="company"/>}>
+        <Route path="/recruiter" element={<Navbar type="recruiter"/>}>
           
             <Route path="home" element={<RecruiterProjile/>}></Route>
             <Route path="home/postjob/setemail/rejectionemail" element={<RejectionEmailPage/>}></Route>
