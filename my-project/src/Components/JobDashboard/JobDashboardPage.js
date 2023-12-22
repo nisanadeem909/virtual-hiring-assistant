@@ -28,7 +28,6 @@ export default function JobDashboardPage() {
         if (location.state){
         var param = {'jobId':location.state.jobID};
         axios.post("http://localhost:8000/komal/getjob",param).then((response) => {
-           // alert(JSON.stringify(response.data));
            if (response.data.status == "success"){
               setJob(response.data.job);
             }
@@ -47,6 +46,11 @@ export default function JobDashboardPage() {
         }
       }, [job]);
 
+      const updateJob = (newVal) => {
+        
+        setJob(newVal);
+      };
+
     const openTab=(index)=>{
         var selected = document.getElementById('kjobdashboardpage-tab'+index);
         var prev = document.getElementById('kjobdashboardpage-tab'+activeTab);
@@ -57,7 +61,7 @@ export default function JobDashboardPage() {
 
         if (index == 0)
         {
-            setContent(<JobDetails job={job}></JobDetails>);
+            setContent(<JobDetails job={job} updateJob={updateJob}></JobDetails>);
         }
         else if (index == 1)
         {

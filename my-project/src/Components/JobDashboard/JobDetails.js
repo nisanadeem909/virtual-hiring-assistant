@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react' 
 import './JobDashboard.css';
-import Footer from '../Footer'
+import EditModal from '../ModalWindows/EditNumberModal'
+import axios from 'axios';
 
 export default function JobDetails(props) {
 
@@ -8,9 +9,37 @@ export default function JobDetails(props) {
     const [jobStatus,setStatus] = useState("Loading..");
     const [statusDiv,setDiv] = useState(<>Loading...</>);
 
+    const [isEditScoreModalOpen, setIsEditScoreModalOpen] = useState(false);
+
+    const openEditScoreModal = () => {
+      setIsEditScoreModalOpen(true);
+    };
+  
+    const closeEditScoreModal = () => {
+      setIsEditScoreModalOpen(false);
+    };
+  
+    const saveAcceptableScore = (newVal) => {
+      
+      var param = {'jobId':job._id,'newScore':newVal};
+        axios.post("http://localhost:8000/komal/editjobcvscore",param).then((response) => {
+           if (response.data.status == "success"){
+              setJob(response.data.job);
+              props.updateJob(response.data.job);
+            }
+            else 
+              alert("Error: "+response.data.error);
+        })
+        .catch(function (error) {
+            alert("Axios Error:" + error);
+        })
+      setIsEditScoreModalOpen(false);
+    };
+
     useEffect(() => {
-        if (props.job)
+        if (props.job){
             setJob(props.job);
+        }
       }, [props.job]);
 
     useEffect(() => {
@@ -25,7 +54,7 @@ export default function JobDetails(props) {
               setStatus("Phase 1 (CV Screening)");
               setDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link:</b> {job.CVFormLink}</label>
               <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {job.AccCVScore.$numberDecimal.toString()}%</label>
-              <button className='kjobdetailspage-editcvscore'>Edit Acceptable Score</button></>);
+              <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>);
           }
           else if (job.status == 2){
             setStatus("Phase 2 (Form Screening)");
@@ -59,6 +88,13 @@ export default function JobDetails(props) {
                 <p className='kjobdetailspage-jd'>{job.jobDescription}</p>
             </div>
         </div>
+        <EditModal
+        isOpen={isEditScoreModalOpen}
+        title='Acceptable CV Score'
+        closeModal={closeEditScoreModal}
+        saveValue={saveAcceptableScore}
+        originalValue={job.AccCVScore.$numberDecimal}
+      />
       </div>
     )
   }

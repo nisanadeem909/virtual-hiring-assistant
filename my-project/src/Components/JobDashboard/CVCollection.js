@@ -2,16 +2,38 @@ import React, { useEffect, useState } from 'react'
 import './CVScreening.css';
 import Footer from '../Footer'
 import cvImg from '../images/cvbtn.png'
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function CVCollection(props) {
 
-   const [applications,setApps] = useState([{'name':'Komal Waseem','email':'komalwaseem@gmail.com','date':'01/12/2023'},{'name':'Nabeeha Mudassir','email':'nabeehaa@gmail.com','date':'02/12/2023'},{'name':'Nisa Nadeem','email':'nisanadeem@gmail.com','date':'05/12/2023'},{'name':'Hania Waseem','email':'haniawaseem@gmail.com','date':'09/12/2023'},{'name':'Komal Waseem','email':'komalwaseemm@gmail.com','date':'11/12/2023'}])
+    const navigate = useNavigate();
+
+   const [applications,setApps] = useState([])
    const [job,setJob] = useState({'jobTitle':'Loading..','CVFormLink':'Loading..','AccCVScore': { $numberDecimal: '0' },'CVDeadline':'dd/mm/yyyy','status':'0','jobDescription':'Loading..'})
    
    useEffect(() => {
     if (props.job)
+    {
         setJob(props.job);
+        var param = {'jobId':props.job._id};
+        axios.post("http://localhost:8000/komal/getjobapplications",param).then((response) => {
+           // alert(JSON.stringify(response.data));
+           if (response.data.status == "success"){
+              setApps(response.data.jobApps);
+            }
+            else 
+              alert("Error: "+response.data.error);
+        })
+        .catch(function (error) {
+            alert("Axios Error:" + error);
+        });
+    }
     }, [props.job]);
+
+    const openCV=(path)=>{
+        navigate("cvview" ,  {state: path });
+    }
 
     return (
       <div className='kcvcollectionpage-con'>
@@ -29,6 +51,9 @@ export default function CVCollection(props) {
             </div>
         </div>
         <div className='kcvcollectionpage-inner'>
+        {applications.length === 0 ? (
+          <label className='kcvcollectionpage-noapps'>No job applications yet</label>
+        ) : (
         <table className='kcvcollectionpage-table'>
             <thead className='kcvcollectionpage-table-header'>
                 <tr className='kcvcollectionpage-table-header-row'>
@@ -45,12 +70,13 @@ export default function CVCollection(props) {
                         <td align="center">{index+1}</td>
                         <td align="center">{app.name}</td>
                         <td align="center">{app.email}</td>
-                        <td align="center">{app.date}</td>
-                        <td align="center"><button className='kcvcollectionpage-table-cvbtn'>View CV<img src={cvImg} className='kcvcollectionpage-table-cvimg'></img></button></td>
+                        <td align="center">{new Date(app.createdAt).toLocaleDateString('en-GB')}</td>
+                        <td align="center"><button className='kcvcollectionpage-table-cvbtn' onClick={()=>openCV(app)}>View CV<img src={cvImg} className='kcvcollectionpage-table-cvimg'></img></button></td>
                     </tr>
                 ))}
             </tbody>
         </table>
+        )}
         </div>
       </div>
     )

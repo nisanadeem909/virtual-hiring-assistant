@@ -50,3 +50,10 @@
     border-color: #519eba;
     color: white;
   }
+
+  .kmodal-tf {
+    font-size: large;
+    margin: 3vh 2vh;
+    padding: 1vh;
+    width: 93%;
+  }
