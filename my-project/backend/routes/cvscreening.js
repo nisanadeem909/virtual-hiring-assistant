@@ -1,5 +1,16 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
+const formidable = require('formidable');
+const cors=require('cors');
+router.use(express.static('files'));
+const path = require('path');
+router.use("/static",express.static(path.join(__dirname,'public')));
+router.use(express.static('public'));
+
+router.use('/resumes', express.static('resumes'));
+router.use('/resumes', express.static(path.join(__dirname, 'resumes')));
+
 const {Job, Recruiter,JobApplication,Form} = require('../mongo');
 
 router.post("/getjobapplications", async(req,res)=>{
@@ -14,7 +25,7 @@ router.post("/getjobapplications", async(req,res)=>{
         const jobApplications = await JobApplication.find({ jobID: id});
 
         if (!jobApplications)
-            msg = {"status": "not found"}
+            msg = {"status": "error",'error':'not found'}
         else 
             msg = {"status": "success","jobApps":jobApplications}
         

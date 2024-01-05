@@ -26,6 +26,7 @@ import FormCollectionEmail from './Components/RecruiterPhase2Email/FormCollectio
 import FormResponsesPage from './Components/RecruiterFormResponses/formresponses.js';
 import ShortlistedFormResponsesPage from './Components/RecruiterFormResponses/shortlistedformresponses.js';
 import SetEmail from './Components/PostJob/SetEmail.js';
+import CVView from './Components/JobDashboard/CVViewPage.js';
 
 function App() {
   return (
@@ -63,6 +64,7 @@ function App() {
             <Route path="notifications" element={<NotificationPage/>}></Route>
             <Route path="job/createform" element={<CreateFormPageNew/>}></Route>
             <Route path="job" element={<JobDashboardPage/>}></Route>
+            <Route path="job/cvview" element={<CVView/>}></Route>
             <Route path="home/postjob" element={<PostJobPage/>}></Route>
             <Route path="profile" element={<RecruiterProfile/>}></Route>
 

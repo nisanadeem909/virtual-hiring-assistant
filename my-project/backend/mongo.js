@@ -62,7 +62,6 @@ const jobApplicationSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
     trim: true,
     lowercase: true,
   }
@@ -145,6 +144,9 @@ const jobSchema = new Schema({
   P2FormLink: {
     type: String
   },
+  P2FormDeadline: {
+    type: Date
+  },
   rejectEmailSub: {
     type: String,
   }
@@ -176,7 +178,8 @@ const formSchema = new Schema({
   ,
   jobID: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
+    unique:
   }
   ,
   formDeadline: {

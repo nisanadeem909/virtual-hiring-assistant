@@ -93,3 +93,10 @@
 .kcvcollectionpage-table-header-rowth:first-child,.kcvcollectionpage-table-row td:first-child {
     width: 5vh;
 }
+
+.kcvcollectionpage-noapps{
+    font-size: large;
+    color: rgb(237, 0, 0);
+    margin: 5vh;
+    font-weight: bold;
+}

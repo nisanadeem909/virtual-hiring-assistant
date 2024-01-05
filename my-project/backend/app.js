@@ -8,7 +8,6 @@ var app =express();
 app.use(cors());
 app.use(express.static('public'));
 app.use('/profilepictures', express.static('profilepictures'));
-app.use('/resumes', express.static('resumes'));
 app.use(express.static('backend/profilepictures'));
 app.use('/images', express.static('uploads'));
 app.use(express.static('files'));
@@ -19,6 +18,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 const cookieParser = require("cookie-parser");
+
+app.use('/routes/resumes', express.static(path.join(__dirname, 'routes/resumes')));
 
 
 const createFormRoute = require('./routes/createform');
