@@ -245,10 +245,10 @@ const formResponses = new Schema({
     type: mongoose.Schema.Types.ObjectId,
   },
   answers:[{
-    questionID: {
-      type: mongoose.Schema.Types.ObjectId,
-      default: mongoose.Types.ObjectId
-    },
+    // questionID: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   default: mongoose.Types.ObjectId
+    // },
     question: String,
     answerStatement: String
   }],

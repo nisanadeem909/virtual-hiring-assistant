@@ -63,8 +63,8 @@ export default function FormScreening() {
       }
     }
     const answerObject = questions.map((question, index) => ({
-      questionID: question._id,
-      question: question.question,
+      // questionID: question._id,
+      question: question.question, 
       answerStatement: userAnswers[index] || null,
     }));
 

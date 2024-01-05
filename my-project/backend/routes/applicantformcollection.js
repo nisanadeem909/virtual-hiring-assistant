@@ -78,13 +78,13 @@ router.post('/getjobdetailsforformcollection', async (req, res) => {
           const currentDate = new Date();
           const jobDeadline = new Date(job.CVDeadline);
 
-          if (jobDeadline < currentDate) {
-            res.status(400).json({ error: 'Job Expired' });
-            console.log(currentDate) 
-            console.log(jobDeadline)
-            console.log("Job expired")
-            return;
-          }
+          // if (jobDeadline < currentDate) {
+          //   res.status(400).json({ error: 'Job Expired' });
+          //   console.log(currentDate) 
+          //   console.log(jobDeadline)
+          //   console.log("Job expired")
+          //   return;
+          // }
           
           
 
