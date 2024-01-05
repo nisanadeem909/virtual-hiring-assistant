@@ -28,8 +28,8 @@ router.post("/createform", async(req,res)=>{
 
             await newForm.save();
             
-            const formLink = 'http://localhost:3000/applicant/formcollection/'+newForm._id;
-            await Job.findByIdAndUpdate(job._id, { P2FormLink: formLink });
+            const formLink = 'http://localhost:3000/applicant/formcollection/'+job._id;
+            await Job.findByIdAndUpdate(job._id, { P2FormLink: formLink, P2FormDeadline: formdeadline });
         
             msg = { status: "success", "formLink": formLink };
         }

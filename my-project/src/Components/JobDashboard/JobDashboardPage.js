@@ -47,8 +47,10 @@ export default function JobDashboardPage() {
       }, [job]);
 
       const updateJob = (newVal) => {
-        
-        setJob(newVal);
+        //window.location.reload()
+        // alert(JSON.stringify(newVal))
+        // var copy = {...newVal};
+         setJob(newVal);
       };
 
     const openTab=(index)=>{
@@ -65,15 +67,15 @@ export default function JobDashboardPage() {
         }
         else if (index == 1)
         {
-            // if deadline passed
-            //setContent(<CVScreening></CVScreening>)
-            // else
-            setContent(<CVCollection job={job}></CVCollection>)
+            if (job.status == 2) // cv screening completed
+              setContent(<CVScreening job={job}></CVScreening>)
+            else
+              setContent(<CVCollection job={job}></CVCollection>)
         }
         else if (index == 2){
           
-            const currentDate = new Date().toISOString().split('T')[0]; // Get current date in 'yyyy-mm-dd' format
-            if (currentDate <= job.CVDeadline) {
+            //const currentDate = new Date().toISOString().split('T')[0]; // Get current date in 'yyyy-mm-dd' format
+            if (job.status == 1) {
                 if (!job.P2FormLink || job.P2FormLink.trim() == ''){ 
                     setContent(<FormCreating job={job}></FormCreating>)
                 }
@@ -95,10 +97,10 @@ export default function JobDashboardPage() {
                 setContent(<FormCreating job={job}></FormCreating>)
             }
             else {
-            // else if form has been created - form responses coming
+              if (job.status == 2)//form has been created - form responses coming
                 setContent(<FormResponsesPage></FormResponsesPage>)
-            // else (phase 2 complete and apps shortlisted)
-            //setContent(<ShortlistedFormResponsesPage></ShortlistedFormResponsesPage>)
+              else //phase 2 complete and apps shortlisted)
+                setContent(<ShortlistedFormResponsesPage></ShortlistedFormResponsesPage>)
             }
         }
         else {

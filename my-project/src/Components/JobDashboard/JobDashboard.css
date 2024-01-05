@@ -121,6 +121,8 @@
     height: 30vh;
     border: 2px solid #012641;
     justify-content: space-evenly;
+    overflow: hidden;
+    word-wrap: break-word;
 }
 
 .kjobdetailspage-jd-div {
