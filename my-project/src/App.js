@@ -36,17 +36,29 @@ function App() {
       <Route path="/" element={<Navbar />}>
           <Route index element={<HomePage />} />
           <Route path="login" element={<Login/>}></Route>
-          <Route path="signup" element={<Signup/>}></Route>
+          {/*<Route path="signup" element={<Signup/>}></Route>*/}
           <Route path="about" element={<AboutUs/>}></Route>
           <Route path="*" element={<Error/>}></Route>
         </Route>
 
+        <Route path="/admin" element={<Navbar type="admin"/>}>
+
+            
+
+          <Route index element={<Error/>} />
+          <Route path="addrecruiter" element={<Signup/>}></Route>
+          <Route path="profile" element={<RecruiterProfile/>}></Route>
+          <Route path="*" element={<Error/>}></Route>      
+
+
+        </Route>
+
         <Route path="/applicant" element={<Navbar type="applicant"/>}>
-  
+
             
 
             <Route index element={<Error/>} />
-           <Route path="cvcollection/:cvcollectionid" element={<CVCollectionForm/>}></Route>
+          <Route path="cvcollection/:cvcollectionid" element={<CVCollectionForm/>}></Route>
             <Route path="formcollection/:formcollectionid" element={<FormScreening/>}>
               {/* <Route index element={<FormScreening/>} />
               <Route path=":formId" element={<FormScreening/>} /> */}

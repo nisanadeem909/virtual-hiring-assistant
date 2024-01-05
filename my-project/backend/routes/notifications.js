@@ -10,7 +10,7 @@ router.post("/getnotifications", async(req,res)=>{
 
         
 
-        const allNotifications = await Notification.find({});
+        const allNotifications = await Notification.find().sort({ createdAt: -1 }).exec();
         
         msg = { status: "success", "data": allNotifications };
     }

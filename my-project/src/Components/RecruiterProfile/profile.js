@@ -170,7 +170,7 @@ export default function Profile() {
         <div id="nab-profile-outer-div">
             <div id="nab-profile-pic">
                         {/* <img id="nab-pic-circle" src={profilepic}></img> */}
-                        <img id="nab-pic-circle" src={`http://localhost:8000/profilepictures/` + img}/>
+                        <img id="nab-pic-circle" src={`http://localhost:8000/routes/profilepictures/` + img}/>
                         <div className="profile-info">
                             <div> 
                                 

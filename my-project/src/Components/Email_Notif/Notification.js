@@ -16,6 +16,7 @@ export default function NotificationPage() {
     const convertDate = (mongoDate) => {
         const currentDateTime = new Date();
         const previousDateTime = new Date(mongoDate);
+        //alert(previousDateTime);
       
         const timeDifference = currentDateTime.getTime() - previousDateTime.getTime();
       

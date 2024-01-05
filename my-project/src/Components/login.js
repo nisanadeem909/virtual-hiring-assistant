@@ -23,6 +23,17 @@ function LoginPage() {
     
   }
 
+  const viewAdmin = () => {
+    const sessionID = sessionStorage.getItem('sessionID');
+
+    if (sessionID) {
+      navigate("/admin", { state: { sessionID } });
+    } else {
+      console.error("SessionID not found");
+    }
+    
+  }
+
   
 
   const handleLogin = async (e) => {
@@ -33,7 +44,10 @@ function LoginPage() {
         const sessionID = res.data.sessionId;
         sessionStorage.setItem('sessionID', sessionID);
         setError(null); 
-        viewRecruiter();
+        if (username == "admin")
+          viewAdmin();
+        else
+          viewRecruiter();
 
       })
       .catch(err => {

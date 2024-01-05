@@ -179,7 +179,7 @@ const formSchema = new Schema({
   jobID: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    unique:
+    unique: true
   }
   ,
   formDeadline: {

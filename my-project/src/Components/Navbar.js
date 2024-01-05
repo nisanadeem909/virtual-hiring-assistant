@@ -21,6 +21,8 @@ const Layout = (props) => {
       {
         navigate('/login');
       }
+      else if (props.type == "admin" && !sessionStorage.getItem("sessionID"))
+        navigate('/login');
   },[])
 
   useEffect(()=>{
@@ -65,9 +67,6 @@ const Layout = (props) => {
             <Link to="/about">About</Link>
           </li>
           <li className="navb_li">
-            <Link to="/signup">Signup</Link>
-          </li>
-          <li className="navb_li">
             <Link to="/login">Login</Link>
           </li>
         </ul>;
@@ -77,6 +76,50 @@ const Layout = (props) => {
     if (props.type == "applicant")
     {
       navlayout = <></>;
+    }
+    else if (props.type == "admin")
+    {
+      navlayout = <ul className="navb_ul">
+      <li className="navb_li">
+        <Link to='/admin'>Home</Link>
+      </li>
+      <li className="navb_li">
+        <div class="nab-dropdown" >
+           
+        <button class="nab-dropbtn" onClick={handleProfile}>
+           Profile
+            
+          </button>
+          
+           <div class="nab-dropdown-content" id="myDropdown">
+           <div id="nab-dropdown-items">
+                <div id="profile-head-section">
+                  <img src={`http://localhost:8000/routes/profilepictures/${currUser.profilePic || person}`} id="nab-human-icon"></img> 
+                  <label className='knav-username'>{sessionStorage.getItem("sessionID")}</label>
+                  
+                </div>
+                <div id="profile-line-hr"></div>
+                <div id="profile-head-section">
+                  <button class="editprofile-button" onClick={()=>navigate('/admin/profile')}><img src={nabprofileicon} id="nab-profile-icon"></img> My Profile</button>
+                  
+                </div>
+                <div id="profile-head-section">
+                  
+                  <button onClick={logoutSession} class="editprofile-button" >
+                  <img src={nablogouticon} id="nab-logout-icon"></img> <span>Logout </span></button>
+                  
+                </div>
+                
+                  
+                
+              </div>
+              
+          </div>
+
+        </div>
+
+      </li>
+  </ul>;
     }
     else if (props.type == "recruiter")
     {
@@ -98,7 +141,7 @@ const Layout = (props) => {
                            <div class="nab-dropdown-content" id="myDropdown">
                            <div id="nab-dropdown-items">
                                 <div id="profile-head-section">
-                                  <img src={`http://localhost:8000/profilepictures/${currUser.profilePic || person}`} id="nab-human-icon"></img> 
+                                  <img src={`http://localhost:8000/routes/profilepictures/${currUser.profilePic || person}`} id="nab-human-icon"></img> 
                                   <label className='knav-username'>{sessionStorage.getItem("sessionID")}</label>
                                   
                                 </div>
