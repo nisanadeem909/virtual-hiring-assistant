@@ -15,8 +15,8 @@ function HomePage() {
         <div className="box1">
           <h2 className='nisa-homeh'>Let Automation Elevate Your Recruiting Game!</h2>
           <div className='nisa-box1'>
-            <button className="b1" onClick={()=>navigate("/signup")}>Try VHA</button>
-            <p id="loginp">Already have an account? <a  onClick={()=>navigate("/login")}>Login</a></p>
+            <button className="b1" onClick={()=>navigate("/signup")}>Login</button>
+            
           </div>
           <div className="l">
            
