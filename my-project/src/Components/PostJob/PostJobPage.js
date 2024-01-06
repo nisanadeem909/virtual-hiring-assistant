@@ -50,9 +50,9 @@ export default function PostJobPage() {
   };
 
  
-  const handleAnotherPhase = (savedJobId) => {
-   
-    navigate('setemail', { state: { savedJobId } });
+  const handleAnotherPhase = (j) => {
+    alert(j.jobTitle);
+    navigate('rejectionemail', { state: { j } });
   };
 
   const handleSubmit = async () => {
@@ -83,7 +83,7 @@ export default function PostJobPage() {
         ...formData,
       });
       const savedJobId = response.data._id; // Assuming "_id" is the field representing the job ID
-
+      const j = response.data;
       // Check if the savedJobId is not undefined
       if (savedJobId) {
         setJobId(savedJobId);
@@ -97,7 +97,7 @@ export default function PostJobPage() {
       setShowDoneImage(true);
       setTimeout(() => {
         setShowDoneImage(false);
-        handleAnotherPhase(savedJobId);
+        handleAnotherPhase(j);
       }, 2000); 
       
     } catch (error) {

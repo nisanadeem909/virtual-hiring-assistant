@@ -28,14 +28,13 @@ router.post('/api/saveFormData', async (req, res) => {
   router.post('/api/updateEmailsAndForm/:data', async (req, res) => {
     try {
       const { data } = req.params;
-      const { rejectEmailSub, rejectEmailBody } = req.body;
+      const { rejectEmailBody } = req.body;
   
       console.log(data);
       const job = await Job.findOneAndUpdate(
         { _id: data },
         {
           $set: {
-            rejectEmailSub,
             rejectEmailBody,
           },
         },
