@@ -1,0 +1,11 @@
+.k-rec-profilepic {
+    width: 7vh;
+    height: 7vh;
+    margin-right: 2vh;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+.k-recdiv {
+    display: flex
+}

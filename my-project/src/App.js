@@ -28,6 +28,7 @@ import ShortlistedFormResponsesPage from './Components/RecruiterFormResponses/sh
 import SetEmail from './Components/PostJob/SetEmail.js';
 import CVView from './Components/JobDashboard/CVViewPage.js';
 import EditFormPage from './Components/FormScreening/EditFormPage.js';
+import AdminHomePage from './Components/AdminHome/AdminHomePage.js';
 
 function App() {
   return (
@@ -46,7 +47,7 @@ function App() {
 
             
 
-          <Route index element={<Error/>} />
+          <Route index element={<AdminHomePage/>} />
           <Route path="addrecruiter" element={<Signup/>}></Route>
           <Route path="profile" element={<RecruiterProfile/>}></Route>
           <Route path="*" element={<Error/>}></Route>      
