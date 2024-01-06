@@ -26,7 +26,7 @@ const Layout = (props) => {
   },[])
 
   useEffect(()=>{
-    if (props.type == "recruiter")
+    if (props.type == "recruiter" || props.type == "admin")
     {
         var sessionID = sessionStorage.getItem('sessionID');
         axios.get(`http://localhost:8000/nisa/recruiter/${sessionID}`)

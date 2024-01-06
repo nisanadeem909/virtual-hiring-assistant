@@ -77,7 +77,7 @@ export default function Signup() {
                       <input type="password" onChange={(e) => setPassword(e.target.value)} value={password} name="password" id="nab-login-password" className="nab-form__input" placeholder="Password" />
                     </div>
                     <div>
-                      <input type="submit" value="Sign Up" id="nab-login-submit-btn" />
+                      <input type="submit" value="Add" id="nab-login-submit-btn" />
                     </div>
                   </form>
                   {error && <p style={{ color: 'red', marginLeft: '200px' }}>{error}</p>}
