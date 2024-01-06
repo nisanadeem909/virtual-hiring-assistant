@@ -74,6 +74,8 @@ router.post("/updateform", async(req,res)=>{
         else {
 
             const formLink = 'http://localhost:3000/applicant/formcollection/'+updatedForm.jobID;
+            
+            await Job.findByIdAndUpdate(updatedForm.jobID, { P2FormDeadline: formdeadline });
         
             msg = { status: "success", "formLink": formLink };
         }
