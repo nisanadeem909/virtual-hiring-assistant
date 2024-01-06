@@ -76,7 +76,8 @@ export default function JobDashboardPage() {
           
             //const currentDate = new Date().toISOString().split('T')[0]; // Get current date in 'yyyy-mm-dd' format
             if (job.status == 1) {
-                if (!job.P2FormLink || job.P2FormLink.trim() == ''){ 
+               
+              if (!job.P2FormLink || job.P2FormLink.trim() == ''){ 
                     setContent(<FormCreating job={job}></FormCreating>)
                 }
                 else { // form created and waiting for cv screening to complete
@@ -93,14 +94,15 @@ export default function JobDashboardPage() {
                   </div>)
                 }
             }
+            
             else if (!job.P2FormLink || job.P2FormLink.trim() == ''){ // cv screening completed but form not created yet
                 setContent(<FormCreating job={job}></FormCreating>)
             }
             else {
               if (job.status == 2)//form has been created - form responses coming
-                setContent(<FormResponsesPage></FormResponsesPage>)
+                setContent(<FormResponsesPage job={job}></FormResponsesPage>)
               else //phase 2 complete and apps shortlisted)
-                setContent(<ShortlistedFormResponsesPage></ShortlistedFormResponsesPage>)
+                setContent(<ShortlistedFormResponsesPage job={job}></ShortlistedFormResponsesPage>)
             }
         }
         else {

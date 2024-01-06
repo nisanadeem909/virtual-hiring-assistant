@@ -95,10 +95,12 @@
 }
 /* Different colors for shortlisted */
 .kcvcollectionpage-table-row.shortlisted {
-    background-color:#b3e882;
-  }
-  
-  .kcvcollectionpage-table-row.not-shortlisted {
-    background-color: #ff6459;
-  }
+    background-color: lightgreen; /* or any other light green color */
+}
+
+.kcvcollectionpage-table-row.rejected {
+    background-color: lightcoral; /* or any other light red color */
+}
+
+
   

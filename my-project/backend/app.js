@@ -34,6 +34,7 @@ const NotificationRoute = require('./routes/notifications');
 const CVScreeningRoute = require('./routes/cvscreening');
 const ApplicantCVCollectionForm = require('./routes/applicantcvcollectionform')
 const ApplicantFormCollection = require('./routes/applicantformcollection')
+const RecruiterFormScreening = require('./routes/recruiterformscreening')
 
 app.use('/komal', createFormRoute);
 app.use('/komal', JobDashboardRoute);
@@ -44,6 +45,7 @@ app.use('/komal', CVScreeningRoute);
 app.use('/nabeeha', EditProfileRoute);
 app.use('/nabeeha', ApplicantCVCollectionForm);
 app.use('/nabeeha', ApplicantFormCollection);
+app.use('/nabeeha', RecruiterFormScreening);
 
 app.use('/nisa', LoginRoute);
 app.use('/nisa', SignupRoute);

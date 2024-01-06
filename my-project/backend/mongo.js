@@ -179,7 +179,7 @@ const formSchema = new Schema({
   jobID: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    unique:
+    unique: true
   }
   ,
   formDeadline: {
@@ -254,7 +254,11 @@ const formResponses = new Schema({
     // },
     question: String,
     answerStatement: String
-  }],
+  }], 
+  status:{ //NEWW! Added by Nabeeha
+    type: String,
+    default: 'In process'
+  }
  
   
 
