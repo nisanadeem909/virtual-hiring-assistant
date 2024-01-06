@@ -27,6 +27,7 @@ import FormResponsesPage from './Components/RecruiterFormResponses/formresponses
 import ShortlistedFormResponsesPage from './Components/RecruiterFormResponses/shortlistedformresponses.js';
 import SetEmail from './Components/PostJob/SetEmail.js';
 import CVView from './Components/JobDashboard/CVViewPage.js';
+import EditFormPage from './Components/FormScreening/EditFormPage.js';
 
 function App() {
   return (
@@ -36,17 +37,29 @@ function App() {
       <Route path="/" element={<Navbar />}>
           <Route index element={<HomePage />} />
           <Route path="login" element={<Login/>}></Route>
-          <Route path="signup" element={<Signup/>}></Route>
+          {/*<Route path="signup" element={<Signup/>}></Route>*/}
           <Route path="about" element={<AboutUs/>}></Route>
           <Route path="*" element={<Error/>}></Route>
         </Route>
 
+        <Route path="/admin" element={<Navbar type="admin"/>}>
+
+            
+
+          <Route index element={<Error/>} />
+          <Route path="addrecruiter" element={<Signup/>}></Route>
+          <Route path="profile" element={<RecruiterProfile/>}></Route>
+          <Route path="*" element={<Error/>}></Route>      
+
+
+        </Route>
+
         <Route path="/applicant" element={<Navbar type="applicant"/>}>
-  
+
             
 
             <Route index element={<Error/>} />
-           <Route path="cvcollection/:cvcollectionid" element={<CVCollectionForm/>}></Route>
+          <Route path="cvcollection/:cvcollectionid" element={<CVCollectionForm/>}></Route>
             <Route path="formcollection/:formcollectionid" element={<FormScreening/>}>
               {/* <Route index element={<FormScreening/>} />
               <Route path=":formId" element={<FormScreening/>} /> */}
@@ -63,6 +76,7 @@ function App() {
             <Route path="home/postjob/setemail/rejectionemail" element={<RejectionEmailPage/>}></Route>
             <Route path="notifications" element={<NotificationPage/>}></Route>
             <Route path="job/createform" element={<CreateFormPageNew/>}></Route>
+            <Route path="job/editform" element={<EditFormPage/>}></Route>
             <Route path="job" element={<JobDashboardPage/>}></Route>
             <Route path="job/cvview" element={<CVView/>}></Route>
             <Route path="home/postjob" element={<PostJobPage/>}></Route>

@@ -36,6 +36,12 @@
     height: 10vh;
 }
 
+.kjobdetailsstatus-loading-img {
+    margin-left: 38%;
+    width: 10vh;
+    height: 10vh;
+}
+
 .kjobdashboardpage-tab {
     font-size: medium;
     padding: 2vh 3vh;

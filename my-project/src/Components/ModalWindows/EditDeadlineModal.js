@@ -40,6 +40,15 @@ const EditModal = ({ isOpen, title, closeModal, saveValue, originalValue }) => {
     }
   }, [originalValue]);
 
+  const formatDate = (date) => {
+    if (!date) return '';
+    const formattedDate = new Date(date); 
+    const year = formattedDate.getFullYear();
+    const month = `${formattedDate.getMonth() + 1}`.padStart(2, '0');
+    const day = `${formattedDate.getDate()}`.padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   return (
     <Modal
       className='Modal'
@@ -52,7 +61,7 @@ const EditModal = ({ isOpen, title, closeModal, saveValue, originalValue }) => {
             {title && <label className='kmodal-title'>Edit {title}</label>}
         </div>
         <label className='kmodal-originaldeadline'>Current Deadline: {originalValue ? new Date(originalValue).toLocaleDateString('en-GB') : ''}</label>
-        <input type="date" placeholder={title} className='kmodal-tf-date' value={inputVal} onChange={(event)=>handleInput(event)}></input>
+        <input type="date" placeholder={title} className='kmodal-tf-date' value={formatDate(inputVal)} onChange={(event)=>handleInput(event)}></input>
         <label className='kmodal-error'>{err}</label>
         <hr className='kmodal-hr'></hr>
         <div className='kmodal-btns'>

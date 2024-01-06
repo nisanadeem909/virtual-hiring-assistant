@@ -4,6 +4,7 @@ import EditModal from '../ModalWindows/EditNumberModal'
 import EditDeadlineModal from '../ModalWindows/EditDeadlineModal'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import loading from '../images/loading3.gif';
 
 export default function JobDetails(props) {
 
@@ -135,11 +136,19 @@ export default function JobDetails(props) {
             }
           }
           else if (job.status == 3)
+          {
             setStatus("Phase 3 (Video-Interview)")
+            setStatusDiv(<img src={loading} className='kjobdetailsstatus-loading-img'></img>)
+            setDeadlineDiv(<label className='kjobdetailspage-appdeadline'>Waiting for Video Interview and Technical Test Creation..</label>)
+          }
           else if (job.status == 4)
+          {
             setStatus("Phase 4 (Technical Test)")
+          }
           else if (job.status == 5)
+          {
             setStatus("Shortlisted")
+          }
         }, [job.status]);
 
     return (

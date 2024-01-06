@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import img from './signup.svg';
 import Footer from './Footer';
 import './login.css'; // Assuming you have styles from the login.css file
+import MessageModal from './ModalWindows/MessageModal';
 
 export default function Signup() {
   const [loggedIn, setLoggedIn] = useState('');
@@ -14,6 +15,8 @@ export default function Signup() {
   const [designation, setDesignation] = useState(''); // Add state for designation
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
+  const [message, setMessage] = useState('');
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -31,21 +34,23 @@ export default function Signup() {
       
       if (response.data.user) {
         // Set session ID in sessionStorage
-        sessionStorage.setItem('sessionID', response.data.user.username);
+        //sessionStorage.setItem('sessionID', response.data.user.username);
 
-        const sessionID = sessionStorage.getItem('sessionID');
-        navigate("/recruiter/home/", { state: { sessionID } });
+        //const sessionID = sessionStorage.getItem('sessionID');
+        //navigate("/recruiter/home/", { state: { sessionID } });
+        setMessage('Recruiter successfully added with username: '+username +' and password: '+password);
+        setOpenModal(true);
       } else {
-        setError('Signup failed. Please try again.');
+        setError('Could not add recruiter. Please try again.');
       }
     } catch (err) {
       
       console.error(err);
-      setError('Signup failed. Please try again.');
+      setError('Could not add recruiter. Please try again.');
     }
   };
 
-  return (
+  return (<>
     <div>
       <div className='nisa-signup-container'>
         <div id="nab-wraplogin">
@@ -53,8 +58,8 @@ export default function Signup() {
             <div className="nab-loginpage-right-side">
               <div className="nisa-login-right-innerbox">
                 <div>
-                  <h1 id="welcomeback">Sign Up</h1>
-                  <h3 id="welcomeback-subheading">Create a new account to get started.</h3>
+                  <h1 id="welcomeback">Add Recruiter</h1>
+                  <h3 id="welcomeback-subheading">Add a new recruiter for your company.</h3>
                   <form onSubmit={handleSignup}>
                     <div>
                       <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} name="username" id="nab-login-username" className="nab-form__input" placeholder="Username" />
@@ -72,7 +77,7 @@ export default function Signup() {
                       <input type="password" onChange={(e) => setPassword(e.target.value)} value={password} name="password" id="nab-login-password" className="nab-form__input" placeholder="Password" />
                     </div>
                     <div>
-                      <input type="submit" value="Sign Up" id="nab-login-submit-btn" />
+                      <input type="submit" value="Add" id="nab-login-submit-btn" />
                     </div>
                   </form>
                   {error && <p style={{ color: 'red', marginLeft: '200px' }}>{error}</p>}
@@ -87,5 +92,14 @@ export default function Signup() {
         <Footer />
       </div>
     </div>
+    <MessageModal
+        isOpen={openModal}
+        message={message}
+        title={"Recruiter added!"}
+        closeModal={() => {
+            setOpenModal(false);
+        }}
+      />
+    </>
   );
 }

@@ -20,7 +20,8 @@ export default function CVScreening(props) {
          axios.post("http://localhost:8000/komal/getjobapplications",param).then((response) => {
             // alert(JSON.stringify(response.data));
             if (response.data.status == "success"){
-                response.data.jobApps.sort((a, b) => b.CVMatchScore.$numberDecimal - a.CVMatchScore.$numberDecimal);
+                //alert(JSON.stringify(parseFloat(response.data.jobApps[0].CVMatchScore.$numberDecimal)))
+                response.data.jobApps.sort((a, b) => parseFloat(b.CVMatchScore.$numberDecimal) - parseFloat(a.CVMatchScore.$numberDecimal));
                 setApps(response.data.jobApps);
              }
              else 
@@ -58,6 +59,9 @@ export default function CVScreening(props) {
             </div>
         </div>
         <div className='kcvcollectionpage-inner'>
+        {applications.length === 0 ? (
+          <label className='kcvcollectionpage-noapps'>No job applications yet</label>
+        ) : (
         <table className='kcvcollectionpage-table'>
             <thead className='kcvcollectionpage-table-header'>
                 <tr className='kcvcollectionpage-table-header-row'>
@@ -71,7 +75,7 @@ export default function CVScreening(props) {
             </thead>
             <tbody className='kcvcollectionpage-table-body'>
                 {applications.map((app,index)=>(
-                    <tr className='kcvcollectionpage-table-row' style={{ backgroundColor: app.CVMatchScore.$numberDecimal > job.AccCVScore.$numberDecimal ? '#b3e882' : '#ff6459' }}>
+                    <tr className='kcvcollectionpage-table-row' style={{ backgroundColor: parseFloat(app.CVMatchScore.$numberDecimal) > parseFloat(job.AccCVScore.$numberDecimal) ? '#b3e882' : '#ff6459' }}>
                         <td align="center">{index+1}</td>
                         <td align="center">{app.name}</td>
                         <td align="center">{app.email}</td>
@@ -81,7 +85,7 @@ export default function CVScreening(props) {
                     </tr>
                 ))}
             </tbody>
-        </table>
+        </table>)}
         </div>
       </div>
     )

@@ -34,8 +34,8 @@ router.post('/signup', async (req, res) => {
   
       
       await newUser.save();
-      req.session.username = username;
-        req.session.save();
+      // req.session.username = username;
+      //   req.session.save();
         
   
       

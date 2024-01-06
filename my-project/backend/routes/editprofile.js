@@ -7,9 +7,10 @@ const {Job, Recruiter,JobApplication,Form} = require('../mongo');
 router.use(express.static('files'));
 const path = require('path');
 router.use("/static",express.static(path.join(__dirname,'public')));
-router.use(express.static('../profilepictures'));
-router.use(express.static('public'));
 
+router.use(express.static('public'));
+router.use('/profilepictures', express.static('profilepictures'));
+router.use('/profilepictures', express.static(path.join(__dirname, 'profilepictures')));
 
 router.post('/editprofile-getdetails', async (req, res) => {
     try {

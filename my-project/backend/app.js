@@ -7,8 +7,8 @@ const express = require('express');
 var app =express();
 app.use(cors());
 app.use(express.static('public'));
-app.use('/profilepictures', express.static('profilepictures'));
-app.use(express.static('backend/profilepictures'));
+// app.use('/profilepictures', express.static('profilepictures'));
+// app.use(express.static('backend/profilepictures'));
 app.use('/images', express.static('uploads'));
 app.use(express.static('files'));
 const path = require('path');
@@ -20,6 +20,7 @@ app.set('view engine', 'ejs');
 const cookieParser = require("cookie-parser");
 
 app.use('/routes/resumes', express.static(path.join(__dirname, 'routes/resumes')));
+app.use('/routes/profilepictures', express.static(path.join(__dirname, 'routes/profilepictures')));
 
 
 const createFormRoute = require('./routes/createform');
