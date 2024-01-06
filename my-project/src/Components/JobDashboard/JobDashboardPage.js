@@ -9,7 +9,7 @@ import FormCreating from './FormCreating';
 import FormResponsesPage from '../RecruiterFormResponses/formresponses';
 import axios from 'axios';
 import ShortlistedFormResponsesPage from '../RecruiterFormResponses/shortlistedformresponses';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function JobDashboardPage() {
 
@@ -19,6 +19,7 @@ export default function JobDashboardPage() {
     const [activeTab,setActiveTab] = useState(0);
 
     const location = useLocation();
+    const navigate = useNavigate();
 
    // var tempJobID = '657d9dd3d75435064f67d066';
     const [job,setJob] = useState(null);
@@ -67,7 +68,7 @@ export default function JobDashboardPage() {
         }
         else if (index == 1)
         {
-            if (job.status == 2) // cv screening completed
+            if (job.status >= 2) // cv screening completed
               setContent(<CVScreening job={job}></CVScreening>)
             else
               setContent(<CVCollection job={job}></CVCollection>)
@@ -89,6 +90,7 @@ export default function JobDashboardPage() {
                     <div className='kformcreated-content'>
                       <label>Form has been created!</label>
                       <label>Please wait till phase 1 (CV Screening) is completed to proceed to Form Screening.</label>
+                      <button className='kp2formcreating-createbtn' onClick={()=>navigate('\editform',{state:{'job':job}})}>Edit Form</button>
                     </div>
                   </div>)
                 }

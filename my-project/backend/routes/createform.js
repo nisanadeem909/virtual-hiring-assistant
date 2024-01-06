@@ -47,4 +47,48 @@ router.post("/createform", async(req,res)=>{
 })
 
 
+router.post("/updateform", async(req,res)=>{
+    console.log(req.body);
+    const id = req.body.id;
+    const questions = req.body.questions;
+    const formdeadline = req.body.formdeadline;
+
+    const updatedData = {
+        formDeadline: formdeadline,
+        questions: questions
+      };
+
+    var msg;
+
+    try {
+
+        const updatedForm = await Form.findOneAndUpdate(
+            { _id: id },
+            { $set: updatedData },
+            { new: true } // To return the updated document
+          );
+
+        if (!updatedForm) {
+            msg = {"status": "error","error":"Form not found!"};
+        }
+        else {
+
+            const formLink = 'http://localhost:3000/applicant/formcollection/'+updatedForm.jobID;
+        
+            msg = { status: "success", "formLink": formLink };
+        }
+    }
+        catch (error) {
+            console.error('Error adding job:', error);
+            msg = {"status": "error","error":error};
+
+    } 
+
+    res.json(msg);
+
+    res.end();
+
+})
+
+
 module.exports = router;

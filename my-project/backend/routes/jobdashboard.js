@@ -35,16 +35,18 @@ router.post("/getjob", async(req,res)=>{
 router.post("/getjobform", async(req,res)=>{
     console.log(req.body);
 
-    const id = req.body.jobId;
+    const id = req.body.job;
 
     var msg;
 
     try {
 
-        const form = await Form.findOne({ jobID: jobID });
+        const form = await Form.findOne({ jobID: id });
+
+        console.log(form)
 
         if (!form)
-            msg = {"status": "not found"}
+            msg = {"status": "error",error:"not found"}
         else 
             msg = {"status": "success","form":form}
         

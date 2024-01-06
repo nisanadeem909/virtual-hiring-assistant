@@ -27,6 +27,7 @@ import FormResponsesPage from './Components/RecruiterFormResponses/formresponses
 import ShortlistedFormResponsesPage from './Components/RecruiterFormResponses/shortlistedformresponses.js';
 import SetEmail from './Components/PostJob/SetEmail.js';
 import CVView from './Components/JobDashboard/CVViewPage.js';
+import EditFormPage from './Components/FormScreening/EditFormPage.js';
 
 function App() {
   return (
@@ -75,6 +76,7 @@ function App() {
             <Route path="home/postjob/setemail/rejectionemail" element={<RejectionEmailPage/>}></Route>
             <Route path="notifications" element={<NotificationPage/>}></Route>
             <Route path="job/createform" element={<CreateFormPageNew/>}></Route>
+            <Route path="job/editform" element={<EditFormPage/>}></Route>
             <Route path="job" element={<JobDashboardPage/>}></Route>
             <Route path="job/cvview" element={<CVView/>}></Route>
             <Route path="home/postjob" element={<PostJobPage/>}></Route>

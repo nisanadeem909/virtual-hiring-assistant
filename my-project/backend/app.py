@@ -198,13 +198,29 @@ def CVScreening(job):
     jd_phrases = extractJDPhrases(job['jobDescription'])
     acceptableScore = job['AccCVScore'].to_decimal()
     all_apps = list(jobapp_collection.find({'jobID': job['_id']}))
-    #print(all_apps)
+    
+    if not all_apps:
+        # notification_data = {
+        #     "jobTitle": job['jobTitle'],
+        #     "jobID": job['_id'],
+        #     "notifText": "CV deadline has passed but no applications!",
+        #     "recruiterUsername": job['postedby'],
+        #     "notifType": 1,
+        #     "createdAt": datetime.now().astimezone(pytz.utc)
+        # }
+        # notification_collection.insert_one(notification_data)
+        return
+    
     for app in all_apps:
         filename = app['CVPath']
         resumepath = './routes/resumes/' + filename
         resume = extractCV(resumepath)
-        cv_phrases = extractCVPhrases(resume)
-        similarity = matchCVJD(model,cv_phrases,jd_phrases)
+        if not resume:
+            similarity = 0
+        else:
+            cv_phrases = extractCVPhrases(resume)
+            similarity = matchCVJD(model,cv_phrases,jd_phrases)
+            
         filter_criteria = {'_id': app['_id']}
         update_statement = {
             '$set': {
@@ -232,22 +248,18 @@ def CVScreening(job):
     }
     notification_collection.insert_one(notification_data)
 
-def timer():
+def CVtimer():
     # response = requests.post('http://localhost:8000/komal/getnotifications')
     # print(response.json())
     current_datetime = datetime.now()
     all_jobs = list(job_collection.find({}))
-    #print(all_jobs)
     for job in all_jobs:
-        #print(job)
-        # print(job['CVDeadline'])
-        # print(current_datetime)
         if job['status'] == 1 and current_datetime >= job['CVDeadline']:
             CVScreening(job)
         
 
 while True:
-    timer()
+    CVtimer()
     time.sleep(300)  
     
 if __name__ == '__main__':

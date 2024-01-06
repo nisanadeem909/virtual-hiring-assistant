@@ -59,6 +59,9 @@ export default function CVScreening(props) {
             </div>
         </div>
         <div className='kcvcollectionpage-inner'>
+        {applications.length === 0 ? (
+          <label className='kcvcollectionpage-noapps'>No job applications yet</label>
+        ) : (
         <table className='kcvcollectionpage-table'>
             <thead className='kcvcollectionpage-table-header'>
                 <tr className='kcvcollectionpage-table-header-row'>
@@ -82,7 +85,7 @@ export default function CVScreening(props) {
                     </tr>
                 ))}
             </tbody>
-        </table>
+        </table>)}
         </div>
       </div>
     )
