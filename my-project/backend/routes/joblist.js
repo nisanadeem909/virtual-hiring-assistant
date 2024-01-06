@@ -15,13 +15,11 @@ router.get('/alljobs', async (req, res) => {
     }
   });
 
-router.get('/api/jobs/search', async (req, res) => {
+  router.get('/api/jobs/search', async (req, res) => {
     const query = req.query.q;
   
     try {
-      
       const jobs = await searchJobs(query);
-  
       res.json(jobs);
     } catch (error) {
       console.error('Error fetching jobs:', error);
@@ -33,10 +31,9 @@ router.get('/api/jobs/search', async (req, res) => {
   const searchJobs = async (query) => {
     const regex = new RegExp(query, 'i'); // Case-insensitive search
   
-   
     const jobs = await Job.find({ jobTitle: { $regex: regex } }).exec();
-  
-    return jobs.map(job => job.jobTitle);
+    return jobs;
   };
+  
 
 module.exports = router;

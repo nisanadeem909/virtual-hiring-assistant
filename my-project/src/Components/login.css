@@ -75,19 +75,9 @@
 #nab-login-submit-btn{
     
     
-    /*margin-left: 20%;
-    margin-top: 5%;
-    transition: all .5s ease;
-	
-	border-radius: 30px;
-	color:#008080;
-	font-weight: 600;
-	background-color: #fff;
-	border: 1px solid #008080;
-	margin-top: 1.5em;
-	margin-bottom: 1em;*/
-    background-color: #3498db;
-    border-radius: 4px;
+ 
+    background-color: #012641;
+    border-radius: 6px;
    
     border: none;
     color: white;
@@ -95,7 +85,7 @@
 
 
     width: 20%;
-    height:40%;
+    height: 30px;
     transition: all 0.5s;
     cursor: pointer;
     margin-left:40%;
@@ -175,8 +165,8 @@
 	transition: all .5s ease;
 }
 .nab-form__input:focus{
-	border-bottom-color: #008080;
-	box-shadow: 0 0 5px rgba(0,80,80,.4); 
+	border-bottom-color: #3498db;
+	box-shadow: 0 0 10px rgba(0,80,80,.4); 
 	border-radius: 4px;
 }
 
