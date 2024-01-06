@@ -13,9 +13,9 @@ export default function ShortlistedFormResponsesPage(props) {
 
   const getFormResponses = () => {
       var param = { 'jobId': props.job._id };
-      axios.post("http://localhost:8000/nabeeha/shortlistformresponses", param).then((response) => {
-          setResp(response.data.updatedFormResponses);
-          setQuestions(response.data.updatedFormResponses[0]?.answers?.map(answer => answer.question) || []);
+      axios.post("http://localhost:8000/nabeeha/fetchformresponses", param).then((response) => {
+          setResp(response.data.formResponses);
+          setQuestions(response.data.formResponses[0]?.answers?.map(answer => answer.question) || []);
       }).catch(function (error) {
           alert("Axios Error:" + error);
       });

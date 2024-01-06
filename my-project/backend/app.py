@@ -193,7 +193,7 @@ def matchCVJD(model,cv_all,jd_all):
         return similarity
 
 def CVScreening(job):
-    #print(job['jobTitle'])
+    print(job['jobTitle'])
     model = loadModel()
     jd_phrases = extractJDPhrases(job['jobDescription'])
     acceptableScore = job['AccCVScore'].to_decimal()
@@ -248,18 +248,54 @@ def CVScreening(job):
     }
     notification_collection.insert_one(notification_data)
 
+def FormScreening(job):
+    print(job['jobTitle'])
+    response = requests.post('http://localhost:8000/nabeeha/shortlistformresponses', {'jobId': job['_id']})
+    print(response.json())
+    
+    if response.status_code == 200:
+        filter_criteria = {'_id': job['_id']}
+        update_statement = {
+            '$set': {
+                'status': 3
+            }
+        }
+        job_collection.update_one(filter_criteria, update_statement)
+        
+        notification_data = {
+            "jobTitle": job['jobTitle'],
+            "jobID": job['_id'],
+            "notifText": "Phase 2 Forms have been shortlisted!",
+            "recruiterUsername": job['postedby'],
+            "notifType": 2,
+            "createdAt": datetime.now().astimezone(pytz.utc)
+        }
+        notification_collection.insert_one(notification_data)
+
 def CVtimer():
     # response = requests.post('http://localhost:8000/komal/getnotifications')
     # print(response.json())
+    #print("hi")
     current_datetime = datetime.now()
     all_jobs = list(job_collection.find({}))
     for job in all_jobs:
         if job['status'] == 1 and current_datetime >= job['CVDeadline']:
             CVScreening(job)
+            
+def Formtimer():
+    print("hi")
+    current_datetime = datetime.now()
+    all_jobs = list(job_collection.find({}))
+    for job in all_jobs:
+        #print(job)
+        if job.get('P2FormDeadline'):
+            if job['status'] == 2 and current_datetime >= job['P2FormDeadline']:
+                FormScreening(job)
         
 
 while True:
     CVtimer()
+    Formtimer()
     time.sleep(300)  
     
 if __name__ == '__main__':
