@@ -70,7 +70,7 @@ function LoginPage() {
                   <input type="submit" value="Login" id="nab-login-submit-btn" />
                 </div>
               </form>
-              {error && <p style={{ color: 'red', marginLeft: '150px' }}>{error}</p>} {}
+              {error && <p style={{ color: 'red', marginLeft: '130px', marginTop:'10px' }}>{error}</p>} {}
             </div>
 
           </div>

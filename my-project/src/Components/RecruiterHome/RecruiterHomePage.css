@@ -18,6 +18,8 @@
     flex-direction: column;
     margin-left: 2rem;
     margin-bottom: -20%;
+    margin-top: 7%;
+    height: 100%;
     
   }
   
@@ -26,6 +28,8 @@
     margin-left: 10%;
     margin-bottom: 100%;
     margin-top: 13%;
+    height: 100%;
+
   }
   
   .search-bar {
@@ -37,6 +41,7 @@
   .job-list {
     grid-area: job-list;
     margin-right: 3%;
+    margin-top: 2%;
   }
   
   .uh_footer {

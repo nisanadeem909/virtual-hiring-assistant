@@ -23,7 +23,7 @@
 .img1{
     float: right;
     
-    margin-right: -400px;
+    margin-right: -350px;
     height: 750px;
     width: 800px;
 }
@@ -181,11 +181,12 @@ h2{
     width: 100%;
     height: 100%;
     background-image: url('./design6.svg'); /* Replace with the correct path */
-    background-size: 1000px 800px; /* Adjust as needed */
+    background-size: 900px 800px; /* Adjust as needed */
     background-repeat: no-repeat;
     z-index: -1;
     transform: rotate(180deg);
     animation: moveBackground 4s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite alternate;
+    margin-left: -140px;
   }
   
   @keyframes moveBackground {

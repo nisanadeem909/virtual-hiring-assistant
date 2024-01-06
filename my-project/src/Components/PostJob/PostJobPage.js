@@ -157,7 +157,11 @@ export default function PostJobPage() {
                     onChange={handleInputChange}
                   />
 
-                  <label className='nisa-pj-label' htmlFor="phase1Percentage">Acceptable CV to JD Match Percentage</label>
+                  <label className='nisa-pj-label' htmlFor="phase1Percentage">
+                    Acceptable CV to JD Match Percentage.{' '}
+                    <span style={{ color: 'red', marginLeft: '125px' }}>Recommended: 60 - 70%</span>
+                  </label>
+
                   <input
                    className='nisa-pj-input'
                     type="number"

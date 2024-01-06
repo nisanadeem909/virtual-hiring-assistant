@@ -7,7 +7,7 @@
   
   .search-input {
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 2px solid #012641;
     border-radius: 5px;
     margin-right: 5px;
     font-size: 16px;
@@ -45,6 +45,7 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   z-index: 1; /* Ensure it's above other elements */
+  margin-top: 2%;
 }
 
 .search-result-item {
