@@ -67,9 +67,7 @@ export default function SearchBar() {
         onChange={handleInputChange}
         onBlur={() => setSearchResults([])} 
       />
-      <button className="nisa-search-btn">
-        <img src={searchIcon} alt="Search" className="search-icon" />
-      </button>
+     
 
       {searchResults.length > 0 && (
         <ul className="search-results" style={{ marginTop: getMarginTop() }}>

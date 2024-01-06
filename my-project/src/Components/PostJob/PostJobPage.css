@@ -87,7 +87,7 @@
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
-    margin-top: 20%;
+    margin-top: 10%;
   }
 
   .nisa-postJ2-button {
@@ -101,6 +101,7 @@
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
+    margin-left: 10px;
    
   }
 
