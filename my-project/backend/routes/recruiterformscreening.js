@@ -112,11 +112,11 @@ router.post('/shortlistformresponses', async (req, res) => {
       );
 
     const updatedFormResponses = await FormResponses.find({ jobID: jobIDToFind }).exec();
-    res.json({ updatedFormResponses });
+    res.status(200).json({ updatedFormResponses });
   } 
   catch (error) {
     console.error('Error retrieving and shortlisting form responses:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: error });
   }
 
 });
