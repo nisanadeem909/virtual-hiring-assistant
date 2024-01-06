@@ -22,7 +22,8 @@ router.post("/getjobapplications", async(req,res)=>{
 
     try {
 
-        const jobApplications = await JobApplication.find({ jobID: id});
+        const jobApplications = await JobApplication.find({ jobID: id })
+            .sort({ createdAt: -1 });
 
         if (!jobApplications)
             msg = {"status": "error",'error':'not found'}
