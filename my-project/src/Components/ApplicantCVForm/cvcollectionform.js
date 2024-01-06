@@ -37,6 +37,8 @@ function CVCollectionForm() {
   const [resume,setResume] = useState(''); 
   const [imgSet,setImgSet] = useState("false")
   
+  const [fileTypeError, setFileTypeError] = useState(false);
+
   useEffect(()=>{
     
     setJobID(cvcollectionid)
@@ -118,7 +120,17 @@ function CVCollectionForm() {
   const HandleUpload=(t)=>{
       //console.log(t.handle.files);
       
-      setResume(t.target.files[0]);
+      const file = t.target.files[0];
+
+      // Check if the uploaded file is of the allowed types
+      const allowedTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      
+      if (file && !allowedTypes.includes(file.type)) {
+        setFileTypeError(true);
+        return;
+      }
+      setResume(file);
+      setFileTypeError(false);
       
       // alert("setting image=" + img)
       //setImgSet("true")
@@ -199,7 +211,7 @@ function CVCollectionForm() {
             </div>
 
             <div id="nab-form-group">
-                <label id="nab-cv-label" for="cvFile">Upload CV<span id="nab-cv-required-field">*</span>:</label>
+                <label id="nab-cv-label" for="cvFile">Upload your updated CV. Please note CV with graphics will not be accepted.<span id="nab-cv-required-field">*</span>:</label>
                 <div id="nab-upload-btn-wrapper">
                     
                 <input
@@ -215,10 +227,10 @@ function CVCollectionForm() {
 
             
             <div>
-              
+            {fileTypeError && <p style={{ color: 'red' }}>Invalid file type. Please upload a PDF or DOCX file.</p>}
               {isError && <p style={{ color: 'red' }}>Something went wrong. Please try again later.</p>}
             </div>
-            <button type="submit" id="nab-cv-button">Submit</button>
+            <button type="submit" id="nab-cv-button" disabled={fileTypeError}>Submit</button>
             
         </form>
         </>
