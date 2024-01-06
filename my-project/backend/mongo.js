@@ -163,6 +163,10 @@ const jobSchema = new Schema({
     type: String,
   }
   ,
+  noShortlisted:{
+    type: Boolean,
+    default: false,
+  }
 
 }, {
   timestamps: true,

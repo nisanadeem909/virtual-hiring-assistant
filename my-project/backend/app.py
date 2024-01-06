@@ -194,22 +194,37 @@ def matchCVJD(model,cv_all,jd_all):
 
 def CVScreening(job):
     print(job['jobTitle'])
+    
+    if job.get('noShortlisted'):
+        if job['noShortlisted'] == True:
+            return
+    
     model = loadModel()
     jd_phrases = extractJDPhrases(job['jobDescription'])
     acceptableScore = job['AccCVScore'].to_decimal()
     all_apps = list(jobapp_collection.find({'jobID': job['_id']}))
     
     if not all_apps:
-        # notification_data = {
-        #     "jobTitle": job['jobTitle'],
-        #     "jobID": job['_id'],
-        #     "notifText": "CV deadline has passed but no applications!",
-        #     "recruiterUsername": job['postedby'],
-        #     "notifType": 1,
-        #     "createdAt": datetime.now().astimezone(pytz.utc)
-        # }
-        # notification_collection.insert_one(notification_data)
+        filter_criteria = {'_id': job['_id']}
+        update_statement = {
+            '$set': {
+                'noShortlisted': True
+            }
+        }
+        job_collection.update_one(filter_criteria, update_statement)
+        
+        notification_data = {
+            "jobTitle": job['jobTitle'],
+            "jobID": job['_id'],
+            "notifText": "CV deadline has passed but no applications! Please edit deadline/required percentage to continue..",
+            "recruiterUsername": job['postedby'],
+            "notifType": 1,
+            "createdAt": datetime.now().astimezone(pytz.utc)
+        }
+        notification_collection.insert_one(notification_data)
         return
+    
+    shortlistCount = 0
     
     for app in all_apps:
         filename = app['CVPath']
@@ -221,6 +236,9 @@ def CVScreening(job):
             cv_phrases = extractCVPhrases(resume)
             similarity = matchCVJD(model,cv_phrases,jd_phrases)
             
+        if similarity >= acceptableScore:
+            shortlistCount = shortlistCount +1
+            
         filter_criteria = {'_id': app['_id']}
         update_statement = {
             '$set': {
@@ -229,11 +247,36 @@ def CVScreening(job):
             }
         }
         jobapp_collection.update_one(filter_criteria, update_statement)
+        
+    print(shortlistCount)
+        
+    if shortlistCount == 0:
+        filter_criteria = {'_id': job['_id']}
+        update_statement = {
+            '$set': {
+                'noShortlisted': True
+            }
+        }
+        job_collection.update_one(filter_criteria, update_statement)
+        
+        notification_data = {
+            "jobTitle": job['jobTitle'],
+            "jobID": job['_id'],
+            "notifText": "No applications could be shortlisted! Please edit deadline/required percentage to continue..",
+            "recruiterUsername": job['postedby'],
+            "notifType": 1,
+            "createdAt": datetime.now().astimezone(pytz.utc)
+        }
+        notification_collection.insert_one(notification_data)
+        return
+    
+    #print("no")
     
     filter_criteria = {'_id': job['_id']}
     update_statement = {
         '$set': {
-            'status': 2
+            'status': 2,
+            'noShortlisted': False
         }
     }
     job_collection.update_one(filter_criteria, update_statement)
@@ -296,7 +339,7 @@ def Formtimer():
 while True:
     CVtimer()
     Formtimer()
-    time.sleep(300)  
+    time.sleep(60)  
     
 if __name__ == '__main__':
     app.run(debug=True) 
