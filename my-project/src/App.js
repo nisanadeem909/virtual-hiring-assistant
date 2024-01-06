@@ -73,7 +73,7 @@ function App() {
         <Route path="/recruiter" element={<Navbar type="recruiter"/>}>
           
             <Route path="home" element={<RecruiterProjile/>}></Route>
-            <Route path="home/postjob/setemail/rejectionemail" element={<RejectionEmailPage/>}></Route>
+            <Route path="home/postjob/rejectionemail" element={<RejectionEmailPage/>}></Route>
             <Route path="notifications" element={<NotificationPage/>}></Route>
             <Route path="job/createform" element={<CreateFormPageNew/>}></Route>
             <Route path="job/editform" element={<EditFormPage/>}></Route>
@@ -86,8 +86,6 @@ function App() {
             
             
 
-            <Route path="home/postjob/setemail" element={<SetEmail/>}></Route>
-            <Route path="home/postjob/setemail/phase2email" element={<FormCollectionEmail/>}></Route>
             
            
 

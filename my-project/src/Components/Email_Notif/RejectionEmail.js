@@ -1,21 +1,32 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './RejectionEmail.css';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 export default function RejectionEmailPage({ data }) {
-  const [jobTitle, setJobTitle] = useState("Graphic Designer");
+  const [jobTitle, setJobTitle] = useState();
   const [company, setCompany] = useState("Manafa Technologies");
-  const [rejectEmailBody, setEmail] = useState("Dear <name>, \n\nThank you for your interest in the " + jobTitle + " role at " + company + ". We appreciate the time and effort you invested in your application. \n\nAfter careful consideration, we regret to inform you that we have chosen another candidate for this position. While we were impressed with your qualifications, the competition was high. \n\nWe will keep your resume for future opportunities that match your skills. Please continue to check our career page for new openings. \n\nWe wish you the best in your job search and future endeavors. \n\nBest regards, \n\nRecruitment Team \n" + company);
-  const [rejectEmailSub, setSubject] = useState("Regarding Your Application for " + jobTitle + " at " + company);
+ const [rejectEmailSub, setSubject] = useState("Regarding Your Application for " + jobTitle + " at " + company);
   const [showModal, setShowModal] = useState(false);
   const [savedJobId, setSavedJob] = useState("Manafa Technologies");
+  const [job, setJob] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Use optional chaining to avoid errors if location or location.state is undefined
+    const jobData = location.state?.j || [];
+    setJob(jobData);
+    alert(jobData.jobTitle)
+    setJobTitle(jobData.jobTitle)
+  }, [location.state]); // Run the effect when location.state changes
+  const [rejectEmailBody, setEmail] = useState("\n\nThank you for your interest in the " + jobTitle + " role at " + company + ". We appreciate the time and effort you invested in your application. \n\nAfter careful consideration, we regret to inform you that we have chosen another candidate for this position. While we were impressed with your qualifications, the competition was high. \n\nWe will keep your resume for future opportunities that match your skills. Please continue to check our career page for new openings. \n\nWe wish you the best in your job search and future endeavors. ");
+  
 
   const handleSave = async () => {
     try {
       const response = await axios.post(`http://localhost:8000/nisa/api/updateEmailsAndForm/${data}`, {
-        rejectEmailSub,
         rejectEmailBody,
       });
 
@@ -49,10 +60,11 @@ export default function RejectionEmailPage({ data }) {
         <label className='krejemail-header-desc'>This will be the default email that will be sent to all rejected candidates in each phase.</label>
       </div>
       <div className='krejemail-main'>
-        <label><b>Job Title:</b> {jobTitle}</label>
+        <label><b>Job:</b> {job.jobTitle}</label>
         <div className='krejemail-email'>
           <label><b>Email Subject:</b></label>
-          <input type="text" value={rejectEmailSub} className='krejemail-textbox' onChange={handleEmailSubjectChange}></input>
+          <label>Regarding Your Application for {job.jobTitle} at {company}</label>
+          <br></br>
           <label><b>Email Body:</b></label>
           <textarea className='krejemail-textarea' value={rejectEmailBody} onChange={handleDefaultEmailChange}></textarea>
         </div>
