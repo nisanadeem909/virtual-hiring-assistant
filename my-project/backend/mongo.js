@@ -241,7 +241,7 @@ const Notification = mongoose.model('Notification', notificationSchema);
 const formResponses = new Schema({
   applicantEmail: {
     type: String,
-    unique:true
+    //unique:true
   }
   ,
   jobID: {

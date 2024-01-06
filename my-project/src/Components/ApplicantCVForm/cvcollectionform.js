@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 import success from './success.png'
 import axios from 'axios';
 function CVCollectionForm() {
-  
+   
   
   const navigate=useNavigate();
   const { cvcollectionid } = useParams();
