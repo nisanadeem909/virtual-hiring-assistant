@@ -150,6 +150,28 @@ router.post('/findrejectedform', async (req, res) => {
   }
 });
 
+router.patch('/updateRejectionStatus/:applicantId', async (req, res) => {
+  try {
+      const { applicantId } = req.params;
+
+      // Find the JobApplication by applicantId and update the rejectionStatus to 1
+      const updatedApplicant = await JobApplication.findByIdAndUpdate(
+          applicantId,
+          { $set: { rejectionStatus: 1 } },
+          { new: true }
+      );
+
+      if (!updatedApplicant) {
+          return res.status(404).json({ message: 'Applicant not found' });
+      }
+
+      return res.status(200).json({ message: 'Rejection status updated successfully' });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 
 module.exports = router;
