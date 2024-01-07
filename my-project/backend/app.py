@@ -17,6 +17,9 @@ from threading import Thread
 from bson import Decimal128
 import pytz
 import requests
+import smtplib
+import ssl
+import schedule
 
 app = Flask(__name__)
 
@@ -290,6 +293,114 @@ def CVScreening(job):
         "createdAt": datetime.now().astimezone(pytz.utc)
     }
     notification_collection.insert_one(notification_data)
+    sendCVRejectionEmails()
+    
+#########################################
+processed_job_ids = set()
+
+def sendFormEmails():
+    # Find shortlisted applications (status 2)
+    response = requests.get('http://localhost:8000/nisa/getApplicationsByStatus/2')
+
+    if response.status_code == 200:
+        shortlisted_applications = response.json()
+
+        for applicant in shortlisted_applications:
+            job_id = applicant.get('jobID', '')
+            
+            # Check if the job ID is not in the processed set and there is an email and form link
+            if job_id and job_id not in processed_job_ids:
+                form_email_response = requests.get(f'http://localhost:8000/nisa/getFormEmail/{job_id}')
+                form_email_data = form_email_response.json()
+
+                form_email_body = form_email_data.get('formEmailBody', '')
+                form_email_subject = form_email_data.get('formEmailSub', '')
+                
+                if form_email_body and form_email_subject:
+                    send_form_email(applicant, form_email_subject, form_email_body)
+                    processed_job_ids.add(job_id)
+                    print(f"Form email sent to {applicant['email']} for job ID {job_id}")
+                else:
+                    print(f"Form link not available yet for {applicant['email']}")
+
+def send_form_email(applicant, subject, body):
+    port = 587  # For starttls
+    smtp_server = "smtp.gmail.com"
+    sender_email = "virtualhiringassistant04@gmail.com"
+    app_password = "glke rmyu xnfa yozn"
+
+    receiver_email = applicant['email']
+    name = applicant.get('name', '')
+    body = f"Dear {name},\n\n{body}\n\nRegards,\nManafa Technologies"
+
+    message = f"Subject: {subject}\n\n{body}"
+
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP(smtp_server, port) as server:
+        server.ehlo()
+        server.starttls(context=context)
+        server.ehlo()
+        server.login(sender_email, app_password)
+        server.sendmail(sender_email, receiver_email, message)
+
+
+def check_and_send_form_email(applicant):
+    job_id = applicant.get('jobID', '')
+
+    if job_id:
+        # Fetch form email body and subject based on job ID
+        form_email_response = requests.get(f'http://localhost:8000/nisa/getFormEmail/{job_id}')
+        form_email_data = form_email_response.json()
+
+        form_email_body = form_email_data.get('formEmailBody', '')
+        form_email_subject = form_email_data.get('formEmailSub', '')
+
+        if form_email_body and form_email_subject:
+            send_form_email(applicant, form_email_subject, form_email_body)
+            print(f"Form email sent to {applicant['email']} for job ID {job_id}")
+        else:
+            print(f"Form link not available yet for {applicant['email']}")
+
+ #######################3        
+
+def send_rejection_email(applicant, rejection_email_body):
+    port = 587  # For starttls
+    smtp_server = "smtp.gmail.com"
+    sender_email = "virtualhiringassistant04@gmail.com"
+    app_password = "glke rmyu xnfa yozn"
+
+    receiver_email = applicant['email']
+    subject = "Virtual Hiring Assistant"
+    body = f"Dear {applicant['name']},\n\n{rejection_email_body}\n\nRegards,\nManafa Technologies"
+
+    message = f"Subject: {subject}\n\n{body}"
+
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP(smtp_server, port) as server:
+        server.ehlo()
+        server.starttls(context=context)
+        server.ehlo()
+        server.login(sender_email, app_password)
+        server.sendmail(sender_email, receiver_email, message)
+
+def sendCVRejectionEmails():
+    response = requests.post('http://localhost:8000/nisa/findrejected')
+
+    if response.status_code == 200:
+        applicants = response.json()
+        rejection_email_body_response = requests.get('http://localhost:8000/nisa/getRejectionEmailBody/your-job-id')
+        rejection_email_body = rejection_email_body_response.json().get('rejectionEmailBody', '')
+
+        for applicant in applicants:
+            send_rejection_email(applicant, rejection_email_body)
+            print(f"Rejection email sent to {applicant['email']}")
+
+
+
+schedule.every(1).minutes.do(sendFormEmails)
+    ################################################################################################
 
 def FormScreening(job):
     print(job['jobTitle'])
@@ -330,7 +441,6 @@ def Formtimer():
     current_datetime = datetime.now()
     all_jobs = list(job_collection.find({}))
     for job in all_jobs:
-        #print(job)
         if job.get('P2FormDeadline'):
             if job['status'] == 2 and current_datetime >= job['P2FormDeadline']:
                 FormScreening(job)
@@ -339,6 +449,7 @@ def Formtimer():
 while True:
     CVtimer()
     Formtimer()
+    schedule.run_pending()
     time.sleep(60)  
     
 if __name__ == '__main__':
