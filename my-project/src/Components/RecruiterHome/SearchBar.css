@@ -39,13 +39,13 @@
   list-style: none;
   padding: 0;
   position: absolute;
-  width: 600px; /* Limit the width to 600px */
+  width: 632px; /* Limit the width to 600px */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
-  z-index: 1; /* Ensure it's above other elements */
-  margin-top: 2%;
+  z-index: 1; 
+  
 }
 
 .search-result-item {

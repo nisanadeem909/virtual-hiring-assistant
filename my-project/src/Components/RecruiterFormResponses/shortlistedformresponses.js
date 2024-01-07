@@ -53,10 +53,11 @@ export default function ShortlistedFormResponsesPage(props) {
                 ) : (
                     <>
                     <br></br>
+                    <div className='nabcvcollectionpage-table-container'>
                     <table className='nabcvcollectionpage-table'>
                         <thead className='kcvcollectionpage-table-header'>
                             <tr className='nabcvcollectionpage-table-header-row'>
-                                <th style={{ padding: '1.5vh', fontSize: '2.2vh', width: '5%' }} align="center">#</th>
+                                <th align="center">#</th>
                                 <th align="center">Email</th>
                                 <th align="center">Status</th>
                                 {questions.map((quest, index) => (
@@ -83,6 +84,7 @@ export default function ShortlistedFormResponsesPage(props) {
                                     ))}
                         </tbody>
                     </table>
+                    </div>
                     </>
                 )}
             </div>

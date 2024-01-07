@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {Job, Recruiter,JobApplication,Form} = require('../mongo');
+const { ObjectId } = require('mongodb')
 
 router.get('/alljobs', async (req, res) => {
     try {
@@ -38,19 +39,24 @@ router.get('/alljobs', async (req, res) => {
   router.get('/getRejectionEmailBody/:jobId', async (req, res) => {
     try {
       const { jobId } = req.params;
-      const job = await Job.findById(jobId);
+    
+  
+      // Convert jobId to a valid ObjectId
+      const objectIdJobId = new ObjectId(jobId);
+  
+      const job = await Job.findById(objectIdJobId);
   
       if (!job) {
         return res.status(404).json({ message: 'Job not found' });
       }
   
+      console.log(job);
       return res.status(200).json({ rejectionEmailBody: job.rejectEmailBody });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Internal server error' });
     }
   });
-  
 
   router.post('/findrejected', async (req, res) => {
     try {
@@ -113,6 +119,37 @@ router.get('/alljobs', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+router.put('/update_formlinkstatus/:applicantId', async (req, res) => {
+  try {
+    const applicantId = req.params.applicantId;
+    
+    const updateResult = await JobApplication.updateOne(
+      { _id: new ObjectId(applicantId) },
+      { $set: { formlinkstatus: 1 } }
+    );
+
+    if (updateResult.modifiedCount > 0) {
+      res.status(200).json({ message: 'formlinkstatus updated successfully' });
+    } else {
+      res.status(404).json({ message: 'Applicant not found or formlinkstatus already updated' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.post('/findrejectedform', async (req, res) => {
+  try {
+    const rejectedApplications = await JobApplication.find({ status: -2 });
+    res.json(rejectedApplications);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 
 
 module.exports = router;

@@ -32,13 +32,13 @@ function HomePage() {
         <div className="box3">
           
             <div id="nab-discover-opp">Phase-1 CV Screening</div>
-          <div id="nab-text">Easily browse and filter through options that match your skills, experience, and preferences</div>
+          <div id="nab-text">Using AI, the system matches CVs to job descriptions based on recruiter-specified percentages, sending automated rejection emails to unsuitable applicants.</div>
          
         </div>
         <div className="box4">
          
           <div id="nab-discover-opp">Phase-2 Form Screening</div>
-          <div id="nab-text">Applying for jobs has never been easier through our CV Maker.</div>
+          <div id="nab-text">Recruiters create forms with questions for shortlisted candidates, enabling the system to facilitate responses and aid recruiters in making informed decisions.</div>
            
           
           
@@ -47,7 +47,7 @@ function HomePage() {
          
           
           <div id="nab-discover-opp">Phase-3 Video Interview</div>
-          <div id="nab-text">With our streamlined hiring process, companies can find and compare applicants</div>
+          <div id="nab-text">Recruiters set questions, candidates select time slots, upload 5-minute videos, and proceed to technical tests.</div>
            
         </div>
 
@@ -55,7 +55,7 @@ function HomePage() {
          
           
           <div id="nab-discover-opp">Phase-4 Technical Test</div>
-          <div id="nab-text">With our streamlined hiring process, companies can find and compare applicants</div>
+          <div id="nab-text">Recruiters customize technical tests, set minimum acceptable scores, and evaluate candidates based on their performance.</div>
            
         </div>
       </div>
