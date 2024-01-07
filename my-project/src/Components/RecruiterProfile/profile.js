@@ -5,7 +5,7 @@ import './profile.css';
 // import Slideshow from './Slideshow';
 import Footer from '../Footer.js';
 import { useNavigate } from 'react-router-dom';
-import profilepic from './profilepic.jpeg'
+import profilepic from './personcircle.png'
 import { useState,useEffect } from 'react';
 import axios from 'axios';
 export default function Profile() {
@@ -21,10 +21,10 @@ export default function Profile() {
     const [username,setUsername] = useState("") // this will be replaced by session username
     
 
-    const [img,setImg] = useState('./profilepic.jpeg'); //this is the default profilepic
+    const [img,setImg] = useState('./personcircle.png'); //this is the default profilepic
     const [imgSet,setImgSet] = useState("false")
 
-    const [oldImg, setOldImg] = useState('./profilepic.jpeg'); // Old image
+    const [oldImg, setOldImg] = useState('./personcircle.png'); // Old image
     useEffect(()=>{
 
         const sessionID = sessionStorage.getItem('sessionID');
@@ -40,9 +40,10 @@ export default function Profile() {
                 setEmail(res.data.user.email)
                 // setContact(res.data.user.contact)
                 setJobDes(res.data.user.designation)
-                
+              
                 if (res.data.user.profilePic){
                     setImg(res.data.user.profilePic)
+                    
                     setOldImg(res.data.user.profilePic)
                 }
 
@@ -53,7 +54,7 @@ export default function Profile() {
           
       })
       .catch(
-        // error => alert(error)
+         error => alert(error)
         
       );
     
@@ -121,12 +122,8 @@ export default function Profile() {
             let param = {"username":username}; 
             axios.post(`http://localhost:8000/nabeeha/getprofilepic`,param).then(res => {
             //   setCons(res.data);
-                if (res.data.profilePic){
-                    // alert(res.data.profilePic)
-                    // setImg(res.data.profilePic)
-                    setImg(img.name)
-
-                }
+            
+               
             
             
                 })
@@ -153,7 +150,7 @@ export default function Profile() {
           axios.post('http://localhost:8000/nabeeha/uploadprofilepic',fdata)
           .then(res => {
             // alert("Respnse" + JSON.stringify(res.data))
-setOldImg(img.name)
+            setOldImg(img.name)
            
         })
           .catch(
@@ -167,11 +164,13 @@ setOldImg(img.name)
     }
     const HandleUpload=(t)=>{
         //console.log(t.handle.files);
-        
+     
         setImg(t.target.files[0]);
-        
+       
+       
         // alert("setting image=" + img)
         setImgSet("true")
+       
         
 
       }
@@ -180,7 +179,7 @@ setOldImg(img.name)
         <div id="nab-profile-outer-div">
             <div id="nab-profile-pic">
                         {/* <img id="nab-pic-circle" src={profilepic}></img> */}
-                        <img id="nab-pic-circle" src={`http://localhost:8000/routes/profilepictures/` + (img.name || oldImg)} />
+                        <img id="nab-pic-circle" src={`http://localhost:8000/routes/profilepictures/` + ( oldImg || {profilepic})} />
 
                         <div className="profile-info">
                             <div> 
