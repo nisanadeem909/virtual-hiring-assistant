@@ -400,32 +400,58 @@ def sendCVRejectionEmails():
 
     if response.status_code == 200:
         applicants = response.json()
-        jobId = applicants[0].get('jobID', '')
-        rejection_email_body_response = requests.get(f'http://localhost:8000/nisa/getRejectionEmailBody/{jobId}')
-        rejection_email_body = rejection_email_body_response.json().get('rejectionEmailBody', '')
 
         for applicant in applicants:
-            send_rejection_email(applicant, rejection_email_body)
-            print(f"Rejection email sent to {applicant['email']}")
+            rejectionStatus = applicant.get('rejectionstatus')
+
+            print(rejectionStatus)
+            if rejectionStatus == 0:
+                jobId = applicant.get('jobID', '')
+                rejection_email_body_response = requests.get(f'http://localhost:8000/nisa/getRejectionEmailBody/{jobId}')
+                rejection_email_body = rejection_email_body_response.json().get('rejectionEmailBody', '')
+
+                # Send rejection email
+                send_rejection_email(applicant, rejection_email_body)
+
+                # Update rejectionStatus to 1
+                applicant_id = applicant.get('_id', '')
+                update_status_response = requests.patch(f'http://localhost:8000/nisa/updateRejectionStatus/{applicant_id}')
+                
+                if update_status_response.status_code == 200:
+                    print(f"Rejection email sent to {applicant['email']} and rejection status updated.")
+                else:
+                    print(f"Rejection email sent to {applicant['email']} but failed to update rejection status.")
+            else:
+                print(f"Rejection email already sent to {applicant['email']}")
 
 
 def sendFormRejectionEmails():
-    
     response = requests.post('http://localhost:8000/nisa/findrejectedform')
-
 
     if response.status_code == 200:
         applicants = response.json()
 
-       
-        jobId = applicants[0].get('jobID', '')
-      
-        rejection_email_body_response = requests.get(f'http://localhost:8000/nisa/getRejectionEmailBody/{jobId}')
-        rejection_email_body = rejection_email_body_response.json().get('rejectionEmailBody', '')
-      
         for applicant in applicants:
-            send_rejection_email(applicant, rejection_email_body)
-            print(f"Rejection email sent to {applicant['email']}")
+            # Check if rejection status is 0
+            if applicant.get('rejectionstatus', 0) == 0:
+                jobId = applicant.get('jobID', '')
+                applicantId = applicant.get('_id', '')
+                rejection_email_body_response = requests.get(f'http://localhost:8000/nisa/getRejectionEmailBody/{jobId}')
+                rejection_email_body = rejection_email_body_response.json().get('rejectionEmailBody', '')
+
+               
+                send_rejection_email(applicant, rejection_email_body)
+                
+                
+                update_response = requests.patch(f'http://localhost:8000/nisa/updateRejectionStatus/{applicantId}')
+                if update_response.status_code == 200:
+                    print(f"Rejection email sent to {applicant['email']} and status updated.")
+                else:
+                    print(f"Failed to update rejection status for {applicant['email']}.")
+            else:
+                print(f"Rejection email already sent to {applicant['email']}.")
+
+
             
 def FormScreening(job):
     print("in form screening")
@@ -484,9 +510,10 @@ while True:
     CVtimer()
     Formtimer()
     schedule.run_pending()
-    time.sleep(60)  
+    time.sleep(30)  
     
 if __name__ == '__main__':
     app.run(debug=True) 
+    
 
 

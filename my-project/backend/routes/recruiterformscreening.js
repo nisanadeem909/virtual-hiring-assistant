@@ -141,7 +141,7 @@ router.post('/shortlistformresponses', async (req, res) => {
   
       // Update the status of remaining responses to "Rejected"
       await FormResponses.updateMany(
-        { _id: { $nin: shortlistedResponses.map(response => response._id) } },
+        { _id: { $nin: shortlistedResponses.map(response => response._id) },jobID: jobIDToFind },
         { $set: { status: "Rejected" } }
       );
     
