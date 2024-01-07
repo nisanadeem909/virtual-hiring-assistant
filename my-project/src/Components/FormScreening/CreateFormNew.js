@@ -81,6 +81,15 @@ export default function CreateForm(props) {
         setQuestions(copy);
     }
 
+    const formatDate = (date) => {
+        if (!date) return '';
+        const formattedDate = new Date(date); 
+        const year = formattedDate.getFullYear();
+        const month = `${formattedDate.getMonth() + 1}`.padStart(2, '0');
+        const day = `${formattedDate.getDate()}`.padStart(2, '0');
+        return `${day}/${month}/${year}`;
+    };
+
     const saveForm=()=>{
         var flag = true;
         var copy = [...questions];
@@ -104,7 +113,7 @@ export default function CreateForm(props) {
         }
 
         if (selectedDeadline <= job.CVDeadline) {
-            setMessage('Form deadline should be after the job CV deadline.');
+            setMessage('Form deadline should be after the job CV deadline: '+formatDate(job.CVDeadline));
             setMessageTitle('Error');
             setOpenModal(true);
             return;

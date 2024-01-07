@@ -73,16 +73,27 @@ router.post("/editjobcvscore", async(req,res)=>{
 
     try {
 
-        const updatedJob = await Job.findOneAndUpdate(
-            { _id: id },
-            { $set: { AccCVScore: req.body.newScore } },
-            { new: true } 
-          );
+        // const updatedJob = await Job.findOneAndUpdate(
+        //     { _id: id },
+        //     { $set: { AccCVScore: req.body.newScore } },
+        //     { new: true } 
+        //   );
 
-        if (!updatedJob)
+        const foundJob = await Job.findOne({ _id: id });
+
+        if (!foundJob)
             msg = {"status": "error",'error':'not found'}
         else 
+        {
+            foundJob.AccCVScore = req.body.newScore;
+
+            if (foundJob.noShortlisted && foundJob.noShortlisted == true)
+                foundJob.noShortlisted = false;
+
+            const updatedJob = await foundJob.save();
+
             msg = {"status": "success","job":updatedJob}
+        }
         
     }
         catch (error) {
@@ -107,16 +118,27 @@ router.post("/editjobcvdeadline", async(req,res)=>{
 
     try {
 
-        const updatedJob = await Job.findOneAndUpdate(
-            { _id: id },
-            { $set: { CVDeadline: req.body.newDeadline } },
-            { new: true } 
-          );
+        // const updatedJob = await Job.findOneAndUpdate(
+        //     { _id: id },
+        //     { $set: { CVDeadline: req.body.newDeadline } },
+        //     { new: true } 
+        //   );
 
-        if (!updatedJob)
+        const foundJob = await Job.findOne({ _id: id });
+
+        if (!foundJob)
             msg = {"status": "error",'error':'not found'}
         else 
+        {
+            foundJob.CVDeadline = req.body.newDeadline;
+
+            if (foundJob.noShortlisted && foundJob.noShortlisted == true)
+                foundJob.noShortlisted = false;
+
+            const updatedJob = await foundJob.save();
+
             msg = {"status": "success","job":updatedJob}
+        }
         
     }
         catch (error) {
@@ -140,7 +162,7 @@ router.post("/editjobformdeadline", async(req,res)=>{
     var msg;
 
     try {
-
+        // change!!
         const updatedJob = await Job.findOneAndUpdate(
             { _id: id },
             { $set: { P2FormDeadline: req.body.newDeadline } },
