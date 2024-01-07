@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {Job, Recruiter,JobApplication,Form} = require('../mongo');
+const bcrypt = require('bcrypt');
 
 const session = require('express-session');
 router.use(session({
@@ -22,12 +23,14 @@ router.post('/signup', async (req, res) => {
         return res.status(400).json({ error: 'Username or email is already in use.' });
       }
 
-  
+      console.log(req.body)
+
+      const hashedPassword = await bcrypt.hash(req.body.password, 12);
      
       const newUser = new Recruiter({
         username,
         email,
-        password,
+        password: hashedPassword,
         name,
         designation,
       });
