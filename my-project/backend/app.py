@@ -403,7 +403,14 @@ schedule.every(1).minutes.do(sendFormEmails)
     ################################################################################################
 
 def FormScreening(job):
+    print("in form screening")
     print(job['jobTitle'])
+    
+    if job.get('noShortlisted'):
+        print(job['noShortlisted'])
+        if job['noShortlisted'] == True:
+            return
+    
     response = requests.post('http://localhost:8000/nabeeha/shortlistformresponses', {'jobId': job['_id']})
     print(response.json())
     

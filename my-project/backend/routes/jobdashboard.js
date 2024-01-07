@@ -165,7 +165,7 @@ router.post("/editjobformdeadline", async(req,res)=>{
         // change!!
         const updatedJob = await Job.findOneAndUpdate(
             { _id: id },
-            { $set: { P2FormDeadline: req.body.newDeadline } },
+            { $set: { P2FormDeadline: req.body.newDeadline,noShortlisted:false } },
             { new: true } 
           );
 
