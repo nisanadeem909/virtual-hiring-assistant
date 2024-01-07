@@ -12,12 +12,12 @@
     grid-area: main;
     background-color: white;
     min-height: 85vh;
-    width: 90%;
+    width: 90vw;
     margin-left: 5%;
     border: 1.5px solid gainsboro;
     border-top: none;
     border-radius: 0 2vh 0 0;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 15px 10px rgba(0, 0, 0, 0.3);
 }
 
 .kjobdashboardpage-footer {

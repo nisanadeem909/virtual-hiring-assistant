@@ -21,7 +21,7 @@ export default function RejectionEmailPage({ data }) {
    
     setJobTitle(jobData.jobTitle)
   }, [location.state]); // Run the effect when location.state changes
-  const [rejectEmailBody, setEmail] = useState("\n\nThank you for your interest in the <position>"  + " role at " + company + ". We appreciate the time and effort you invested in your application. \n\nAfter careful consideration, we regret to inform you that we have chosen another candidate for this position. While we were impressed with your qualifications, the competition was high. \n\nWe will keep your resume for future opportunities that match your skills. Please continue to check our career page for new openings. \n\nWe wish you the best in your job search and future endeavors. ");
+  const [rejectEmailBody, setEmail] = useState("\n\nThank you for your interest in the role at " + company + ". We appreciate the time and effort you invested in your application. \n\nAfter careful consideration, we regret to inform you that we have chosen another candidate for this position. While we were impressed with your qualifications, the competition was high. \n\nWe will keep your resume for future opportunities that match your skills. Please continue to check our career page for new openings. \n\nWe wish you the best in your job search and future endeavors. ");
   
 
   const handleSave = async () => {

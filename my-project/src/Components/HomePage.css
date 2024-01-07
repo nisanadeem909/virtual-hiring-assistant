@@ -11,7 +11,8 @@
 #nab-text{
     font-size: 17px;
     text-align:center;
-    color: #60B3D1;
+    color: #3498db;
+    font-weight: bolder;
     /*width: 27vh;*/
 }
 .container-home{

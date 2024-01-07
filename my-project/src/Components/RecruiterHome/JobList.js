@@ -41,7 +41,7 @@ export default function JobList() {
               <div>
                 <div className="job-title">{job.jobTitle}</div>
                 <div className="job-status">
-                  <span style={{ color: 'red' }}>Status:</span> {getPhaseLabel(job.status)}
+                  <span style={{ color: 'blue' }}>Status:</span> {getPhaseLabel(job.status)}
                 </div>
               </div>
             </div>
