@@ -104,6 +104,13 @@ const jobApplicationSchema = new Schema({
 
   }
   ,
+  rejectionstatus: {
+    type: Number,
+    required: true,
+    default:0
+
+  }
+  ,
 
 
 }, {
