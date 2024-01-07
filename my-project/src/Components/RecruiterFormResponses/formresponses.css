@@ -5,7 +5,7 @@
     
 }
 .nabcvcollectionpage-table-container {
-    overflow-x: auto;
+    overflow-x: scroll;
 }
 .kcvcollectionpage-header {
     background-color: #012641;
@@ -46,8 +46,8 @@
     padding: 1vh;
     border-spacing: 0;
     border-collapse: collapse;
-    table-layout: fixed; /* Ensure equal width for columns */
-    
+    /* table-layout: fixed; Ensure equal width for columns */
+    overflow-x: scroll ;
 }
 
 .kcvcollectionpage-table-header {
