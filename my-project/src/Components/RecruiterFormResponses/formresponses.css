@@ -5,7 +5,8 @@
     
 }
 .nabcvcollectionpage-table-container {
-    overflow-x: scroll;
+      overflow-x: auto;
+    max-width: 100%;
 }
 .kcvcollectionpage-header {
     background-color: #012641;
@@ -40,23 +41,28 @@
     color:#60B3D1
 }
 
+
 .nabcvcollectionpage-table {
-    width: 100%;
+    max-width: 100%;
     border: 1px solid rgb(238, 239, 240);
     padding: 1vh;
     border-spacing: 0;
     border-collapse: collapse;
-    /* table-layout: fixed; Ensure equal width for columns */
-    overflow-x: scroll ;
+    box-sizing: border-box;
+   
 }
 
 .kcvcollectionpage-table-header {
-    background-color: rgb(238, 239, 240);
+    background-color: rgb(108, 113, 117);
+    overflow: hidden;
+    white-space: nowrap; 
+    text-overflow: ellipsis; 
 }
 
 .nabcvcollectionpage-table-header-row th {
     padding: 1.5vh;
     font-size: 2.2vh;
+    overflow: auto;
     /* width: 10%; Set the width for each header column */
     
     
@@ -70,7 +76,7 @@
 .nabcvcollectionpage-table-row td {
     padding: 1.5vh;
     font-size: 2.5vh;
-    text-overflow: ellipsis;
+    overflow: auto;
 }
 
 .kcvcollectionpage-table-cvimg {
@@ -109,6 +115,10 @@
 
 .kcvcollectionpage-table-row.rejected {
     background-color: lightcoral; /* or any other light red color */
+}
+
+@media (max-width: 768px) {
+   
 }
 
 

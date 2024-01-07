@@ -6,7 +6,7 @@ export default function FormCollectionEmailComponent() {
   const location = useLocation();
   const [job, setJob] = useState(null);
   const [formEmailBody, setEmail] = useState(
-    "Your application for <position> role at <company> has successfully passed Phase 1 of our recruitment.\n\nFor Phase 2, we require candidates to answer a few important questions about their role at our company. \n\nPlease find attached the link to the Form. Please submit it within 2 days of receiving it. \n\n"
+    "Your application for role at Manafa Technologies has successfully passed Phase 1 of our recruitment.\n\nFor Phase 2, we require candidates to answer a few important questions about their role at our company. \n\nPlease find attached the link to the Form. Please submit it within 2 days of receiving it. \n\n"
   );
   const [formEmailSub, setSubject] = useState("Regarding Your Application");
   const [savedjobId, setSavedJob] = useState();
@@ -37,7 +37,7 @@ export default function FormCollectionEmailComponent() {
   
     // Append the link to the end of the email body
     const updatedEmailBody = `${formEmailBody}\n\n${job?.P2FormLink}`;
-    alert(updatedEmailBody);
+    
     try {
       const response = await axios.post(`http://localhost:8000/nisa/api/emailForm/${jobId}`, {
         formEmailSub,

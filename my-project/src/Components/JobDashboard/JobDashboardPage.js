@@ -92,6 +92,7 @@ export default function JobDashboardPage() {
                       <label>Form has been created!</label>
                       <label>Please wait till phase 1 (CV Screening) is completed to proceed to Form Screening.</label>
                       <button className='kp2formcreating-createbtn' onClick={()=>navigate('\editform',{state:{'job':job}})}>Edit Form</button>
+                      
                     </div>
                   </div>)
                 }

@@ -97,6 +97,13 @@ const jobApplicationSchema = new Schema({
     required: true
   }
   ,
+  formlinkstatus: {
+    type: Number,
+    required: true,
+    default:0
+
+  }
+  ,
 
 
 }, {
