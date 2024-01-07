@@ -4,7 +4,7 @@ import './Navbar.css';
 import logo2 from './vhalogo.png';
 import nabhumanicon from './personcircle.png';
 import nablogouticon from './nab-logout-icon.png';
-import changepasswordicon from './changepassword.png';
+import changepasswordicon from './changepassword1.png';
 import nabprofileicon from './nab-profile-icon.png';
 import axios from "axios";
 import { useEffect } from "react";
@@ -54,11 +54,6 @@ const Layout = (props) => {
           console.error('Error logging out:', error);
         });
   }
-  const changePasswordPage = () =>{ 
-
-    navigate("/recruiter/changepasswordpage")
-    
-}
 
   const handleProfile = () =>{
     document.getElementById("myDropdown").classList.toggle("show");
@@ -106,10 +101,15 @@ const Layout = (props) => {
                 </div>
                 <div id="profile-line-hr"></div>
                 <div id="profile-head-section">
-                  <button class="editprofile-button" onClick={()=>navigate('/admin/profile')}><img src={nabprofileicon} id="nab-profile-icon"></img>My Profile</button>
+                  <button class="editprofile-button" onClick={()=>navigate('/admin/profile')}><img src={nabprofileicon} id="nab-profile-icon"></img> My Profile</button>
                   
                 </div>
-                
+                <div id="profile-head-section">
+                                  
+                                  <button onClick={()=>navigate('/admin/changepasswordpage')} class="editprofile-button" >
+                                  <img src={changepasswordicon} id="nab-logout-icon"></img> <span>Change Password</span></button>
+                                  
+                                </div>
                 <div id="profile-head-section">
                   
                   <button onClick={logoutSession} class="editprofile-button" >
@@ -159,7 +159,7 @@ const Layout = (props) => {
                                 </div>
                                 <div id="profile-head-section">
                                   
-                                  <button onClick={changePasswordPage} class="editprofile-button" >
+                                  <button onClick={()=>navigate('/recruiter/changepasswordpage')} class="editprofile-button" >
                                   <img src={changepasswordicon} id="nab-logout-icon"></img> <span>Change Password</span></button>
                                   
                                 </div>
@@ -169,7 +169,6 @@ const Layout = (props) => {
                                   <img src={nablogouticon} id="nab-logout-icon"></img> <span>Logout </span></button>
                                   
                                 </div>
-                                
                                 
                                   
                                 

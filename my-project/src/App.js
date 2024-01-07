@@ -52,6 +52,7 @@ function App() {
           <Route index element={<AdminHomePage/>} />
           <Route path="addrecruiter" element={<Signup/>}></Route>
           <Route path="profile" element={<RecruiterProfile/>}></Route>
+            <Route path="changepasswordpage" element={<ChangePasswordPage/>}></Route>
           <Route path="*" element={<Error/>}></Route>      
 
 

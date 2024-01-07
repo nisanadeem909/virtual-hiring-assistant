@@ -18,8 +18,8 @@ export default function Profile() {
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmNewPassword, setConfirmNewPassword] = useState("");
-    const [passwordsMatch, setPasswordsMatch] = useState(true);
-    const [serverMessage, setServerMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
   
     useEffect(() => {
       const sessionID = sessionStorage.getItem('sessionID');
@@ -54,10 +54,37 @@ export default function Profile() {
   
       if (newPassword != confirmNewPassword) {
         //alert('Passwords do not match. Please re-enter.');
-        setPasswordsMatch(false)
+        setSuccessMessage('');
+        setNewPassword('');
+        setConfirmNewPassword('');
+        setCurrentPassword('');
+        setErrorMessage('Passwords do not match. Please re-enter.');
         return;
       }
   
+      var param = {'username':username1,'oldPassword':currentPassword,'newPassword':newPassword};
+        axios.post("http://localhost:8000/komal/changepassword",param).then((response) => {
+           // alert(JSON.stringify(response.data));
+           if (response.data.status == "success"){
+              setSuccessMessage('Password updated successfully!');
+              setErrorMessage('');
+              setNewPassword('');
+              setConfirmNewPassword('');
+              setCurrentPassword('');
+            }
+            else 
+            {
+              setSuccessMessage('');
+              setErrorMessage(`Error: ${response.data.error}`);
+              setNewPassword('');
+              setConfirmNewPassword('');
+              setCurrentPassword('');
+            }
+        })
+        .catch(function (error) {
+          setSuccessMessage('');
+            setErrorMessage('Something went wrong, please try again.');
+        });
       
     };
   
@@ -108,13 +135,8 @@ export default function Profile() {
                 onChange={handleInputChange}
               />
             </div>
-            
-            {!passwordsMatch && <p style={{ color: 'red' }}>Passwords do not match. Please re-enter.</p>}
-            {serverMessage && (
-              <label style={{ color: serverMessage.isError ? 'red' : 'green' }}>
-                {serverMessage.message}
-              </label>
-            )}
+            {successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}
+            {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
             <button type="submit" id="nab-profile-button" onClick={() => handleSave(username)}>Update Password</button>
           </div>
         </div>
