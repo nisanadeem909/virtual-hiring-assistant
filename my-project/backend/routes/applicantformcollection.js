@@ -170,7 +170,7 @@ router.post('/submitformresponse', async (req, res) => {
             console.log(existingApplication)
             if (!existingApplication) {
               console.log("This applicant has not submitted their CV.")  
-              res.json({ success: true });
+              res.status(700).json({ error: 'Something went wrong. Seems like you have not submitted your CV earlier.' });
               return;// res.status(400).json({ error: 'You have not submitted CV for this job, you cannot proceed to this Phase.' });
             }
         

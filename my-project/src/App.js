@@ -22,6 +22,8 @@ import JobDashboardPage from './Components/JobDashboard/JobDashboardPage.js';
 import CVCollectionForm from './Components/ApplicantCVForm/cvcollectionform.js'
 import FormScreening from './Components/ApplicantFormScreening/formscreening.js'
 import RecruiterProfile from './Components/RecruiterProfile/profile.js'
+import ChangePasswordPage from './Components/RecruiterProfile/changepassword.js'
+
 import FormCollectionEmail from './Components/RecruiterPhase2Email/FormCollectionEmailPage.js'
 import FormResponsesPage from './Components/RecruiterFormResponses/formresponses.js';
 import ShortlistedFormResponsesPage from './Components/RecruiterFormResponses/shortlistedformresponses.js';
@@ -82,6 +84,7 @@ function App() {
             <Route path="job/cvview" element={<CVView/>}></Route>
             <Route path="home/postjob" element={<PostJobPage/>}></Route>
             <Route path="profile" element={<RecruiterProfile/>}></Route>
+            <Route path="changepasswordpage" element={<ChangePasswordPage/>}></Route>
             <Route path="job/createform/phase2email" element={<FormCollectionEmail/>}></Route>
             
             

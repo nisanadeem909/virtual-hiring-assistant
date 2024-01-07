@@ -23,7 +23,8 @@ export default function Profile() {
 
     const [img,setImg] = useState('./profilepic.jpeg'); //this is the default profilepic
     const [imgSet,setImgSet] = useState("false")
-    
+
+    const [oldImg, setOldImg] = useState('./profilepic.jpeg'); // Old image
     useEffect(()=>{
 
         const sessionID = sessionStorage.getItem('sessionID');
@@ -39,6 +40,14 @@ export default function Profile() {
                 setEmail(res.data.user.email)
                 // setContact(res.data.user.contact)
                 setJobDes(res.data.user.designation)
+                
+                if (res.data.user.profilePic){
+                    setImg(res.data.user.profilePic)
+                    setOldImg(res.data.user.profilePic)
+                }
+
+                // alert("img= " +img)
+                // alert("oldimg= " + oldImg)
             }
            
           
@@ -116,6 +125,7 @@ export default function Profile() {
                     // alert(res.data.profilePic)
                     // setImg(res.data.profilePic)
                     setImg(img.name)
+
                 }
             
             
@@ -143,7 +153,7 @@ export default function Profile() {
           axios.post('http://localhost:8000/nabeeha/uploadprofilepic',fdata)
           .then(res => {
             // alert("Respnse" + JSON.stringify(res.data))
-
+setOldImg(img.name)
            
         })
           .catch(
@@ -170,7 +180,8 @@ export default function Profile() {
         <div id="nab-profile-outer-div">
             <div id="nab-profile-pic">
                         {/* <img id="nab-pic-circle" src={profilepic}></img> */}
-                        <img id="nab-pic-circle" src={`http://localhost:8000/routes/profilepictures/` + img}/>
+                        <img id="nab-pic-circle" src={`http://localhost:8000/routes/profilepictures/` + (img.name || oldImg)} />
+
                         <div className="profile-info">
                             <div> 
                                 
@@ -249,5 +260,3 @@ export default function Profile() {
     </div>
   );
 }
-
-

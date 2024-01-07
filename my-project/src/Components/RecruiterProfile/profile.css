@@ -22,26 +22,24 @@
   color: white;
   background-color:#012641;
 }
-#nab-profile-pic{
-    width: 30%;
-    border-right: 1px solid #f2f2f2; /* Very light gray line */
-    padding-top: 2%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    
+#nab-profile-pic {
+  width: 30%;
+  border-right: 1px solid #f2f2f2;
+  padding-top: 2%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 #nab-profile-details{
     width:70%;
     
     
 }
-#nab-pic-circle{
-    
-    border-radius: 50%;
-    object-fit: cover;
-    width: 40%;
-    
+#nab-pic-circle {
+  border-radius: 50%;
+  object-fit: cover;
+  width: 50%;
+  height: 50%; /* Add this line to make sure the height is 100% as well */
 }
 .profile-pic {
     width: 100%;
