@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cors=require('cors');
-const {Job, Recruiter,JobApplication,Form,FormResponses} = require('../mongo');
+const {Job, Recruiter,JobApplication,Form,FormResponses,Notification} = require('../mongo');
 router.use(express.static('files'));
 const path = require('path');
 router.use("/static",express.static(path.join(__dirname,'public')));
@@ -52,6 +52,32 @@ router.post('/shortlistformresponses', async (req, res) => {
       return res.status(404).json({ error: 'Form not found' });
     }
 
+    //----------------KOMAL ADDED---------------------
+
+    console.log(formResponses)
+    if(!formResponses || formResponses.length == 0) // no applications
+    {
+          //console.log("IM HEREEEEEEEEEEEEE")
+          const updatedJob = await Job.findOneAndUpdate(
+              { _id: jobIDToFind },
+              { $set: { noShortlisted: true } },
+              { new: true } // To return the updated document
+          );
+          console.log(updatedJob)
+      
+          const notificationData = new Notification({
+              jobTitle: updatedJob.jobTitle,
+              jobID: jobIDToFind,
+              notifText: 'Phase 2 deadline has passed but no applications! Please extend deadline to continue..',
+              recruiterUsername: updatedJob.postedby,
+              notifType: 2
+          });
+      
+          await notificationData.save();
+          res.status(500).json({ error: "No form responses!" });
+    }
+    else{//--------------
+
     // Extract correct answer statements dynamically
     const correctAnswers = form.questions.map((question) => {
       return question.options[question.answer];
@@ -82,6 +108,32 @@ router.post('/shortlistformresponses', async (req, res) => {
       console.log("SHORTLISTED======")
       console.log(shortlistedResponses)
 
+      //----------------KOMAL ADDED---------------------
+      var flag = true;
+      if (shortlistedResponses.length == 0){
+        
+        console.log("NO ONE SHORTLISTED")
+        const updatedJob = await Job.findOneAndUpdate(
+            { _id: jobIDToFind },
+            { $set: { noShortlisted: true } },
+            { new: true } 
+        );
+        console.log(updatedJob)
+    
+        const notificationData = new Notification({
+            jobTitle: updatedJob.jobTitle,
+            jobID: jobIDToFind,
+            notifText: 'Phase 2 deadline has passed but no application could be shortlisted!',
+            recruiterUsername: updatedJob.postedby,
+            notifType: 2
+        });
+    
+        await notificationData.save();
+        flag = false;
+
+      }
+      //else{ //------------
+
       await FormResponses.updateMany(
         { _id: { $in: shortlistedResponses.map(response => response._id) } },
         { $set: { status: "Shortlisted" } }
@@ -99,18 +151,37 @@ router.post('/shortlistformresponses', async (req, res) => {
       const shortlistedEmails = shortlistedResponses.map(response => response.applicantEmail);
       console.log(shortlistedEmails)
       await JobApplication.updateMany(
-        {
-          $or: [
-            { email: { $in: shortlistedEmails }, jobID: jobIDToFind },
-            { jobID: jobIDToFind, email: { $nin: shortlistedEmails } }
-          ]
-        },
-        { $set: { status: { $cond: { if: { $in: ["$email", shortlistedEmails] }, then: 3, else: -2 } } } }
+          {
+              email: { $in: shortlistedEmails },
+              jobID: jobIDToFind
+          },
+          {
+              $set: {
+                  status: 3
+              }
+          }
+      );
+
+      // Set status to -2 for emails not in the shortlistedEmails array
+      await JobApplication.updateMany(
+          {
+              email: { $nin: shortlistedEmails },
+              jobID: jobIDToFind
+          },
+          {
+              $set: {
+                  status: -2
+              }
+          }
       );
       console.log("UPDATED JOB APPS")
 
     const updatedFormResponses = await FormResponses.find({ jobID: jobIDToFind }).exec();
-    res.status(200).json({ updatedFormResponses });
+    if (flag)
+      res.status(200).json({ updatedFormResponses });
+    else
+      res.status(500).json({ error: "No form responses shortlisted!" });
+    }//}
   } 
   catch (error) {
     console.error('Error retrieving and shortlisting form responses:', error);

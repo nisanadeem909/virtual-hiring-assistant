@@ -109,11 +109,11 @@
     width: 5vh;
 }
 /* Different colors for shortlisted */
-.kcvcollectionpage-table-row.shortlisted {
+.nabcvcollectionpage-table-row.shortlisted {
     background-color: lightgreen; /* or any other light green color */
 }
 
-.kcvcollectionpage-table-row.rejected {
+.nabcvcollectionpage-table-row.rejected {
     background-color: lightcoral; /* or any other light red color */
 }
 

@@ -102,7 +102,7 @@ export default function JobDashboardPage() {
                 setContent(<FormCreating job={job}></FormCreating>)
             }
             else {
-              if (job.status >= 3 || (job.status == 1 && job.noShortlisted)) //phase 2 complete and apps shortlisted)
+              if (job.status >= 3 || (job.status == 2 && job.noShortlisted)) //phase 2 complete and apps shortlisted)
                 setContent(<ShortlistedFormResponsesPage job={job}></ShortlistedFormResponsesPage>)
               else//form has been created - form responses coming
                 setContent(<FormResponsesPage job={job}></FormResponsesPage>)
