@@ -51,7 +51,7 @@ export default function FormScreening() {
       });
 
     if (errorMessage) {
-      alert(errorMessage);
+      //alert(errorMessage);
       navigate('/error');
     }
   }, [errorMessage, navigate]);
