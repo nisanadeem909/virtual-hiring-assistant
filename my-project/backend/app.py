@@ -510,7 +510,7 @@ while True:
     CVtimer()
     Formtimer()
     schedule.run_pending()
-    time.sleep(60)  
+    time.sleep(30)  
     
 if __name__ == '__main__':
     app.run(debug=True) 

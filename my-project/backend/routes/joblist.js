@@ -154,14 +154,17 @@ router.patch('/updateRejectionStatus/:applicantId', async (req, res) => {
   try {
       const { applicantId } = req.params;
 
+      console.log("UPDATING REJECTION STATUS "+applicantId)
+
       // Find the JobApplication by applicantId and update the rejectionStatus to 1
       const updatedApplicant = await JobApplication.findByIdAndUpdate(
           applicantId,
-          { $set: { rejectionStatus: 1 } },
+          { $set: { rejectionstatus: 1 } },
           { new: true }
       );
 
       if (!updatedApplicant) {
+          console.log("Applicant not found")
           return res.status(404).json({ message: 'Applicant not found' });
       }
 
@@ -171,7 +174,5 @@ router.patch('/updateRejectionStatus/:applicantId', async (req, res) => {
       return res.status(500).json({ message: 'Internal server error' });
   }
 });
-
-
 
 module.exports = router;
