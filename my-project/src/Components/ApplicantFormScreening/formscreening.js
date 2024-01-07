@@ -1,4 +1,3 @@
-
 import React from 'react';
 import './formscreening.css';
 import Footer from '../Footer.js';
@@ -51,7 +50,7 @@ export default function FormScreening() {
       });
 
     if (errorMessage) {
-      alert(errorMessage);
+      //alert(errorMessage);
       navigate('/error');
     }
   }, [errorMessage, navigate]);
@@ -89,7 +88,12 @@ export default function FormScreening() {
         if (error.response && error.response.status === 400 && error.response.data.error === 'Form Response Already Submitted') {
           setFormSubmissionError('You can only submit this form once. A form response has already been submitted against this email.');
           setIsFormSubmitted(true)
-        } else {
+        } 
+        else if (error.response && error.response.status === 700 && error.response.data.error === 'Something went wrong. Seems like you have not submitted your CV earlier.') {
+          setFormSubmissionError('Something went wrong processing your application. Seems like you have not submitted your CV for processing earlier.');
+          setIsFormSubmitted(true)
+        }
+        else {
           setIsError(true);
         }
       });

@@ -22,11 +22,11 @@ export default function CVCollection(props) {
            if (response.data.status == "success"){
               setApps(response.data.jobApps);
             }
-            else 
-              alert("Error: "+response.data.error);
+             
+              //alert("Error: "+response.data.error);
         })
         .catch(function (error) {
-            alert("Axios Error:" + error);
+            //alert("Axios Error:" + error);
         });
     }
     }, [props.job]);

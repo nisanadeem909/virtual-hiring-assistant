@@ -65,7 +65,7 @@ router.post('/uploadprofilepic', function(req,res){
      var form = new formidable.IncomingForm();
      var newpath;
      form.parse(req,async function(err,fields,files){
-         
+         console.log(files.Image)
          var oldpath = String(files.Image.filepath); //this was files.Image.filepath
          //console.log(oldpath);
          const img_file = files.Image.originalFilename;
