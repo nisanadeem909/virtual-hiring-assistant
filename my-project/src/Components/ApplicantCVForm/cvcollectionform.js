@@ -88,6 +88,7 @@ function CVCollectionForm() {
     axios.post(`http://localhost:8000/nabeeha/submitcvapplication`, param)
       .then(res => {
         setIsFormSubmitted(true);
+        upload();
       })
       .catch(error => {
         if (error.response && error.response.status === 400 && error.response.data.error === 'You have already applied for this position.') {
@@ -97,8 +98,8 @@ function CVCollectionForm() {
         }
       });
 
-    if (!duplicateApplicationError)
-      upload();
+    // if (!duplicateApplicationError)
+    //   upload();
     
   };
 
@@ -111,6 +112,7 @@ function CVCollectionForm() {
     {
       var fdata = new FormData();
       fdata.append("Resume", resume);
+      fdata.append("jobID", jobID);
       fdata.append("email", email); //THIS SHOULD BE FROM STATE
       axios.post('http://localhost:8000/nabeeha/uploadcv',fdata) 
       .then(res => {

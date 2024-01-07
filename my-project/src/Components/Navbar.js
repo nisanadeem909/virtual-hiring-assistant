@@ -26,7 +26,8 @@ const Layout = (props) => {
         navigate('/login');
   },[])
 
-  useEffect(()=>{
+  const findUser=()=>{
+    //alert("HELLLOOOO")
     if (props.type == "recruiter" || props.type == "admin")
     {
         var sessionID = sessionStorage.getItem('sessionID');
@@ -39,6 +40,13 @@ const Layout = (props) => {
               console.error(err);
             });
     }
+  }
+  
+
+  useEffect(()=>{
+    findUser();
+    const intervalId = setInterval(findUser, 10000);
+    return () => clearInterval(intervalId);
 },[props])
 
   const logoutSession = () =>{ 
