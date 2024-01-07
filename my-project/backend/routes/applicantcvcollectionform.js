@@ -133,12 +133,18 @@ var form = new formidable.IncomingForm();
        var appID = fields.email;
 
        try {
-          
+          console.log("File name "+img_file)
+          console.log("FIELDS: "+fields)
+
             const result = await JobApplication.findOneAndUpdate(
-              { email: appID },
+              { email: fields.email.toString(),jobID:fields.jobID },
               { $set: { CVPath: img_file } },
               { new: true, overwrite: false }
             );
+            if (!result)
+              console.log("NOT FOUND")
+            else
+              console.log(result);
           } catch (error) {
             console.error('Error uploading resume:', error);
             // Handle the error

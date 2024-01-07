@@ -6,12 +6,15 @@ import VideoNotif from '../images/VideoNotif.png';
 import ShortlistNotif from '../images/ShortlistNotif.jpg';
 import loading from '../images/loading3.gif';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function NotificationPage() {
 
     const [notifications,setNotifs] = useState(<img src={loading} className='knotif-loading-img'></img>);
 
     const notifImg = [CVNotif, FormNotif, VideoNotif, ShortlistNotif];
+
+    const navigate = useNavigate();
 
     const convertDate = (mongoDate) => {
         const currentDateTime = new Date();
@@ -63,7 +66,7 @@ export default function NotificationPage() {
            if (response.data.status == "success"){
               if (response.data.data)
                 setNotifs(response.data.data.map((notification)=>(
-                    <div className='knotif-notification'>
+                    <div className='knotif-notification' onClick={()=>navigate('/recruiter/job', { state: { 'jobID': notification.jobID } })}>
                         <img className="knotif-icon" src={notifImg[notification.notifType-1]}></img>
                         <div className='knotif-content'>
                             <div className='knotif-content-top'>
