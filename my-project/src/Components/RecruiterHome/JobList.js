@@ -35,7 +35,9 @@ export default function JobList() {
         <h2 className='nisa-joblists-head'>
           Jobs List
         </h2>
-        {jobs.map((job, index) => (
+        {jobs.length === 0 ? (
+          <div className='kjob-nojob'>No jobs found</div>
+        ) : (jobs.map((job, index) => (
           <div key={index} className="job-row">
             <div className="job-details">
               <div>
@@ -46,8 +48,9 @@ export default function JobList() {
               </div>
             </div>
             <button className="open-job-button" onClick={() => navigate('/recruiter/job', { state: { 'jobID': job._id } })}>Open Job</button>
-          </div>
-        ))}
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

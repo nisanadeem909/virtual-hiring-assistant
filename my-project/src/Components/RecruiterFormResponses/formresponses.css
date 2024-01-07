@@ -43,6 +43,7 @@
 
 
 .nabcvcollectionpage-table {
+    min-width: 100%;
     max-width: 100%;
     border: 1px solid rgb(238, 239, 240);
     padding: 1vh;
@@ -110,11 +111,11 @@
 }
 /* Different colors for shortlisted */
 .nabcvcollectionpage-table-row.shortlisted {
-    background-color: lightgreen; /* or any other light green color */
+    background-color: #b3e882; /* or any other light green color */
 }
 
 .nabcvcollectionpage-table-row.rejected {
-    background-color: lightcoral; /* or any other light red color */
+    background-color: #ff6459; /* or any other light red color */
 }
 
 @media (max-width: 768px) {

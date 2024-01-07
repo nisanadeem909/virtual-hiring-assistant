@@ -67,3 +67,9 @@
     margin-top: -10%;
   }
   
+  .kjob-nojob {
+    margin-top: 20vh;
+    color: red;
+    font-weight: bold;
+    font-size: 3vh;
+  }
