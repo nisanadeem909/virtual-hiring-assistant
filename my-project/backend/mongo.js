@@ -108,7 +108,6 @@ const jobApplicationSchema = new Schema({
     type: Number,
     required: true,
     default:0
-
   }
   ,
 
