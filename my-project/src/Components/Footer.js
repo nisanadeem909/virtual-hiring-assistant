@@ -6,50 +6,37 @@ import icons from './icons.png';
 export default function Footer() {
   return (
     <div>
-       <footer class="footer-distributed">
+      <footer className="footer-distributed">
 
-<div class="footer-left">
+        <div className="footer-left">
+          <img className="logo" src={logo1} alt="VHA Logo" />
+        </div>
 
-<img class="logo" src={logo1}/>
-  
-</div>
+        <div className="footer-center">
+          <div>
+            <i className="fa fa-map-marker"></i>
+            <p><span>Explore Easy Hiring</span>Looking for the right employee?</p>
+          </div>
+          <div>
+            <i className="fa fa-phone"></i>
+            <p>Your perfect match is here!</p>
+          </div>
+          <div>
+            <i className="fa fa-envelope"></i>
+            <p><a href="mailto:support@vha.com">support@vha.com</a></p>
+          </div>
+        </div>
 
-<div class="footer-center">
+        <div className="footer-right">
+          <p className="footer-company-about">
+            <span>About VHA</span>
+            VHA: Empowering recruiters to streamline and optimize the hiring process. Revolutionize your recruitment journey by discovering, connecting, and efficiently hiring top talent. Explore a plethora of career opportunities in various industries, ensuring a seamless match between recruiters and qualified candidates.
+          </p>
 
-  <div>
-    <i class="fa fa-map-marker"></i>
-    <p><span>Looking for a job?</span>Looking for an employee?</p>
-  </div>
+          
+        </div>
 
-  <div>
-    <i class="fa fa-phone"></i>
-    <p>You came to the right place!</p>
-  </div>
-
-  <div>
-    <i class="fa fa-envelope"></i>
-    <p><a href="mailto:support@jobify.com">support@vha.com</a></p>
-  </div>
-
-</div>
-
-<div class="footer-right">
-
-  <p class="footer-company-about">
-    <span>About VHA</span>
-    VHA: Your ultimate destination for finding the perfect job. Discover, search, and apply for a wide range of career opportunities in various industries, connecting job seekers with their dream positions.
-  </p>
-
-  <div class="footer-icons">
-
-    <img className='icons' src={icons} alt="" />
-
-  </div>
-
-</div>
-
-</footer>
-      
+      </footer>
     </div>
   )
 }

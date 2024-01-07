@@ -296,10 +296,8 @@ def CVScreening(job):
     sendCVRejectionEmails()
     
 #########################################
-processed_job_ids = set()
-
 def sendFormEmails():
-    # Find shortlisted applications (status 2)
+    # Find shortlisted applications (status 2 and formlinkstatus 0)
     response = requests.get('http://localhost:8000/nisa/getApplicationsByStatus/2')
 
     if response.status_code == 200:
@@ -308,20 +306,32 @@ def sendFormEmails():
         for applicant in shortlisted_applications:
             job_id = applicant.get('jobID', '')
             
-            # Check if the job ID is not in the processed set and there is an email and form link
-            if job_id and job_id not in processed_job_ids:
+            # Check if there is an email, form link, and formlinkstatus is 0
+            if job_id:
+                # Fetch form email body and subject based on job ID
                 form_email_response = requests.get(f'http://localhost:8000/nisa/getFormEmail/{job_id}')
                 form_email_data = form_email_response.json()
 
                 form_email_body = form_email_data.get('formEmailBody', '')
                 form_email_subject = form_email_data.get('formEmailSub', '')
-                
-                if form_email_body and form_email_subject:
+
+                # Check formlinkstatus and send the email
+                if form_email_body and form_email_subject and applicant.get('formlinkstatus', 0) == 0:
+                    # Send the email
                     send_form_email(applicant, form_email_subject, form_email_body)
-                    processed_job_ids.add(job_id)
+                    applicant_id = str(applicant['_id'])
+                    response = requests.put(f'http://localhost:8000/nisa/update_formlinkstatus/{applicant_id}')
+
+                    if response.status_code == 200:
+                        print(f"formlinkstatus updated successfully for {applicant['email']}")
+                    else:
+                        print(f"Failed to update formlinkstatus for {applicant['email']}")
+
                     print(f"Form email sent to {applicant['email']} for job ID {job_id}")
                 else:
-                    print(f"Form link not available yet for {applicant['email']}")
+                    print(f"Form link not available or already sent for {applicant['email']}")
+
+
 
 def send_form_email(applicant, subject, body):
     port = 587  # For starttls
@@ -371,7 +381,7 @@ def send_rejection_email(applicant, rejection_email_body):
     app_password = "glke rmyu xnfa yozn"
 
     receiver_email = applicant['email']
-    subject = "Virtual Hiring Assistant"
+    subject = "Regarding the Application for position at Manafa Technologies"
     body = f"Dear {applicant['name']},\n\n{rejection_email_body}\n\nRegards,\nManafa Technologies"
 
     message = f"Subject: {subject}\n\n{body}"
@@ -390,7 +400,8 @@ def sendCVRejectionEmails():
 
     if response.status_code == 200:
         applicants = response.json()
-        rejection_email_body_response = requests.get('http://localhost:8000/nisa/getRejectionEmailBody/your-job-id')
+        jobId = applicants[0].get('jobID', '')
+        rejection_email_body_response = requests.get(f'http://localhost:8000/nisa/getRejectionEmailBody/{jobId}')
         rejection_email_body = rejection_email_body_response.json().get('rejectionEmailBody', '')
 
         for applicant in applicants:
@@ -398,12 +409,33 @@ def sendCVRejectionEmails():
             print(f"Rejection email sent to {applicant['email']}")
 
 
+def sendFormRejectionEmails():
+    
+    response = requests.post('http://localhost:8000/nisa/findrejectedform')
 
-schedule.every(1).minutes.do(sendFormEmails)
-    ################################################################################################
 
+    if response.status_code == 200:
+        applicants = response.json()
+
+       
+        jobId = applicants[0].get('jobID', '')
+      
+        rejection_email_body_response = requests.get(f'http://localhost:8000/nisa/getRejectionEmailBody/{jobId}')
+        rejection_email_body = rejection_email_body_response.json().get('rejectionEmailBody', '')
+      
+        for applicant in applicants:
+            send_rejection_email(applicant, rejection_email_body)
+            print(f"Rejection email sent to {applicant['email']}")
+            
 def FormScreening(job):
+    print("in form screening")
     print(job['jobTitle'])
+    
+    if job.get('noShortlisted'):
+        print(job['noShortlisted'])
+        if job['noShortlisted'] == True:
+            return
+    
     response = requests.post('http://localhost:8000/nabeeha/shortlistformresponses', {'jobId': job['_id']})
     print(response.json())
     
@@ -425,6 +457,7 @@ def FormScreening(job):
             "createdAt": datetime.now().astimezone(pytz.utc)
         }
         notification_collection.insert_one(notification_data)
+        sendFormRejectionEmails()
 
 def CVtimer():
     # response = requests.post('http://localhost:8000/komal/getnotifications')
@@ -446,6 +479,7 @@ def Formtimer():
                 FormScreening(job)
         
 
+schedule.every(1).minutes.do(sendFormEmails)
 while True:
     CVtimer()
     Formtimer()
