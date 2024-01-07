@@ -166,7 +166,8 @@ router.post('/shortlistformresponses', async (req, res) => {
       await JobApplication.updateMany(
           {
               email: { $nin: shortlistedEmails },
-              jobID: jobIDToFind
+              jobID: jobIDToFind,
+              status: 2
           },
           {
               $set: {
