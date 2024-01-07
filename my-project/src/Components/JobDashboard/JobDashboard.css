@@ -5,6 +5,7 @@
     grid-template-areas: 'header' 'main' 'footer';
     grid-template-rows: auto 1fr auto;
     grid-gap: 0;
+    
 }
 
 .kjobdashboardpage-middle {
@@ -16,6 +17,7 @@
     border: 1.5px solid gainsboro;
     border-top: none;
     border-radius: 0 2vh 0 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .kjobdashboardpage-footer {

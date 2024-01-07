@@ -37,6 +37,11 @@ export default function CreateForm(props) {
         setQuestions(copy);
     }
 
+    const handleSetForm = () => {
+        
+        navigate('phase2email', { state: { job } });
+      };
+
     const setAnswer = (index, event) =>{
         var copy = [...questions];
         copy[index].answer = event.target.value;
@@ -166,6 +171,7 @@ export default function CreateForm(props) {
                 setMessage("Form has been saved and link for applicants is: "+response.data.formLink)
                 setMessageTitle('Form Saved');
                 setOpenModal(true);
+                handleSetForm()
                 }
                 else {
                 setMessage(response.data.error);

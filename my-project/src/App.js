@@ -81,7 +81,7 @@ function App() {
             <Route path="job/cvview" element={<CVView/>}></Route>
             <Route path="home/postjob" element={<PostJobPage/>}></Route>
             <Route path="profile" element={<RecruiterProfile/>}></Route>
-
+            <Route path="job/createform/phase2email" element={<FormCollectionEmail/>}></Route>
             
             
             

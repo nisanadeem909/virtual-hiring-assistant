@@ -23,6 +23,15 @@ export default function PostJobPage() {
   const sessionID = sessionStorage.getItem('sessionID');
       
 
+  function getCurrentDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  
+
   const handleNext = () => {
     if (phase === 0) {
       // Validate required fields for Phase 0
@@ -51,7 +60,7 @@ export default function PostJobPage() {
 
  
   const handleAnotherPhase = (j) => {
-    alert(j.jobTitle);
+  
     navigate('rejectionemail', { state: { j } });
   };
 
@@ -148,14 +157,17 @@ export default function PostJobPage() {
               {phase === 1 && (
                 <div className="phase-details">
                   <h1 className="nisa-phase1">Phase {phase} - CV Screening</h1>
-                  <label className='nisa-pj-label' htmlFor="phase1Deadline">Phase 1 Deadline</label>
-                  <input
-                   className='nisa-pj-input'
-                    type="date"
-                    id="phase1Deadline"
-                    value={formData.phase1Deadline}
-                    onChange={handleInputChange}
-                  />
+                  <label className='nisa-pj-label' htmlFor="phase1Deadline">
+                  Phase 1 Deadline
+                </label>
+                <input
+                  className='nisa-pj-input'
+                  type="date"
+                  id="phase1Deadline"
+                  value={formData.phase1Deadline}
+                  onChange={handleInputChange}
+                  min={getCurrentDate()} 
+                />
 
                   <label className='nisa-pj-label' htmlFor="phase1Percentage">
                     Acceptable CV to JD Match Percentage.{' '}
@@ -168,6 +180,8 @@ export default function PostJobPage() {
                     id="phase1Percentage"
                     value={formData.phase1Percentage}
                     onChange={handleInputChange}
+                    min="0" 
+                    max="100" 
                   />
 
                   {validationError && <p style={{ color: 'red' }}>{validationError}</p>}
