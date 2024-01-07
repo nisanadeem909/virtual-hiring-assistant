@@ -38,6 +38,8 @@ function CVCollectionForm() {
   const [imgSet,setImgSet] = useState("false")
   
   const [fileTypeError, setFileTypeError] = useState(false);
+  const [duplicateApplicationError, setDuplicateApplicationError] = useState(false);
+  const [isJobAcceptingResponses, setIsJobAcceptingResponses] = useState(true);
 
   useEffect(()=>{
     
@@ -48,6 +50,12 @@ function CVCollectionForm() {
     if (res.data.job) {
           setJobDes(res.data.job.jobDescription);
           setJobRole(res.data.job.jobTitle);
+
+          // Check if the job is still accepting responses
+          const currentDate = new Date();
+          const cvDeadline = new Date(res.data.job.CVDeadline);
+
+          setIsJobAcceptingResponses(currentDate <= cvDeadline);
         } else {
           setErrorMessage(res.data.error);
         }
@@ -82,12 +90,15 @@ function CVCollectionForm() {
         setIsFormSubmitted(true);
       })
       .catch(error => {
-        if (error.response && error.response.status === 500) {
+        if (error.response && error.response.status === 400 && error.response.data.error === 'You have already applied for this position.') {
+          setDuplicateApplicationError(true);
+        } else if (error.response && error.response.status === 500) {
           setIsError(true);
         }
-      })
+      });
 
-    upload();
+    if (!duplicateApplicationError)
+      upload();
     
   };
 
@@ -123,7 +134,7 @@ function CVCollectionForm() {
       const file = t.target.files[0];
 
       // Check if the uploaded file is of the allowed types
-      const allowedTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      const allowedTypes = ['application/pdf']//, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
       
       if (file && !allowedTypes.includes(file.type)) {
         setFileTypeError(true);
@@ -143,6 +154,8 @@ function CVCollectionForm() {
 
       {!isFormSubmitted ? ( // Render the form if it hasn't been submitted
        <>
+       {isJobAcceptingResponses ? (
+         <>
         <div id="nab-cv-heading">Apply for {jobrole}</div>
         <hr id="nab-cv-hr" />
         
@@ -218,7 +231,7 @@ function CVCollectionForm() {
                     type="file"
                     name="cvFile"
                     id="nab-cv-input"
-                    accept=".pdf,.docx"
+                    accept=".pdf"//,.docx"
                     onChange={HandleUpload}
                     required
                   />
@@ -227,19 +240,31 @@ function CVCollectionForm() {
 
             
             <div>
-            {fileTypeError && <p style={{ color: 'red' }}>Invalid file type. Please upload a PDF or DOCX file.</p>}
-              {isError && <p style={{ color: 'red' }}>Something went wrong. Please try again later.</p>}
+              {duplicateApplicationError && <p style={{ color: 'red' }}>You have already applied for this job.</p>}
+              {fileTypeError && <p style={{ color: 'red' }}>Invalid file type. Please upload a PDF or DOCX file.</p>}
+              {isError && <p style={{ color: 'red' }}>Something went wrong. Please try again later. </p>}
             </div>
-            <button type="submit" id="nab-cv-button" disabled={fileTypeError}>Submit</button>
+            <button type="submit" id="nab-cv-button" disabled={fileTypeError || duplicateApplicationError}>Submit</button>
+
             
         </form>
         </>
         ) : ( // Render success message if form is submitted successfully
+        <div style={{  fontWeight: 'bold', fontSize:45 }} id="jobnolongeraccpetingresponses">
+        
+        <div id="nab-cv-heading">Apply for {jobrole} Form Expired</div>
+        <hr id="nab-cv-hr" />
+        <p style={{ color: 'red',fontSize:30 }}>We're sorry. We are no longer accepting responses for {jobrole}.</p>
+      </div>
+    )}
+  </>
+          ) : ( // Render success message if form is submitted successfully
           <div id="form-success-message">
-            <img src={success}></img>
+            <img src={success} alt="Success" />
             <p>Your application for {jobrole} has been received successfully. We will get back to you soon.</p>
           </div>
         )}
+    
     </div>
     
     </div>

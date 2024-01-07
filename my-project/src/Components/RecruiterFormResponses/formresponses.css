@@ -2,8 +2,11 @@
     display: flex;
     flex-direction: column;
     margin: 3vh 5vh;
+    
 }
-
+.nabcvcollectionpage-table-container {
+    overflow-x: auto;
+}
 .kcvcollectionpage-header {
     background-color: #012641;
     color: white;
@@ -37,31 +40,37 @@
     color:#60B3D1
 }
 
-.kcvcollectionpage-table {
+.nabcvcollectionpage-table {
     width: 100%;
     border: 1px solid rgb(238, 239, 240);
     padding: 1vh;
-    margin: 4vh 1vh;
     border-spacing: 0;
     border-collapse: collapse;
+    table-layout: fixed; /* Ensure equal width for columns */
+    
 }
 
 .kcvcollectionpage-table-header {
     background-color: rgb(238, 239, 240);
 }
 
-.kcvcollectionpage-table-header-row th {
+.nabcvcollectionpage-table-header-row th {
     padding: 1.5vh;
     font-size: 2.2vh;
+    /* width: 10%; Set the width for each header column */
+    
+    
+    text-overflow: ellipsis;
 }
 
 .kcvcollectionpage-table-row {
     border: 2px solid rgb(238, 239, 240);
 }
 
-.kcvcollectionpage-table-row td {
+.nabcvcollectionpage-table-row td {
     padding: 1.5vh;
     font-size: 2.5vh;
+    text-overflow: ellipsis;
 }
 
 .kcvcollectionpage-table-cvimg {

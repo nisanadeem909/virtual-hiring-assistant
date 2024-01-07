@@ -26,6 +26,8 @@ export default function FormScreening() {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [formSubmissionError, setFormSubmissionError] = useState('');
   const [incompleteFormError,setIncompleteFormError] = useState('')
+  const [isJobAcceptingResponses, setIsJobAcceptingResponses] = useState(true);
+
   useEffect(() => {
     setJobID(formcollectionid);
 
@@ -34,6 +36,11 @@ export default function FormScreening() {
         if (res.data.job && res.data.form) {
           setJobRole(res.data.job.jobTitle);
           setQuestions(res.data.form.questions);
+
+          const currentDate = new Date();
+          const formDeadline = new Date(res.data.job.P2FormDeadline);
+
+          setIsJobAcceptingResponses(currentDate <= formDeadline);
         } else {
           setErrorMessage(res.data.error);
         }
@@ -73,7 +80,7 @@ export default function FormScreening() {
       jobID: jobID,
       answers: answerObject
     };
-
+//alert(JSON.stringify(formData))
     axios.post('http://localhost:8000/nabeeha/submitformresponse', formData)
       .then(response => {
         setIsFormSubmitted(true);
@@ -90,57 +97,64 @@ export default function FormScreening() {
   
   return (
     <div id="nab-form-outer-div">
-      <div id="nab-form">
-        {!isFormSubmitted ? (
-          <>
-            <div id="nab-form-heading">Apply for {jobrole} </div>
-            <hr id="nab-form-hr" />
-            <form>
-              <div id="nab-formcoll-group">
-                <label id="nab-form-label" htmlFor="email">Email<span id="nab-form-required-field">*</span>:</label>
-                <input type="email" id="nab-form-input" name="email" onChange={(e) => setUserEmail(e.target.value)} required />
-              </div>
+      {isJobAcceptingResponses ? (
+        <div id="nab-form">
+          {!isFormSubmitted ? (
+            <>
+              <div id="nab-form-heading">Apply for {jobrole} </div>
               <hr id="nab-form-hr" />
-              <div id="nab-formcoll-group">
-                <label id="nab-form-label">Tell us a little about yourself.</label>
+              <form>
+                <div id="nab-formcoll-group">
+                  <label id="nab-form-label" htmlFor="email">Email<span id="nab-form-required-field">*</span>:</label>
+                  <input type="email" id="nab-form-input" name="email" onChange={(e) => setUserEmail(e.target.value)} required />
+                </div>
+                <hr id="nab-form-hr" />
+                <div id="nab-formcoll-group">
+                  <label id="nab-form-label">Tell us a little about yourself.</label>
+                </div>
+                <div id="nab-form-all-questions">
+                  {questions.map((question, index) => (
+                    <div key={index} id='nab-q1'>
+                      <FormQuestion
+                        statement={question.question}
+                        answers={question.options}
+                        setUserAnswer={(value) => setUserAnswers(prevState => ({ ...prevState, [index]: value}))}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <button type="submit" id="nab-cv-button" onClick={handleFormSubmit}>Submit</button>
+              </form>
+              <div>
+                {incompleteFormError && <p style={{ color: 'red' }}>{incompleteFormError}</p>}
               </div>
-              <div id="nab-form-all-questions">
-                {questions.map((question, index) => (
-                  <div key={index} id='nab-q1'>
-                    <FormQuestion
-                      statement={question.question}
-                      answer1={question.options[0]}
-                      answer2={question.options[1]}
-                      setUserAnswer={(value) => setUserAnswers(prevState => ({ ...prevState, [index]: value }))}
-                    />
-                  </div>
-                ))}
-              </div>
-              <button type="submit" id="nab-cv-button" onClick={handleFormSubmit}>Submit</button>
-            </form>
-            <div>
-              
-              {incompleteFormError && <p style={{ color: 'red' }}>{incompleteFormError}</p>}
+            </>
+          ) : (
+            <div id="form-success-message">
+              {formSubmissionError ? (
+                <>
+                  <img src={erroricon} alt="Error" />
+                  <p>{formSubmissionError}</p>
+                </>
+              ) : (
+                <>
+                  <img src={success} alt="Success" />
+                  <p>Your application for {jobrole} has been received successfully. We will get back to you soon.</p>
+                </>
+              )}
             </div>
-          </>
-        ) : (
-          <div id="form-success-message">
-            {formSubmissionError ? (
-              <>
-                <img src={erroricon} alt="Error" />
-                <p>{formSubmissionError}</p>
-              </>
-            ) : (
-              <>
-                <img src={success} alt="Success" />
-                <p>Your application for {jobrole} has been received successfully. We will get back to you soon.</p>
-              </>
-            )}
-          </div>
-        )}
-      </div>
+          )}
+          
+        </div>
+      ) : (
+        <div id="nab-form">
+          <div id="nab-cv-heading">Apply for {jobrole} Form Expired</div>
+          <hr id="nab-cv-hr" />
+          <p style={{ color: 'red', fontSize: 25 }}>We're sorry. We are no longer accepting responses for {jobrole}.</p>
+        </div>
+      )}
     </div>
   );
-}
+      }  
 
 

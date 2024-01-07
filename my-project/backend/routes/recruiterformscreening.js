@@ -43,14 +43,6 @@ router.post('/shortlistformresponses', async (req, res) => {
     // Fetch form responses for the given jobID
     const formResponses = await FormResponses.find({ jobID: jobIDToFind }).exec();
 
-    //console.log('Form Responses with job ID', jobIDToFind, ':', formResponses);
-
-    
-    // const correctAnswers = [
-    //   "Yes",      // Answer for question 0
-    //   "1 or more ", // Answer for question 1
-    //   "In 2 weeks or less." // Answer for question 2
-    // ];
     
     
     const form = await Form.findOne({ jobID: jobIDToFind }).exec();
@@ -107,9 +99,15 @@ router.post('/shortlistformresponses', async (req, res) => {
       const shortlistedEmails = shortlistedResponses.map(response => response.applicantEmail);
       console.log(shortlistedEmails)
       await JobApplication.updateMany(
-        { email: { $in: shortlistedEmails }, jobID: jobIDToFind },
-        { $set: { status: 3 } }
+        {
+          $or: [
+            { email: { $in: shortlistedEmails }, jobID: jobIDToFind },
+            { jobID: jobIDToFind, email: { $nin: shortlistedEmails } }
+          ]
+        },
+        { $set: { status: { $cond: { if: { $in: ["$email", shortlistedEmails] }, then: 3, else: -2 } } } }
       );
+      console.log("UPDATED JOB APPS")
 
     const updatedFormResponses = await FormResponses.find({ jobID: jobIDToFind }).exec();
     res.status(200).json({ updatedFormResponses });

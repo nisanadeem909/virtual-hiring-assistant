@@ -24,7 +24,7 @@ export default function FormResponsesPage(props) {
         
         
         setQuesLen(response.data.formResponses[0].answers.length)
-        response.data.formResponses[0].answers.forEach((answer) => {
+        response.data.formResponses[0].answers.forEach((answer) => { 
             
                 // Add the unique question to the state array
                 if (!questions.includes(answer.question)) {
@@ -33,10 +33,10 @@ export default function FormResponsesPage(props) {
                 
               
           });
-        //alert(questions.length) 
+       
         })
         .catch(function (error) {
-            alert("Axios Error:" + error);
+            //alert("Axios Error:" + error);
         });
     }
     useEffect(() => {
@@ -50,44 +50,60 @@ export default function FormResponsesPage(props) {
      }, []);
  
      return (
-        <div className='kcvcollectionpage-con'>
-          <div className='kcvcollectionpage-header'>
-            <label className='kcvcollectionpage-header-title'>Form Responses for {jobTitle}</label>
-            <div className='kcvcollectionpage-header-vr'></div>
-            <div className='kcvcollectionpage-deadline-div'>
-              <label className='kcvcollectionpage-deadline'>{resps.length}</label> 
-              <label className='kcvcollectionpage-deadline-title'>Received Responses</label>
-            </div>
-          </div>
-          <div className='kcvcollectionpage-inner'>
-            <table className='kcvcollectionpage-table'>
-              <thead className='kcvcollectionpage-table-header'>
-                <tr className='kcvcollectionpage-table-header-row'>
-                  <th align="center">#</th>
-                  
-                  <th align="center">Email</th>
-                 
-                  {questions.slice(0, questionslength).map((quest, index) => (
-  
-  <th key={index} align="center">{quest}</th>
-))}
-                  
-                </tr>
-              </thead>
-              <tbody className='kcvcollectionpage-table-body'>
-                {resps && resps.map((app, index) => (
-                    <tr key={index} className='kcvcollectionpage-table-row'>
-                        <td align="center">{index + 1}</td>
-                        <td align="center">{app.applicantEmail}</td>
-                        
-                        {app.answers.map((answer, ansIndex) => (
-                        <td key={ansIndex} align="center">{answer.answerStatement}</td>
-                        ))}
-                    </tr>
-                ))}
-              </tbody>
-            </table>
+      <div className='kcvcollectionpage-con'>
+        <div className='kcvcollectionpage-header'>
+          <label className='kcvcollectionpage-header-title'>Form Responses for {jobTitle}</label>
+          <div className='kcvcollectionpage-header-vr'></div>
+          <div className='kcvcollectionpage-deadline-div'>
+            <label className='kcvcollectionpage-deadline'>{resps.length}</label> 
+            <label className='kcvcollectionpage-deadline-title'>Received Responses</label>
           </div>
         </div>
-      );
-    };
+        <div className='kcvcollectionpage-inner'>
+          {resps.length === 0 ? (
+            <>
+            <br></br>
+            <p style={{ fontSize: 18 }}>No Form Responses yet.</p>
+
+            </>
+          ) : (
+            <>
+            <br></br>
+            <div className='nabcvcollectionpage-table-container'>
+              <table className='nabcvcollectionpage-table'>
+                  <thead className='kcvcollectionpage-table-header'>
+                    <tr className='nabcvcollectionpage-table-header-row'>
+                      <th align="center">#</th>
+                      <th align="center">Email</th>
+                    
+                      {questions.slice(0, questionslength).map((quest, index) => (
+                        <>
+                        
+                        <th key={index} align="center">{quest}</th>
+                        </>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className='kcvcollectionpage-table-body'>
+                    {resps.map((app, index) => (
+                      <tr key={index} className='nabcvcollectionpage-table-row'>
+                        <td  align="center">{index + 1}</td>
+                        <td align="center">{app.applicantEmail}</td>
+                        {app.answers.map((answer, ansIndex) => (
+                          <td key={ansIndex} align="center">{answer.answerStatement}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                
+              </div>
+              </>    
+          )}
+          
+        </div>
+        
+      </div>
+      
+    );
+                    }
