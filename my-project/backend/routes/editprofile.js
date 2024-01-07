@@ -14,11 +14,10 @@ router.use('/profilepictures', express.static(path.join(__dirname, 'profilepictu
 
 router.post('/editprofile-getdetails', async (req, res) => {
     try {
-      // const user = await Recruiter.findOne({ username: req.body.username });
-      // res.json({"user": user });
-      // res.end();
-      console.log(req.body)
+      
+     
       const user = await Recruiter.findOne({ username: req.body.username });
+     console.log(user)
       if (user) {
           res.json({ user });
           
@@ -46,6 +45,7 @@ router.post('/editprofile-updatedetails', async (req, res) => {
             { new: true } // Return the updated document
         );
 
+      
         if (updatedUser) {
             res.status(200).json({ user: updatedUser, message: 'User details updated successfully' });
         } else {
@@ -71,7 +71,7 @@ router.post('/uploadprofilepic', function(req,res){
          const img_file = files.Image.originalFilename;
          console.log("original file name = " + img_file);
   
-         /var oldpath = path.resolve(img_file);/
+       
          newpath = String(__dirname + '/profilepictures/' + files.Image.originalFilename);
          
          console.log("old path = " + oldpath);
