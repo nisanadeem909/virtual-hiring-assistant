@@ -6,7 +6,7 @@ import './formquestion.css';
 import Footer from '../Footer.js';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-export default function Question({ statement, answer1, answer2, setUserAnswer }) {
+export default function Question({ statement, answers, setUserAnswer }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
 
   return (
@@ -15,33 +15,20 @@ export default function Question({ statement, answer1, answer2, setUserAnswer })
         {statement}<span id="nab-form-required-field">*</span>:
       </div>
       <div className="options">
-        <label id="options-label">
-          <input
-            type="radio"
-            
-            value={answer1}
-            checked={selectedAnswer === answer1}
-            onChange={() => {
-              setSelectedAnswer(answer1);
-              setUserAnswer(answer1);
-            }}
-          />
-          {answer1}
-        </label>
-
-        <label id="options-label">
-          <input
-            type="radio"
-            
-            value={answer2}
-            checked={selectedAnswer === answer2}
-            onChange={() => {
-              setSelectedAnswer(answer2);
-              setUserAnswer(answer2);
-            }}
-          />
-          {answer2}
-        </label>
+        {answers.map((answer, index) => (
+          <label key={index} id="options-label">
+            <input
+              type="radio"
+              value={answer}
+              checked={selectedAnswer === answer}
+              onChange={() => {
+                setSelectedAnswer(answer);
+                setUserAnswer(answer);
+              }}
+            />
+            {answer}
+          </label>
+        ))}
       </div>
     </div>
   );

@@ -77,7 +77,14 @@ router.post('/submitcvapplication', async (req, res) => {
         jobID: req.body.jobID,
         status: 1
       };
+      const existingApplication = await JobApplication.findOne({
+        email: req.body.email,
+        jobID: req.body.jobID
+      }).exec();
   
+      if (existingApplication) {
+        return res.status(400).json({ error: 'You have already applied for this position.' });
+      }
       const jobApplication = await JobApplication.create(newJobApplication);
   
       console.log('Job application added successfully:', jobApplication);

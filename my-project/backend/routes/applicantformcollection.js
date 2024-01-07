@@ -131,7 +131,7 @@ router.post('/submitformresponse', async (req, res) => {
         if (job) {
             
           const currentDate = new Date();
-          const jobDeadline = new Date(job.FormDeadline);
+          const jobDeadline = new Date(job.P2FormDeadline);
 
           if (jobDeadline < currentDate) {
             res.status(400).json({ error: 'Job Form Deadline Expired' });
@@ -159,7 +159,24 @@ router.post('/submitformresponse', async (req, res) => {
               jobID: req.body.jobID,
               answers: req.body.answers
             };
+            
+            //Check if an applicant has submitted their CV or not!
+            const existingApplication = await JobApplication.findOne({
+              email: req.body.email,
+              jobID: job._id  // Convert to ObjectId if needed
+            });
+            console.log(req.body.email)
+            console.log(req.body.jobID)
+            console.log(existingApplication)
+            if (!existingApplication) {
+              console.log("This applicant has not submitted their CV.")  
+              res.json({ success: true });
+              return;// res.status(400).json({ error: 'You have not submitted CV for this job, you cannot proceed to this Phase.' });
+            }
         
+            
+
+
             const jobApplication = await FormResponses.create(newFormResponse);
         
             console.log('Form Response added successfully:', jobApplication);
