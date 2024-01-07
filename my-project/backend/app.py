@@ -397,9 +397,24 @@ def sendCVRejectionEmails():
             send_rejection_email(applicant, rejection_email_body)
             print(f"Rejection email sent to {applicant['email']}")
 
+def sendFormRejectionEmails():
+    
+    response = requests.post('http://localhost:8000/nisa/findrejectedform')
 
 
-schedule.every(1).minutes.do(sendFormEmails)
+    if response.status_code == 200:
+        applicants = response.json()
+
+       
+        jobId = applicants[0].get('jobID', '')
+      
+        rejection_email_body_response = requests.get(f'http://localhost:8000/nisa/getRejectionEmailBody/{jobId}')
+        rejection_email_body = rejection_email_body_response.json().get('rejectionEmailBody', '')
+      
+        for applicant in applicants:
+            send_rejection_email(applicant, rejection_email_body)
+            print(f"Rejection email sent to {applicant['email']}")
+
     ################################################################################################
 
 def FormScreening(job):
@@ -432,6 +447,7 @@ def FormScreening(job):
             "createdAt": datetime.now().astimezone(pytz.utc)
         }
         notification_collection.insert_one(notification_data)
+        sendFormRejectionEmails()
 
 def CVtimer():
     # response = requests.post('http://localhost:8000/komal/getnotifications')
@@ -453,6 +469,7 @@ def Formtimer():
                 FormScreening(job)
         
 
+schedule.every(1).minutes.do(sendFormEmails)
 while True:
     CVtimer()
     Formtimer()
