@@ -18,15 +18,16 @@ export default function RejectionEmailPage({ data }) {
     // Use optional chaining to avoid errors if location or location.state is undefined
     const jobData = location.state?.j || [];
     setJob(jobData);
-    alert(jobData.jobTitle)
+   
     setJobTitle(jobData.jobTitle)
   }, [location.state]); // Run the effect when location.state changes
-  const [rejectEmailBody, setEmail] = useState("\n\nThank you for your interest in the " + jobTitle + " role at " + company + ". We appreciate the time and effort you invested in your application. \n\nAfter careful consideration, we regret to inform you that we have chosen another candidate for this position. While we were impressed with your qualifications, the competition was high. \n\nWe will keep your resume for future opportunities that match your skills. Please continue to check our career page for new openings. \n\nWe wish you the best in your job search and future endeavors. ");
+  const [rejectEmailBody, setEmail] = useState("\n\nThank you for your interest in the <position>"  + " role at " + company + ". We appreciate the time and effort you invested in your application. \n\nAfter careful consideration, we regret to inform you that we have chosen another candidate for this position. While we were impressed with your qualifications, the competition was high. \n\nWe will keep your resume for future opportunities that match your skills. Please continue to check our career page for new openings. \n\nWe wish you the best in your job search and future endeavors. ");
   
 
   const handleSave = async () => {
     try {
-      const response = await axios.post(`http://localhost:8000/nisa/api/updateEmailsAndForm/${data}`, {
+      var id = job._id;
+      const response = await axios.post(`http://localhost:8000/nisa/api/updateEmailsAndForm/${id}`, {
         rejectEmailBody,
       });
 
@@ -47,9 +48,9 @@ export default function RejectionEmailPage({ data }) {
   };
 
   const handleModalClose = () => {
-    const sessionID = data
+    const jobID = job._id
     setShowModal(false);
-    navigate('/recruiter/home/postjob/setemail', { state: { sessionID } });
+    navigate('/recruiter/job', { state: { jobID } });
   };
 
   return (
@@ -70,13 +71,13 @@ export default function RejectionEmailPage({ data }) {
         </div>
         <div className='krejemail-buttons'>
           <button className='krejemail-save-btn' onClick={handleSave}>Save</button>
-          <button className='krejemail-cancel-btn' onClick={() => navigate('/recruiter/home/postjob/setemail', { state: { savedJobId } })}>Cancel</button>
+          
         </div>
       </div>
       {showModal && (
         <div className='modal' style={{ display: 'block' }}>
           <p className='nisa-modal'>Email saved successfully!</p>
-          <button onClick={handleModalClose}>Close</button>
+          <button className='nisa-modal-btn' onClick={handleModalClose}>Close</button>
         </div>
       )}
     </div>
