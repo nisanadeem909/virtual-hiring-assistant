@@ -69,11 +69,18 @@
     margin-bottom: 5px;
   }
   
-  .nisa-pj-input,
+  .nisa-pj-input{
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+  }
   .nisa-pj-textarea {
     width: 100%;
     padding: 8px;
     margin-bottom: 15px;
+    height: 200px; /* Set the desired height */
+    resize: none;
+    
   }
   
  .nisa-postJ-button {

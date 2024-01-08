@@ -6,10 +6,12 @@ export default function FormCollectionEmailComponent() {
   const location = useLocation();
   const [job, setJob] = useState(null);
   const [formEmailBody, setEmail] = useState(
-    "Your application for role at Manafa Technologies has successfully passed Phase 1 of our recruitment.\n\nFor Phase 2, we require candidates to answer a few important questions about their role at our company. \n\nPlease find attached the link to the Form. Please submit it within 2 days of receiving it. \n\n"
+    "Congatulations! Your application for role at Manafa Technologies has successfull y passed Phase 1 of our recruitment.\n\nFor Phase 2, we require candidates to answer a few important questions about their role at our company. \n\nPlease find attached the link to the Form. Please submit it within the deadline specified. Good Luck! \n\n"
   );
   const [formEmailSub, setSubject] = useState("Regarding Your Application");
+  const [formEmailDeadline, setDeadline] = useState("Form submission deadline date: ");
   const [savedjobId, setSavedJob] = useState();
+  const [deadline, setDead] = useState();
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const jobId = location.state.job._id;
@@ -19,25 +21,36 @@ export default function FormCollectionEmailComponent() {
       try {
         const response = await axios.get(`http://localhost:8000/nisa/findjob/${jobId}`);
         setJob(response.data);
+       // alert(job.P2FormDeadline);
+        const dateObject = new Date(job?.P2FormDeadline);
+        const formattedDate = dateObject.toLocaleDateString();
+        setDead(formattedDate);
+        
       } catch (error) {
         console.error('Error fetching job details:', error);
       }
     };
 
+      
+
     if (jobId) {
       fetchJobDetails();
     }
-  }, [jobId]);
+  }, [jobId],[deadline]);
 
   const handleSave = async () => {
     if (!jobId) {
       alert('Job ID not available');
       return;
     }
-  
-    // Append the link to the end of the email body
-    const updatedEmailBody = `${formEmailBody}\n\n${job?.P2FormLink}`;
+
     
+
+    
+ 
+    // Append the link to the end of the email body
+    const updatedEmailBody = `${formEmailBody}\n\n${job?.P2FormLink}\n\n${formEmailDeadline}${deadline}`;
+ 
     try {
       const response = await axios.post(`http://localhost:8000/nisa/api/emailForm/${jobId}`, {
         formEmailSub,
