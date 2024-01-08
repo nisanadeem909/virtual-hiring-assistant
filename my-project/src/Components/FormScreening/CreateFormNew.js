@@ -103,9 +103,8 @@ export default function CreateForm(props) {
             return;
         }
 
-        const currentDate = new Date().toISOString().split('T')[0]; // Get current date in 'yyyy-mm-dd' format
-        const selectedDeadline = new Date(formDeadline).toISOString().split('T')[0]; // Convert formDeadline to 'yyyy-mm-dd' format
-
+        const currentDate = new Date().toISOString(); 
+        const selectedDeadline = new Date(formDeadline).toISOString();
         if (selectedDeadline <= currentDate) {
             setMessage('Form deadline should be after the current date.');
             setMessageTitle('Error');
@@ -201,8 +200,8 @@ export default function CreateForm(props) {
 
     return (<div className='kcreateform-container'>
     <div className='kcreateformpage-btns'>
-      <label className='kcreateformpage-formdeadline'>Form Deadline: </label>
-      <input type="date" className='kcreateformpage-formdeadline-input' value={formDeadline} onChange={handleDeadlineChange}></input>
+      <label className='kcreateformpage-formdeadline'>Form Deadline<span style={{ color: '#e30211', fontWeight: 'bold' }}>*</span></label>
+      <input type="datetime-local" className='kcreateformpage-formdeadline-input' value={formDeadline} onChange={handleDeadlineChange}></input>
       <button className='kcreateformpage-cancelbtn' onClick={()=>navigate(-1,{state:{'jobID':job._id}})}>Discard Form</button>
       <button className='kcreateformpage-savebtn' onClick={saveForm}>Save Form</button>
     </div>
@@ -211,7 +210,7 @@ export default function CreateForm(props) {
                 <div key={form.id}>
                 <div className='kformquestion-con' tabindex="0">
                 <div className='kformquestion-header'>
-                <label className='kformquestion-header-label'><b>Question:</b></label>
+                <label className='kformquestion-header-label'><b>Question</b><span style={{ color: 'red', fontWeight: 'bold' }}>*</span></label>
                 <textarea className='kformquestion-textbox' value={form.question} onChange={(event)=>handleQuestionTextChange(index, event)}></textarea>
         </div>
         <hr></hr>

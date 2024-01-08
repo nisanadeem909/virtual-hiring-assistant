@@ -17,50 +17,40 @@ export default function FormCollectionEmailComponent() {
   const navigate = useNavigate();
   const [jobId,setJobID] = useState(null);
 
+  const formatDate = (date) => {
+    if (!date) return '';
+    const formattedDate = new Date(date); 
+    const year = formattedDate.getFullYear();
+    const month = `${formattedDate.getMonth() + 1}`.padStart(2, '0');
+    const day = `${formattedDate.getDate()}`.padStart(2, '0');
+    let hours = formattedDate.getHours();
+    const minutes = `${formattedDate.getMinutes()}`.padStart(2, '0');
+    const amOrPm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Convert 0 to 12 for midnight
+
+    return `${year}-${month}-${day} ${hours}:${minutes} ${amOrPm}`;
+};
+
+
   useEffect(() => {
-    //alert("hERE")
+    
     if (location.state.job)
     {
       //alert(JSON.stringify(location.state.job))
       setJob(location.state.job);
-      setDead(location.state.deadline);
+      setDead(formatDate(location.state.deadline));
       setLink(location.state.formLink);
 
     }
 }, [location.state]);
 
   useEffect(() => {
-    // const fetchJobDetails = async () => {
-    //   try {
-    //     const response = await axios.get(`http://localhost:8000/nisa/findjob/${jobId}`);
-    //     setJob(response.data);
-    //     //alert(job.P2FormDeadline);
-    //     const dateObject = new Date(job?.P2FormDeadline);
-    //     const formattedDate = dateObject.toLocaleDateString();
-    //     setDead(formattedDate);
-        
-    //   } catch (error) {
-    //     console.error('Error fetching job details:', error);
-    //   }
-    // };
-
-    //   //alert(JSON.stringify(location.state))
-
-    // if (jobId) {
-    //   fetchJobDetails();
-    // }
+    
   }, [jobId]);
+  
 
   const handleSave = async () => {
-    // if (!jobId) {
-    //   alert('Job ID not available');
-    //   return;
-    // }
-
-    
-
-    
- 
+   
     // Append the link to the end of the email body
     const updatedEmailBody = `${formEmailBody}\n\n${link}\n\n${formEmailDeadline}${deadline}`;
     //alert(updatedEmailBody)
