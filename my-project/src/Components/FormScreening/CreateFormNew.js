@@ -188,7 +188,10 @@ export default function CreateForm(props) {
                 setOpenModal(true);}
             })
             .catch(function (error) {
-                alert("Axios Error:" + error);
+                setMessage("Something went wrong, please try again..");
+                setMessageTitle('Error');
+                setOpenModal(true);
+                console.error("Axios Error:" + error);
             });
             
         }

@@ -2,16 +2,19 @@ import React, { useEffect, useState } from 'react';
 import './CreateFormPage.css';
 import Footer from '../Footer';
 import EditForm from './EditForm';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import MessageModal from '../ModalWindows/MessageModal';
 
 export default function EditFormPage(props) {
   
   const [job,setJob] = useState({'jobTitle':'Loading..','CVFormLink':'Loading..','AccCVScore': { $numberDecimal: '0' },'CVDeadline':'dd/mm/yyyy','status':'0','jobDescription':'Loading..'})
   const [form,setForm] = useState({'questions':[],'formDeadline':'Loading..','jobTitle':'Loading..'})
+  const [openModal, setOpenModal] = useState(false);
   
   const location = useLocation();
   const stateData = location.state;
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (stateData)
@@ -24,11 +27,13 @@ export default function EditFormPage(props) {
                 setForm(response.data.form)
             }
             else {
-                alert("not found")
+                console.error(response.data.error)
+                setOpenModal(true);
             }
             })
             .catch(function (error) {
-                alert("Axios Error:" + error);
+              console.error("Axios Error:" + error);
+              setOpenModal(true);
             });
     }
    // alert(JSON.stringify(stateData))
@@ -46,7 +51,15 @@ export default function EditFormPage(props) {
       </div>
       <div className='kcreateformpage-footer'>
         <Footer />
-      </div>
+      </div><MessageModal
+        isOpen={openModal}
+        message={"Something went wrong, please try again.."}
+        title={"Error"}
+        closeModal={() => {
+            setOpenModal(false);
+            navigate(-1,stateData);
+        }}
+      />
     </div>
   );
 }

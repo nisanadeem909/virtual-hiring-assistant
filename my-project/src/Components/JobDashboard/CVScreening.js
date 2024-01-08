@@ -11,7 +11,8 @@ export default function CVScreening(props) {
 
     const [applications,setApps] = useState([])
     const [job,setJob] = useState({'jobTitle':'Loading..','CVFormLink':'Loading..','AccCVScore': { $numberDecimal: '0' },'CVDeadline':'dd/mm/yyyy','status':'0','jobDescription':'Loading..'})
-    
+    const [errorStatus,setErrStat] = useState(false);
+
     useEffect(() => {
      if (props.job)
      {
@@ -23,12 +24,16 @@ export default function CVScreening(props) {
                 //alert(JSON.stringify(parseFloat(response.data.jobApps[0].CVMatchScore.$numberDecimal)))
                 response.data.jobApps.sort((a, b) => parseFloat(b.CVMatchScore.$numberDecimal) - parseFloat(a.CVMatchScore.$numberDecimal));
                 setApps(response.data.jobApps);
+                setErrStat(false);
              }
-             else 
-               alert("Error: "+response.data.error);
+             else {
+               console.error("Error: "+response.data.error);
+               setErrStat(true);
+            }
          })
          .catch(function (error) {
-             alert("Axios Error:" + error);
+            console.error("Axios Error:" + error);
+            setErrStat(true);          
          });
      }
      }, [props.job]);
@@ -58,6 +63,9 @@ export default function CVScreening(props) {
                 <label className='kcvcollectionpage-accScore-title'>Acceptable Match Score</label>
             </div>
         </div>
+        {errorStatus ? (
+      <div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>
+        ) : (
         <div className='kcvcollectionpage-inner'>
         {applications.length === 0 ? (
           <label className='kcvcollectionpage-noapps'>No job applications yet</label>
@@ -85,8 +93,9 @@ export default function CVScreening(props) {
                     </tr>
                 ))}
             </tbody>
-        </table>)}
-        </div>
+            </table>
+        )}
       </div>
-    )
-  }
+    )}
+  </div>
+)}

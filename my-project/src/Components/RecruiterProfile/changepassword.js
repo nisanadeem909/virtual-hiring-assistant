@@ -51,6 +51,13 @@ export default function Profile() {
         newPassword: newPassword,
         confirmNewPassword: confirmNewPassword,
       };
+
+      if (!newPassword || !confirmNewPassword || !currentPassword)
+      {
+        setSuccessMessage('');
+        setErrorMessage('Please fill all fields.');
+        return;
+      }
   
       if (newPassword != confirmNewPassword) {
         //alert('Passwords do not match. Please re-enter.');

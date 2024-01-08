@@ -56,11 +56,14 @@ export default function JobDetails(props) {
               <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {newVal}%</label>
               <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>)
             }
-            else 
-              alert("Error: "+response.data.error);
+            else {
+              setStatusDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
+              console.log("Error: "+response.data.error);
+            }
         })
         .catch(function (error) {
-            alert("Axios Error:" + error);
+            setStatusDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
+            console.log(error);
         })
       setIsEditScoreModalOpen(false);
     };
@@ -74,11 +77,14 @@ export default function JobDetails(props) {
               setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Deadline for applications:</b> {new Date(response.data.job.CVDeadline).toLocaleDateString('en-GB')}</label>
               <button className='kjobdetailspage-editdeadline' onClick={openEditCVDeadlineModal}>Edit Deadline</button></>)
             }
-            else 
-              alert("Error: "+response.data.error);
+            else {
+              setDeadlineDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
+              console.log("Error: "+response.data.error);
+            }
         })
         .catch(function (error) {
-            alert("Axios Error:" + error);
+            setDeadlineDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
+            console.log(error);
         })
       setIsEditCVDeadlineModalOpen(false);
     }
@@ -92,11 +98,14 @@ export default function JobDetails(props) {
               setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Deadline for form responses:</b> {new Date(response.data.job.P2FormDeadline).toLocaleDateString('en-GB')}</label>
               <button className='kjobdetailspage-editdeadline' onClick={openEditFormDeadlineModal}>Edit Deadline</button></>);
             }
-            else 
-              alert("Error: "+JSON.stringify(response.data.error));
+            else {
+              setDeadlineDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
+              console.log("Error: "+response.data.error);
+            }
         })
         .catch(function (error) {
-            alert("Axios Error:" + error);
+            setDeadlineDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
+            console.log(error);
         })
       setIsEditFormDeadlineModalOpen(false);
     }

@@ -54,7 +54,6 @@
 }
 
 .kcvcollectionpage-table-header {
-    background-color: rgb(205, 212, 219);
     overflow: hidden;
     white-space: nowrap; 
     text-overflow: ellipsis; 
