@@ -135,7 +135,7 @@ export default function PostJobPage() {
               <h1>Job Details</h1>
               {phase === 0 && (
                 <div className="job-details">
-                  <label className='nisa-pj-label' htmlFor="jobTitle">Job Title</label>
+                  <label className='nisa-pj-label' htmlFor="jobTitle">Job Title<span style={{ color: 'red', fontWeight: 'bold' }}>*</span></label>
                   <input
                    className='nisa-pj-input'
                     type="text"
@@ -144,7 +144,7 @@ export default function PostJobPage() {
                     onChange={handleInputChange}
                   />
 
-                  <label className='nisa-pj-label' htmlFor="jobDescription">Job Description</label>
+                  <label className='nisa-pj-label' htmlFor="jobDescription">Job Description<span style={{ color: 'red', fontWeight: 'bold' }}>*</span></label>
                   <textarea
                   className='nisa-pj-textarea'
                     id="jobDescription"
@@ -165,7 +165,7 @@ export default function PostJobPage() {
                 <div className="phase-details">
                   <h1 className="nisa-phase1">Phase {phase} - CV Screening</h1>
                   <label className='nisa-pj-label' htmlFor="phase1Deadline">
-                  Phase 1 Deadline
+                  Phase 1 Deadline<span style={{ color: 'red', fontWeight: 'bold' }}>*</span>
                 </label>
                 <input
                   className='nisa-pj-input'
@@ -177,8 +177,8 @@ export default function PostJobPage() {
                 />
 
                   <label className='nisa-pj-label' htmlFor="phase1Percentage">
-                    Acceptable CV to JD Match Percentage.{' '}
-                    <span style={{ color: 'red', marginLeft: '125px' }}>Recommended: 60 - 70%</span>
+                    Acceptable CV to JD Match Percentage.{' '}<span style={{ color: 'red', fontWeight: 'bold' }}>*</span>
+                    <span style={{ color: 'red', marginLeft: '120px' }}>Recommended: 60 - 70%</span>
                   </label>
 
                   <input

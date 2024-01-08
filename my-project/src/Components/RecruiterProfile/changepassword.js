@@ -103,7 +103,7 @@ export default function Profile() {
             <hr></hr>
             <br></br>
             <div >
-                        <label id="nab-profile-label" htmlFor="fullname">UserName</label>
+                        <label id="nab-profile-label" htmlFor="fullname">Username<span style={{ color: 'red', fontWeight: 'bold' }}>*</span></label>
                         <input
                         type="text"
                         id="nab-profile-input"
@@ -113,7 +113,7 @@ export default function Profile() {
                     />   
                     </div>
             <div className="profile-field-firstname">
-              <label id="nab-profile-label" htmlFor="currentPassword">Current Password</label>
+              <label id="nab-profile-label" htmlFor="currentPassword">Current Password<span style={{ color: 'red', fontWeight: 'bold' }}>*</span></label>
               <input
                 type="password"
                 id="nab-profile-input"
@@ -123,7 +123,7 @@ export default function Profile() {
               />
             </div>
             <div className="profile-field">
-              <label id="nab-profile-label" htmlFor="newPassword">New Password</label>
+              <label id="nab-profile-label" htmlFor="newPassword">New Password<span style={{ color: 'red', fontWeight: 'bold' }}>*</span></label>
               <input
                 type="password"
                 id="nab-profile-input-email"
@@ -133,7 +133,7 @@ export default function Profile() {
               />
             </div>
             <div className="profile-field">
-              <label id="nab-profile-label" htmlFor="confirmNewPassword">Retype New Password</label>
+              <label id="nab-profile-label" htmlFor="confirmNewPassword">Confirm New Password<span style={{ color: 'red', fontWeight: 'bold' }}>*</span></label>
               <input
                 type="password"
                 id="nab-profile-input"
