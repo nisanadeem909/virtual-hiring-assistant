@@ -12,6 +12,7 @@ export default function CreateForm(props) {
     const [questions, setQuestions] = useState([{ question: '', options: [''] }]);
     const [job,setJob] = useState({'jobTitle':'Loading..','CVFormLink':'Loading..','AccCVScore': { $numberDecimal: '0' },'CVDeadline':'dd/mm/yyyy','status':'0','jobDescription':'Loading..'})
     const [formDeadline, setFormDeadline] = useState('');
+    const [formLink, setFormLink] = useState('');
 
     const [message, setMessage] = useState('');
     const [messageTitle, setMessageTitle] = useState('');
@@ -37,9 +38,9 @@ export default function CreateForm(props) {
         setQuestions(copy);
     }
 
-    const handleSetForm = () => {
+    const handleSetForm = (formlink) => {
         
-        navigate('phase2email', { state: { job } });
+        navigate('phase2email', { state: { job: job,formLink:formlink,deadline:formDeadline } });
       };
 
     const setAnswer = (index, event) =>{
@@ -177,10 +178,11 @@ export default function CreateForm(props) {
             axios.post("http://localhost:8000/komal/createform",param).then((response) => {
             // alert(JSON.stringify(response.data));
             if (response.data.status == "success"){
+                setFormLink(response.data.formLink)
                 setMessage("Form has been saved and link for applicants is: "+response.data.formLink)
                 setMessageTitle('Form Saved');
                 setOpenModal(true);
-                handleSetForm()
+                handleSetForm(response.data.formLink)
                 }
                 else {
                 setMessage(response.data.error);

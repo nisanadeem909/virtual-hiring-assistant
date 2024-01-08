@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function FormCollectionEmailComponent() {
   const location = useLocation();
-  const [job, setJob] = useState(null);
+  const [job, setJob] = useState();
   const [formEmailBody, setEmail] = useState(
     "Congatulations! Your application for role at Manafa Technologies has successfull y passed Phase 1 of our recruitment.\n\nFor Phase 2, we require candidates to answer a few important questions about their role at our company. \n\nPlease find attached the link to the Form. Please submit it within the deadline specified. Good Luck! \n\n"
   );
@@ -12,54 +12,67 @@ export default function FormCollectionEmailComponent() {
   const [formEmailDeadline, setDeadline] = useState("Form submission deadline date: ");
   const [savedjobId, setSavedJob] = useState();
   const [deadline, setDead] = useState();
+  const [link, setLink] = useState();
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-  const jobId = location.state.job._id;
+  const [jobId,setJobID] = useState(null);
 
   useEffect(() => {
-    const fetchJobDetails = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8000/nisa/findjob/${jobId}`);
-        setJob(response.data);
-       // alert(job.P2FormDeadline);
-        const dateObject = new Date(job?.P2FormDeadline);
-        const formattedDate = dateObject.toLocaleDateString();
-        setDead(formattedDate);
-        
-      } catch (error) {
-        console.error('Error fetching job details:', error);
-      }
-    };
+    //alert("hERE")
+    if (location.state.job)
+    {
+      //alert(JSON.stringify(location.state.job))
+      setJob(location.state.job);
+      setDead(location.state.deadline);
+      setLink(location.state.formLink);
 
-      
-
-    if (jobId) {
-      fetchJobDetails();
     }
-  }, [jobId],[deadline]);
+}, [location.state]);
+
+  useEffect(() => {
+    // const fetchJobDetails = async () => {
+    //   try {
+    //     const response = await axios.get(`http://localhost:8000/nisa/findjob/${jobId}`);
+    //     setJob(response.data);
+    //     //alert(job.P2FormDeadline);
+    //     const dateObject = new Date(job?.P2FormDeadline);
+    //     const formattedDate = dateObject.toLocaleDateString();
+    //     setDead(formattedDate);
+        
+    //   } catch (error) {
+    //     console.error('Error fetching job details:', error);
+    //   }
+    // };
+
+    //   //alert(JSON.stringify(location.state))
+
+    // if (jobId) {
+    //   fetchJobDetails();
+    // }
+  }, [jobId]);
 
   const handleSave = async () => {
-    if (!jobId) {
-      alert('Job ID not available');
-      return;
-    }
+    // if (!jobId) {
+    //   alert('Job ID not available');
+    //   return;
+    // }
 
     
 
     
  
     // Append the link to the end of the email body
-    const updatedEmailBody = `${formEmailBody}\n\n${job?.P2FormLink}\n\n${formEmailDeadline}${deadline}`;
- 
+    const updatedEmailBody = `${formEmailBody}\n\n${link}\n\n${formEmailDeadline}${deadline}`;
+    //alert(updatedEmailBody)
     try {
-      const response = await axios.post(`http://localhost:8000/nisa/api/emailForm/${jobId}`, {
+      const response = await axios.post(`http://localhost:8000/nisa/api/emailForm/${job._id}`, {
         formEmailSub,
         formEmailBody: updatedEmailBody,
       });
   
       console.log('Updated:', response.data);
       setShowModal(true);
-      setSavedJob(jobId);
+      setSavedJob(job._id);
     } catch (error) {
       console.error('Error updating emails and form:', error);
     }
@@ -94,18 +107,23 @@ export default function FormCollectionEmailComponent() {
           <label><b>Form Link:</b></label>
           
           <div>
-            <a href={job?.P2FormLink} target='_blank' rel='noopener noreferrer'>
-              {job?.P2FormLink}
+            <a href={link} target='_blank' rel='noopener noreferrer'>
+              {link} 
             </a>
           </div>
-          <textarea className='krejemail-textarea' value={formEmailBody} onChange={handleDefaultEmailChange}></textarea>
+          <div>
+          <label style={{
+                marginTop: '2vh'
+              }}>
+                    <b>Deadline:</b> {deadline}
+                  </label>
+
+          </div>
+          <textarea className='nabrejemail-textarea' value={formEmailBody} onChange={handleDefaultEmailChange}></textarea>
         </div>
         <div className='krejemail-buttons'>
           <button className='krejemail-save-btn' onClick={handleSave}>
             Save
-          </button>
-          <button className='krejemail-cancel-btn' onClick={() => navigate('/recruiter/home/postjob/setemail', { state: { savedjobId } })}>
-            Cancel
           </button>
         </div>
       </div>
