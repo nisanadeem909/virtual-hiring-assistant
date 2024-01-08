@@ -1,12 +1,18 @@
 #nab-cv-outer-div {
-    position: absolute;
+    margin-top: 2%;
+    margin-left: 17%;
+    /* position: absolute;
     top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    left: 50%; */
+    /* transform: translate(-50%, -50%); */
     font-family: Arial, sans-serif;
     width:70%;
+    
    /* margin-top: 50%;*/
     
+}
+.nab-cv-form-jobdes{
+    overflow-wrap: break-word;
 }
 #nab-cv-form {
     background-color: #fff;

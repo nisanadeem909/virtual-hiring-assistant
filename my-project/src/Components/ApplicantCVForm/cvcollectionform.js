@@ -41,6 +41,8 @@ function CVCollectionForm() {
   const [duplicateApplicationError, setDuplicateApplicationError] = useState(false);
   const [isJobAcceptingResponses, setIsJobAcceptingResponses] = useState(true);
 
+
+  const[jobDeadline,setJobDeadline] = useState('')
   useEffect(()=>{
     
     setJobID(cvcollectionid)
@@ -51,6 +53,19 @@ function CVCollectionForm() {
           setJobDes(res.data.job.jobDescription);
           setJobRole(res.data.job.jobTitle);
 
+          const originalDate = new Date(res.data.job.CVDeadline);
+
+          // Get day, month, and year components
+          const day = originalDate.getDate();
+          const month = originalDate.getMonth() + 1; // Month is zero-based, so add 1
+          const year = originalDate.getFullYear();
+
+          // Format the date as dd-mm-yyyy
+          const formattedDate = `${day < 10 ? '0' : ''}${day}-${month < 10 ? '0' : ''}${month}-${year}`;
+
+          // Now, 'formattedDate' contains the date in the "dd-mm-yyyy" format
+          console.log(formattedDate);
+          setJobDeadline(formattedDate)
           // Check if the job is still accepting responses
           const currentDate = new Date();
           const cvDeadline = new Date(res.data.job.CVDeadline);
@@ -161,7 +176,9 @@ function CVCollectionForm() {
         <div id="nab-cv-heading">Apply for {jobrole}</div>
         <hr id="nab-cv-hr" />
         
-        <label  for="fullName">{jobDes}</label>
+        <label  for="fullName"><p class="nab-cv-form-jobdes"><b>Last Date to Submit Application: {jobDeadline}</b></p></label>
+        <br></br>
+        <label  for="fullName"><p class="nab-cv-form-jobdes">{jobDes}</p></label>
         <label id="nab-cv-label-fullname" for="fullName">{sentence}</label>
         <hr id="nab-cv-hr" />
         <form onSubmit={handleSubmit}>
@@ -213,7 +230,7 @@ function CVCollectionForm() {
                 />
             </div>
 
-            <div id="nab-form-group">
+            {/* <div id="nab-form-group">
                 <label id="nab-cv-label" for="contactNumber">Contact Number<span id="nab-cv-required-field">*</span>:</label>
                 <input
                   type="tel"
@@ -223,10 +240,11 @@ function CVCollectionForm() {
                   onChange={(e) => setContactNumber(e.target.value)}
                   required
                 />
-            </div>
+            </div> */}
 
             <div id="nab-form-group">
-                <label id="nab-cv-label" for="cvFile">Upload your updated CV. Please note CV with graphics will not be accepted.<span id="nab-cv-required-field">*</span>:</label>
+            <label id="nab-cv-label" for="cvFile" style={{color: "black"}}>Upload your updated CV in <span style={{color: "red"}}>PDF</span> Format. Please note CV with graphics will not be accepted.<span style={{color: "red"}}>*</span>:</label>
+
                 <div id="nab-upload-btn-wrapper">
                     
                 <input

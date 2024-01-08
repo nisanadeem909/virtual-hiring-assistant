@@ -1,11 +1,13 @@
 #nab-form-outer-div {
-    position: absolute;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin-top: 2%;
+    margin-left: 17%;
+    /* position: absolute;
+    top: 55%;
+    left: 50%; */
+    /* transform: translate(-50%, -50%); */
     font-family: Arial, sans-serif;
     width:70%;
-    height: 100%;
+    
    /* margin-top: 50%;*/
     
 }
