@@ -84,6 +84,13 @@ export default function PostJobPage() {
         return;
       }
 
+        const currentDate = new Date().toISOString(); 
+        const selectedDeadline = new Date(formData.phase1Deadline).toISOString();
+        if (selectedDeadline <= currentDate) {
+          setValidationError('Deadline must not be a past date.');
+            return;
+        }
+
       
 
       const response = await axios.post('http://localhost:8000/nisa/api/saveFormData', {
@@ -162,7 +169,7 @@ export default function PostJobPage() {
                 </label>
                 <input
                   className='nisa-pj-input'
-                  type="date"
+                  type="datetime-local"
                   id="phase1Deadline"
                   value={formData.phase1Deadline}
                   onChange={handleInputChange}

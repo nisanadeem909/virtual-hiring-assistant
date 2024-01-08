@@ -47,7 +47,7 @@ export default function JobList() {
                 </div>
               </div>
             </div>
-            <button className="open-job-button" onClick={() => navigate('/recruiter/job', { state: { 'jobID': job._id } })}>Open Job</button>
+            <button className="open-job-button" onClick={() => navigate('/recruiter/job', { state: { 'jobID': job._id } })}>View Job</button>
             </div>
           ))
         )}

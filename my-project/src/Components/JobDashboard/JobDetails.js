@@ -17,6 +17,20 @@ export default function JobDetails(props) {
 
     const [isEditScoreModalOpen, setIsEditScoreModalOpen] = useState(false);
 
+    const formatDate = (date) => {
+      if (!date) return '';
+      const formattedDate = new Date(date); 
+      const year = formattedDate.getFullYear();
+      const month = `${formattedDate.getMonth() + 1}`.padStart(2, '0');
+      const day = `${formattedDate.getDate()}`.padStart(2, '0');
+      let hours = formattedDate.getHours();
+      const minutes = `${formattedDate.getMinutes()}`.padStart(2, '0');
+      const amOrPm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12; // Convert 0 to 12 for midnight
+  
+      return `${year}-${month}-${day} ${hours}:${minutes} ${amOrPm}`;
+  };
+
     const openEditScoreModal = () => {
       setIsEditScoreModalOpen(true);
     };
@@ -74,7 +88,7 @@ export default function JobDetails(props) {
            if (response.data.status == "success"){
               setJob(response.data.job);
               props.updateJob({...response.data.job});
-              setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Deadline for applications:</b> {new Date(response.data.job.CVDeadline).toLocaleDateString('en-GB')}</label>
+              setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Deadline for applications:</b> {formatDate(response.data.job.CVDeadline)}</label>
               <button className='kjobdetailspage-editdeadline' onClick={openEditCVDeadlineModal}>Edit Deadline</button></>)
             }
             else {
@@ -95,7 +109,7 @@ export default function JobDetails(props) {
            if (response.data.status == "success"){
               setJob(response.data.job);
               props.updateJob({...response.data.job});
-              setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Deadline for form responses:</b> {new Date(response.data.job.P2FormDeadline).toLocaleDateString('en-GB')}</label>
+              setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Deadline for form responses:</b> {formatDate(response.data.job.P2FormDeadline)}</label>
               <button className='kjobdetailspage-editdeadline' onClick={openEditFormDeadlineModal}>Edit Deadline</button></>);
             }
             else {
@@ -129,7 +143,7 @@ export default function JobDetails(props) {
               setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + job._id}</label>
               <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {job.AccCVScore.$numberDecimal.toString()}%</label>
               <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>);
-              setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Deadline for applications:</b> {new Date(job.CVDeadline).toLocaleDateString('en-GB')}</label>
+              setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Deadline for applications:</b> {formatDate(job.CVDeadline)}</label>
               <button className='kjobdetailspage-editdeadline' onClick={openEditCVDeadlineModal}>Edit Deadline</button></>);
           }
           else if (job.status == 2){
@@ -140,7 +154,7 @@ export default function JobDetails(props) {
               setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'>Waiting for Form Creation..</label><button className='kjobdetailspage-editcvscore' onClick={()=>navigate('\createform',{state:{'job':job}})}>Create Phase 2 Form</button></>);
             } else{
               setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>Phase 2 form link:</b> {job.P2FormLink}</label></>);
-              setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Deadline for form responses:</b> {new Date(job.P2FormDeadline).toLocaleDateString('en-GB')}</label>
+              setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Deadline for form responses:</b> {formatDate(job.P2FormDeadline)}</label>
               <button className='kjobdetailspage-editdeadline' onClick={openEditFormDeadlineModal}>Edit Deadline</button></>);
             }
           }

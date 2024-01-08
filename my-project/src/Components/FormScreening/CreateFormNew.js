@@ -103,9 +103,8 @@ export default function CreateForm(props) {
             return;
         }
 
-        const currentDate = new Date().toISOString().split('T')[0]; // Get current date in 'yyyy-mm-dd' format
-        const selectedDeadline = new Date(formDeadline).toISOString().split('T')[0]; // Convert formDeadline to 'yyyy-mm-dd' format
-
+        const currentDate = new Date().toISOString(); 
+        const selectedDeadline = new Date(formDeadline).toISOString();
         if (selectedDeadline <= currentDate) {
             setMessage('Form deadline should be after the current date.');
             setMessageTitle('Error');
@@ -202,7 +201,7 @@ export default function CreateForm(props) {
     return (<div className='kcreateform-container'>
     <div className='kcreateformpage-btns'>
       <label className='kcreateformpage-formdeadline'>Form Deadline: </label>
-      <input type="date" className='kcreateformpage-formdeadline-input' value={formDeadline} onChange={handleDeadlineChange}></input>
+      <input type="datetime-local" className='kcreateformpage-formdeadline-input' value={formDeadline} onChange={handleDeadlineChange}></input>
       <button className='kcreateformpage-cancelbtn' onClick={()=>navigate(-1,{state:{'jobID':job._id}})}>Discard Form</button>
       <button className='kcreateformpage-savebtn' onClick={saveForm}>Save Form</button>
     </div>

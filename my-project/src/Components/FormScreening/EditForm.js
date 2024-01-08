@@ -105,9 +105,8 @@ export default function EditForm(props) {
         }
         //alert('hi2');
 
-        const currentDate = new Date().toISOString().split('T')[0]; // Get current date in 'yyyy-mm-dd' format
-        const selectedDeadline = new Date(formDeadline).toISOString().split('T')[0]; // Convert formDeadline to 'yyyy-mm-dd' format
-
+        const currentDate = new Date().toISOString(); 
+        const selectedDeadline = new Date(formDeadline).toISOString();
         if (selectedDeadline <= currentDate) {
             setMessage('Form deadline should be after the current date.');
             setMessageTitle('Error');
@@ -210,13 +209,15 @@ export default function EditForm(props) {
         const year = formattedDate.getFullYear();
         const month = `${formattedDate.getMonth() + 1}`.padStart(2, '0');
         const day = `${formattedDate.getDate()}`.padStart(2, '0');
-        return `${year}-${month}-${day}`;
+        const hours = `${formattedDate.getHours()}`.padStart(2, '0');
+        const minutes = `${formattedDate.getMinutes()}`.padStart(2, '0');
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
       };
 
     return (<div className='kcreateform-container'>
     <div className='kcreateformpage-btns'>
       <label className='kcreateformpage-formdeadline'>Form Deadline: </label>
-      <input type="date" className='kcreateformpage-formdeadline-input' value={formatDate(formDeadline)} onChange={handleDeadlineChange}></input>
+      <input type="datetime-local" className='kcreateformpage-formdeadline-input' value={formatDate(formDeadline)} onChange={handleDeadlineChange}></input>
       <button className='kcreateformpage-cancelbtn' onClick={()=>navigate(-1,{state:{'jobID':job._id}})}>Cancel</button>
       <button className='kcreateformpage-savebtn' onClick={saveForm}>Save Changes</button>
     </div>
