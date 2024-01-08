@@ -33,7 +33,7 @@ export default function FormCollectionEmailComponent() {
 
 
   useEffect(() => {
-    //alert("hERE")
+    
     if (location.state.job)
     {
       //alert(JSON.stringify(location.state.job))
@@ -45,38 +45,12 @@ export default function FormCollectionEmailComponent() {
 }, [location.state]);
 
   useEffect(() => {
-    // const fetchJobDetails = async () => {
-    //   try {
-    //     const response = await axios.get(`http://localhost:8000/nisa/findjob/${jobId}`);
-    //     setJob(response.data);
-    //     //alert(job.P2FormDeadline);
-    //     const dateObject = new Date(job?.P2FormDeadline);
-    //     const formattedDate = dateObject.toLocaleDateString();
-    //     setDead(formattedDate);
-        
-    //   } catch (error) {
-    //     console.error('Error fetching job details:', error);
-    //   }
-    // };
-
-    //   //alert(JSON.stringify(location.state))
-
-    // if (jobId) {
-    //   fetchJobDetails();
-    // }
+    
   }, [jobId]);
   
 
   const handleSave = async () => {
-    // if (!jobId) {
-    //   alert('Job ID not available');
-    //   return;
-    // }
-
-    
-
-    
- 
+   
     // Append the link to the end of the email body
     const updatedEmailBody = `${formEmailBody}\n\n${link}\n\n${formEmailDeadline}${deadline}`;
     //alert(updatedEmailBody)
