@@ -8,6 +8,7 @@ import changepasswordicon from './changepassword1.png';
 import nabprofileicon from './nab-profile-icon.png';
 import axios from "axios";
 import { useEffect } from "react";
+import MessageModal from './ModalWindows/MessageModal';
 
 const person = 'personcircle.png';
 
@@ -16,6 +17,7 @@ const Layout = (props) => {
   const navigate = useNavigate(); 
   const [img1,setImg1] = useState();
   const [currUser,setUser] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(()=>{
       if (props.type == "recruiter" && !sessionStorage.getItem("sessionID"))
@@ -60,6 +62,7 @@ const Layout = (props) => {
         })
         .catch(error => {
           console.error('Error logging out:', error);
+          setOpenModal(true);
         });
   }
 
@@ -202,7 +205,14 @@ const Layout = (props) => {
         {navlayout}
       </nav>
 
-      <Outlet />
+      <Outlet /><MessageModal
+        isOpen={openModal}
+        message={"Something went wrong, please try again..."}
+        title={"Error"}
+        closeModal={() => {
+            setOpenModal(false);
+        }}
+      />
     </>
   )
 };

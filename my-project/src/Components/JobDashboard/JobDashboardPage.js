@@ -33,11 +33,12 @@ export default function JobDashboardPage() {
               setJob(response.data.job);
             }
             else 
-              alert("Error: cannot find job!");
+              setContent(<div className='kjobdashboard-error-div'>Something went wrong, please try again!</div>);
             //alert('hi');
         })
         .catch(function (error) {
-            alert("Axios Error:" + error);
+            setContent(<div className='kjobdashboard-error-div'>Something went wrong, please try again!</div>);
+            console.log(error);
         });}
       }, [location]);
 
@@ -55,6 +56,13 @@ export default function JobDashboardPage() {
       };
 
     const openTab=(index)=>{
+
+        if (!job)
+        {
+            setContent(<div className='kjobdashboard-error-div'>Something went wrong, please try again!</div>);
+            return;
+        }
+
         var selected = document.getElementById('kjobdashboardpage-tab'+index);
         var prev = document.getElementById('kjobdashboardpage-tab'+activeTab);
 

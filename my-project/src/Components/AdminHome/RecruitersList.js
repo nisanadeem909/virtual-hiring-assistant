@@ -11,18 +11,25 @@ export default function RecruiterList() {
   const [recruiters, setRecruiters] = useState([]);
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState([]);
+  const [errStatus, setErrStatus] = useState(false);
 
   useEffect(() => {
     axios.post('http://localhost:8000/komal/getrecruiters') 
       .then(response => {
         if (response.data.status == "success"){
+            setErrStatus(false);
             setRecruiters(response.data.recs);
             const modalArray = new Array(response.data.recs.length).fill(false);
             setOpenModal(modalArray);
         }
-        else
-        alert('Error:', response.data.error)
-    }).catch(error => alert('Axios Error:', error));
+        else{
+        console.log('Error:', response.data.error)
+        setErrStatus(true);
+        }
+    }).catch(function (error) {
+      console.log("Axios error: "+error)
+      setErrStatus(true);
+  });
   }, []);
 
   const removeRecruiter=(index)=>{
@@ -30,15 +37,22 @@ export default function RecruiterList() {
     axios.post("http://localhost:8000/komal/removerecruiter",param).then((response) => {
            // alert(JSON.stringify(response.data));
             if (response.data.status != "success"){
-                alert(JSON.stringify(response.data.error))}
+              console.log(JSON.stringify(response.data.error))
+              setErrStatus(true);
+            }
+            else{
+               setErrStatus(false);
+               var copy = [...recruiters];
+               copy.splice(index, 1);
+               setRecruiters(copy);
+            }
             })
             .catch(function (error) {
-                alert("Axios error: "+error)
+              console.log("Axios error: "+error)
+              setErrStatus(true);
             });
 
-    var copy = [...recruiters];
-    copy.splice(index, 1);
-    setRecruiters(copy);
+    
 
     setOpenModal(false);
   }
@@ -55,7 +69,12 @@ export default function RecruiterList() {
         <h2 className='nisa-joblists-head'>
           Recruiter List
         </h2>
-        {recruiters.map((rec, index) => (
+        {errStatus ? (
+          <div className='k-joblist-error-message'>Something went wrong, please try again..</div>
+        ) : (
+          recruiters.length === 0 ? (
+            <div className='k-joblist-error-message'>No recruiters found.</div>
+          ) : (recruiters.map((rec, index) => (
           <div key={index} className="job-row">
             <div className="job-details">
               <div className='k-recdiv' >
@@ -79,7 +98,9 @@ export default function RecruiterList() {
                 }}
             />
           </div>
-        ))}
+            ))
+          )
+        )}
       </div>
     </div>
   );

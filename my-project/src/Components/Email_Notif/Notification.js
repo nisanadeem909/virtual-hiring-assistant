@@ -78,13 +78,13 @@ export default function NotificationPage() {
                     </div>
                 )));
               else 
-                setNotifs(<>No notifications!</>)
+                setNotifs(<div className='knotif-error-div'>No notifications yet!</div>)
             }
             else 
-              alert("Axios Error!");
+              setNotifs(<div className='knotif-error-div'>Something went wrong, please try again!</div>)
         })
         .catch(function (error) {
-            alert("Axios Error:" + error);
+            setNotifs(<div className='knotif-error-div'>Something went wrong, please try again!</div>)
         });
     };
 
