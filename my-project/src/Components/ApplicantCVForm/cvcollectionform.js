@@ -43,7 +43,24 @@ function CVCollectionForm() {
 
 
   const[jobDeadline,setJobDeadline] = useState('')
+
+  const formatDate = (date) => {
+    if (!date) return '';
+    const formattedDate = new Date(date); 
+    const year = formattedDate.getFullYear();
+    const month = `${formattedDate.getMonth() + 1}`.padStart(2, '0');
+    const day = `${formattedDate.getDate()}`.padStart(2, '0');
+    let hours = formattedDate.getHours();
+    const minutes = `${formattedDate.getMinutes()}`.padStart(2, '0');
+    const amOrPm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Convert 0 to 12 for midnight
+
+    return `${day}-${month}-${year} ${hours}:${minutes} ${amOrPm}`;
+    };
+
   useEffect(()=>{
+
+
     
     setJobID(cvcollectionid)
     
@@ -53,15 +70,8 @@ function CVCollectionForm() {
           setJobDes(res.data.job.jobDescription);
           setJobRole(res.data.job.jobTitle);
 
-          const originalDate = new Date(res.data.job.CVDeadline);
 
-          // Get day, month, and year components
-          const day = originalDate.getDate();
-          const month = originalDate.getMonth() + 1; // Month is zero-based, so add 1
-          const year = originalDate.getFullYear();
-
-          // Format the date as dd-mm-yyyy
-          const formattedDate = `${day < 10 ? '0' : ''}${day}-${month < 10 ? '0' : ''}${month}-${year}`;
+          const formattedDate = formatDate(res.data.job.CVDeadline);
 
           // Now, 'formattedDate' contains the date in the "dd-mm-yyyy" format
           console.log(formattedDate);

@@ -72,12 +72,18 @@ function LoginPage() {
             <div>
               <h1 id="welcomeback">Welcome Back</h1>
               <h3 id="welcomeback-subheading">Login to get started right where you left off.</h3>
-              <form onSubmit={handleLogin}>
+              <form className='nisa-sign-con' onSubmit={handleLogin}>
                 <div>
-                  <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} name="username" id="nab-login-username" class="nab-form__input" placeholder="Username" />
-
+                <label htmlFor="nab-login-username" className="nab-form__label2">
+                        <b>Username<span style={{ color: 'red' }}>*</span></b>
+                </label>
+                  <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} name="username" id="nab-login-username2" class="nab-form__input" placeholder="Username" />
+              
                 </div>
                 <div >
+                <label htmlFor="nab-login-password" className="nab-form__label2">
+                        <b>Password<span style={{ color: 'red' }}>*</span></b>
+                      </label>
                   <input type="password" onChange={(e) => setPassword(e.target.value)} value={password} name="password" id="nab-login-password" class="nab-form__input" placeholder="Password" />
                 </div>
                 <div>

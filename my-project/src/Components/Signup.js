@@ -60,20 +60,35 @@ export default function Signup() {
                 <div>
                   <h1 id="welcomeback">Add Recruiter</h1>
                   <h3 id="welcomeback-subheading">Add a new recruiter for your company.</h3>
-                  <form onSubmit={handleSignup}>
+                  <form className='nisa-sign-con' onSubmit={handleSignup}>
                     <div>
-                      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} name="username" id="nab-login-username" className="nab-form__input" placeholder="Username" />
+                      <label htmlFor="nab-login-username" className="nab-form__label2">
+                        <b>Username<span style={{ color: 'red' }}>*</span></b>
+                      </label>
+                      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} name="username" id="nab-login-username2" className="nab-form__input" placeholder="Username" />
                     </div>
                     <div>
+                      <label htmlFor="nab-login-name" className="nab-form__label2">
+                        <b>Name<span style={{ color: 'red' }}>*</span></b>
+                      </label>
                       <input type="text" value={name} onChange={(e) => setName(e.target.value)} name="name" id="nab-login-name" className="nab-form__input" placeholder="Name" />
                     </div>
                     <div>
+                      <label htmlFor="nab-login-designation" className="nab-form__label2">
+                        <b>Designation<span style={{ color: 'red' }}>*</span></b>
+                      </label>
                       <input type="text" value={designation} onChange={(e) => setDesignation(e.target.value)} name="designation" id="nab-login-designation" className="nab-form__input" placeholder="Designation" />
                     </div>
                     <div>
+                      <label htmlFor="nab-login-email" className="nab-form__label2">
+                       <b>Email<span style={{ color: 'red' }}>*</span></b> 
+                      </label>
                       <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} name="email" id="nab-login-email" className="nab-form__input" placeholder="Email" />
                     </div>
                     <div>
+                      <label htmlFor="nab-login-password" className="nab-form__label2">
+                        <b>Password<span style={{ color: 'red' }}>*</span></b>
+                      </label>
                       <input type="password" onChange={(e) => setPassword(e.target.value)} value={password} name="password" id="nab-login-password" className="nab-form__input" placeholder="Password" />
                     </div>
                     <div>
@@ -89,17 +104,17 @@ export default function Signup() {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
+      <Footer />
     </div>
     <MessageModal
-        isOpen={openModal}
-        message={message}
-        title={"Recruiter added!"}
-        closeModal={() => {
-            setOpenModal(false);
-        }}
-      />
-    </>
+      isOpen={openModal}
+      message={message}
+      title={"Recruiter added!"}
+      closeModal={() => {
+        setOpenModal(false);
+      }}
+    />
+  </>
   );
 }
