@@ -16,8 +16,9 @@
     margin-left: 5%;
     border: 1.5px solid gainsboro;
     border-top: none;
-    border-radius: 0 2vh 0 0;
+    border-radius: 0 2vh 2vh 2vh;
     box-shadow: 0 15px 10px rgba(0.3, 0.3, 0, 0.3);
+    margin-bottom: 5vh;
 }
 
 .kjobdashboardpage-footer {

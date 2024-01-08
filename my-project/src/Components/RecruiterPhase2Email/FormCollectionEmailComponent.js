@@ -17,13 +17,28 @@ export default function FormCollectionEmailComponent() {
   const navigate = useNavigate();
   const [jobId,setJobID] = useState(null);
 
+  const formatDate = (date) => {
+    if (!date) return '';
+    const formattedDate = new Date(date); 
+    const year = formattedDate.getFullYear();
+    const month = `${formattedDate.getMonth() + 1}`.padStart(2, '0');
+    const day = `${formattedDate.getDate()}`.padStart(2, '0');
+    let hours = formattedDate.getHours();
+    const minutes = `${formattedDate.getMinutes()}`.padStart(2, '0');
+    const amOrPm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Convert 0 to 12 for midnight
+
+    return `${year}-${month}-${day} ${hours}:${minutes} ${amOrPm}`;
+};
+
+
   useEffect(() => {
     
     if (location.state.job)
     {
       //alert(JSON.stringify(location.state.job))
       setJob(location.state.job);
-      setDead(location.state.deadline);
+      setDead(formatDate(location.state.deadline));
       setLink(location.state.formLink);
 
     }
@@ -32,6 +47,7 @@ export default function FormCollectionEmailComponent() {
   useEffect(() => {
     
   }, [jobId]);
+  
 
   const handleSave = async () => {
    

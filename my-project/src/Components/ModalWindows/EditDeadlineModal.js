@@ -16,8 +16,8 @@ const EditModal = ({ isOpen, title, closeModal, saveValue, originalValue }) => {
   };
 
   const saveNewValue = () => {
-    const currentDate = new Date().toISOString().split('T')[0];
-    const inputDate = new Date(inputVal).toISOString().split('T')[0];
+    const currentDate = new Date().toISOString(); 
+    const inputDate = new Date(inputVal).toISOString();
   
     if (inputDate < currentDate) {
       setErr("Deadline cannot be a past date.");
@@ -46,8 +46,24 @@ const EditModal = ({ isOpen, title, closeModal, saveValue, originalValue }) => {
     const year = formattedDate.getFullYear();
     const month = `${formattedDate.getMonth() + 1}`.padStart(2, '0');
     const day = `${formattedDate.getDate()}`.padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    const hours = `${formattedDate.getHours()}`.padStart(2, '0');
+    const minutes = `${formattedDate.getMinutes()}`.padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
+  
+  const formatDate2 = (date) => {
+    if (!date) return '';
+    const formattedDate = new Date(date); 
+    const year = formattedDate.getFullYear();
+    const month = `${formattedDate.getMonth() + 1}`.padStart(2, '0');
+    const day = `${formattedDate.getDate()}`.padStart(2, '0');
+    let hours = formattedDate.getHours();
+    const minutes = `${formattedDate.getMinutes()}`.padStart(2, '0');
+    const amOrPm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Convert 0 to 12 for midnight
+
+    return `${year}-${month}-${day} ${hours}:${minutes} ${amOrPm}`;
+};
 
   return (
     <Modal
@@ -60,8 +76,8 @@ const EditModal = ({ isOpen, title, closeModal, saveValue, originalValue }) => {
         <div className='kmodal-title-div'>
             {title && <label className='kmodal-title'>Edit {title}</label>}
         </div>
-        <label className='kmodal-originaldeadline'>Current Deadline: {originalValue ? new Date(originalValue).toLocaleDateString('en-GB') : ''}</label>
-        <input type="date" placeholder={title} className='kmodal-tf-date' value={formatDate(inputVal)} onChange={(event)=>handleInput(event)}></input>
+        <label className='kmodal-originaldeadline'>Current Deadline: {originalValue ? formatDate2(originalValue):''}</label>
+        <input type="datetime-local" placeholder={title} className='kmodal-tf-date' value={formatDate(inputVal)} onChange={(event)=>handleInput(event)}></input>
         <label className='kmodal-error'>{err}</label>
         <hr className='kmodal-hr'></hr>
         <div className='kmodal-btns'>
