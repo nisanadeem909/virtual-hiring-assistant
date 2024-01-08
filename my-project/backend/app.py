@@ -405,11 +405,19 @@ def sendCVRejectionEmails():
         for applicant in applicants:
             rejectionStatus = applicant.get('rejectionstatus')
 
-            print(rejectionStatus)
+            
             if rejectionStatus == 0:
                 jobId = applicant.get('jobID', '')
+                cvscore = applicant.get('CVMatchScore', {}).get('$numberDecimal', '')
+                if cvscore:  # Use the correct variable name here
+                    cvscode = float(cvscore)
+
+
                 rejection_email_body_response = requests.get(f'http://localhost:8000/nisa/getRejectionEmailBody/{jobId}')
                 rejection_email_body = rejection_email_body_response.json().get('rejectionEmailBody', '')
+
+                rejection_email_body += f"\nUnfortunately, your CV percentage did not meet the required criteria for this position.\nYour CV Score is {cvscode} \nWe wish you the best in your job search and future endeavors."
+
 
                 # Send rejection email
                 send_rejection_email(applicant, rejection_email_body)
@@ -437,10 +445,13 @@ def sendFormRejectionEmails():
             if applicant.get('rejectionstatus', 0) == 0:
                 jobId = applicant.get('jobID', '')
                 applicantId = applicant.get('_id', '')
+               
+                
                 rejection_email_body_response = requests.get(f'http://localhost:8000/nisa/getRejectionEmailBody/{jobId}')
                 rejection_email_body = rejection_email_body_response.json().get('rejectionEmailBody', '')
 
-               
+                rejection_email_body += f"\nUnfortunately, your form response did not meet the required criteria for this position.\nWe wish you the best in your job search and future endeavors."
+
                 send_rejection_email(applicant, rejection_email_body)
                 
                 
@@ -516,6 +527,7 @@ while True:
     
 if __name__ == '__main__':
     app.run(debug=True) 
+    
     
 
 

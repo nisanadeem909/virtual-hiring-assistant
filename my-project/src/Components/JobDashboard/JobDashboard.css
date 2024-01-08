@@ -17,7 +17,7 @@
     border: 1.5px solid gainsboro;
     border-top: none;
     border-radius: 0 2vh 0 0;
-    box-shadow: 0 15px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 15px 10px rgba(0.3, 0.3, 0, 0.3);
 }
 
 .kjobdashboardpage-footer {
@@ -78,6 +78,7 @@
 .kjobdetailspage-con {
     display: flex;
     flex-direction: column;
+
 }
 
 .kjobdetailspage-header {
@@ -97,6 +98,10 @@
 .kjobdetailspage-jobstatus {
     margin: 2vh;
     font-weight: bold;
+    font-size: 20px;
+    margin-left: 0.2%;
+    color: #add8f8;
+
 }
 
 .kjobdetailspage-inner {
@@ -117,6 +122,7 @@
     display: flex;
     justify-content: space-between;
     border: 2px solid #012641;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .kjobdetailspage-cv-div {
@@ -131,6 +137,7 @@
     justify-content: space-evenly;
     overflow: hidden;
     word-wrap: break-word;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .kjobdetailspage-jd-div {
@@ -140,6 +147,7 @@
     border-radius: 2vh;
     padding: 2vh;
     border: 2px solid #012641;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .kjobdetailspage-appdeadline, .kjobdetailspage-cvlink,.kjobdetailspage-cvscore {
