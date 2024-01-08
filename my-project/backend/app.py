@@ -298,6 +298,7 @@ def CVScreening(job):
 #########################################
 def sendFormEmails():
     # Find shortlisted applications (status 2 and formlinkstatus 0)
+    print("heree")
     response = requests.get('http://localhost:8000/nisa/getApplicationsByStatus/2')
 
     if response.status_code == 200:
@@ -505,12 +506,13 @@ def Formtimer():
                 FormScreening(job)
         
 
-schedule.every(1).minutes.do(sendFormEmails)
+#schedule.every(1).minutes.do(sendFormEmails)
 while True:
     CVtimer()
     Formtimer()
-    schedule.run_pending()
-    time.sleep(30)  
+    sendFormEmails()
+    #schedule.run_pending()
+    time.sleep(45)  
     
 if __name__ == '__main__':
     app.run(debug=True) 
