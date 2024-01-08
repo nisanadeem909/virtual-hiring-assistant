@@ -7,7 +7,7 @@ from nltk.tokenize import word_tokenize
 from numpy.linalg import norm
 import pandas as pd
 import numpy as np
-import re
+import re 
 import spacy
 from spacy.lang.en import English
 from sklearn.metrics.pairwise import cosine_similarity
@@ -90,7 +90,7 @@ def match_degrees_by_spacy(doc):
         
         
         doc1 = nlp(doc)
-        degree_levels = []
+        degree_levels = [] 
         for ent in doc1.ents:
                 labels_parts = ent.label_.split('|')
                 if labels_parts[0] == 'DEGREE':
