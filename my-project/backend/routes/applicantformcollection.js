@@ -163,7 +163,8 @@ router.post('/submitformresponse', async (req, res) => {
             //Check if an applicant has submitted their CV or not!
             const existingApplication = await JobApplication.findOne({
               email: req.body.email,
-              jobID: job._id  // Convert to ObjectId if needed
+              jobID: job._id,
+              status: 2,
             });
             console.log(req.body.email)
             console.log(req.body.jobID)

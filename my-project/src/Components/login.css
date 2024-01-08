@@ -9,6 +9,12 @@
 	/*margin: 5em auto;*/
 	display: flex;
 }
+.nab-form__label2{
+
+    margin-bottom: -15px;
+    margin-left: 14.4vh;
+}
+
 #emerald{
     width:90%;
     height:100%;
@@ -31,10 +37,22 @@
     animation: moveBackground 4s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite alternate;
   }
 
+  .nisa-sign-con{
+    margin-top: 7%;
+  }
+
 #nab-login-username{
     width: 60%;
     margin-left: 20%;
     margin-top: 10%;
+    border: 2px solid rgb(34, 33, 33,0.7);
+    border-radius: 8px;
+}
+
+#nab-login-username2{
+    width: 60%;
+    margin-left: 20%;
+    
     border: 2px solid rgb(34, 33, 33,0.7);
     border-radius: 8px;
 }

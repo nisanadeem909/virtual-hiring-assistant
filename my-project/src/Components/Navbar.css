@@ -37,6 +37,8 @@ nav .navb_ul .navb_li{
   line-height: 80px;
   margin-left: 14px;
   margin-top: -14px;
+  font-weight: bold;
+  
 }
 nav .navb_ul .navb_li a{
   color: white;

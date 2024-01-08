@@ -416,7 +416,7 @@ def sendCVRejectionEmails():
                 rejection_email_body_response = requests.get(f'http://localhost:8000/nisa/getRejectionEmailBody/{jobId}')
                 rejection_email_body = rejection_email_body_response.json().get('rejectionEmailBody', '')
 
-                rejection_email_body += f"\nUnfortunately, your CV percentage did not meet the required criteria for this position.\nYour CV Score is {cvscode} \nWe wish you the best in your job search and future endeavors."
+                rejection_email_body += f"\nUnfortunately, your CV percentage did not meet the required criteria for this position.\n\nYour CV Score is {cvscode} \nWe wish you the best in your job search and future endeavors."
 
 
                 # Send rejection email
@@ -498,24 +498,23 @@ def FormScreening(job):
         sendFormRejectionEmails()
 
 def CVtimer():
-    # response = requests.post('http://localhost:8000/komal/getnotifications')
-    # print(response.json())
-    #print("hi")
-    current_datetime = datetime.now()
+    print("CV Timer")
+    current_datetime = datetime.now(pytz.utc)
     all_jobs = list(job_collection.find({}))
+    
     for job in all_jobs:
-        if job['status'] == 1 and current_datetime >= job['CVDeadline']:
+        if job['status'] == 1 and current_datetime >= job['CVDeadline'].replace(tzinfo=pytz.utc):
             CVScreening(job)
-            
+
 def Formtimer():
-    print("hi")
-    current_datetime = datetime.now()
+    print("Form Timer")
+    current_datetime = datetime.now(pytz.utc)
     all_jobs = list(job_collection.find({}))
+    
     for job in all_jobs:
         if job.get('P2FormDeadline'):
-            if job['status'] == 2 and current_datetime >= job['P2FormDeadline']:
+            if job['status'] == 2 and current_datetime >= job['P2FormDeadline'].replace(tzinfo=pytz.utc):
                 FormScreening(job)
-        
 
 #schedule.every(1).minutes.do(sendFormEmails)
 while True:

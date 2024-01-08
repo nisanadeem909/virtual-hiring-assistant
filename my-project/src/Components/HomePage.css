@@ -1,7 +1,7 @@
 #nab-discover-opp{
     text-align:center;
     font-size: 22px;
-    font-weight: bold;
+    font-weight: bolder;
     width:100%;
     color: #012641;
     margin-bottom: 5%;
@@ -54,7 +54,8 @@ h2{
 }
 
 .b1 {
-    margin: 15px;
+    margin-top: 2vh;
+    font-weight: bold;
     width: 150px;
     background-color: #012641;
     color: white;
