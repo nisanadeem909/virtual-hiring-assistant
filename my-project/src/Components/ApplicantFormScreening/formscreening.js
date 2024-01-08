@@ -27,6 +27,9 @@ export default function FormScreening() {
   const [incompleteFormError,setIncompleteFormError] = useState('')
   const [isJobAcceptingResponses, setIsJobAcceptingResponses] = useState(true);
 
+
+  const[jobDeadline,setJobDeadline] = useState('')
+
   useEffect(() => {
     setJobID(formcollectionid);
 
@@ -40,6 +43,21 @@ export default function FormScreening() {
           const formDeadline = new Date(res.data.job.P2FormDeadline);
 
           setIsJobAcceptingResponses(currentDate <= formDeadline);
+
+          
+          const originalDate = new Date(res.data.job.P2FormDeadline);
+
+          // Get day, month, and year components
+          const day = originalDate.getDate();
+          const month = originalDate.getMonth() + 1; // Month is zero-based, so add 1
+          const year = originalDate.getFullYear();
+
+          // Format the date as dd-mm-yyyy
+          const formattedDate = `${day < 10 ? '0' : ''}${day}-${month < 10 ? '0' : ''}${month}-${year}`;
+
+          // Now, 'formattedDate' contains the date in the "dd-mm-yyyy" format
+          console.log(formattedDate);
+          setJobDeadline(formattedDate)
         } else {
           setErrorMessage(res.data.error);
         }
@@ -107,6 +125,9 @@ export default function FormScreening() {
             <>
               <div id="nab-form-heading">Apply for {jobrole} </div>
               <hr id="nab-form-hr" />
+              
+              <label  for="fullName"><p class="nab-cv-form-jobdes"><b>Last Date to Submit Application: {jobDeadline}</b></p></label>
+              <br></br>
               <form>
                 <div id="nab-formcoll-group">
                   <label id="nab-form-label" htmlFor="email">Email<span id="nab-form-required-field">*</span>:</label>
