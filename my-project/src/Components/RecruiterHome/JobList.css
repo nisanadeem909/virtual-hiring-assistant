@@ -11,72 +11,104 @@
   box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.2);
   overflow-y: scroll;
   margin-bottom: 20%;
-  padding-top: 120px; 
+  padding-top: 120px;
+}
+
+.nisa-joblists-head {
+  font-size: 50px;
+}
+
+.job-row {
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+  min-width: 85%;
+ 
+  cursor: pointer;
+}
+
+.job-row:hover {
+  background-color: #f2f2f2; /* Change background color on hover */
 }
 
 
-  .nisa-joblists-head{
-    font-size: 50px;
-  }
+.job-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
 
-  .job-row {
-    display: flex;
-    align-items:flex-start;
-    border-bottom: 1px solid #ccc;
-    padding: 10px;
-    min-width: 85%;
-    margin-top: 10px; 
-  }
+.nisa-label1 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #012641;
   
-  .job-details {
-    display: flex;
-    flex-grow: 1; 
-    flex-direction: column;
-    align-items: flex-start; 
-  }
-  
-  .job-title {
-    font-size: 19px;
-    font-weight: bold;
-    text-align: left;
-  }
-  
-  .job-status {
-    font-size: 16px;
-    text-align: left;
-    color: #3498db;
-    font-weight: bolder;
-  }
-  
-  .open-job-button {
-    background-color: #012641;
-    color: white;
-    border: none;
-    padding: 8px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 10px; 
-    width: 150px;
-  }
+}
 
-  .job-icon{
-    width: 80px;
-    height: 80px;
-    margin-right: 32%;
-    margin-bottom: 1%;
-    margin-top: -10%;
-  }
+.nisa-value {
+  font-size: 16px;
+  font-weight: bold;
+  margin-left: 2px;
+  color: #3498db
   
-  .kjob-nojob {
-    margin-top: 20vh;
-    color: red;
-    font-weight: bold;
-    font-size: 3vh;
-  }
+}
 
-  .k-joblist-error-message{
-    font-size: 2.5vh;
-    font-weight: bold;
-    color: rgb(230, 0, 0);
-    margin: 7vh;
-  }
+.nisa-label2{
+  font-size: 16px;
+  font-weight: bold;
+  color: #012641;;
+ 
+}
+
+.nisa-job-dead{
+  width: 24%;
+  text-align: left;
+}
+
+.job-title {
+  font-size: 20px;
+  font-weight: bolder;
+  text-align: left;
+  color: #051c5c;
+}
+
+.job-status-deadline {
+  display: flex;
+  justify-content: space-between; /* Equal space between Status and Deadline */
+  align-items: center;
+  margin-top: 2px;
+}
+
+.open-job-button {
+  background-color: #012641;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+  width: 150px;
+}
+
+.job-icon {
+  width: 80px;
+  height: 80px;
+  margin-right: 32%;
+  margin-bottom: 1%;
+  margin-top: -10%;
+}
+
+.kjob-nojob {
+  margin-top: 20vh;
+  color: red;
+  font-weight: bold;
+  font-size: 3vh;
+}
+
+.k-joblist-error-message {
+  font-size: 2.5vh;
+  font-weight: bold;
+  color: rgb(230, 0, 0);
+  margin: 7vh;
+}
