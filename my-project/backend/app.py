@@ -177,7 +177,7 @@ def matchCVJD(model,cv_all,jd_all):
             else:
                 max = -1
                 for cv_item in v1:
-                    newsimilarity = (np.dot(np.array(cv_item), np.array(element))) / (norm(np.array(cv_item)) * norm(np.array(element)))
+                    newsimilarity = (np.dot(np.array(cv_item), np.array(element))) / (norm(np.array(cv_item)) * norm(np.array(element))) # cosine similarity
                     if newsimilarity > max:
                         max = newsimilarity
                 #print(max)
@@ -203,7 +203,7 @@ def CVScreening(job):
             return
     
     model = loadModel()
-    jd_phrases = extractJDPhrases(job['jobDescription'])
+    jd_phrases = extractJDPhrases(job['jobDescription']) #extracts skills,degrees,majors using spacy 
     acceptableScore = job['AccCVScore'].to_decimal()
     all_apps = list(jobapp_collection.find({'jobID': job['_id']}))
     
@@ -232,11 +232,11 @@ def CVScreening(job):
     for app in all_apps:
         filename = app['CVPath']
         resumepath = './routes/resumes/' + filename
-        resume = extractCV(resumepath)
+        resume = extractCV(resumepath) # parses cv pdf
         if not resume:
             similarity = 0
         else:
-            cv_phrases = extractCVPhrases(resume)
+            cv_phrases = extractCVPhrases(resume) # extracts skills,degrees,majors using spacy 
             similarity = matchCVJD(model,cv_phrases,jd_phrases)
             
         if similarity >= acceptableScore:
@@ -298,7 +298,7 @@ def CVScreening(job):
 #########################################
 def sendFormEmails():
     # Find shortlisted applications (status 2 and formlinkstatus 0)
-    print("heree")
+    print("in form emails")
     response = requests.get('http://localhost:8000/nisa/getApplicationsByStatus/2')
 
     if response.status_code == 200:
