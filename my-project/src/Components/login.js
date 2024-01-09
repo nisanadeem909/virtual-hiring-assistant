@@ -10,6 +10,7 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [showPassword1, setShowPassword1] = useState(false);
   const navigate = useNavigate();
 
   const viewRecruiter = () => {
@@ -22,6 +23,10 @@ function LoginPage() {
     }
     
   }
+
+  const toggleShowPassword1 = () => {
+    setShowPassword1((prevShowPassword) => !prevShowPassword);
+  };
 
   const viewAdmin = () => {
     const sessionID = sessionStorage.getItem('sessionID');
@@ -91,7 +96,12 @@ function LoginPage() {
                 <label htmlFor="nab-login-password" className="nab-form__label2">
                         <b>Password<span style={{ color: 'red' }}>*</span></b>
                       </label>
-                  <input type="password" onChange={(e) => setPassword(e.target.value)} value={password} name="password" id="nab-login-password" class="nab-form__input" placeholder="Password" />
+                  <div className="password-input-container">    
+                  <input type={showPassword1 ? "text" : "password"} onChange={(e) => setPassword(e.target.value)} value={password} name="password" id="nab-login-password" class="nab-form__input" placeholder="Password" />
+                  <span className="password-toggle-login" onClick={toggleShowPassword1}>
+                {showPassword1 ? "Hide" : "Show"}
+              </span>
+             </div>
                 </div>
                 <div>
                   <input type="submit" value="Login" id="nab-login-submit-btn" />

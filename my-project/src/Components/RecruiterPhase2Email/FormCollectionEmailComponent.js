@@ -17,6 +17,7 @@ export default function FormCollectionEmailComponent() {
   const navigate = useNavigate();
   const [jobId,setJobID] = useState(null);
 
+  const [error, setError] = useState('');
   const formatDate = (date) => {
     if (!date) return '';
     const formattedDate = new Date(date); 
@@ -50,6 +51,14 @@ export default function FormCollectionEmailComponent() {
   
 
   const handleSave = async () => {
+
+    if (!formEmailBody.trim()) {
+      setError('Email body cannot be empty. Please provide a valid email body.');
+      return;
+    }
+
+    setError('');
+
    
     // Append the link to the end of the email body
     const updatedEmailBody = `${formEmailBody}\n\n${link}\n\n${formEmailDeadline}${deadline}`;
@@ -116,6 +125,7 @@ export default function FormCollectionEmailComponent() {
             Save
           </button>
         </div>
+        {error && <div className='krejemail-error' style={{ color: 'red' }}>{error}</div>}
       </div>
       {showModal && (
         <div className='modal' style={{ display: 'block' }}>
