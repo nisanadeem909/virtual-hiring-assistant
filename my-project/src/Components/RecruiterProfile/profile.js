@@ -82,7 +82,13 @@ export default function Profile() {
     };
 
     const handleSave = async (username1) => {
-        // Implement the logic to save updated details
+
+        if (!fullName || !email || !jobDes || !fullName.trim() || !email.trim() || !jobDes.trim())
+        {
+            setServerMessage({message: "Please fill all fields!", isError: true})
+            return;
+        }
+
         const updatedDetails = {
             name: fullName,
             email,
@@ -98,7 +104,6 @@ export default function Profile() {
 
             setServerMessage({ message: response.data.message, isError: false });
 
-            // Clear the error message after 5 seconds
             setTimeout(() => {
                 setServerMessage(null);
             }, 5000);
@@ -108,7 +113,6 @@ export default function Profile() {
 
             setServerMessage({ message: 'Error saving user details', isError: true });
 
-            // Clear the error message after 5 seconds
             setTimeout(() => {
                 setServerMessage(null);
             }, 5000);
