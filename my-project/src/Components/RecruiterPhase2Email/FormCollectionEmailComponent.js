@@ -28,7 +28,7 @@ export default function FormCollectionEmailComponent() {
     const amOrPm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12 || 12; // Convert 0 to 12 for midnight
 
-    return `${year}-${month}-${day} ${hours}:${minutes} ${amOrPm}`;
+    return `${day}-${month}-${year} ${hours}:${minutes} ${amOrPm}`;
 };
 
 

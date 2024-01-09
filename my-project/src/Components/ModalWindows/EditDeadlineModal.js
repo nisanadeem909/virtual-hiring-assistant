@@ -48,7 +48,7 @@ const EditModal = ({ isOpen, title, closeModal, saveValue, originalValue }) => {
     const day = `${formattedDate.getDate()}`.padStart(2, '0');
     const hours = `${formattedDate.getHours()}`.padStart(2, '0');
     const minutes = `${formattedDate.getMinutes()}`.padStart(2, '0');
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
+    return `${day}-${month}-${year}T${hours}:${minutes}`;
   };
   
   const formatDate2 = (date) => {
@@ -62,7 +62,7 @@ const EditModal = ({ isOpen, title, closeModal, saveValue, originalValue }) => {
     const amOrPm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12 || 12; // Convert 0 to 12 for midnight
 
-    return `${year}-${month}-${day} ${hours}:${minutes} ${amOrPm}`;
+    return `${day}-${month}-${year} ${hours}:${minutes} ${amOrPm}`;
 };
 
   return (

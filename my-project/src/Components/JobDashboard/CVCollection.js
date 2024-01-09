@@ -13,6 +13,21 @@ export default function CVCollection(props) {
    const [job,setJob] = useState({'jobTitle':'Loading..','CVFormLink':'Loading..','AccCVScore': { $numberDecimal: '0' },'CVDeadline':'dd/mm/yyyy','status':'0','jobDescription':'Loading..'})
    const [errorStatus,setErrStat] = useState(false);
 
+   const formatDate = (date) => {
+    if (!date) return '';
+    const formattedDate = new Date(date); 
+    const year = formattedDate.getFullYear();
+    const month = `${formattedDate.getMonth() + 1}`.padStart(2, '0');
+    const day = `${formattedDate.getDate()}`.padStart(2, '0');
+    let hours = formattedDate.getHours();
+    const minutes = `${formattedDate.getMinutes()}`.padStart(2, '0');
+    const amOrPm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Convert 0 to 12 for midnight
+
+    return `${day}-${month}-${year} ${hours}:${minutes} ${amOrPm}`;
+};
+
+
    useEffect(() => {
     if (props.job)
     {
@@ -46,7 +61,7 @@ export default function CVCollection(props) {
             <label className='kcvcollectionpage-header-title'>Applications for {job.jobTitle}</label>
             <div className='kcvcollectionpage-header-vr'></div>
             <div className='kcvcollectionpage-deadline-div'>
-                <label className='kcvcollectionpage-deadline'>{new Date(job.CVDeadline).toLocaleDateString('en-GB')}</label>
+                <label className='kcvcollectionpage-deadline'>{formatDate(job.CVDeadline)}</label>
                 <label className='kcvcollectionpage-deadline-title'>Deadline</label>
             </div>
             <div className='kcvcollectionpage-header-vr'></div>
