@@ -39,6 +39,13 @@ function LoginPage() {
   const handleLogin = async (e) => {
 
     e.preventDefault();
+
+    if (!username || !password)
+    {
+      setError("Please enter both fields!")
+      return;
+    }
+
     axios.post('http://localhost:8000/nisa/login', { username, password })
       .then(res => {
         const sessionID = res.data.sessionId;

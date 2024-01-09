@@ -35,7 +35,7 @@ export default function PostJobPage() {
   const handleNext = () => {
     if (phase === 0) {
       // Validate required fields for Phase 0
-      if (!formData.jobTitle || !formData.jobDescription) {
+      if (!formData.jobTitle || !formData.jobDescription || !formData.jobTitle.trim() || !formData.jobDescription.trim()) {
         setValidationError('Please fill in all required fields.');
         return;
       }

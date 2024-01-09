@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../RecruiterHome/JobList.css';
+import './RecruiterList.css';
 import './AdminHome.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -65,8 +65,8 @@ export default function RecruiterList() {
 
   return (
     <div>
-      <div className='nisa-joblist-con'>
-        <h2 className='nisa-joblists-head'>
+      <div className='kom-joblist-con'>
+        <h2 className='kom-joblists-head'>
           Recruiter List
         </h2>
         {errStatus ? (
@@ -76,18 +76,18 @@ export default function RecruiterList() {
             <div className='k-joblist-error-message'>No recruiters found.</div>
           ) : (recruiters.map((rec, index) => (
           <div key={index} className="job-row">
-            <div className="job-details">
+            <div className="k-job-details">
               <div className='k-recdiv' >
                 <img className='k-rec-profilepic' src={`http://localhost:8000/routes/profilepictures/${rec.profilePic || person}`}></img>
                 <div>
-                <div className="job-title">{rec.name}</div>
-                <div className="job-status">
+                <div className="k-job-title">{rec.name}</div>
+                <div className="k-job-status">
                   {rec.email}
                 </div>
                 </div>
               </div>
             </div>
-            <button className="open-job-button" onClick={()=>setModalOpen(index,true)}>Remove Recruiter</button>
+            <button className="open-k-job-button" onClick={()=>setModalOpen(index,true)}>Remove Recruiter</button>
             <RemoveModal
                 isOpen={openModal[index]}
                 title={rec.username}
