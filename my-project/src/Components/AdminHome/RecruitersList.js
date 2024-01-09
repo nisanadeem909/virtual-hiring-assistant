@@ -75,7 +75,7 @@ export default function RecruiterList() {
           recruiters.length === 0 ? (
             <div className='k-joblist-error-message'>No recruiters found.</div>
           ) : (recruiters.map((rec, index) => (
-          <div key={index} className="job-row">
+          <div key={index} className="k-job-row">
             <div className="k-job-details">
               <div className='k-recdiv' >
                 <img className='k-rec-profilepic' src={`http://localhost:8000/routes/profilepictures/${rec.profilePic || person}`}></img>

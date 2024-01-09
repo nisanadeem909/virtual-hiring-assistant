@@ -48,7 +48,7 @@ const EditModal = ({ isOpen, title, closeModal, saveValue, originalValue }) => {
     const day = `${formattedDate.getDate()}`.padStart(2, '0');
     const hours = `${formattedDate.getHours()}`.padStart(2, '0');
     const minutes = `${formattedDate.getMinutes()}`.padStart(2, '0');
-    return `${day}-${month}-${year}T${hours}:${minutes}`;
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
   
   const formatDate2 = (date) => {

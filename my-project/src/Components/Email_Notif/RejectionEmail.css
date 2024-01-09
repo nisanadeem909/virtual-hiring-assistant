@@ -148,6 +148,11 @@
     text-align: center;
     margin-top: 15%;
   }
+
+  .krej-emailerror {
+    color:red;
+    font-weight: bold;
+  }
   
   .nisa-modal-btn {
     background-color: #0066ae;

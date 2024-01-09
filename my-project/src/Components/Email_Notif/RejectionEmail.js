@@ -13,6 +13,7 @@ export default function RejectionEmailPage({ data }) {
   const [job, setJob] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
+  const [rejectEmailBodyError, setRejectEmailBodyError] = useState('');
 
   useEffect(() => {
     // Use optional chaining to avoid errors if location or location.state is undefined
@@ -25,6 +26,14 @@ export default function RejectionEmailPage({ data }) {
   
 
   const handleSave = async () => {
+    //alert('savingngn')
+    if (!rejectEmailBody || !rejectEmailBody.trim())
+    {
+      setRejectEmailBodyError('Please enter the rejection email body.');
+      //alert("here")
+      return;
+    }
+
     try {
       var id = job._id;
       const response = await axios.post(`http://localhost:8000/nisa/api/updateEmailsAndForm/${id}`, {
@@ -32,10 +41,12 @@ export default function RejectionEmailPage({ data }) {
       });
 
       console.log('Updated:', response.data);
+      setRejectEmailBodyError('');
       setShowModal(true);
       setSavedJob(data);
     } catch (error) {
       console.error('Error updating emails and form:', error);
+      setRejectEmailBodyError('Something went wrong, please try again..');
     }
   };
 
@@ -68,11 +79,13 @@ export default function RejectionEmailPage({ data }) {
           <br></br>
           <label><b>Email Body:</b></label>
           <textarea className='krejemail-textarea' value={rejectEmailBody} onChange={handleDefaultEmailChange}></textarea>
-        </div>
+        {rejectEmailBodyError && <div className='krej-emailerror'>{rejectEmailBodyError}</div>}
+      </div>
         <div className='krejemail-buttons'>
           <button className='krejemail-save-btn' onClick={handleSave}>Save</button>
           
         </div>
+        
       </div>
       {showModal && (
         <div className='modal' style={{ display: 'block' }}>
