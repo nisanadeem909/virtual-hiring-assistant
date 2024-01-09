@@ -21,6 +21,16 @@
     margin-left: 00px;
 }
 
+.password-toggle-login{
+    position: absolute;
+    left: 73%;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #3498db;
+    font-size: 14px;
+}
+
 .nab-wrapper-login::before {
     content: "";
     position: absolute;

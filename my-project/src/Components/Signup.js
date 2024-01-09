@@ -17,15 +17,45 @@ export default function Signup() {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
   const [message, setMessage] = useState('');
+  const [showPassword1, setShowPassword1] = useState(false);
+
+  const toggleShowPassword1 = () => {
+    setShowPassword1((prevShowPassword) => !prevShowPassword);
+  };
+
 
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    // Example: Validation logic
-    if (!username || !email || !password || !name || !designation) {
+    
+    if (!username || !email || !password || !name || !designation || !username.trim() || !email.trim() || !name.trim() || !designation.trim()) {
       setError('Please fill in all fields.');
       return;
     }
+
+    if(username.length < 3 )
+    {
+      setError('Username must be at least 3 characters.')
+      return;
+    }
+    if(password.length < 6 )
+    {
+      setError('Password must be at least 6 characters.')
+      return;
+    }
+    if(name.length < 6 )
+    {
+      setError('Name must be at least 6 characters.')
+      return;
+    }
+
+    if(designation.length < 6 )
+    {
+      setError('Designation must be at least 6 characters.')
+      return;
+    }
+
+
 
     try {
       
@@ -33,12 +63,13 @@ export default function Signup() {
 
       
       if (response.data.user) {
-        // Set session ID in sessionStorage
-        //sessionStorage.setItem('sessionID', response.data.user.username);
-
-        //const sessionID = sessionStorage.getItem('sessionID');
-        //navigate("/recruiter/home/", { state: { sessionID } });
+       
         setMessage('Recruiter successfully added with username: '+username +' and password: '+password);
+        setUsername('')
+        setDesignation('')
+        setEmail('')
+        setPassword('')
+        setName('')
         setOpenModal(true);
       } else {
         setError('Could not add recruiter. Please try again.');
@@ -89,13 +120,18 @@ export default function Signup() {
                       <label htmlFor="nab-login-password" className="nab-form__label2">
                         <b>Password<span style={{ color: 'red' }}>*</span></b>
                       </label>
-                      <input type="password" onChange={(e) => setPassword(e.target.value)} value={password} name="password" id="nab-login-password" className="nab-form__input" placeholder="Password" />
+                      <div className="password-input-container">
+                      <input type={showPassword1 ? "text" : "password"} onChange={(e) => setPassword(e.target.value)} value={password} name="password" id="nab-login-password" className="nab-form__input" placeholder="Password" />
+                      <span className="password-toggle-login" onClick={toggleShowPassword1}>
+                {showPassword1 ? "Hide" : "Show"}
+              </span>
+            </div>
                     </div>
                     <div>
                       <input type="submit" value="Add" id="nab-login-submit-btn" />
                     </div>
                   </form>
-                  {error && <p style={{ color: 'red', marginLeft: '200px' }}>{error}</p>}
+                  {error && <p style={{ color: 'red', marginLeft: '150px' }}>{error}</p>}
                 </div>
               </div>
             </div>

@@ -356,24 +356,7 @@ def send_form_email(applicant, subject, body):
         server.sendmail(sender_email, receiver_email, message)
 
 
-def check_and_send_form_email(applicant):
-    job_id = applicant.get('jobID', '')
-
-    if job_id:
-        # Fetch form email body and subject based on job ID
-        form_email_response = requests.get(f'http://localhost:8000/nisa/getFormEmail/{job_id}')
-        form_email_data = form_email_response.json()
-
-        form_email_body = form_email_data.get('formEmailBody', '')
-        form_email_subject = form_email_data.get('formEmailSub', '')
-
-        if form_email_body and form_email_subject:
-            send_form_email(applicant, form_email_subject, form_email_body)
-            print(f"Form email sent to {applicant['email']} for job ID {job_id}")
-        else:
-            print(f"Form link not available yet for {applicant['email']}")
-
- #######################3        
+     
 
 def send_rejection_email(applicant, rejection_email_body):
     port = 587  # For starttls
