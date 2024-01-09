@@ -95,7 +95,7 @@ function CVCollectionForm() {
 
     if (errorMessage) {
       // Redirect to the error page or handle it as needed
-      alert(errorMessage)
+      //alert(errorMessage)
       navigate('/error');
     }
 
