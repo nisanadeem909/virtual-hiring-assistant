@@ -72,33 +72,38 @@ export default function RecruiterList() {
         ) : (
           recruiters.length === 0 ? (
             <div className='k-joblist-error-message'>No recruiters found.</div>
-          ) : (recruiters.map((rec, index) => (
-          <div key={index} className="k-job-row">
-            <div className="k-job-details">
-              <div className='k-recdiv' >
-                <img className='k-rec-profilepic' src={`http://localhost:8000/routes/profilepictures/${rec.profilePic || person}`}></img>
-                <div>
-                <div className="k-job-title">{rec.name}</div>
-                <div className="k-job-status">
-                  {rec.email}
+          ) : (
+            <>
+              {recruiters.map((rec, index) => (
+                <div key={index} className="k-job-row">
+                  <div className="k-job-details">
+                    <div className='k-recdiv' >
+                      <img className='k-rec-profilepic' src={`http://localhost:8000/routes/profilepictures/${rec.profilePic || person}`} alt="Profile"></img>
+                      <div>
+                        <div className="k-job-title">{rec.name}</div>
+                        <div className="k-job-status">
+                          {rec.email}
+                        </div>
+                      </div>
+                  </div>
+                    </div>
+                    <button className="open-k-job-button" onClick={() => setModalOpen(index, true)}>Remove Recruiter</button>
+                    <RemoveModal
+                      isOpen={openModal[index]}
+                      title={rec.username}
+                      value={index}
+                      removeValue={removeRecruiter}
+                      closeModal={() => {
+                        setModalOpen(index, false);
+                      }}
+                    />
                 </div>
-                </div>
-              </div>
-              <button className="open-k-job-button" onClick={() => setModalOpen(index, true)}>Remove Recruiter</button>
-              <RemoveModal
-                isOpen={openModal[index]}
-                title={rec.username}
-                value={index}
-                removeValue={removeRecruiter}
-                closeModal={() => {
-                  setModalOpen(index, false);
-                }}
-              />
-            </div>
-          ))
+              ))}
+            </>
           )
         )}
       </div>
     </div>
   );
+  
 }

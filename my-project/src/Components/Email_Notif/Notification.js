@@ -64,7 +64,8 @@ export default function NotificationPage() {
         axios.post("http://localhost:8000/komal/getnotifications").then((response) => {
            // alert(JSON.stringify(response.data));
            if (response.data.status == "success"){
-              if (response.data.data)
+              if (response.data.data.length != 0){
+                //alert("hello")
                 setNotifs(response.data.data.map((notification)=>(
                     <div className='knotif-notification' onClick={()=>navigate('/recruiter/job', { state: { 'jobID': notification.jobID } })}>
                         <img className="knotif-icon" src={notifImg[notification.notifType-1]}></img>
@@ -76,7 +77,7 @@ export default function NotificationPage() {
                             <label className='knotif-desc'>{notification.notifText}</label>
                         </div>
                     </div>
-                )));
+                )));}
               else 
                 setNotifs(<div className='knotif-error-div'>No notifications yet!</div>)
             }
