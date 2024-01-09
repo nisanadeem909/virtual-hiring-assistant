@@ -117,7 +117,7 @@ export default function PostJobPage() {
       }, 2000); 
       
     } catch (error) {
-      alert(error.response.data);
+      //alert(error.response.data);
       setValidationError('Error while saving data. Please try again.');
     }
   };
