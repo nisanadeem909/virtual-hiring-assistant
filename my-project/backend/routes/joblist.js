@@ -4,17 +4,15 @@ const {Job, Recruiter,JobApplication,Form} = require('../mongo');
 const { ObjectId } = require('mongodb')
 
 router.get('/alljobs', async (req, res) => {
-    try {
-     
-      const jobs = await Job.find();
-  
-      
-      res.json(jobs);
-    } catch (error) {
-      console.error(error);
-      res.status(500).send('Internal Server Error');
-    }
-  });
+  try {
+    const jobs = await Job.find().sort({ createdAt: -1 });
+
+    res.json(jobs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
   router.get('/api/jobs/search', async (req, res) => {
     const query = req.query.q;
