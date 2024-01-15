@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {Job, Recruiter,JobApplication,Form} = require('../mongo');
+const {Company,CompanyRequest,Admin,Recruiter} = require('../mongo');
 const bcrypt = require('bcrypt');
 
 const session = require('express-session');
@@ -12,12 +12,12 @@ router.use(session({
 }));
 
 
-router.post('/signup', async (req, res) => {
-    const { username, email, password, name, designation } = req.body;
-  
+router.post('/companysignup', async (req, res) => {
+    const { username, email, password, companyname } = req.body;  
+  console.log(req.body)
     try {
       
-      const existingCompany = await Company.findOne({ $or: [{ username }, { email }] });
+        const existingCompany = await Company.findOne({ $or: [{ username }, { email }] });
     
         if (existingCompany) {
           console.log("existing company")
@@ -47,28 +47,24 @@ router.post('/signup', async (req, res) => {
 
       console.log(req.body)
 
+      console.log("creating company request")
       const hashedPassword = await bcrypt.hash(req.body.password, 12);
      
-      const newUser = new Recruiter({
+      const newCompany = new CompanyRequest({
         username,
         email,
         password: hashedPassword,
-        name,
-        designation,
+        companyname: req.body.name,  
       });
   
-      
-      await newUser.save();
-      // req.session.username = username;
-      //   req.session.save();
-        
+      await newCompany.save();
   
-      
-      res.status(201).json({ user: newUser });
+      res.status(201).json({ company: newCompany }); 
     } catch (error) {
-      console.error('Error creating user:', error);
+      console.error('Error creating company:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
   });
+  
 
 module.exports = router;

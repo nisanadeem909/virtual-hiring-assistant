@@ -31,6 +31,7 @@ import SetEmail from './Components/PostJob/SetEmail.js';
 import CVView from './Components/JobDashboard/CVViewPage.js';
 import EditFormPage from './Components/FormScreening/EditFormPage.js';
 import AdminHomePage from './Components/AdminHome/AdminHomePage.js';
+import CompanySignup from './Components/CompanySignup/CompanySignup.js';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="login" element={<Login/>}></Route>
           {/*<Route path="signup" element={<Signup/>}></Route>*/}
           <Route path="about" element={<AboutUs/>}></Route>
+          <Route path="companysignup" element={<CompanySignup/>}></Route>
           <Route path="*" element={<Error/>}></Route>
         </Route>
 

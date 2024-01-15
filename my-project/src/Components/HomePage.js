@@ -15,7 +15,10 @@ function HomePage() {
         <div className="box1">
           <h2 className='nisa-homeh'>Let Automation Elevate Your Recruiting Game!</h2>
           <div className='nisa-box1'>
-            <button className="b1" onClick={()=>navigate("/login")}>Login</button>
+          <div className='kom-home-btns'>
+            <button className="b1">Try VHA</button>
+            <p id="loginp">Already have an account? <a  onClick={()=>navigate("/login")}>Login</a></p>
+          </div>
             
           </div>
           <div className="l">

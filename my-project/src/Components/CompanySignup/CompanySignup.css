@@ -1,0 +1,203 @@
+#nab-wraplogin{
+    background-color: #fff;
+  }
+  .nab-wrapper-login{
+      width: 100%;
+      
+      border-radius: 20px;
+      box-shadow: 0 5px 5px rgba(0,0,0,.4);
+      /*margin: 5em auto;*/
+      display: flex;
+  }
+  .nab-form__label2{
+  
+      margin-bottom: -15px;
+      margin-left: 14.4vh;
+  }
+  
+  #emerald{
+      width:90%;
+      height:100%;
+      margin-left: 00px;
+  }
+  
+  .password-toggle-login{
+      position: absolute;
+      left: 73%;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #3498db;
+      font-size: 14px;
+  }
+  
+  .nab-wrapper-login::before {
+      content: "";
+      position: absolute;
+      top: 250px;
+      left: -650px;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('../design6.svg'); /* Replace with the correct path */
+      background-size: 1000px 800px; /* Adjust as needed */
+      background-repeat: no-repeat;
+      z-index: -1;
+      transform: rotate(180deg);
+      animation: moveBackground 4s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite alternate;
+    }
+  
+    .nisa-sign-con{
+      margin-top: 7%;
+    }
+  
+  #nab-login-username{
+      width: 60%;
+      margin-left: 20%;
+      margin-top: 10%;
+      border: 2px solid rgb(34, 33, 33,0.7);
+      border-radius: 8px;
+  }
+  
+  #nab-login-username2{
+      width: 60%;
+      margin-left: 20%;
+      
+      border: 2px solid rgb(34, 33, 33,0.7);
+      border-radius: 8px;
+  }
+  
+  #nab-login-email{
+      width: 60%;
+      margin-left: 20%;
+      margin-top: 3%;
+      border: 2px solid rgb(34, 33, 33,0.7);
+      border-radius: 8px;
+  }
+  
+  #nab-login-password{
+      width: 60%;
+      margin-left: 20%;
+      margin-top: 3%;
+      border: 2px solid rgb(34, 33, 33,0.7);
+      border-radius: 8px;
+  }
+  
+  #nab-login-designation{
+      width: 60%;
+      margin-left: 20%;
+      margin-top: 3%;
+      border: 2px solid rgb(34, 33, 33,0.7);
+      border-radius: 8px;
+  }
+  
+  #nab-login-name{
+      width: 60%;
+      margin-left: 20%;
+      margin-top: 3%;
+      border: 2px solid rgb(34, 33, 33,0.7);
+      border-radius: 8px;
+  }
+  
+  
+  #nab-login-submit-btn{
+      
+      
+   
+      background-color: #012641;
+      border-radius: 6px;
+     
+      border: none;
+      color: white;
+      text-align: center;
+  
+  
+      width: 20%;
+      height: 30px;
+      transition: all 0.5s;
+      cursor: pointer;
+      margin-left:40%;
+      font-size:18px;
+  }
+  #welcomeback{
+      font-size: 24px;
+      font-weight: bold;
+      font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      text-align: center;
+      padding-top: 5%;
+  }
+  #welcomeback-subheading{
+      font-size: 18px;
+      font-weight: normal;
+      font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      text-align: center;
+      
+  }
+  .nab-loginpage-right-side{
+      
+      width:100%;
+      height:100vh;
+  }
+  .nab-login-right-innerbox{
+      margin-top: 20%;
+     /* background-color: rgb(181, 215, 205) ;*/
+      width:70%;
+      height:60vh;
+      border-radius: 4vh;
+      margin-left:10%;
+      border: 7px solid rgb(44, 43, 43,0.3);
+  }
+  
+  .kom-login-right-innerbox{
+      margin-top: 8%;
+     /* background-color: rgb(181, 215, 205) ;*/
+      width:70%;
+      height:70vh;
+      border-radius: 4vh;
+      margin-left:10%;
+      border: 7px solid rgb(44, 43, 43,0.3);
+  }
+  .nab-login-left-side{
+      
+      width: 100%;
+      height:100vh;
+      /*border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;*/
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: #fff;
+  }
+  .fa-android{
+      font-size:3em;
+  }
+  
+  
+  .login_form{
+      background-color: #fff;
+      border-top-right-radius:20px;
+      border-bottom-right-radius:20px;
+      border-top:1px solid #ccc;
+      border-right:1px solid #ccc;
+  }
+  
+  .nab-form__input{
+      width: 100%;
+      border:0px solid transparent;
+      border-radius: 0;
+      border-bottom: 1px solid #aaa;
+      padding: 1em .5em .5em;
+      padding-left: 2em;
+      outline:none;
+      margin:1.5em auto;
+      transition: all .5s ease;
+  }
+  .nab-form__input:focus{
+      border-bottom-color: #3498db;
+      box-shadow: 0 0 10px rgba(0,80,80,.4); 
+      border-radius: 4px;
+  }
+  
+  
+  
+  
