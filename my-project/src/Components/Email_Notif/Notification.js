@@ -61,7 +61,7 @@ export default function NotificationPage() {
 
     useEffect(() => {
         const fetchData = () => {
-          var param = {'company':sessionStorage.getItem('sessionID')};
+          var param = {'recruiter':sessionStorage.getItem('sessionID')};
           axios.post("http://localhost:8000/komal/getnotifications",param).then((response) => {
            // alert(JSON.stringify(response.data));
            if (response.data.status == "success"){

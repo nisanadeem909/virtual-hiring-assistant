@@ -28,17 +28,11 @@ const Layout = (props) => {
         navigate('/login');
         else if (props.type == "admin" && !sessionStorage.getItem("sessionID"))
           navigate('/login');
-          else if (props.type == "recruiter" && !sessionStorage.getItem("type")!='recruiter')
-            navigate('/'+sessionStorage.getItem("type")+'/error')
-            else if (props.type == "admin" && !sessionStorage.getItem("type")!='admin')
-            navigate('/'+sessionStorage.getItem("type")+'/error')
-              else if (props.type == "company" && !sessionStorage.getItem("type")!='company')
-              navigate('/'+sessionStorage.getItem("type")+'/error')
   },[])
 
   const findUser=()=>{
     //alert("HELLLOOOO")
-    if (props.type == "recruiter" || props.type == "company" || props.type == "admin" )
+    if (props.type == "recruiter")
     {
         var sessionID = sessionStorage.getItem('sessionID');
         axios.get(`http://localhost:8000/nisa/recruiter/${sessionID}`)
@@ -49,6 +43,28 @@ const Layout = (props) => {
             .catch(err => {
               console.error(err);
             });
+    }
+    else if (props.type=='company'){
+      var sessionID = sessionStorage.getItem('sessionID');
+      axios.get(`http://localhost:8000/nisa/company/${sessionID}`)
+          .then(res => {
+            const data = res.data;
+            setUser(data);
+          })
+          .catch(err => {
+            console.error(err);
+          });
+    }
+    else if (props.type=='admin'){
+      var sessionID = sessionStorage.getItem('sessionID');
+      axios.get(`http://localhost:8000/nisa/admin/${sessionID}`)
+          .then(res => {
+            const data = res.data;
+            setUser(data);
+          })
+          .catch(err => {
+            console.error(err);
+          });
     }
   }
   

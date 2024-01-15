@@ -10,7 +10,7 @@ router.post("/getrecruiters", async (req, res) => {
     try {
       const allRecruiters = await Recruiter.find({ companyID: companyID }).sort({ createdAt: -1 });
   
-      if (allRecruiters.length > 0) {
+      if (!allRecruiters.length) {
         msg = { status: "success", "recs": allRecruiters };
       } else {
         msg = { "status": "error", "error": "not found" };

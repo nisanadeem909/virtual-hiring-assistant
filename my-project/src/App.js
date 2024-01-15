@@ -32,6 +32,8 @@ import CVView from './Components/JobDashboard/CVViewPage.js';
 import EditFormPage from './Components/FormScreening/EditFormPage.js';
 import AdminHomePage from './Components/AdminHome/AdminHomePage.js';
 import CompanySignup from './Components/CompanySignup/CompanySignup.js';
+import CompanyProfile from './Components/AdminHome/CompanyEditProfile.js';
+import SuperAdminHomePage from './Components/SuperAdmin/SuperAdminHome.js';
 
 function App() {
   return (
@@ -53,7 +55,7 @@ function App() {
 
           <Route index element={<AdminHomePage/>} />
           <Route path="addrecruiter" element={<Signup/>}></Route>
-          <Route path="profile" element={<RecruiterProfile/>}></Route>
+          <Route path="profile" element={<CompanyProfile/>}></Route>
             <Route path="changepasswordpage" element={<ChangePasswordPage/>}></Route>
           <Route path="*" element={<Error/>}></Route>      
 
@@ -63,8 +65,7 @@ function App() {
 
             
 
-          {/*<Route index element={<AdminHomePage/>} />
-          <Route path="profile" element={<RecruiterProfile/>}></Route>*/}
+          <Route index element={<SuperAdminHomePage/>} />
             <Route path="changepasswordpage" element={<ChangePasswordPage/>}></Route>
           <Route path="*" element={<Error/>}></Route>      
 

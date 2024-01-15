@@ -66,5 +66,99 @@ router.post('/companysignup', async (req, res) => {
     }
   });
   
+  router.post("/getcompanyrequests", async (req, res) => {
+    var msg;
+
+    try {
+        const allCompanyRequests = await CompanyRequest.find().sort({ createdAt: -1 }).exec();
+
+        msg = { status: "success", reqs: allCompanyRequests };
+    } catch (error) {
+        console.error('Error getting company requests:', error);
+        msg = { status: "error", error: error };
+    }
+
+    res.json(msg);
+    res.end();
+});
+
+router.post("/getcompanies", async (req, res) => {
+  var msg;
+
+  try {
+      const allCompanies = await Company.find().sort({ createdAt: -1 }).exec();
+
+      msg = { status: "success", data: allCompanies };
+  } catch (error) {
+      console.error('Error getting companies:', error);
+      msg = { status: "error", error: error };
+  }
+
+  res.json(msg);
+  res.end();
+});
+
+router.post("/approveCompanyRequest", async (req, res) => {
+  console.log(req.body)
+  const requestId = req.body._id;
+  let msg;
+
+  try {
+    const companyRequest = await CompanyRequest.findById(requestId);
+    console.log(companyRequest)
+    if (!companyRequest) {
+      msg = { status: "error", error: 'Company request not found.' };
+    } else {
+      await CompanyRequest.deleteOne({ _id: requestId });
+
+      const newCompany = new Company({
+        companyname: companyRequest.companyname,
+        username: companyRequest.username,
+        email: companyRequest.email,
+        password: companyRequest.password,
+        profilePic: companyRequest.profilePic,
+      });
+
+      await newCompany.save();
+
+      msg = { status: "success", message: 'Company request removed and company added successfully.' };
+    }
+  } catch (error) {
+    console.error('Error removing company request and adding company:', error);
+    msg = { status: "error", error: error };
+  }
+
+  console.log(msg)
+
+  res.json(msg);
+});
+
+
+router.post("/disapproveCompanyRequest", async (req, res) => {
+  console.log(req.body)
+  const requestId = req.body._id;
+  let msg;
+
+  try {
+    const companyRequest = await CompanyRequest.findById(requestId);
+    console.log(companyRequest)
+    if (!companyRequest) {
+      msg = { status: "error", error: 'Company request not found.' };
+    } else {
+      await CompanyRequest.deleteOne({ _id: requestId });
+
+      msg = { status: "success", message: 'Company request removed successfully.' };
+    }
+  } catch (error) {
+    console.error('Error removing company request:', error);
+    msg = { status: "error", error: error };
+  }
+
+  console.log(msg)
+
+  res.json(msg);
+});
+
+
 
 module.exports = router;

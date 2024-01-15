@@ -3,9 +3,19 @@ const router = express.Router();
 const {Job, Recruiter,JobApplication,Form} = require('../mongo');
 const { ObjectId } = require('mongodb')
 
-router.get('/alljobs', async (req, res) => {
+router.get('/alljobs/:recruiterUsername', async (req, res) => {
+  const username = req.params.recruiterUsername;
+
   try {
-    const jobs = await Job.find().sort({ createdAt: -1 });
+    const recruiter = await Recruiter.findOne({ username: username });
+    
+    if (!recruiter) {
+      return res.status(404).json({ error: 'Recruiter not found' });
+    }
+
+    const companyID = recruiter.companyID;
+
+    const jobs = await Job.find({ companyID }).sort({ createdAt: -1 });
 
     res.json(jobs);
   } catch (error) {
