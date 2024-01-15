@@ -74,6 +74,7 @@ export default function Profile() {
       username: username1,
       oldPassword: currentPassword,
       newPassword: newPassword,
+      type: sessionStorage.getItem('type')
     };
 
     try {

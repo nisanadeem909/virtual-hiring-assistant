@@ -17,7 +17,7 @@ export default function AdminHomePage() {
       if (sessionStorage.getItem("sessionID")){
       const sessionID = sessionStorage.getItem("sessionID");
 
-      axios.get(`http://localhost:8000/nisa/Recruiter/${sessionID}`)
+      axios.get(`http://localhost:8000/nisa/company/${sessionID}`)
         .then(res => {
           const data = res.data;
           setAdminData(data);
@@ -43,7 +43,7 @@ export default function AdminHomePage() {
 
 
       <div className="job-list"> 
-        <RecruiterList></RecruiterList>
+        <RecruiterList data={AdminData}></RecruiterList>
       </div>
 
       <div className="uh_footer">

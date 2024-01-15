@@ -47,13 +47,24 @@ function App() {
           <Route path="*" element={<Error/>}></Route>
         </Route>
 
-        <Route path="/admin" element={<Navbar type="admin"/>}>
+        <Route path="/company" element={<Navbar type="company"/>}>
 
             
 
           <Route index element={<AdminHomePage/>} />
           <Route path="addrecruiter" element={<Signup/>}></Route>
           <Route path="profile" element={<RecruiterProfile/>}></Route>
+            <Route path="changepasswordpage" element={<ChangePasswordPage/>}></Route>
+          <Route path="*" element={<Error/>}></Route>      
+
+
+        </Route>
+        <Route path="/admin" element={<Navbar type="admin"/>}>
+
+            
+
+          {/*<Route index element={<AdminHomePage/>} />
+          <Route path="profile" element={<RecruiterProfile/>}></Route>*/}
             <Route path="changepasswordpage" element={<ChangePasswordPage/>}></Route>
           <Route path="*" element={<Error/>}></Route>      
 

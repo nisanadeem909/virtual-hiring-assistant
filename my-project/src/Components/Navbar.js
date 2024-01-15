@@ -20,17 +20,25 @@ const Layout = (props) => {
   const [openModal, setOpenModal] = useState(false);
 
   useEffect(()=>{
-      if (props.type == "recruiter" && !sessionStorage.getItem("sessionID"))
+    if (props.type == "recruiter" && !sessionStorage.getItem("sessionID"))
       {
         navigate('/login');
       }
-      else if (props.type == "admin" && !sessionStorage.getItem("sessionID"))
+      else if (props.type == "company" && !sessionStorage.getItem("sessionID"))
         navigate('/login');
+        else if (props.type == "admin" && !sessionStorage.getItem("sessionID"))
+          navigate('/login');
+          else if (props.type == "recruiter" && !sessionStorage.getItem("type")!='recruiter')
+            navigate('/'+sessionStorage.getItem("type")+'/error')
+            else if (props.type == "admin" && !sessionStorage.getItem("type")!='admin')
+            navigate('/'+sessionStorage.getItem("type")+'/error')
+              else if (props.type == "company" && !sessionStorage.getItem("type")!='company')
+              navigate('/'+sessionStorage.getItem("type")+'/error')
   },[])
 
   const findUser=()=>{
     //alert("HELLLOOOO")
-    if (props.type == "recruiter" || props.type == "admin")
+    if (props.type == "recruiter" || props.type == "company" || props.type == "admin" )
     {
         var sessionID = sessionStorage.getItem('sessionID');
         axios.get(`http://localhost:8000/nisa/recruiter/${sessionID}`)
@@ -81,6 +89,9 @@ const Layout = (props) => {
           <li className="navb_li">
             <Link to="/login">Login</Link>
           </li>
+          <li className="navb_li">
+            <Link to="/companysignup">Register</Link>
+          </li>
         </ul>;
 
   if (props.type)
@@ -89,11 +100,11 @@ const Layout = (props) => {
     {
       navlayout = <></>;
     }
-    else if (props.type == "admin")
+    else if (props.type == "company")
     {
       navlayout = <ul className="navb_ul">
       <li className="navb_li">
-        <Link to='/admin'>Home</Link>
+        <Link to='/company'>Home</Link>
       </li>
       <li className="navb_li">
         <div class="nab-dropdown" >
@@ -112,9 +123,55 @@ const Layout = (props) => {
                 </div>
                 <div id="profile-line-hr"></div>
                 <div id="profile-head-section">
-                  <button class="editprofile-button" onClick={()=>navigate('/admin/profile')}><img src={nabprofileicon} id="nab-profile-icon"></img> My Profile</button>
+                  <button class="editprofile-button" onClick={()=>navigate('/company/profile')}><img src={nabprofileicon} id="nab-profile-icon"></img> My Profile</button>
                   
                 </div>
+                <div id="profile-head-section">
+                                  
+                                  <button onClick={()=>navigate('/company/changepasswordpage')} class="editprofile-button" >
+                                  <img src={changepasswordicon} id="nab-logout-icon"></img> <span>Change Password</span></button>
+                                  
+                                </div>
+                <div id="profile-head-section">
+                  
+                  <button onClick={logoutSession} class="editprofile-button" >
+                  <img src={nablogouticon} id="nab-logout-icon"></img> <span>Logout </span></button>
+                  
+                </div>
+                
+                  
+                
+              </div>
+              
+          </div>
+
+        </div>
+
+      </li>
+  </ul>;
+    }
+    else if (props.type == "admin")
+    {
+      navlayout = <ul className="navb_ul">
+      <li className="navb_li">
+        <Link to='/admin'>Home</Link>
+      </li>
+      <li className="navb_li">
+        <div class="nab-dropdown" >
+           
+        <button class="nab-dropbtn" onClick={handleProfile}>
+           Settings
+            
+          </button>
+          
+           <div class="nab-dropdown-content2" id="myDropdown">
+           <div id="nab-dropdown-items">
+                <div id="profile-head-section">
+                  <img src={`http://localhost:8000/routes/profilepictures/${currUser.profilePic || person}`} id="nab-human-icon"></img> 
+                  <label className='knav-username'>{sessionStorage.getItem("sessionID")}</label>
+                  
+                </div>
+                <div id="profile-line-hr"></div>
                 <div id="profile-head-section">
                                   
                                   <button onClick={()=>navigate('/admin/changepasswordpage')} class="editprofile-button" >

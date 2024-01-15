@@ -7,14 +7,17 @@ import RemoveModal from '../ModalWindows/ConfirmRemoveModal';
 
 const person = "personcircle.png"
 
-export default function RecruiterList() {
+export default function RecruiterList(props) {
   const [recruiters, setRecruiters] = useState([]);
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState([]);
   const [errStatus, setErrStatus] = useState(false);
+  const [company,setCompany] =useState();
 
   useEffect(() => {
-    axios.post('http://localhost:8000/komal/getrecruiters') 
+    if (props.data){
+      var param = {'companyID':props.data._id}
+    axios.post('http://localhost:8000/komal/getrecruiters',param) 
       .then(response => {
         if (response.data.status === "success") {
           setErrStatus(false);
@@ -29,8 +32,8 @@ export default function RecruiterList() {
       .catch(function (error) {
         console.log("Axios error: " + error);
         setErrStatus(true);
-      });
-  }, []);
+      });}
+  }, [props]);
 
   const removeRecruiter = (index) => {
     var param = { 'username': recruiters[index].username };

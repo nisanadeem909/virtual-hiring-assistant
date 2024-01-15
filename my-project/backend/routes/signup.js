@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {Job, Recruiter,JobApplication,Form} = require('../mongo');
+const {Job, Recruiter,JobApplication,Form,Admin,Company,CompanyRequest} = require('../mongo');
 const bcrypt = require('bcrypt');
 
 const session = require('express-session');
@@ -13,7 +13,7 @@ router.use(session({
 
 
 router.post('/signup', async (req, res) => {
-    const { username, email, password, name, designation } = req.body;
+    const { username, email, password, name, designation,companyID } = req.body;
   
     try {
       
@@ -45,17 +45,26 @@ router.post('/signup', async (req, res) => {
         return res.status(200).json({ error: 'Username or email is already requested.' });
       }
 
-      console.log(req.body)
+      const company = await Company.findOne({ username: companyID });
 
-      const hashedPassword = await bcrypt.hash(req.body.password, 12);
-     
-      const newUser = new Recruiter({
-        username,
-        email,
-        password: hashedPassword,
-        name,
-        designation,
-      });
+      if (!company) {
+        return res.status(404).json({ error: 'Company not found' });
+      }
+
+      const companyId = company._id;
+      const companyName = company.companyname;
+
+    const hashedPassword = await bcrypt.hash(req.body.password, 12);
+
+    const newUser = new Recruiter({
+      username,
+      email,
+      password: hashedPassword,
+      name,
+      designation,
+      companyID:companyId,
+      companyname: companyName, 
+    });
   
       
       await newUser.save();

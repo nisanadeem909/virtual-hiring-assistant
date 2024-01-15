@@ -61,7 +61,8 @@ export default function NotificationPage() {
 
     useEffect(() => {
         const fetchData = () => {
-        axios.post("http://localhost:8000/komal/getnotifications").then((response) => {
+          var param = {'company':sessionStorage.getItem('sessionID')};
+          axios.post("http://localhost:8000/komal/getnotifications",param).then((response) => {
            // alert(JSON.stringify(response.data));
            if (response.data.status == "success"){
               if (response.data.data.length != 0){

@@ -28,7 +28,17 @@ function LoginPage() {
     setShowPassword1((prevShowPassword) => !prevShowPassword);
   };
 
-  const viewAdmin = () => {
+  const viewCompany = () => {
+    const sessionID = sessionStorage.getItem('sessionID');
+
+    if (sessionID) {
+      navigate("/company", { state: { sessionID } });
+    } else {
+      console.error("SessionID not found");
+    }
+    
+  }
+  const viewSuperAdmin = () => {
     const sessionID = sessionStorage.getItem('sessionID');
 
     if (sessionID) {
@@ -51,20 +61,45 @@ function LoginPage() {
       return;
     }
 
-    axios.post('http://localhost:8000/nisa/login', { username, password })
+    axios.post('http://localhost:8000/nisa/loginrecruiter', { username, password })
       .then(res => {
         const sessionID = res.data.sessionId;
         sessionStorage.setItem('sessionID', sessionID);
+        sessionStorage.setItem('type', 'recruiter');
         setError(null); 
-        if (username == "admin")
-          viewAdmin();
-        else
-          viewRecruiter();
+        viewRecruiter();
 
       })
       .catch(err => {
         console.log(err);
-        setError("Login failed. Please check your credentials."); 
+        //setError("Login failed. Please check your credentials."); 
+        axios.post('http://localhost:8000/nisa/loginadmin', { username, password })
+        .then(res => {
+          const sessionID = res.data.sessionId;
+          sessionStorage.setItem('sessionID', sessionID);
+          sessionStorage.setItem('type', 'admin');
+          setError(null); 
+          //alert("hello?")
+          viewSuperAdmin();
+
+        })
+        .catch(err => {
+          console.log(err);
+          //setError("Login failed. Please check your credentials."); 
+          axios.post('http://localhost:8000/nisa/logincompany', { username, password })
+          .then(res => {
+            const sessionID = res.data.sessionId;
+            sessionStorage.setItem('sessionID', sessionID);
+            sessionStorage.setItem('type', 'company');
+            setError(null); 
+            viewCompany();
+
+          })
+          .catch(err => {
+            console.log(err);
+            setError("Login failed. Please check your credentials."); 
+          });
+        });
       });
       
   };

@@ -59,7 +59,7 @@ export default function Signup() {
 
     try {
       
-      const response = await axios.post('http://localhost:8000/nisa/signup', { username, email, password, name, designation });
+      const response = await axios.post('http://localhost:8000/nisa/signup', { username, email, password, name, designation, 'companyID':sessionStorage.getItem("sessionID") });
 
       
       if (response.data.user) {

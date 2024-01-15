@@ -6,9 +6,17 @@ router.post('/api/saveFormData', async (req, res) => {
     try {
       const formData = req.body;
       const sessionID = formData.sessionID; 
+
+      const recruiter = await Recruiter.findOne({ username: sessionID });
+
+        if (!recruiter) {
+            return res.status(404).json({ error: 'Recruiter not found' });
+        }
   
       // Save all data at once
       const job = new Job({
+        companyname: recruiter.companyname,
+        companyID: recruiter.companyID,
         jobTitle: formData.jobTitle,
         jobDescription: formData.jobDescription,
         postedby: sessionID,

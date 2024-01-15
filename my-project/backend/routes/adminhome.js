@@ -4,9 +4,11 @@ const {Job, Recruiter,JobApplication,Form,Notification} = require('../mongo');
 
 router.post("/getrecruiters", async (req, res) => {
     var msg;
+    console.log(req.body);
+    var companyID = req.body.companyID;
   
     try {
-      const allRecruiters = await Recruiter.find({ username: { $ne: 'admin' } }).sort({ createdAt: -1 });
+      const allRecruiters = await Recruiter.find({ companyID: companyID }).sort({ createdAt: -1 });
   
       if (allRecruiters.length > 0) {
         msg = { status: "success", "recs": allRecruiters };
