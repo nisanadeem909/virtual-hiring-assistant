@@ -11,8 +11,47 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true
 
 const Schema = mongoose.Schema;
 
+const adminSchema = new Schema({
+  
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    minlength: 3
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 6
+  }
+  ,
+
+
+}, {
+  timestamps: true,
+});
+
+const Admin = mongoose.model('Admin', adminSchema);
+
+
 
 const recruiterSchema = new Schema({
+  companyname:{
+    type: String,
+    required: true,
+  },
+  companyID:{
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  },
   username: {
     type: String,
     required: true,
@@ -55,6 +94,42 @@ const recruiterSchema = new Schema({
 });
 
 const Recruiter = mongoose.model('Recruiter', recruiterSchema);
+
+const companySchema = new Schema({
+  companyname:{
+    type: String,
+    required: true,
+  },
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    minlength: 3
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 6
+  }
+  ,
+  profilePic: {
+    type: String
+  }
+  ,
+
+}, {
+  timestamps: true,
+});
+
+const Company = mongoose.model('Company', companySchema);
 
 
 
@@ -120,6 +195,15 @@ const JobApplication = mongoose.model('JobApplication', jobApplicationSchema);
 
 
 const jobSchema = new Schema({
+
+  companyname:{
+    type: String,
+    required: true,
+  },
+  companyID:{
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  },
   jobTitle: {
     type: String,
     required: true
@@ -224,6 +308,14 @@ const Form = mongoose.model('Form', formSchema);
 
 
 const notificationSchema = new Schema({
+  companyname:{
+    type: String,
+    required: true,
+  },
+  companyID:{
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  },
   jobTitle: {
     type: String
   }
@@ -289,5 +381,6 @@ module.exports ={
   Job,
   Form,
   Notification,
-  FormResponses
+  FormResponses,
+  Company
 };
