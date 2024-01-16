@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {Job, Recruiter,JobApplication,Form} = require('../mongo');
+const {Job, Recruiter,JobApplication,Form,Admin,Company,CompanyRequest} = require('../mongo');
 const bcrypt = require('bcrypt');
 
 const session = require('express-session');
@@ -13,27 +13,58 @@ router.use(session({
 
 
 router.post('/signup', async (req, res) => {
-    const { username, email, password, name, designation } = req.body;
+    const { username, email, password, name, designation,companyID } = req.body;
   
     try {
       
-      const existingUser = await Recruiter.findOne({ $or: [{ username }, { email }] });
+      const existingCompany = await Company.findOne({ $or: [{ username }, { email }] });
+    
+        if (existingCompany) {
+          console.log("existing company")
+          return res.status(200).json({ error: 'Username or email is already in use.' });
+        }
+      
+        const existingRecruiter = await Recruiter.findOne({ $or: [{ username }, { email }] });
+    
+        if (existingRecruiter) {
+          console.log("existing recruiter")
+          return res.status(200).json({ error: 'Username or email is already in use.' });
+        }
+      
+        const existingAdmin = await Admin.findOne({ $or: [{ username }, { email }] });
+    
+        if (existingAdmin) {
+          console.log("existing admin")
+          return res.status(200).json({ error: 'Username or email is already in use.' });
+        }
+
+      const existingCompanyReq = await CompanyRequest.findOne({ $or: [{ username }, { email }] });
   
-      if (existingUser) {
-        return res.status(400).json({ error: 'Username or email is already in use.' });
+      if (existingCompanyReq) {
+        console.log("existing company request")
+        return res.status(200).json({ error: 'Username or email is already requested.' });
       }
 
-      console.log(req.body)
+      const company = await Company.findOne({ username: companyID });
 
-      const hashedPassword = await bcrypt.hash(req.body.password, 12);
-     
-      const newUser = new Recruiter({
-        username,
-        email,
-        password: hashedPassword,
-        name,
-        designation,
-      });
+      if (!company) {
+        return res.status(404).json({ error: 'Company not found' });
+      }
+
+      const companyId = company._id;
+      const companyName = company.companyname;
+
+    const hashedPassword = await bcrypt.hash(req.body.password, 12);
+
+    const newUser = new Recruiter({
+      username,
+      email,
+      password: hashedPassword,
+      name,
+      designation,
+      companyID:companyId,
+      companyname: companyName, 
+    });
   
       
       await newUser.save();

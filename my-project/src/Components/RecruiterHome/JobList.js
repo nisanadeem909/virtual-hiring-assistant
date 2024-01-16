@@ -23,7 +23,8 @@ export default function JobList() {
   };
 
   useEffect(() => {
-    axios.get('http://localhost:8000/nisa/alljobs')
+    var username = sessionStorage.getItem('sessionID');
+    axios.get(`http://localhost:8000/nisa/alljobs/${username}`)
       .then(response => setJobs(response.data))
       .catch(error => console.error('Error fetching jobs:', error));
   }, []);

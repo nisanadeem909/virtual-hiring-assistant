@@ -219,6 +219,8 @@ def CVScreening(job):
         notification_data = {
             "jobTitle": job['jobTitle'],
             "jobID": job['_id'],
+            "companyname":job['companyname'],
+            "companyID":job['companyID'],
             "notifText": "CV deadline has passed but no applications! Please edit deadline/required percentage to continue..",
             "recruiterUsername": job['postedby'],
             "notifType": 1,
@@ -265,6 +267,8 @@ def CVScreening(job):
         notification_data = {
             "jobTitle": job['jobTitle'],
             "jobID": job['_id'],
+            "companyname":job['companyname'],
+            "companyID":job['companyID'],
             "notifText": "No applications could be shortlisted! Please edit deadline/required percentage to continue..",
             "recruiterUsername": job['postedby'],
             "notifType": 1,
@@ -290,6 +294,8 @@ def CVScreening(job):
         "notifText": "CVs have been shortlisted!",
         "recruiterUsername": job['postedby'],
         "notifType": 1,
+        "companyname":job['companyname'],
+        "companyID":job['companyID'],
         "createdAt": datetime.now().astimezone(pytz.utc)
     }
     notification_collection.insert_one(notification_data)
@@ -472,6 +478,8 @@ def FormScreening(job):
         notification_data = {
             "jobTitle": job['jobTitle'],
             "jobID": job['_id'],
+            "companyname":job['companyname'],
+            "companyID":job['companyID'],
             "notifText": "Phase 2 Forms have been shortlisted!",
             "recruiterUsername": job['postedby'],
             "notifType": 2,

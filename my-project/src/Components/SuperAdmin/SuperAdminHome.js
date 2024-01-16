@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import '../RecruiterHome/RecruiterHomePage.css';
-import AdminProjile from './AdminProjile';
-import AddRecruiter from './AddRecruiterLink';
+import './CompanyList';
 import Footer from '../Footer';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-import RecruiterList from './RecruitersList';
+import CompanyList from './CompanyList';
+//import CompanyList from './CompanyList';
 
-export default function AdminHomePage() {
+export default function SuperAdminHomePage() {
   const [AdminData, setAdminData] = useState(null);
 //   const location = useLocation();
 
@@ -17,7 +16,7 @@ export default function AdminHomePage() {
       if (sessionStorage.getItem("sessionID")){
       const sessionID = sessionStorage.getItem("sessionID");
 
-      axios.get(`http://localhost:8000/nisa/company/${sessionID}`)
+      axios.get(`http://localhost:8000/nisa/admin/${sessionID}`)
         .then(res => {
           const data = res.data;
           setAdminData(data);
@@ -32,18 +31,10 @@ export default function AdminHomePage() {
   }, []);
 
   return (
-    <div className="grid-container">
-      <div className="profile-box">
-        {AdminData && <AdminProjile data={AdminData}></AdminProjile>}
-      </div>
+    <div className="kgrid-container">
 
-     <div className="post-job"> 
-        <AddRecruiter></AddRecruiter>
-      </div>
-
-
-      <div className="job-list"> 
-        <RecruiterList data={AdminData}></RecruiterList>
+     <div className="company-list"> 
+        <CompanyList data={AdminData}></CompanyList>
       </div>
 
       <div className="uh_footer">
