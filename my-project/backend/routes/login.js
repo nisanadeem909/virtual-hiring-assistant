@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {Job, Recruiter,JobApplication,Form} = require('../mongo');
+const {Job, Recruiter,JobApplication,Form,Company} = require('../mongo');
 const bcrypt = require('bcrypt');
 
 const session = require('express-session');
@@ -14,6 +14,7 @@ router.use(session({
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
+  
   try {
     const recruiter = await Recruiter.findOne({ username });
 
