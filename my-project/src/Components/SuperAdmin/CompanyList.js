@@ -98,7 +98,7 @@ export default function CompanyList() {
             copy.splice(index, 1);
             setCompanyReqs(copy);
           
-            setOpenModal(copy.map(() => false));
+            setOpenModal2(copy.map(() => false));
           }
         })
         .catch(function (error) {

@@ -166,7 +166,7 @@ export default function CreateForm(props) {
               <label className='nab-createformpage-formdeadline'>Phase 3 Deadline<span style={{ color: '#e30211', fontWeight: 'bold' }}>*</span></label>
               <input type="datetime-local" className='kcreateformpage-formdeadline-input' value={formDeadline} onChange={handleDeadlineChange}></input>
               <div id="nab-vid-interview-btns">
-                <button className='nab-createformpage-cancelbtn' onClick={() => navigate(-1, { state: { 'jobID': job._id } })}>Discard Form</button>
+                <button className='nab-createformpage-cancelbtn' onClick={() => navigate(-1, { state: { 'jobID': job._id } })}>Discard</button>
                 <button className='kcreateformpage-savebtn' onClick={saveForm}>Next</button>
               </div>
             </div>

@@ -220,13 +220,13 @@
 }
 #nab-vid-interview-btns{
     display: flex;
-    width: 50%;
+    width: 60%;
     margin-left: 35%;
 }
 .nab-createformpage-formdeadline {
     font-size: large;
     margin-top: 1vh;
-    width: 20%;
+    width: 23%;
 }
 
 .kcreateformpage-formdeadline-input {
@@ -259,7 +259,7 @@
     margin-right: 2vh;
     height: 5vh;
     font-size: 3vh;
-    /* padding: 0vh 4vh; */
+    padding: 0vh 4vh; 
     background-color: #ececec;
     border: 0.3vh solid #c8c8c8;
     color: #012641;
@@ -267,7 +267,7 @@
     font-weight: bold;
     margin-left: 18%;
 
-    width: 50%;
+    width: 55%;
 }
 
 .kformquestion-addbtn:hover, .kformquestion-question-delete:hover,.kcreateformpage-addq:hover,.kcreateformpage-cancelbtn:hover,.kcreateformpage-savebtn:hover{
