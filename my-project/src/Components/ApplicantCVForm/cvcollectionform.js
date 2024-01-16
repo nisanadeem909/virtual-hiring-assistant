@@ -88,7 +88,7 @@ function CVCollectionForm() {
   
     })
     .catch(error => {
-      console.error('Error:', error);
+      console.error('Error:', error); 
       //alert(error)
       setErrorMessage('An error occurred while fetching job details.');
     });

@@ -17,7 +17,7 @@ import RejectionEmailPage from './Components/Email_Notif/RejectionEmailPage.js'
 import NotificationPage from './Components/Email_Notif/NotificationPage.js'
 import CreateFormPageNew from './Components/FormScreening/CreateFormPageNew.js'
 import JobDashboardPage from './Components/JobDashboard/JobDashboardPage.js';
-
+import VideoInterviewQuestionPage from './Components/JobDashboard/VideoInterviewQuestionPage.js'
 
 import CVCollectionForm from './Components/ApplicantCVForm/cvcollectionform.js'
 import FormScreening from './Components/ApplicantFormScreening/formscreening.js'
@@ -95,6 +95,7 @@ function App() {
             <Route path="notifications" element={<NotificationPage/>}></Route>
             <Route path="job/createform" element={<CreateFormPageNew/>}></Route>
             <Route path="job/editform" element={<EditFormPage/>}></Route>
+            <Route path="job/videointerviewquestionpage" element={<VideoInterviewQuestionPage/>}></Route>
             <Route path="job" element={<JobDashboardPage/>}></Route>
             <Route path="job/cvview" element={<CVView/>}></Route>
             <Route path="home/postjob" element={<PostJobPage/>}></Route>

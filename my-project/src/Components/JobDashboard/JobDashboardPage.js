@@ -9,6 +9,7 @@ import FormCreating from './FormCreating';
 import FormResponsesPage from '../RecruiterFormResponses/formresponses';
 import axios from 'axios';
 import ShortlistedFormResponsesPage from '../RecruiterFormResponses/shortlistedformresponses';
+import VideoInterview from './VideoInterview';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function JobDashboardPage() {
@@ -118,7 +119,8 @@ export default function JobDashboardPage() {
             }
         }
         else {
-            setContent(<img src={loading} className='kjobdashboardpage-loading-img'></img>);
+           // setContent(<img src={loading} className='kjobdashboardpage-loading-img'></img>);
+           setContent(<VideoInterview job={job}></VideoInterview>);
         }
 
         setActiveTab(index);

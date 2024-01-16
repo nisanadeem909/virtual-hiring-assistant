@@ -3,7 +3,7 @@ import './JobList.css';
 import jobicon from './jobicon.png';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import filtericon from './filtericon.png'
 export default function JobList() {
   const [jobs, setJobs] = useState([]);
   const navigate = useNavigate();
@@ -50,6 +50,12 @@ export default function JobList() {
         <h2 className='nisa-joblists-head'>
           Jobs List
         </h2>
+        <div id="nab-filter-jobs">
+            <button id="nab-filter-button">
+                <img id="nab-filter-icon" src={filtericon} alt="Filter Icon" />
+                Filter Jobs
+            </button>
+        </div>
         {jobs.length === 0 ? (
           <div className='kjob-nojob'>No jobs found</div>
         ) : (
