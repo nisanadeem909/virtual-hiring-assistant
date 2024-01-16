@@ -162,13 +162,13 @@ export default function CreateForm(props) {
     return (
         <div className='kcreateform-container'>
           {!showNextPage && (
-            <div className='kcreateformpage-btns'>
-              <label className='kcreateformpage-formdeadline'>Phase 3 Deadline<span style={{ color: '#e30211', fontWeight: 'bold' }}>*</span></label>
+            <div className='nab-createformpage-btns'>
+              <label className='nab-createformpage-formdeadline'>Phase 3 Deadline<span style={{ color: '#e30211', fontWeight: 'bold' }}>*</span></label>
               <input type="datetime-local" className='kcreateformpage-formdeadline-input' value={formDeadline} onChange={handleDeadlineChange}></input>
-              
-                <button className='kcreateformpage-cancelbtn' onClick={() => navigate(-1, { state: { 'jobID': job._id } })}>Discard Form</button>
+              <div id="nab-vid-interview-btns">
+                <button className='nab-createformpage-cancelbtn' onClick={() => navigate(-1, { state: { 'jobID': job._id } })}>Discard Form</button>
                 <button className='kcreateformpage-savebtn' onClick={saveForm}>Next</button>
-              
+              </div>
             </div>
           )}
     
@@ -180,7 +180,7 @@ export default function CreateForm(props) {
             <button className='nab-createformpage-savebtn' onClick={saveForm}>Save</button>
               {/* Content to show when Next is clicked */}
               <img src={loading} className='kjobdashboardpage-loading-img'></img>
-              {/* Additional content for the "hello" div */}
+              {/*nothing*/}
 
               <br></br>
               <br></br>
