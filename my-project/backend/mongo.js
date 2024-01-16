@@ -132,6 +132,36 @@ const companySchema = new Schema({
 const Company = mongoose.model('Company', companySchema);
 
 
+const companyRequestSchema = new Schema({
+  companyname:{
+    type: String,
+    required: true,
+  },
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    minlength: 3
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 6
+  },
+
+}, {
+  timestamps: true,
+});
+
+const CompanyRequest = mongoose.model('CompanyRequest', companyRequestSchema);
 
 const jobApplicationSchema = new Schema({
   email: {
@@ -382,5 +412,7 @@ module.exports ={
   Form,
   Notification,
   FormResponses,
-  Company
+  Company,
+  Admin,
+  CompanyRequest
 };
