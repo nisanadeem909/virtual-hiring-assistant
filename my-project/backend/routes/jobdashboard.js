@@ -162,7 +162,6 @@ router.post("/editjobformdeadline", async(req,res)=>{
     var msg;
 
     try {
-        // change!!
         const updatedJob = await Job.findOneAndUpdate(
             { _id: id },
             { $set: { P2FormDeadline: req.body.newDeadline,noShortlisted:false } },
@@ -188,6 +187,37 @@ router.post("/editjobformdeadline", async(req,res)=>{
     }
         catch (error) {
             console.error('Error adding job:', error);
+            msg = {"status": "error",'error':error};
+
+    } 
+    console.log(msg);
+
+    res.json(msg);
+
+    res.end();
+
+})
+
+router.post("/editjobdescription", async(req,res)=>{
+    console.log(req.body);
+
+    const id = req.body.jobId;
+
+    var msg;
+
+    try {
+        const updatedJob = await Job.findOneAndUpdate(
+            { _id: id },
+            { $set: { jobDescription: req.body.newJD,noShortlisted:false } },
+            { new: true } 
+          );
+
+        if (!updatedJob)
+            msg = {"status": "error",'error':'not found'}
+        else 
+                msg = {"status": "success","job":updatedJob}
+        } catch (error) {
+            console.error('Error editing job:', error);
             msg = {"status": "error",'error':error};
 
     } 
