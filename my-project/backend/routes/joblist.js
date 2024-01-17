@@ -75,8 +75,94 @@ router.get('/alljobs/:recruiterUsername', async (req, res) => {
       res.status(500).send('Internal Server Error');
     }
   });
+  router.post('/filterjobsnabeeha', async (req, res) => {
+    console.log("filter jobs nabeeha")
+    console.log(req.body)
+    
+    try {
+      const recruiterInfo = await Recruiter.findOne(
+        { username: req.body.username }
+      );
+  
+      if (recruiterInfo) {
+        // If a recruiter is found with the provided username
+        const { companyname, companyID } = recruiterInfo;
+        const filters = req.body.selectedFilters; 
+        const statusFilters = [];
 
-  router.get('/findjob/:jobId', async (req, res) => {
+   
+        // Iterate through filters and map phases to status values
+        filters.forEach((phase) => {
+            switch (phase) {
+                case 'Phase 1':
+                    statusFilters.push(1);
+                    break;
+                case 'Phase 2':
+                    statusFilters.push(2);
+                    break;
+                case 'Phase 3':
+                      statusFilters.push(3);
+                      break;
+                case 'Phase 4':
+                        statusFilters.push(4);
+                        break;
+                default:
+                    break;
+            }
+        });
+
+        console.log("status filters: ")
+        console.log(statusFilters)
+      
+
+        // Apply filters to the query based on the selected phases
+        if (statusFilters.length > 0) {
+          const query = {
+            status: { $in: statusFilters },
+            companyID: recruiterInfo.companyID, // Add this condition to filter by company name
+          }; 
+ 
+          console.log( query)
+          const filteredJobs = await Job.find(query).sort({ createdAt: -1 });
+
+
+          console.log("filtered jobs now: ")
+          console.log(filteredJobs);
+  
+          res.status(200).json(filteredJobs);
+        }
+      else {
+        const query = {
+          
+          companyname: recruiterInfo.companyname, // Add this condition to filter by company name
+        }; 
+
+        console.log( query)
+        const filteredJobs = await Job.find(query).sort({ createdAt: -1 });
+
+
+        console.log("filtered jobs now: ")
+        console.log(filteredJobs);
+
+        res.status(200).json(filteredJobs);
+        }
+        // Query the Jobs table with the constructed query
+       
+    } 
+         
+    } catch (error) {
+      // Handle any errors that may occur during the query
+      console.error('Error fetching company info:', error);
+    }
+  
+    
+    
+    
+  });
+
+
+
+router.get('/findjob/:jobId', async (req, res) => {
     try {
       const jobId = req.params.jobId;
   
