@@ -5,6 +5,7 @@ import EditDeadlineModal from '../ModalWindows/EditDeadlineModal'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import loading from '../images/loading3.gif';
+import EditJDModal from '../ModalWindows/EditJDModal';
 
 export default function JobDetails(props) {
 
@@ -14,8 +15,10 @@ export default function JobDetails(props) {
     const [jobStatus,setStatus] = useState("Loading..");
     const [statusDiv,setStatusDiv] = useState(<>Loading...</>);
     const [deadlineDiv,setDeadlineDiv] = useState(<>Loading...</>);
+    const [JDDiv, setJDDiv] = useState(<pre className='kjobdetailspage-jd'>{job.jobDescription}</pre>);
 
     const [isEditScoreModalOpen, setIsEditScoreModalOpen] = useState(false);
+    const [isEditJDModalOpen, setIsEditJDModalOpen] = useState(false);
 
     const formatDate = (date) => {
       if (!date) return '';
@@ -31,13 +34,21 @@ export default function JobDetails(props) {
       return `${day}-${month}-${year} ${hours}:${minutes} ${amOrPm}`;
   };
 
-    const openEditScoreModal = () => {
-      setIsEditScoreModalOpen(true);
-    };
-  
-    const closeEditScoreModal = () => {
-      setIsEditScoreModalOpen(false);
-    };
+  const openEditScoreModal = () => {
+    setIsEditScoreModalOpen(true);
+  };
+
+  const closeEditScoreModal = () => {
+    setIsEditScoreModalOpen(false);
+  };
+
+  const openEditJDModal = () => {
+    setIsEditJDModalOpen(true);
+  };
+
+  const closeEditJDModal = () => {
+    setIsEditJDModalOpen(false);
+  };
 
     const [isEditCVDeadlineModalOpen, setIsEditCVDeadlineModalOpen] = useState(false);
 
@@ -124,6 +135,26 @@ export default function JobDetails(props) {
       setIsEditFormDeadlineModalOpen(false);
     }
 
+    const saveJD=(newVal)=>{
+      var param = {'jobId':job._id,'newJD':newVal};
+        axios.post("http://localhost:8000/komal/editjobdescription",param).then((response) => {
+           if (response.data.status == "success"){
+              setJob(response.data.job);
+              props.updateJob({...response.data.job});
+              setJDDiv(<pre className='kjobdetailspage-jd'>{response.data.job.jobDescription}</pre>);
+            }
+            else {
+              setJDDiv(<pre className='kjobdetailspage-jd'>Something went wrong, please try again!</pre>)
+              console.log("Error: "+response.data.error);
+            }
+        })
+        .catch(function (error) {
+            setJDDiv(<pre className='kjobdetailspage-jd'>Something went wrong, please try again!</pre>)
+            console.log(error);
+        })
+      setIsEditJDModalOpen(false);
+    }
+
     useEffect(() => {
         if (props.job){
             setJob(props.job);
@@ -131,7 +162,8 @@ export default function JobDetails(props) {
       }, [props.job]);
 
     useEffect(() => {
-        //alert(job.status)
+          setJDDiv(<pre className='kjobdetailspage-jd'>{job.jobDescription}</pre> ); 
+
           if (job.status == 0)
           {
             setStatus("Loading..");
@@ -188,9 +220,14 @@ export default function JobDetails(props) {
                 {statusDiv}
             </div>
             <div className='kjobdetailspage-jd-div'>
+            <div className='kjobdetailspage-jd-header'>
                 <label className='kjobdetailspage-jd-title'>Job Description</label>
+                {job.status === 1 && (
+                  <button className='kjobdetailspage-editdeadline' onClick={openEditJDModal}>Edit Job Description</button>
+                )}
+                </div>
                 <hr className='kjobdetailspage-jd-hr'></hr>
-                <p className='kjobdetailspage-jd'>{job.jobDescription}</p>
+                {JDDiv}
             </div>
         </div>
         <EditModal
@@ -213,6 +250,13 @@ export default function JobDetails(props) {
         closeModal={closeEditFormDeadlineModal}
         saveValue={saveFormDeadline}
         originalValue={job.P2FormDeadline}
+      />
+      <EditJDModal
+        isOpen={isEditJDModalOpen}
+        title='Job Description'
+        closeModal={closeEditJDModal}
+        saveValue={saveJD}
+        originalValue={job.jobDescription}
       />
       </div>
     )

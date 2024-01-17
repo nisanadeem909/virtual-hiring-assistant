@@ -10,7 +10,7 @@ router.post("/getnotifications", async(req,res)=>{
     var msg;
 
     try {
-        const recruiter = await Recruiter.findOne({ username: recruiterUsername });
+        const recruiter = await Recruiter.findOne({ username: username });
 
         if (!recruiter) {
             msg = { status: "error", error: 'Recruiter not found' };

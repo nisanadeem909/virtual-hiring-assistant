@@ -86,7 +86,6 @@ export default function CompanyList() {
   }
 
   const disapproveRequest=(index)=>{
-    //approveCompanyRequest
     var param = {'_id':companyRequests[index]._id};
         axios.post("http://localhost:8000/komal/disapproveCompanyRequest",param).then((response) => {
           if (response.data.status !== "success") {
@@ -98,7 +97,7 @@ export default function CompanyList() {
             copy.splice(index, 1);
             setCompanyReqs(copy);
           
-            setOpenModal(copy.map(() => false));
+            setOpenModal2(copy.map(() => false));
           }
         })
         .catch(function (error) {

@@ -58,6 +58,15 @@
     width: 93%;
   }
 
+  .kmodal-textarea {
+    font-size: large;
+    margin: 3vh 2vh;
+    padding: 1vh;
+    width: 60vw;
+    height: 45vh;
+    resize: none;
+  }
+
   .kmodal-tf-date {
     font-size: large;
     margin: 1vh 2vh 3vh 2vh;
