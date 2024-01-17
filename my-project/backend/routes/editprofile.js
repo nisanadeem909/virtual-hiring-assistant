@@ -297,5 +297,5 @@ router.post('/uploadprofilepic-company', function(req,res){
       
         res.end();
   })
-
+  
 module.exports = router;

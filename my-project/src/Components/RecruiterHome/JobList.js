@@ -22,11 +22,14 @@ export default function JobList() {
     return `${day}-${month}-${year} ${hours}:${minutes} ${amOrPm}`;
   };
 
-  useEffect(() => {
+  const setDefaultJobs = ()=>{
     var username = sessionStorage.getItem('sessionID');
     axios.get(`http://localhost:8000/nisa/alljobs/${username}`)
       .then(response => setJobs(response.data))
       .catch(error => console.error('Error fetching jobs:', error));
+  } 
+  useEffect(() => {
+    setDefaultJobs();
   }, []);
 
   const getPhaseLabel = (status) => {
@@ -43,7 +46,65 @@ export default function JobList() {
         return 'Phase 0 - Hiring has not yet started!';
     }
   };
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState([]);
+  const [filteredJobs,setFilteredJobs] = useState([]);
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const setUpdatedJobs = (selectedFilters)=>{
+    
+    // alert("in set updated jobs")
+    //alert(selectedFilters)
+    const username = sessionStorage.getItem('sessionID');
+    axios.post('http://localhost:8000/nisa/filterjobsnabeeha', { selectedFilters, username})
+      .then(res => {
+        setFilteredJobs(res.data)
+        //alert(JSON.stringify(filteredJobs))
+        setJobs(res.data)
+        
+      })
+      .catch(err => {
+        //alert("error" + err)
+      })
+  }
+  const handleFilterSelection = (filter) => {
+   
+    
+    if (filter === 'Clear All') {
+      clearAllFilters();
+      setDefaultJobs();
+    } 
+    else {
+      const updatedFilters = [...selectedFilters];
+      // Toggle the filter: add if not present, remove if present
+      if (updatedFilters.includes(filter)) {
+        updatedFilters.splice(updatedFilters.indexOf(filter), 1);
+        
+        
+      } 
+      else {
+        updatedFilters.push(filter);
+        
+      }
+
+      
+      
+      setUpdatedJobs(updatedFilters)
+      setSelectedFilters(updatedFilters)
+    }
+
+    
+   
+  };
+  
+  const clearAllFilters = () => {
+    setSelectedFilters([]);
+    
+  };
+  const filters = ['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4','Clear All'];
   return (
     <div>
       <div className='nisa-joblist-con'>
@@ -51,10 +112,27 @@ export default function JobList() {
           Jobs List
         </h2>
         <div id="nab-filter-jobs">
-            <button id="nab-filter-button">
+            <button id="nab-filter-button" onClick={toggleDropdown}>
                 <img id="nab-filter-icon" src={filtericon} alt="Filter Icon" />
                 Filter Jobs
             </button>
+            
+            {isDropdownOpen && (
+            <ul className="filter-dropdown">
+              {filters.map((filter, index) => (
+                <li id="nab-filter-li" key={index} onClick={() => handleFilterSelection(filter)}>
+                  <input
+                    id="nab-filter-checkbox"
+                    type="checkbox"
+                    checked={selectedFilters.includes(filter)}
+                    readOnly
+                  />
+                  {filter}
+                </li>
+              ))}
+            </ul>
+          )}
+          
         </div>
         {jobs.length === 0 ? (
           <div className='kjob-nojob'>No jobs found</div>
