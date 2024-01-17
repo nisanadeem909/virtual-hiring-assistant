@@ -34,6 +34,7 @@ import AdminHomePage from './Components/AdminHome/AdminHomePage.js';
 import CompanySignup from './Components/CompanySignup/CompanySignup.js';
 import CompanyProfile from './Components/AdminHome/CompanyEditProfile.js';
 import SuperAdminHomePage from './Components/SuperAdmin/SuperAdminHome.js';
+import ApplicantVideoTestLogin from './Components/ApplicantVideo/ApplicantVideoTestLogin.js';
 
 function App() {
   return (
@@ -79,9 +80,9 @@ function App() {
             <Route index element={<Error/>} />
           <Route path="cvcollection/:cvcollectionid" element={<CVCollectionForm/>}></Route>
             <Route path="formcollection/:formcollectionid" element={<FormScreening/>}>
-              {/* <Route index element={<FormScreening/>} />
-              <Route path=":formId" element={<FormScreening/>} /> */}
+        
             </Route>
+            <Route path="videointerview" element={<ApplicantVideoTestLogin/>}></Route>
 
             <Route path="*" element={<Error/>}></Route>      
 
@@ -102,6 +103,7 @@ function App() {
             <Route path="profile" element={<RecruiterProfile/>}></Route>
             <Route path="changepasswordpage" element={<ChangePasswordPage/>}></Route>
             <Route path="job/createform/phase2email" element={<FormCollectionEmail/>}></Route>
+            
             
             
             

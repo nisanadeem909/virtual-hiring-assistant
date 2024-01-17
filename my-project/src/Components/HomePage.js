@@ -21,9 +21,7 @@ function HomePage() {
           </div>
             
           </div>
-          <div className="l">
-           
-          </div>
+       
         </div>
 
         <div className="box2">

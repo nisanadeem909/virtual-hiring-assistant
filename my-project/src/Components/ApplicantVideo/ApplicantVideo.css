@@ -1,0 +1,61 @@
+
+.nisa-image-container {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .nisa-image-container img {
+    max-width: 100%;
+    height: 600px;
+    margin-top: -20%;
+    margin-left: 5%;
+  }
+  
+  .nisa-form-container {
+    flex: 1;
+    padding: 20px;
+    margin-left: 10%;
+    margin-top: 10%;
+  }
+  .nisa-video-input label,
+  .nisa-video-input input {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+    
+  }
+
+  .nisa-video-input label{
+    font-size: 20px;
+  }
+
+
+  .nisa-video-input input {
+    padding: 8px;
+    box-sizing: border-box;
+    width: 80%;
+    border-radius: 5px;
+
+    
+  }
+  
+  .nisa-video-button {
+    background-color: #056487;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+
+  .nisa-video-head{
+    font-size: 50px;
+    margin-bottom: 25px;
+    margin-top: -20%;
+  }
+  
+  .nisa-video-button:hover {
+    background-color: #2980b9;
+  }  
