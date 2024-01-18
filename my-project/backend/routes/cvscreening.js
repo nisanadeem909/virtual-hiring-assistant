@@ -106,6 +106,7 @@ router.post("/confirmcvshortlisting", async(req,res)=>{
               });
           
               const notification = await newNotification.save();
+              msg = {"status": "success",'job':updatedJob};
         
     }
         catch (error) {

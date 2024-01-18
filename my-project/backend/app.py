@@ -244,27 +244,30 @@ def CVScreening(job):
         else:
             cv_phrases = extractCVPhrases(resume) # extracts skills,degrees,majors using spacy 
             similarity = matchCVJD(model,cv_phrases,jd_phrases)
+        
+        print(similarity)
             
         if similarity >= acceptableScore:
             shortlistCount = shortlistCount +1
             
         filter_criteria = {'_id': app['_id']}
-        if job.get('automated'):
-            if job['automated'] == True:
-                update_statement = {
-                    '$set': {
-                        'CVMatchScore': similarity,
-                        'status': 2 if similarity >= acceptableScore else 0
-                    }
+        if job['automated'] == True:
+            update_statement = {
+                '$set': {
+                    'CVMatchScore': similarity,
+                    'status': 2 if similarity >= acceptableScore else 0
                 }
-                jobapp_collection.update_one(filter_criteria, update_statement)
-            else:
-                update_statement = {
-                    '$set': {
-                        'CVMatchScore': similarity
-                    }
+            }
+            jobapp_collection.update_one(filter_criteria, update_statement)
+        else:
+            update_statement = {
+                '$set': {
+                    'CVMatchScore': similarity
                 }
-                jobapp_collection.update_one(filter_criteria, update_statement)
+            }
+            result = jobapp_collection.update_one(filter_criteria, update_statement)
+            print(result.modified_count)
+            print(similarity)
         
         
     print(shortlistCount)
