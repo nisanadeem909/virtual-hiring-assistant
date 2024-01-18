@@ -89,6 +89,8 @@ function App() {
       </Route>
 
 
+
+
         <Route path="/recruiter" element={<Navbar type="recruiter"/>}>
           
             <Route path="home" element={<RecruiterProjile/>}></Route>
