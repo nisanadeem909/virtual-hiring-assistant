@@ -46,7 +46,7 @@ function CVCollectionForm() {
 
   const formatDate = (date) => {
     if (!date) return '';
-    const formattedDate = new Date(date); 
+    const formattedDate = new Date(date);  
     const year = formattedDate.getFullYear();
     const month = `${formattedDate.getMonth() + 1}`.padStart(2, '0');
     const day = `${formattedDate.getDate()}`.padStart(2, '0');
