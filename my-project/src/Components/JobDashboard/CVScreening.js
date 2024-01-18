@@ -62,6 +62,7 @@ export default function CVScreening(props) {
           .catch(function (error) {
                 console.log(error);
           })
+          setModalOpen(false);
     }
 
     useEffect(() => {
