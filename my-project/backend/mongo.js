@@ -88,6 +88,11 @@ const recruiterSchema = new Schema({
     type: String
   }
   ,
+  status: {
+    type: Number,
+   
+  }
+  ,
 
 }, {
   timestamps: true,
@@ -124,11 +129,7 @@ const companySchema = new Schema({
     type: String
   }
   ,
-  status: {
-    type: Number,
-   
-  }
-  ,
+
 
 }, {
   timestamps: true,
@@ -297,7 +298,19 @@ const jobSchema = new Schema({
   noShortlisted:{
     type: Boolean,
     default: false,
-  }
+  },
+  automated:{
+    type: Boolean,
+    
+  },
+  postjob:{
+    type: Boolean,
+  },
+  rejectionmail:{
+    type: Boolean,
+    default:false,
+  },
+
 
 }, {
   timestamps: true,

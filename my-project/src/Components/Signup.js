@@ -11,7 +11,7 @@ export default function Signup() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [status, setStatus] = useState(1);
+ 
   const [name, setName] = useState(''); // Add state for name
   const [designation, setDesignation] = useState(''); // Add state for designation
   const [error, setError] = useState(null);
@@ -60,7 +60,7 @@ export default function Signup() {
 
     try {
       
-      const response = await axios.post('http://localhost:8000/nisa/signup', { username, email, password, name, designation, 'companyID':sessionStorage.getItem("sessionID"), status });
+      const response = await axios.post('http://localhost:8000/nisa/signup', { username, email, password, name, designation, 'companyID':sessionStorage.getItem("sessionID"), status : 1 });
 
       
       if (response.data.user) {
