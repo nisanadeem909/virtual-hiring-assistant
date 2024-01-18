@@ -79,9 +79,7 @@ function App() {
 
             <Route index element={<Error/>} />
           <Route path="cvcollection/:cvcollectionid" element={<CVCollectionForm/>}></Route>
-            <Route path="formcollection/:formcollectionid" element={<FormScreening/>}>
-        
-            </Route>
+            <Route path="formcollection/:formcollectionid" element={<FormScreening/>}></Route>
             <Route path="videointerview" element={<ApplicantVideoTestLogin/>}></Route>
 
             <Route path="*" element={<Error/>}></Route>      
