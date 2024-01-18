@@ -18,6 +18,8 @@ export default function PostJobPage() {
   const [validationError, setValidationError] = useState('');
   const [showDoneImage, setShowDoneImage] = useState(false);
   const [jobId, setJobId] = useState();
+  const [automate, setAutomate] = useState();
+  const [jobpost, setJobPost] = useState();
   const navigate = useNavigate(); // Hook for navigation
 
   const sessionID = sessionStorage.getItem('sessionID');
@@ -39,12 +41,28 @@ export default function PostJobPage() {
         setValidationError('Please fill in all required fields.');
         return;
       }
+    } else if (phase === 1) {
+      // Validate required fields for Phase 1
+      if (!formData.phase1Deadline || !formData.phase1Percentage) {
+        setValidationError('Please fill in all required fields for Phase 1.');
+        return;
+      }
+    } else if (phase === 2) {
+      // Validate required fields for Phase 2
+      if (automate === undefined) {
+        setValidationError('Please select Automated or Manual.');
+        return;
+      }
+    } else if (phase === 3) {
+      // Validate required fields for Phase 3
+      if (jobpost === undefined) {
+        setValidationError('Please select Post Job or Hold Job.');
+        return;
+      }
     }
-
-    if (phase < 2) {
-      setValidationError('');
-      setPhase(phase + 1);
-    }
+  
+    setValidationError('');
+    setPhase(phase + 1);
   };
 
   const handleBack = () => {
@@ -64,6 +82,28 @@ export default function PostJobPage() {
     navigate('rejectionemail', { state: { j } });
   };
 
+  const handleAutomated = () => {
+  
+   setAutomate(1);
+   
+  };
+
+  const handleManual = () => {
+  
+    setAutomate(0);
+  };
+
+  const handlePost = () => {
+  
+    setJobPost(1);
+    
+   };
+ 
+   const handleHold = () => {
+   
+     setJobPost(0);
+   };
+
   const handleSubmit = async () => {
     try {
       // Validate required fields for Phase 2
@@ -75,6 +115,11 @@ export default function PostJobPage() {
       // Additional validation for Phase 2 submission
       if (!formData.phase1Percentage) {
         setValidationError('Please fill in the percentage for Phase 1.');
+        return;
+      }
+
+      if (jobpost === undefined) {
+        setValidationError('Please select Post Job or Hold Job.');
         return;
       }
 
@@ -96,11 +141,13 @@ export default function PostJobPage() {
       const response = await axios.post('http://localhost:8000/nisa/api/saveFormData', {
         sessionID,
         phase,
+        automate, 
+        jobpost, 
         ...formData,
       });
       const savedJobId = response.data._id; // Assuming "_id" is the field representing the job ID
       const j = response.data;
-      // Check if the savedJobId is not undefined
+     
       if (savedJobId) {
         setJobId(savedJobId);
        
@@ -133,20 +180,19 @@ export default function PostJobPage() {
           ) : (
             <div>
               <h1>Job Details</h1>
+
               {phase === 0 && (
                 <div className="job-details">
-                  <label className='nisa-pj-label' htmlFor="jobTitle">Job Title<span style={{ color: 'red', fontWeight: 'bold' }}>*</span></label>
-                  <input
-                   className='nisa-pj-input'
-                    type="text"
-                    id="jobTitle"
-                    value={formData.jobTitle}
-                    onChange={handleInputChange}
-                  />
+                  <label className="nisa-pj-label" htmlFor="jobTitle">
+                    Job Title<span style={{ color: 'red', fontWeight: 'bold' }}>*</span>
+                  </label>
+                  <input className="nisa-pj-input" type="text" id="jobTitle" value={formData.jobTitle} onChange={handleInputChange} />
 
-                  <label className='nisa-pj-label' htmlFor="jobDescription">Job Description<span style={{ color: 'red', fontWeight: 'bold' }}>*</span></label>
+                  <label className="nisa-pj-label" htmlFor="jobDescription">
+                    Job Description<span style={{ color: 'red', fontWeight: 'bold' }}>*</span>
+                  </label>
                   <textarea
-                  className='nisa-pj-textarea'
+                    className="nisa-pj-textarea"
                     id="jobDescription"
                     rows="4"
                     value={formData.jobDescription}
@@ -164,31 +210,32 @@ export default function PostJobPage() {
               {phase === 1 && (
                 <div className="phase-details">
                   <h1 className="nisa-phase1">Phase {phase} - CV Screening</h1>
-                  <label className='nisa-pj-label' htmlFor="phase1Deadline">
-                  Phase 1 Deadline<span style={{ color: 'red', fontWeight: 'bold' }}>*</span>
-                </label>
-                <input
-                  className='nisa-pj-input'
-                  type="datetime-local"
-                  id="phase1Deadline"
-                  value={formData.phase1Deadline}
-                  onChange={handleInputChange}
-                  min={getCurrentDate()} 
-                />
+                  <label className="nisa-pj-label" htmlFor="phase1Deadline">
+                    Phase 1 Deadline<span style={{ color: 'red', fontWeight: 'bold' }}>*</span>
+                  </label>
+                  <input
+                    className="nisa-pj-input"
+                    type="datetime-local"
+                    id="phase1Deadline"
+                    value={formData.phase1Deadline}
+                    onChange={handleInputChange}
+                    min={getCurrentDate()}
+                  />
 
-                  <label className='nisa-pj-label' htmlFor="phase1Percentage">
-                    Acceptable CV to JD Match Percentage.{' '}<span style={{ color: 'red', fontWeight: 'bold' }}>*</span>
+                  <label className="nisa-pj-label" htmlFor="phase1Percentage">
+                    Acceptable CV to JD Match Percentage.{' '}
+                    <span style={{ color: 'red', fontWeight: 'bold' }}>*</span>
                     <span style={{ color: 'red', marginLeft: '120px' }}>Recommended: 60 - 70%</span>
                   </label>
 
                   <input
-                   className='nisa-pj-input'
+                    className="nisa-pj-input"
                     type="number"
                     id="phase1Percentage"
                     value={formData.phase1Percentage}
                     onChange={handleInputChange}
-                    min="0" 
-                    max="100" 
+                    min="0"
+                    max="100"
                   />
 
                   {validationError && <p style={{ color: 'red' }}>{validationError}</p>}
@@ -196,13 +243,103 @@ export default function PostJobPage() {
                   <button className="nisa-postJ2-button" onClick={handleBack}>
                     Back
                   </button>
-                  {phase === 1 && (
-                    <button className="nisa-postJ2-button" onClick={handleSubmit}>
-                      Submit
-                    </button>
-                  )}
+                  <button className="nisa-postJ2-button" onClick={handleNext}>
+                    Next
+                  </button>
                 </div>
               )}
+
+              {phase === 2 && (
+                <div className="phase-details">
+                <h1 className="nisa-phase1">Automated or Manual</h1>
+                {/* ... (Phase 2 content) */}
+               
+                {validationError && <p style={{ color: 'red' }}>{validationError}</p>}
+                
+               
+                <div className="options-container">
+                  <label className='nisa-j-l'>
+                    <input
+                      type="radio"
+                      className="nisa-option-checkbox"
+                      name="recruitmentOption"
+                      onChange={handleAutomated}
+                      checked={automate === 1}
+                    />
+                    Automated
+                  </label>
+                  <p className='nisa-s'>This will make your entire recruiting process fully automated!</p>
+
+                  <hr className="nisa-horizontal-line" />
+                  
+                  <label className='nisa-j-l'>
+                    <input
+                      type="radio"
+                      className="nisa-option-checkbox"
+                      name="recruitmentOption"
+                      onChange={handleManual}
+                      checked={automate === 0}
+                    />
+                    Manual
+                  </label>
+                  <p>This will make your entire recruiting process work manually!</p>
+                </div>
+
+                
+               
+                <button className="nisa-postJ2-button" onClick={handleBack}>
+                  Back
+                </button>
+                <button className="nisa-postJ2-button" onClick={handleNext}>
+                  Next
+                </button>
+              </div>
+              
+              
+              )}
+
+{phase === 3 && (
+              <div className="phase-details">
+                <h1 className="nisa-phase1">Post Job or Hold Job</h1>
+                 <div className="options-container">
+                  <label className='nisa-j-l'>
+                    <input
+                      type="radio"
+                      className="nisa-option-checkbox"
+                      name="recruitmentOption"
+                      onChange={handlePost}
+                      checked={jobpost === 1}
+                    />
+                    Post Job
+                  </label>
+                  <p className='nisa-s'>This will post the job and generate the CV collection link</p>
+
+                  <hr className="nisa-horizontal-line" />
+                  
+                  <label className='nisa-j-l'>
+                    <input
+                      type="radio"
+                      className="nisa-option-checkbox"
+                      name="recruitmentOption"
+                      onChange={handleHold}
+                      checked={jobpost === 0}
+                    />
+                    Hold Job
+                  </label>
+                  <p>This will not post the job and will be on hold.</p>
+                </div>
+
+                {validationError && <p style={{ color: 'red' }}>{validationError}</p>}
+                <button className="nisa-postJ2-button" onClick={handleBack}>
+                  Back
+                </button>
+                <button className="nisa-postJ2-button" onClick={handleSubmit}>
+                  Submit
+                </button>
+              </div>
+            )}
+
+              
             </div>
           )}
         </div>
@@ -211,6 +348,7 @@ export default function PostJobPage() {
           <img className="nisa-post-img" src={img} alt="Your Image" />
         </div>
       </div>
+      
     </div>
   );
 }

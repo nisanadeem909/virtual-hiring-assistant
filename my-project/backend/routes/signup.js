@@ -14,7 +14,8 @@ router.use(session({
 
 router.post('/signup', async (req, res) => {
     const { username, email, password, name, designation,companyID,status } = req.body;
-  
+    console.log("---------------------------------------")
+    console.log(status);
     try {
       
       const existingCompany = await Company.findOne({ $or: [{ username }, { email }] });
@@ -64,11 +65,12 @@ router.post('/signup', async (req, res) => {
       designation,
       companyID:companyId,
       companyname: companyName,
-      status, 
+      status: 1, 
     });
   
       
       await newUser.save();
+      console.log(newUser)
       // req.session.username = username;
       //   req.session.save();
         
