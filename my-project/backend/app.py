@@ -492,15 +492,15 @@ def FormScreening(job):
     
     if response.status_code == 200:
         
-        if job['automated']==True:
-            filter_criteria = {'_id': job['_id']}
-            update_statement = {
-                '$set': {
-                    'status': 3
-                }
+        
+        filter_criteria = {'_id': job['_id']}
+        update_statement = {
+            '$set': {
+            'status': 3
             }
-            job_collection.update_one(filter_criteria, update_statement)
-            sendFormRejectionEmails()
+        }
+        job_collection.update_one(filter_criteria, update_statement)
+        sendFormRejectionEmails()
         
         notification_data = {
             "jobTitle": job['jobTitle'],
@@ -535,8 +535,6 @@ def Formtimer():
         if job.get('P2FormDeadline'):
             if job['status'] == 2 and current_datetime >= job['P2FormDeadline'].replace(tzinfo=pytz.utc):
                 FormScreening(job)
-            if job['status'] == 3 and job['automated'] == False:
-                sendFormRejectionEmails()
                 
 
 #schedule.every(1).minutes.do(sendFormEmails)
