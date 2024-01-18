@@ -299,6 +299,10 @@ const jobSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  shortlistedCVWaiting:{ //in case of not fully automated -> waiting for recruiter to proceed to phase 2
+    type: Boolean,
+    default: false
+  },
   automated:{
     type: Boolean,
     
@@ -310,7 +314,6 @@ const jobSchema = new Schema({
     type: Boolean,
     default:false,
   },
-
 
 }, {
   timestamps: true,

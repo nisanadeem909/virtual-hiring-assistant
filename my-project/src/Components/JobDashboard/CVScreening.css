@@ -100,3 +100,27 @@
     margin: 5vh;
     font-weight: bold;
 }
+
+.kcvcollection-buttons-edit {
+    display: flex;
+    justify-content: right;
+    margin-top: 2vh;
+    margin-bottom: -2vh;
+}
+
+.kcvcollection-button-edit{
+    background-color: #012641;
+    color: white;
+    display: flex;
+    font-size: 2.5vh;
+    border: 1px solid #0066ae;
+    border-radius: 2vh;
+    padding: 0.5vh 1.5vh;
+    margin-left: 2vh;
+}
+
+.kcvcollection-button-edit:hover {
+    background-color: #60B3D1;
+    border-color: #519eba;
+    color: white;
+}

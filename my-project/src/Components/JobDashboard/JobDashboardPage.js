@@ -77,8 +77,8 @@ export default function JobDashboardPage() {
         }
         else if (index == 1)
         {
-            if (job.status >= 2 || (job.status == 1 && job.noShortlisted)) // cv screening completed
-              setContent(<CVScreening job={job}></CVScreening>)
+            if (job.status >= 2 || (job.status == 1 && job.noShortlisted) || (job.status == 1 && !job.automated && job.shortlistedCVWaiting)) // cv screening completed
+              setContent(<CVScreening job={job} updateJob={updateJob}></CVScreening>)
             else
               setContent(<CVCollection job={job}></CVCollection>)
         }
