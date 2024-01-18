@@ -35,7 +35,10 @@ import CompanySignup from './Components/CompanySignup/CompanySignup.js';
 import CompanyProfile from './Components/AdminHome/CompanyEditProfile.js';
 import SuperAdminHomePage from './Components/SuperAdmin/SuperAdminHome.js';
 import ApplicantVideoTestLogin from './Components/ApplicantVideo/ApplicantVideoTestLogin.js';
-
+import IntroductionPage from './Components/ApplicantVideo/IntroductionPage.js';
+import VideoForm from './Components/ApplicantVideo/VideoForm.js';
+import TechnicalTest from './Components/ApplicantVideo/TechnicalTest.js';
+import TestDone from './Components/ApplicantVideo/TestDone.js';
 function App() {
   return (
    
@@ -74,18 +77,19 @@ function App() {
         </Route>
 
         <Route path="/applicant" element={<Navbar type="applicant"/>}>
+        <Route index element={<Error/>} />
+        <Route path="cvcollection/:cvcollectionid" element={<CVCollectionForm />} />
+        <Route path="formcollection/:formcollectionid" element={<FormScreening />} />
+        <Route path="videointerview/:interviewid" element={<ApplicantVideoTestLogin />} />
+        <Route path="videointerview/:interviewid/intropage" element={<IntroductionPage/>} />
+        <Route path="videointerview/:interviewid/intropage/video" element={<VideoForm/>} />
+        <Route path="videointerview/:interviewid/intropage/video/test" element={<TechnicalTest/>} />
+        <Route path="videointerview/:interviewid/intropage/video/test/done" element={<TestDone/>} />
+        <Route path="*" element={<Error/>} />
+      </Route>
 
-            
-
-            <Route index element={<Error/>} />
-          <Route path="cvcollection/:cvcollectionid" element={<CVCollectionForm/>}></Route>
-            <Route path="formcollection/:formcollectionid" element={<FormScreening/>}></Route>
-            <Route path="videointerview" element={<ApplicantVideoTestLogin/>}></Route>
-
-            <Route path="*" element={<Error/>}></Route>      
 
 
-        </Route>
 
         <Route path="/recruiter" element={<Navbar type="recruiter"/>}>
           
@@ -119,11 +123,6 @@ function App() {
 
       </Routes>
     </BrowserRouter>
-    /*
-    <div className="App">
-      <LandingPage/>
-        
-    </div>*/
 
  );
 }

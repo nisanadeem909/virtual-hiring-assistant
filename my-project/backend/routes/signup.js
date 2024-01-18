@@ -13,7 +13,7 @@ router.use(session({
 
 
 router.post('/signup', async (req, res) => {
-    const { username, email, password, name, designation,companyID } = req.body;
+    const { username, email, password, name, designation,companyID,status } = req.body;
   
     try {
       
@@ -63,7 +63,8 @@ router.post('/signup', async (req, res) => {
       name,
       designation,
       companyID:companyId,
-      companyname: companyName, 
+      companyname: companyName,
+      status, 
     });
   
       

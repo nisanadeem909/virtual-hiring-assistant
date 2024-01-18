@@ -8,7 +8,7 @@
   color: white;
   border: none;
   padding: 8px;
-  /* border-radius: 5px; */
+  border-radius: 10px;
   cursor: pointer;
   margin-left: 10px;
   width: 150px;
@@ -29,10 +29,11 @@
   
   
   /* border-radius: 5px; */
-  width:94%;
-  margin-left: 10px;
+  width:90%;
+  margin-left: 14px;
   position: absolute;
-
+  border-bottom-left-radius: 4px; /* Set the border radius for the bottom-left corner */
+  border-bottom-right-radius: 4px;
   display: flex;
   flex-direction: column;
   

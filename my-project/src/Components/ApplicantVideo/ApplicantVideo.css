@@ -59,3 +59,241 @@
   .nisa-video-button:hover {
     background-color: #2980b9;
   }  
+
+  .post-jobnew-container {
+    width: 80%;
+    min-height: 550px; /* Set a minimum height */
+    margin: 5% auto;
+    padding: 20px;
+    padding-left: 5%;
+    padding-right: 5%;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 4px 6px 10px rgba(0.4, 0.2, 0, 0.2);
+  }
+
+  .nisa-intro-heading{
+    font-size: 50px;
+    text-align: center;
+  }
+
+  .nisa-intro-title{
+    font-size: 26px;
+    font-weight: bold;
+    color: black;
+  }  
+
+  .nisa-intro1-title{
+    font-size: 26px;
+    color: #012641;
+    margin-bottom: 4px;
+  }
+
+  .nisa-horizontal-line {
+    border-top: 2px solid #ccc; 
+    margin-bottom: 20px;
+    margin-top: 15px;
+  }
+
+  .nisa-points-section {
+    margin-top: 20px;
+  }
+  
+  .nisa-points-section h4 {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .nisa-points-section ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .video-mid{
+    margin-top: 8%;
+    font-size: 18px;
+    
+  }
+
+  .nisa-v-q{
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .nisa-points-section li {
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+  }
+  
+  .nisa-points-section li::before {
+    content: '\2022'; /* Bullet point character */
+    color: #333; /* Bullet point color */
+    font-size: 14px;
+    position: absolute;
+    left: 0;
+  }
+
+  .nisa-done-t{
+    width: 40%;
+    height: 30%;
+    margin-left: 28%;
+  }
+
+  .nisa-done-p{
+    margin-left: 26%;
+    font-size: 39px;
+  }
+
+  .nisa-intro2-title{
+    font-size: 16px;
+    color: red;
+    margin-bottom: 4px;
+    margin-top: 5%;
+   
+  }
+
+  .nisa-intro3-title{
+    font-size: 16px;
+    color:black;
+    margin-bottom: 4px;
+    font-weight: bold;
+  }
+
+  .nisa-interview-img{
+    width: 40%;
+    height: 40%;
+    border-radius: 4px;
+    margin-bottom: 5%;
+  }
+
+  .nisa-inter-btn{
+    width: 15%;
+    height: 40px;
+    text-align: center;
+    background-color: #012641;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    margin-left: 45%;
+    margin-top: 5%;
+    font-size: 20px;
+    margin-bottom: 10%;
+  }
+
+  .countdown-container{
+    text-align: center;
+    margin-top: 15%;
+    font-size: 90px;
+    color: #2980b9;
+  }
+
+
+  .good-luck-message{
+    text-align: center;
+    
+    font-size: 90px;
+    color: #012641;
+  }
+
+  .video-header{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .nisa-video-heading1{
+    font-size: 40px;
+  }
+  
+  .nisa-video-timer{
+    font-size: 40px;
+    
+    color: #2980b9;
+
+  }
+
+  .nisa-timer-div{
+    margin-left: 47%;
+    width: 15%;
+    height: 10%;
+    border: 4px solid rgb(87, 83, 83);
+    text-align: center;
+    border-radius: 6px;
+  }
+
+  .nisa-v-q2{
+    margin-bottom: 15px;
+  }
+
+  .upload-video-btn{
+    width: 100px;
+    height: 40px;
+    text-align: center;
+    margin-top: 5%;
+    background-color: #012641;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .nisa-v-btns{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .upload-v-btn1{
+    margin-top: 5%;
+    border: 3px solid #012641; /* Change this border color to your desired color */
+    color: #056487; /* Change this text color to your desired color */
+    background-color: #ffffff; /* Change this background color to your desired color */
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 8px;
+  }
+
+  .question-container{
+    margin-top: 4%;
+    padding: 20px;
+    box-shadow: 4px 6px 10px rgba(8, 25, 174, 0.1);
+  }
+
+  .nisa-code{
+    margin-bottom: 20px;
+    background-color: #d3d3d337;
+    width: 60%;
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(194, 194, 194, 0.527);
+  }
+  .nisa-t-q{
+    font-weight: bold;
+    margin-bottom: 2%;
+  }
+
+  .nisa-t-a{
+    margin-bottom: 4px;
+  }
+
+  .nisa-t-img{
+
+    width: 50%;
+    height: 50%;
+  }
+
+  .nisa-submit-button{
+    width: 100px;
+    height: 40px;
+    background-color: #012641;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    margin-left: 45%;
+    margin-top: 5%;
+    font-size: 14px;
+  }

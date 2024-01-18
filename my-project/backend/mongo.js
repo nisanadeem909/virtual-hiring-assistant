@@ -124,6 +124,11 @@ const companySchema = new Schema({
     type: String
   }
   ,
+  status: {
+    type: Number,
+   
+  }
+  ,
 
 }, {
   timestamps: true,
