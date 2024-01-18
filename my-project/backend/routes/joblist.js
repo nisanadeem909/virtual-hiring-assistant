@@ -134,7 +134,7 @@ router.get('/alljobs/:recruiterUsername', async (req, res) => {
       else {
         const query = {
           
-          companyname: recruiterInfo.companyname, // Add this condition to filter by company name
+          companyID: recruiterInfo.companyID, // Add this condition to filter by company name
         }; 
 
         console.log( query)
