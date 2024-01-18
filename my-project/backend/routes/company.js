@@ -48,12 +48,12 @@ router.post('/companysignup', async (req, res) => {
       console.log(req.body)
 
       console.log("creating company request")
-      const hashedPassword = await bcrypt.hash(req.body.password, 12);
+      //const hashedPassword = await bcrypt.hash(req.body.password, 12);
      
       const newCompany = new CompanyRequest({
         username,
         email,
-        password: hashedPassword,
+        password: req.body.password,
         companyname: req.body.name,  
       });
   
@@ -70,7 +70,7 @@ router.post('/companysignup', async (req, res) => {
     var msg;
 
     try {
-        const allCompanyRequests = await CompanyRequest.find().sort({ createdAt: -1 }).exec();
+      const allCompanyRequests = await CompanyRequest.find({ status: 0 }).sort({ createdAt: -1 }).exec();
 
         msg = { status: "success", reqs: allCompanyRequests };
     } catch (error) {
@@ -109,13 +109,17 @@ router.post("/approveCompanyRequest", async (req, res) => {
     if (!companyRequest) {
       msg = { status: "error", error: 'Company request not found.' };
     } else {
-      await CompanyRequest.deleteOne({ _id: requestId });
+      //await CompanyRequest.deleteOne({ _id: requestId });
+      companyRequest.status = 1;
+      await companyRequest.save();
+
+      const hashedPassword = await bcrypt.hash(companyRequest.password, 12);
 
       const newCompany = new Company({
         companyname: companyRequest.companyname,
         username: companyRequest.username,
         email: companyRequest.email,
-        password: companyRequest.password,
+        password: hashedPassword,
         profilePic: companyRequest.profilePic,
       });
 
@@ -145,7 +149,9 @@ router.post("/disapproveCompanyRequest", async (req, res) => {
     if (!companyRequest) {
       msg = { status: "error", error: 'Company request not found.' };
     } else {
-      await CompanyRequest.deleteOne({ _id: requestId });
+      //await CompanyRequest.deleteOne({ _id: requestId });
+      companyRequest.status = -1;
+      await companyRequest.save();
 
       msg = { status: "success", message: 'Company request removed successfully.' };
     }
