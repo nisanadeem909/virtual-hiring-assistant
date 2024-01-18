@@ -73,6 +73,28 @@ export default function JobDetails(props) {
     const saveAcceptableScore = (newVal) => {
       
       var param = {'jobId':job._id,'newScore':newVal};
+
+      if (job.automated == false && job.shortlistedCVWaiting == true){
+
+        axios.post("http://localhost:8000/komal/editjobcvscore/notautomated",param).then((response) => {
+           if (response.data.status == "success"){
+              setJob(response.data.job);
+              props.updateJob({...response.data.job});
+              setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + job._id}</label>
+              <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {newVal}%</label>
+              <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>)
+            }
+            else {
+              setStatusDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
+              console.log("Error: "+response.data.error);
+            }
+        })
+        .catch(function (error) {
+            setStatusDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
+            console.log(error);
+        })
+      setIsEditScoreModalOpen(false);}
+      else {
         axios.post("http://localhost:8000/komal/editjobcvscore",param).then((response) => {
            if (response.data.status == "success"){
               setJob(response.data.job);
@@ -90,10 +112,31 @@ export default function JobDetails(props) {
             setStatusDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
             console.log(error);
         })
-      setIsEditScoreModalOpen(false);
+        setIsEditScoreModalOpen(false);
+      }
     };
 
     const saveCVDeadline=(newVal)=>{
+
+      if (job.automated == false && job.shortlistedCVWaiting == true){
+        var param = {'jobId':job._id,'newDeadline':newVal};
+        axios.post("http://localhost:8000/komal/editjobcvdeadline/notautomated",param).then((response) => {
+           if (response.data.status == "success"){
+              setJob(response.data.job);
+              props.updateJob({...response.data.job});
+              setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Deadline for applications:</b> {formatDate(response.data.job.CVDeadline)}</label>
+              <button className='kjobdetailspage-editdeadline' onClick={openEditCVDeadlineModal}>Edit Deadline</button></>)
+            }
+            else {
+              setDeadlineDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
+              console.log("Error: "+response.data.error);
+            }
+        })
+        .catch(function (error) {
+            setDeadlineDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
+            console.log(error);
+        })}
+      else{
       var param = {'jobId':job._id,'newDeadline':newVal};
         axios.post("http://localhost:8000/komal/editjobcvdeadline",param).then((response) => {
            if (response.data.status == "success"){
@@ -110,7 +153,7 @@ export default function JobDetails(props) {
         .catch(function (error) {
             setDeadlineDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
             console.log(error);
-        })
+        })}
       setIsEditCVDeadlineModalOpen(false);
     }
 
@@ -222,8 +265,10 @@ export default function JobDetails(props) {
             <div className='kjobdetailspage-jd-div'>
             <div className='kjobdetailspage-jd-header'>
                 <label className='kjobdetailspage-jd-title'>Job Description</label>
-                {job.status === 1 && (
-                  <button className='kjobdetailspage-editdeadline' onClick={openEditJDModal}>Edit Job Description</button>
+                {job.status === 1 && new Date(job.CVDeadline) > new Date() && (
+                  <button className='kjobdetailspage-editdeadline' onClick={openEditJDModal}>
+                    Edit Job Description
+                  </button>
                 )}
                 </div>
                 <hr className='kjobdetailspage-jd-hr'></hr>

@@ -198,8 +198,12 @@ def matchCVJD(model,cv_all,jd_all):
 def CVScreening(job):
     print(job['jobTitle'])
     
-    if job.get('noShortlisted'):
+    if job.get('noShortlisted'): #already screened but no cv could be shortlisted
         if job['noShortlisted'] == True:
+            return
+    
+    if job.get('shortlistedCVWaiting'): #already shortlisted but not fully automated so waiting for recruiter
+        if job['shortlistedCVWaiting'] == True:
             return
     
     model = loadModel()
@@ -245,13 +249,23 @@ def CVScreening(job):
             shortlistCount = shortlistCount +1
             
         filter_criteria = {'_id': app['_id']}
-        update_statement = {
-            '$set': {
-                'CVMatchScore': similarity,
-                'status': 2 if similarity >= acceptableScore else 0
-            }
-        }
-        jobapp_collection.update_one(filter_criteria, update_statement)
+        if job.get('automated'):
+            if job['automated'] == True:
+                update_statement = {
+                    '$set': {
+                        'CVMatchScore': similarity,
+                        'status': 2 if similarity >= acceptableScore else 0
+                    }
+                }
+                jobapp_collection.update_one(filter_criteria, update_statement)
+            else:
+                update_statement = {
+                    '$set': {
+                        'CVMatchScore': similarity
+                    }
+                }
+                jobapp_collection.update_one(filter_criteria, update_statement)
+        
         
     print(shortlistCount)
         
@@ -279,27 +293,37 @@ def CVScreening(job):
     
     #print("no")
     
-    filter_criteria = {'_id': job['_id']}
-    update_statement = {
-        '$set': {
-            'status': 2,
-            'noShortlisted': False
+    if job['automated'] == True:
+        filter_criteria = {'_id': job['_id']}
+        update_statement = {
+            '$set': {
+                'status': 2,
+                'noShortlisted': False
+            }
         }
-    }
-    job_collection.update_one(filter_criteria, update_statement)
-    
+        job_collection.update_one(filter_criteria, update_statement)
+        sendCVRejectionEmails()
+    else:
+        filter_criteria = {'_id': job['_id']}
+        update_statement = {
+            '$set': {
+                'noShortlisted': False,
+                'shortlistedCVWaiting': True
+            }
+        }
+        job_collection.update_one(filter_criteria, update_statement)
+        
     notification_data = {
-        "jobTitle": job['jobTitle'],
-        "jobID": job['_id'],
-        "notifText": "CVs have been shortlisted!",
-        "recruiterUsername": job['postedby'],
-        "notifType": 1,
-        "companyname":job['companyname'],
-        "companyID":job['companyID'],
-        "createdAt": datetime.now().astimezone(pytz.utc)
-    }
+            "jobTitle": job['jobTitle'],
+            "jobID": job['_id'],
+            "notifText": "CVs have been shortlisted!",
+            "recruiterUsername": job['postedby'],
+            "notifType": 1,
+            "companyname":job['companyname'],
+            "companyID":job['companyID'],
+            "createdAt": datetime.now().astimezone(pytz.utc)
+        }
     notification_collection.insert_one(notification_data)
-    sendCVRejectionEmails()
     
 #########################################
 def sendFormEmails():
@@ -467,13 +491,16 @@ def FormScreening(job):
     print(response.json())
     
     if response.status_code == 200:
-        filter_criteria = {'_id': job['_id']}
-        update_statement = {
-            '$set': {
-                'status': 3
+        
+        if job['automated']==True:
+            filter_criteria = {'_id': job['_id']}
+            update_statement = {
+                '$set': {
+                    'status': 3
+                }
             }
-        }
-        job_collection.update_one(filter_criteria, update_statement)
+            job_collection.update_one(filter_criteria, update_statement)
+            sendFormRejectionEmails()
         
         notification_data = {
             "jobTitle": job['jobTitle'],
@@ -486,7 +513,7 @@ def FormScreening(job):
             "createdAt": datetime.now().astimezone(pytz.utc)
         }
         notification_collection.insert_one(notification_data)
-        sendFormRejectionEmails()
+        
 
 def CVtimer():
     print("CV Timer")
@@ -496,6 +523,8 @@ def CVtimer():
     for job in all_jobs:
         if job['status'] == 1 and current_datetime >= job['CVDeadline'].replace(tzinfo=pytz.utc):
             CVScreening(job)
+        if job['status'] == 2 and job['automated'] == False:
+            sendCVRejectionEmails()
 
 def Formtimer():
     print("Form Timer")
@@ -506,6 +535,9 @@ def Formtimer():
         if job.get('P2FormDeadline'):
             if job['status'] == 2 and current_datetime >= job['P2FormDeadline'].replace(tzinfo=pytz.utc):
                 FormScreening(job)
+            if job['status'] == 3 and job['automated'] == False:
+                sendFormRejectionEmails()
+                
 
 #schedule.every(1).minutes.do(sendFormEmails)
 while True:

@@ -4,14 +4,65 @@ import Footer from '../Footer'
 import cvImg from '../images/cvbtn.png'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import EditModal from '../ModalWindows/EditNumberModal';
+import ConfirmModal from '../ModalWindows/ConfirmRequestModal';
 
 export default function CVScreening(props) {
 
     const navigate = useNavigate();
 
     const [applications,setApps] = useState([])
-    const [job,setJob] = useState({'jobTitle':'Loading..','CVFormLink':'Loading..','AccCVScore': { $numberDecimal: '0' },'CVDeadline':'dd/mm/yyyy','status':'0','jobDescription':'Loading..'})
+    const [job,setJob] = useState({'jobTitle':'Loading..','CVFormLink':'Loading..','AccCVScore': { $numberDecimal: '0' },'CVDeadline':'dd/mm/yyyy','status':'0','jobDescription':'Loading..', 'automated':true})
     const [errorStatus,setErrStat] = useState(false);
+    
+    const [isEditScoreModalOpen, setIsEditScoreModalOpen] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
+
+    const openEditScoreModal = () => {
+        setIsEditScoreModalOpen(true);
+    };
+    
+    const closeEditScoreModal = () => {
+        setIsEditScoreModalOpen(false);
+    };
+
+    const setModalOpen = (value) => {
+        setOpenModal(value);
+      };
+
+    const saveAcceptableScore = (newVal) => {
+      
+        var param = {'jobId':job._id,'newScore':newVal};
+          axios.post("http://localhost:8000/komal/editjobcvscore/notautomated",param).then((response) => {
+             if (response.data.status == "success"){
+                setJob(response.data.job);
+                props.updateJob({...response.data.job});
+               }
+              else {
+                console.log("Error: "+response.data.error);
+              }
+          })
+          .catch(function (error) {
+                console.log(error);
+          })
+        setIsEditScoreModalOpen(false);
+      };
+
+    const confirmShortlisting=()=>{
+        var param = {'jobId':job._id,'username':sessionStorage.getItem("sessionID")};
+          axios.post("http://localhost:8000/komal/confirmcvshortlisting",param).then((response) => {
+             if (response.data.status == "success"){
+                setJob(response.data.job);
+                props.updateJob({...response.data.job});
+               }
+              else {
+                console.log("Error: "+response.data.error);
+              }
+          })
+          .catch(function (error) {
+                console.log(error);
+          })
+    }
 
     useEffect(() => {
      if (props.job)
@@ -70,6 +121,13 @@ export default function CVScreening(props) {
         {applications.length === 0 ? (
           <label className='kcvcollectionpage-noapps'>No job applications yet</label>
         ) : (
+        <div>
+        {(!job.automated && job.status === 1) && (
+        <div className='kcvcollection-buttons-edit'>
+            <button className='kcvcollection-button-edit' onClick={openEditScoreModal}>Edit Acceptable Score</button>
+            <button className='kcvcollection-button-edit' onClick={()=>setOpenModal(true)}>Confirm Shortlisting</button>
+        </div>
+        )}
         <table className='kcvcollectionpage-table'>
             <thead className='kcvcollectionpage-table-header'>
                 <tr className='kcvcollectionpage-table-header-row'>
@@ -93,9 +151,25 @@ export default function CVScreening(props) {
                     </tr>
                 ))}
             </tbody>
-            </table>
+            </table></div>
         )}
       </div>
-    )}
+    )}<EditModal
+        isOpen={isEditScoreModalOpen}
+        title='Acceptable CV Score'
+        closeModal={closeEditScoreModal}
+        saveValue={saveAcceptableScore}
+        originalValue={job.AccCVScore.$numberDecimal}
+      />
+      <ConfirmModal
+                      isOpen={openModal}
+                      title={'Confirm Shortlisting'}
+                      message={'Are you sure you want to confirm shortlisting and proceed to phase 2?'}
+                      value={0}
+                      removeValue={confirmShortlisting}
+                      closeModal={() => {
+                        setModalOpen(false);
+                      }}
+                    />
   </div>
 )}
