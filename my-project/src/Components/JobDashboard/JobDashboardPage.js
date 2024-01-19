@@ -118,9 +118,12 @@ export default function JobDashboardPage() {
 
             }
         }
-        else {
+        else if (index == 3) {
            // setContent(<img src={loading} className='kjobdashboardpage-loading-img'></img>);
            setContent(<VideoInterview job={job}></VideoInterview>);
+        }
+        else {
+          setContent(<img src={loading} className='kjobdashboardpage-loading-img'></img>);
         }
 
         setActiveTab(index);

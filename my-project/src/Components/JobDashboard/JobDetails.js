@@ -111,9 +111,14 @@ export default function JobDetails(props) {
            if (response.data.status == "success"){
               setJob(response.data.job);
               props.updateJob({...response.data.job});
-              setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + job._id}</label>
+              if (response.data.job.postjob)
+                setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + job._id}</label>
+                <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {newVal}%</label>
+                <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>)
+              else
+              setStatusDiv(<><label className='kjobdetailspage-cvscore'><b className='kjobdetailspage-status'>This job is currently on hold!</b></label><button className='kjobdetailspage-editcvscore' onClick={PublicizeJob}>Publicize Job</button>
               <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {newVal}%</label>
-              <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>)
+              <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>);
             }
             else {
               setStatusDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
@@ -130,9 +135,14 @@ export default function JobDetails(props) {
            if (response.data.status == "success"){
               setJob(response.data.job);
               props.updateJob({...response.data.job});
-              setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + job._id}</label>
-              <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {newVal}%</label>
-              <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>)
+              if (response.data.job.postjob)
+                setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + job._id}</label>
+                <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {newVal}%</label>
+                <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>)
+              else 
+                setStatusDiv(<><label className='kjobdetailspage-cvscore'><b className='kjobdetailspage-status'>This job is currently on hold!</b></label><button className='kjobdetailspage-editcvscore' onClick={PublicizeJob}>Publicize Job</button>
+                <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {newVal}%</label>
+                <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>);
             }
             else {
               setStatusDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
@@ -245,15 +255,17 @@ export default function JobDetails(props) {
           }
           else if (job.status == 1)
           {
-              setStatus("Phase 1 (CV Screening)");
-              if (job.postjob)
+              if (job.postjob){
+                setStatus("Phase 1 (CV Screening)");
                 setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + job._id}</label>
                 <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {job.AccCVScore.$numberDecimal.toString()}%</label>
                 <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>);
-              else 
+              }else {
+                setStatus("On Hold");
                 setStatusDiv(<><label className='kjobdetailspage-cvscore'><b className='kjobdetailspage-status'>This job is currently on hold!</b></label><button className='kjobdetailspage-editcvscore' onClick={PublicizeJob}>Publicize Job</button>
                 <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {job.AccCVScore.$numberDecimal.toString()}%</label>
                 <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>);
+              }
               setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Deadline for applications:</b> {formatDate(job.CVDeadline)}</label>
               <button className='kjobdetailspage-editdeadline' onClick={openEditCVDeadlineModal}>Edit Deadline</button></>);
           }
