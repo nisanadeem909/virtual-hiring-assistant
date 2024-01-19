@@ -34,7 +34,7 @@ export default function FormScreening() {
     setJobID(formcollectionid);
 
     axios.post(`http://localhost:8000/nabeeha/getjobdetailsforformcollection`, {"jobID": formcollectionid})
-      .then(res => {
+      .then(res => { 
         if (res.data.job && res.data.form) {
           setJobRole(res.data.job.jobTitle);
           setQuestions(res.data.form.questions);

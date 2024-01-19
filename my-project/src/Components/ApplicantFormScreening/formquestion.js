@@ -10,7 +10,7 @@ export default function Question({ statement, answers, setUserAnswer }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
 
   return (
-    <div className="question-container">
+    <div className="nab-question-container">
       <div className="question-statement">
         {statement}<span id="nab-form-required-field">*</span>:
       </div>
