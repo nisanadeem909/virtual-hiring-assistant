@@ -157,7 +157,18 @@
     font-size: 2.5vh;
 }
 
-.kjobdetailspage-editdeadline, .kjobdetailspage-editcvscore {
+.kjobdetailspage-editcvscore {
+    font-size: 2.3vh;
+    padding: 0.3vh 2vh;
+    border-radius: 2vh;
+    background-color:#012641;
+    color: white;
+    border: 1px solid #0066ae;
+    width: 50%;
+    margin-left: 23%;
+}
+
+.kjobdetailspage-editdeadline {
     font-size: 2.3vh;
     padding: 0.3vh 2vh;
     border-radius: 2vh;

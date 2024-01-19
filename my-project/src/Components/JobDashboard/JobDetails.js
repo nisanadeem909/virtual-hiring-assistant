@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import loading from '../images/loading3.gif';
 import EditJDModal from '../ModalWindows/EditJDModal';
+import MessageModal from '../ModalWindows/MessageModal';
 
 export default function JobDetails(props) {
 
@@ -16,6 +17,7 @@ export default function JobDetails(props) {
     const [statusDiv,setStatusDiv] = useState(<>Loading...</>);
     const [deadlineDiv,setDeadlineDiv] = useState(<>Loading...</>);
     const [JDDiv, setJDDiv] = useState(<pre className='kjobdetailspage-jd'>{job.jobDescription}</pre>);
+    const [openMessageModal, setOpenMsgModal] = useState(false);
 
     const [isEditScoreModalOpen, setIsEditScoreModalOpen] = useState(false);
     const [isEditJDModalOpen, setIsEditJDModalOpen] = useState(false);
@@ -33,6 +35,35 @@ export default function JobDetails(props) {
   
       return `${day}-${month}-${year} ${hours}:${minutes} ${amOrPm}`;
   };
+
+  const PublicizeJob=()=>{
+    const deadlineDate = new Date(job.CVDeadline);
+    const currentDate = new Date();
+
+    if (deadlineDate < currentDate) {
+      setOpenMsgModal(true);
+      return;
+    }
+
+    var param ={jobId:job._id};
+    axios.post("http://localhost:8000/komal/publicizejob",param).then((response) => {
+      if (response.data.status == "success"){
+         setJob(response.data.job);
+         props.updateJob({...response.data.job});
+         setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + response.data.job._id}</label>
+         <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {response.data.job.AccCVScore.$numberDecimal.toString()}%</label>
+         <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>)
+       }
+       else {
+         setStatusDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
+         console.log("Error: "+response.data.error);
+       }
+   })
+   .catch(function (error) {
+       setStatusDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
+       console.log(error);
+   })
+  }
 
   const openEditScoreModal = () => {
     setIsEditScoreModalOpen(true);
@@ -178,8 +209,8 @@ export default function JobDetails(props) {
       setIsEditFormDeadlineModalOpen(false);
     }
 
-    const saveJD=(newVal)=>{
-      var param = {'jobId':job._id,'newJD':newVal};
+    const saveJD=(newTitle,newJD)=>{
+      var param = {'jobId':job._id,'newJD':newJD, 'newTitle':newTitle};
         axios.post("http://localhost:8000/komal/editjobdescription",param).then((response) => {
            if (response.data.status == "success"){
               setJob(response.data.job);
@@ -215,9 +246,14 @@ export default function JobDetails(props) {
           else if (job.status == 1)
           {
               setStatus("Phase 1 (CV Screening)");
-              setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + job._id}</label>
-              <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {job.AccCVScore.$numberDecimal.toString()}%</label>
-              <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>);
+              if (job.postjob)
+                setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + job._id}</label>
+                <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {job.AccCVScore.$numberDecimal.toString()}%</label>
+                <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>);
+              else 
+                setStatusDiv(<><label className='kjobdetailspage-cvscore'><b className='kjobdetailspage-status'>This job is currently on hold!</b></label><button className='kjobdetailspage-editcvscore' onClick={PublicizeJob}>Publicize Job</button>
+                <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {job.AccCVScore.$numberDecimal.toString()}%</label>
+                <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>);
               setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Deadline for applications:</b> {formatDate(job.CVDeadline)}</label>
               <button className='kjobdetailspage-editdeadline' onClick={openEditCVDeadlineModal}>Edit Deadline</button></>);
           }
@@ -265,9 +301,9 @@ export default function JobDetails(props) {
             <div className='kjobdetailspage-jd-div'>
             <div className='kjobdetailspage-jd-header'>
                 <label className='kjobdetailspage-jd-title'>Job Description</label>
-                {job.status === 1 && new Date(job.CVDeadline) > new Date() && (
+                {job.postjob == false && (
                   <button className='kjobdetailspage-editdeadline' onClick={openEditJDModal}>
-                    Edit Job Description
+                    Edit Job Details
                   </button>
                 )}
                 </div>
@@ -298,11 +334,20 @@ export default function JobDetails(props) {
       />
       <EditJDModal
         isOpen={isEditJDModalOpen}
-        title='Job Description'
+        title='Job Details'
         closeModal={closeEditJDModal}
         saveValue={saveJD}
         originalValue={job.jobDescription}
-      />
+        originalTitle={job.jobTitle}
+      /><MessageModal
+      isOpen={openMessageModal}
+      message={"Please edit CV Deadline before making job public! It has already passed!"}
+      title={"Error"}
+      closeModal={() => {
+        setOpenMsgModal(false);
+      }}
+    />
       </div>
+      
     )
   }

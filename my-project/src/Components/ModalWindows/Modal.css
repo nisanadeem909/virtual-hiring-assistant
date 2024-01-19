@@ -58,12 +58,18 @@
     width: 93%;
   }
 
+  .kmodal-tf2{
+    margin: 1vh 2vh;
+    padding: 1vh;
+    width: 93%;
+  }
+
   .kmodal-textarea {
     font-size: large;
-    margin: 3vh 2vh;
+    margin: 1vh 2vh 2vh 2vh;
     padding: 1vh;
     width: 60vw;
-    height: 45vh;
+    height: 40vh;
     resize: none;
   }
 
@@ -82,4 +88,19 @@
   .kmodal-originaldeadline {
     margin: 3vh 2vh 1vh 2.5vh;
     font-size: large;
+  }
+
+  .kmodal-label {
+    font-size: 2.5vh;
+    margin-top: 2vh;
+    margin-left: 3vh;
+    font-weight: bold;
+  }
+
+  .kmodal-star{
+    color: rgb(223, 0, 0);
+  }
+
+  .kjobdetailspage-status {
+    font-size: 3vh;
   }
