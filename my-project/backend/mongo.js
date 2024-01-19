@@ -162,6 +162,10 @@ const companyRequestSchema = new Schema({
     required: true,
     minlength: 6
   },
+  status:{
+    type: Number, // 0 -> waiting, 1 -> approved, -1 -> disapproved
+    default: 0,
+  }
 
 }, {
   timestamps: true,

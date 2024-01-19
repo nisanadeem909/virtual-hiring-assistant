@@ -320,7 +320,7 @@ router.post("/editjobdescription", async(req,res)=>{
     try {
         const updatedJob = await Job.findOneAndUpdate(
             { _id: id },
-            { $set: { jobDescription: req.body.newJD,noShortlisted:false } },
+            { $set: { jobDescription: req.body.newJD,noShortlisted:false,jobTitle:req.body.newTitle } },
             { new: true } 
           );
 
@@ -342,5 +342,36 @@ router.post("/editjobdescription", async(req,res)=>{
 })
 
 
+
+router.post("/publicizejob", async(req,res)=>{
+    console.log(req.body);
+
+    const id = req.body.jobId;
+
+    var msg;
+
+    try {
+        const updatedJob = await Job.findOneAndUpdate(
+            { _id: id },
+            { $set: { postjob: true } },
+            { new: true } 
+          );
+
+        if (!updatedJob)
+            msg = {"status": "error",'error':'not found'}
+        else 
+                msg = {"status": "success","job":updatedJob}
+        } catch (error) {
+            console.error('Error editing job:', error);
+            msg = {"status": "error",'error':error};
+
+    } 
+    console.log(msg);
+
+    res.json(msg);
+
+    res.end();
+
+})
 
 module.exports = router;

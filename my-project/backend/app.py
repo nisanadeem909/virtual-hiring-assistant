@@ -30,6 +30,7 @@ db = client.test
 notification_collection = db['notifications']
 jobapp_collection = db['jobapplications']  
 job_collection = db['jobs']  
+companyreq_collection = db['companyrequests']  ###KOMAL ADDED
 
 try:
     _ = db.jobs.find_one()
@@ -517,6 +518,52 @@ def FormScreening(job):
         }
         notification_collection.insert_one(notification_data)
         
+########################### KOMAL ADDED ######################################
+
+def send_company_email(company):
+    port = 587  # For starttls
+    smtp_server = "smtp.gmail.com"
+    sender_email = "virtualhiringassistant04@gmail.com"
+    app_password = "glke rmyu xnfa yozn"
+
+    receiver_email = company['email']
+    subject = ""
+    body = ""
+    
+    if company['status'] == 1:
+        subject = "Company Registered for VHA"
+        body = f"Dear {company['companyname']},\n\nThis is to inform you that your company has been registered for VHA with the username: {company['username']} and password: {company['password']}. You are advised to change your password.\n\nWelcome to VHA!\n\nRegards,\nTeam Virtual Hiring Assistant"
+        print("Sending approval email to "+company['email'])
+    else:
+        subject = "Company Registration Request Disapproved for VHA"
+        body = f"Dear {company['companyname']},\n\nWe appreciate your interest in Virtual Hiring Assistant. After careful consideration, we regret to inform you that your company registration request has unfortunately been disapproved.\n\nThank you for considering VHA.\n\nRegards,\nTeam Virtual Hiring Assistant"
+        print("Sending disapproval email to "+company['email'])
+    
+    message = f"Subject: {subject}\n\n{body}"
+    
+
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP(smtp_server, port) as server:
+        server.ehlo()
+        server.starttls(context=context)
+        server.ehlo()
+        server.login(sender_email, app_password)
+        server.sendmail(sender_email, receiver_email, message)
+        
+def sendCompanyEmails():
+    print("sending company emails")
+    reqs = list(companyreq_collection.find({'status': {'$ne': 0}}))
+    if not reqs:
+        print("no pending emails")
+    else:
+        for companyreq in reqs:
+            send_company_email(companyreq)
+            companyreq_collection.delete_one({'_id': companyreq['_id']})
+            
+
+##############################################################################
+        
 
 def CVtimer():
     print("CV Timer")
@@ -545,6 +592,7 @@ while True:
     CVtimer()
     Formtimer()
     sendFormEmails()
+    sendCompanyEmails() #KOMAL ADDED
     #schedule.run_pending()
     time.sleep(45)  
     
