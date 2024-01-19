@@ -64,7 +64,28 @@ export default function Signup() {
 
       
       if (response.data.user) {
-       
+        
+        try {
+          const emailResponse = await axios.post('http://localhost:8000/nisa/send-email', {
+            username,
+            email,
+            password,
+            name,
+            subject: 'Recruiter Account Details',
+            msg: `You have been added as a recruiter!\n\nUsername: ${username}\nPassword: ${password}\n`,
+          });
+
+          if (emailResponse.data.success) {
+            setMessage(`Recruiter successfully added with username: ${username}. Email sent.`);
+          } else {
+            setMessage(`Recruiter successfully added with username: ${username}. Failed to send email.`);
+          }
+        } catch (emailErr) {
+          console.error(emailErr);
+          setMessage(`Recruiter successfully added with username: ${username}. Failed to send email.`);
+        }
+
+
         setMessage('Recruiter successfully added with username: '+username +' and password: '+password);
         setUsername('')
         setDesignation('')

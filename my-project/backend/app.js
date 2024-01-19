@@ -22,6 +22,17 @@ const cookieParser = require("cookie-parser");
 
 app.use('/routes/resumes', express.static(path.join(__dirname, 'routes/resumes')));
 app.use('/routes/profilepictures', express.static(path.join(__dirname, 'routes/profilepictures')));
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+    port: 465,
+    host:"smtp.gmail.com",
+    auth: {
+    user: 'virtualhiringassistant04@gmail.com',
+    pass: 'glke rmyu xnfa yozn'
+    },
+    secure: true,
+    });
 
 
 const createFormRoute = require('./routes/createform');
