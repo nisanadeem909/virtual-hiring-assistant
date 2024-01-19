@@ -32,10 +32,13 @@ export default function JobList() {
     setDefaultJobs();
   }, []);
 
-  const getPhaseLabel = (status) => {
+  const getPhaseLabel = (status,postjob) => {
     switch (status) {
       case 1:
+        if(postjob)
         return 'Phase 1 - CV Screening';
+        else
+        return 'On Hold';
       case 2:
         return 'Phase 2 - Form Screening';
       case 3:
@@ -148,7 +151,7 @@ export default function JobList() {
                 <div className="job-status-deadline">
                   <div>
                     <span className="nisa-label1">Status:</span>
-                    <span className="nisa-value">{getPhaseLabel(job.status)}</span>
+                    <span className="nisa-value">{getPhaseLabel(job.status,job.postjob)}</span>
                   </div>
                   <div className='nisa-job-dead'>
                     <span className="nisa-label2">Deadline:</span>
