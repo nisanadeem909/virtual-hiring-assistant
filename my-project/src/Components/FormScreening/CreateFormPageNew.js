@@ -14,7 +14,7 @@ export default function CreateFormPage(props) {
   useEffect(() => {
     if (stateData)
       setJob(stateData.job);
-   // alert(JSON.stringify(stateData))
+   
     }, []);
 
   return (

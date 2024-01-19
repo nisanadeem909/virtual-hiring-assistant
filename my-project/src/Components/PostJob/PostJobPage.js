@@ -21,7 +21,8 @@ export default function PostJobPage() {
   const [automate, setAutomate] = useState();
   const [jobpost, setJobPost] = useState();
   const navigate = useNavigate(); // Hook for navigation
-
+  const [rejectEmailBody, setEmail] = useState("\n\nThank you for your interest in this role. We appreciate the time and effort you invested in your application. \n\nAfter careful consideration, we regret to inform you that we have chosen another candidate for this position as the competition was high. \n\nWe will keep your resume for future opportunities that match your skills.");
+  const [rejectEmailSub, setSubject] = useState("Regarding Your Application for (role) at (company name)");
   const sessionID = sessionStorage.getItem('sessionID');
       
 
@@ -35,6 +36,7 @@ export default function PostJobPage() {
   
 
   const handleNext = () => {
+   
     if (phase === 0) {
       // Validate required fields for Phase 0
       if (!formData.jobTitle || !formData.jobDescription || !formData.jobTitle.trim() || !formData.jobDescription.trim()) {
@@ -50,11 +52,12 @@ export default function PostJobPage() {
     } else if (phase === 2) {
       // Validate required fields for Phase 2
       if (automate === undefined) {
-        setValidationError('Please select Automated or Manual.');
+        setValidationError('Please select Fully Automated or Automated.');
         return;
       }
     } else if (phase === 3) {
       // Validate required fields for Phase 3
+     
       if (jobpost === undefined) {
         setValidationError('Please select Post Job or Hold Job.');
         return;
@@ -78,8 +81,10 @@ export default function PostJobPage() {
 
  
   const handleAnotherPhase = (j) => {
-  
-    navigate('rejectionemail', { state: { j } });
+    
+    var jobID = j._id
+   
+    navigate('/recruiter/job', { state: { jobID } });
   };
 
   const handleAutomated = () => {
@@ -104,8 +109,18 @@ export default function PostJobPage() {
      setJobPost(0);
    };
 
+   const handleDefaultEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
   const handleSubmit = async () => {
     try {
+      if (!rejectEmailBody || !rejectEmailBody.trim())
+      {
+        setValidationError('Please enter the rejection email body.');
+       
+        return;
+      }
       // Validate required fields for Phase 2
       if (!formData.phase1Deadline || !formData.phase1Percentage) {
         setValidationError('Please fill in all required fields for Phase 1.');
@@ -150,6 +165,19 @@ export default function PostJobPage() {
      
       if (savedJobId) {
         setJobId(savedJobId);
+        try {
+          var id = savedJobId;
+          const response = await axios.post(`http://localhost:8000/nisa/api/updateEmailsAndForm/${id}`, {
+            rejectEmailBody,
+          });
+    
+          console.log('Updated:', response.data);
+          
+        } catch (error) {
+          console.error('Error updating emails and form:', error);
+          setValidationError('Something went wrong, please try again..');
+        }
+
        
       } else {
         console.error('Job ID is undefined in the response:', response.data);
@@ -266,9 +294,9 @@ export default function PostJobPage() {
                       onChange={handleAutomated}
                       checked={automate === 1}
                     />
-                    Automated
+                    Fully Automated
                   </label>
-                  <p className='nisa-s'>This will make your entire recruiting process fully automated!</p>
+                  <p className='nisa-s'>This will ensure that the job process proceeds automatically from one phase to the next</p>
 
                   <hr className="nisa-horizontal-line" />
                   
@@ -280,9 +308,9 @@ export default function PostJobPage() {
                       onChange={handleManual}
                       checked={automate === 0}
                     />
-                    Manual
+                    Automated
                   </label>
-                  <p>This will make your entire recruiting process work manually!</p>
+                  <p>This will require recruiters confirmation to proceed from one phase to the next</p>
                 </div>
 
                 
@@ -301,6 +329,7 @@ export default function PostJobPage() {
 {phase === 3 && (
               <div className="phase-details">
                 <h1 className="nisa-phase1">Post Job or Hold Job</h1>
+                {validationError && <p style={{ color: 'red' }}>{validationError}</p>}
                  <div className="options-container">
                   <label className='nisa-j-l'>
                     <input
@@ -329,15 +358,54 @@ export default function PostJobPage() {
                   <p>This will not post the job and will be on hold.</p>
                 </div>
 
-                {validationError && <p style={{ color: 'red' }}>{validationError}</p>}
+              
                 <button className="nisa-postJ2-button" onClick={handleBack}>
                   Back
                 </button>
-                <button className="nisa-postJ2-button" onClick={handleSubmit}>
-                  Submit
+                <button className="nisa-postJ2-button" onClick={handleNext}>
+                  Next
                 </button>
               </div>
             )}
+
+{phase === 4 && (
+  <div className="phase-details">
+    <h1 className="nisa-phase1">Set Rejection Email</h1>
+
+    <label className="nisa-pj-label" htmlFor="emailSubject">
+      Email Subject:
+    </label>
+    <input
+      className="nisa-pj-input"
+      type="text"
+      id="emailSubject"
+      value={rejectEmailSub}
+      readOnly
+    />
+
+    <label className="nisa-pj-label" htmlFor="emailBody">
+      Email Body
+    </label>
+    <textarea
+      className="nisa-pj-textarea"
+      id="emailBody"
+      rows="8"
+      placeholder="Write your rejection email here..."
+      value={rejectEmailBody}
+      onChange={handleDefaultEmailChange}
+    ></textarea>
+
+    {validationError && <p style={{ color: 'red' }}>{validationError}</p>}
+
+    <button className="nisa-postJ2-button" onClick={handleBack}>
+      Back
+    </button>
+    <button className="nisa-postJ2-button" onClick={handleSubmit}>
+      Submit
+    </button>
+  </div>
+)}
+
 
               
             </div>

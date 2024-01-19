@@ -2,6 +2,17 @@ const express = require('express');
 const router = express.Router();
 const {Job, Recruiter,JobApplication,Form} = require('../mongo');
 const { ObjectId } = require('mongodb')
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+    port: 465,
+    host:"smtp.gmail.com",
+    auth: {
+    user: 'virtualhiringassistant04@gmail.com',
+    pass: 'glke rmyu xnfa yozn'
+    },
+    secure: true,
+    });
 
 router.get('/alljobs/:recruiterUsername', async (req, res) => {
   const username = req.params.recruiterUsername;
@@ -267,6 +278,33 @@ router.patch('/updateRejectionStatus/:applicantId', async (req, res) => {
       console.error(error);
       return res.status(500).json({ message: 'Internal server error' });
   }
+});
+
+router.post('/send-email', function(req, res) {
+  var username = req.body.username;
+  var email = req.body.email;
+  var password = req.body.password;
+  var name = req.body.name;
+  var subj = req.body.subject;
+  var msg = req.body.msg;
+
+
+
+  var mailOptions = {
+    from: 'virtualhiringassistant04@gmail.com',
+    to: email,
+    subject: subj,
+    text: `You have been added as a recruiter!\n\nUsername: ${username}\nPassword: ${password}\n`,
+  };
+
+  transporter.sendMail(mailOptions, function(error, info) {
+    if (error)
+      console.log(error);
+    else
+      console.log('Email sent: ' + info.response);
+  });
+
+  res.json({ success: true });
 });
 
 module.exports = router;

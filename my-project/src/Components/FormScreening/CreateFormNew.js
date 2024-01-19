@@ -3,6 +3,8 @@ import './CreateFormPage.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import MessageModal from '../ModalWindows/MessageModal';
+import ReactModal from 'react-modal';
+
 
 
 export default function CreateForm(props) {
@@ -13,21 +15,100 @@ export default function CreateForm(props) {
     const [job,setJob] = useState({'jobTitle':'Loading..','CVFormLink':'Loading..','AccCVScore': { $numberDecimal: '0' },'CVDeadline':'dd/mm/yyyy','status':'0','jobDescription':'Loading..'})
     const [formDeadline, setFormDeadline] = useState('');
     const [formLink, setFormLink] = useState('');
-
+    const [formEmailBody, setEmail] = useState(
+        "Congatulations! Your application for role at Manafa Technologies has successfully passed Phase 1 of our recruitment.\n\nFor Phase 2, we require candidates to answer a few important questions about their role at our company. \n\nPlease find attached the link to the Form. Please submit it within the deadline specified. Good Luck! \n\n"
+      );
+    const [formEmailSub, setSubject] = useState("Regarding Your Application");
+    const [savedjobId, setSavedJob] = useState();  
     const [message, setMessage] = useState('');
     const [messageTitle, setMessageTitle] = useState('');
     const [openModal, setOpenModal] = useState(false);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [formEmailDeadline, setDeadline] = useState("Form submission deadline date: ");
+    const [error, setError] = useState('');
+
+    const formatDate2 = (date) => {
+        if (!date) return '';
+        const formattedDate = new Date(date); 
+        const year = formattedDate.getFullYear();
+        const month = `${formattedDate.getMonth() + 1}`.padStart(2, '0');
+        const day = `${formattedDate.getDate()}`.padStart(2, '0');
+        let hours = formattedDate.getHours();
+        const minutes = `${formattedDate.getMinutes()}`.padStart(2, '0');
+        const amOrPm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12; // Convert 0 to 12 for midnight
+    
+        return `${day}-${month}-${year} ${hours}:${minutes} ${amOrPm}`;
+    };
+    
 
     const handleDeadlineChange = (event) => {
       const selectedDate = event.target.value;
       setFormDeadline(selectedDate);
     };
 
+    const handleDefaultEmailChange = (event) => {
+        setEmail(event.target.value);
+      };
+
+      const handleSave = async () => {
+
+
+        
+        if (!formEmailBody.trim()) {
+            setError('Email body cannot be empty. Please provide a valid email body.');
+            return;
+          }
+      
+          setError('');
+          setModalIsOpen(false)
+
+          var param = {'job':job,'formdeadline':formDeadline,'questions':questions};
+            axios.post("http://localhost:8000/komal/createform",param).then((response) => {
+            // alert(JSON.stringify(response.data));
+            if (response.data.status == "success"){
+                setFormLink(response.data.formLink)
+                setMessage("Form has been saved and link for applicants is: "+response.data.formLink)
+                setMessageTitle('Form Saved');
+                setOpenModal(true);
+                handleSetForm(response.data.formLink)
+                }
+                else {
+                setMessage(response.data.error);
+                setMessageTitle('Error');
+                setOpenModal(true);}
+            })
+            .catch(function (error) {
+                setMessage("Something went wrong, please try again..");
+                setMessageTitle('Error');
+                setOpenModal(true);
+                console.error("Axios Error:" + error);
+            });
+      
+         
+          // Append the link to the end of the email body
+          const updatedEmailBody = `${formEmailBody}\n\n${formLink}\n\n${formEmailDeadline}${formDeadline}`;
+          //alert(updatedEmailBody)
+          try {
+            const response = await axios.post(`http://localhost:8000/nisa/api/emailForm/${job._id}`, {
+              formEmailSub,
+              formEmailBody: updatedEmailBody,
+            });
+        
+            console.log('Updated:', response.data);
+           
+            setSavedJob(job._id);
+          } catch (error) {
+            console.error('Error updating emails and form:', error);
+
+
+          }
+      };
+
     useEffect(() => {
         if (props.job){
             setJob(props.job);
 
-        //alert(JSON.stringify(job))
     }
       }, [props.job]);
 
@@ -40,7 +121,7 @@ export default function CreateForm(props) {
 
     const handleSetForm = (formlink) => {
         
-        navigate('phase2email', { state: { job: job,formLink:formlink,deadline:formDeadline } });
+        navigate('/recruiter/job', { state: { jobID: job._id} });
       };
 
     const setAnswer = (index, event) =>{
@@ -173,27 +254,10 @@ export default function CreateForm(props) {
 
         if (flag)
         {
-            var param = {'job':job,'formdeadline':formDeadline,'questions':questions};
-            axios.post("http://localhost:8000/komal/createform",param).then((response) => {
-            // alert(JSON.stringify(response.data));
-            if (response.data.status == "success"){
-                setFormLink(response.data.formLink)
-                setMessage("Form has been saved and link for applicants is: "+response.data.formLink)
-                setMessageTitle('Form Saved');
-                setOpenModal(true);
-                handleSetForm(response.data.formLink)
-                }
-                else {
-                setMessage(response.data.error);
-                setMessageTitle('Error');
-                setOpenModal(true);}
-            })
-            .catch(function (error) {
-                setMessage("Something went wrong, please try again..");
-                setMessageTitle('Error');
-                setOpenModal(true);
-                console.error("Axios Error:" + error);
-            });
+           
+            setModalIsOpen(true);
+
+            
             
         }
     }
@@ -267,6 +331,36 @@ export default function CreateForm(props) {
             }
         }}
       />
+      {/* Modal for showing the email textarea */}
+      <ReactModal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        className="kcreateformpage-email-modal"
+        overlayClassName="kcreateformpage-email-modal-overlay"
+      >
+        <div className='nisa-ModalContent'>
+        
+        <h2>Set Form Link Email</h2>
+        <p>This will be the default email sent to the shortlisted applicant. The link for the form will automatically attached.</p>
+        <label><b>Job Title:</b> {job?.jobTitle}</label>
+        <div className='krejemail-email'>
+          <label><b>Email Subject:</b></label>
+          <label>Regarding Your Application for {job?.jobTitle} at company Manafa Technologies</label>
+         
+          <div>
+          <label style={{
+                marginTop: '2vh'
+              }}>
+                    <b>Deadline:</b> {formatDate2(formDeadline)}
+                  </label>
+
+          </div>
+          <textarea className='nabrejemail-textarea' value={formEmailBody} onChange={handleDefaultEmailChange}></textarea>
+        </div>
+        <button onClick={handleSave}>Save</button>
+        <button onClick={()=>setModalIsOpen(false)}>Cancel</button>
+        </div>
+      </ReactModal>
       </div>
     )
   }
