@@ -67,6 +67,14 @@ function CVCollectionForm() {
     axios.post(`http://localhost:8000/nabeeha/getjobdetailsforcvcollection`,{"jobID":cvcollectionid}).then(res => {
           
     if (res.data.job) {
+          
+      if (res.data.job.postjob === false){
+            
+        //setIsError(true)
+        //setErrorMessage("Error")
+      
+      }
+      else{
           setJobDes(res.data.job.jobDescription);
           setJobRole(res.data.job.jobTitle);
 
@@ -81,6 +89,7 @@ function CVCollectionForm() {
           const cvDeadline = new Date(res.data.job.CVDeadline);
 
           setIsJobAcceptingResponses(currentDate <= cvDeadline);
+      }
         } else {
           setErrorMessage(res.data.error);
         }
