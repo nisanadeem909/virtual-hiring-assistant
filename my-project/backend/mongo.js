@@ -523,6 +523,58 @@ const videosResponses = new Schema({
 
 const VideosResponses = mongoose.model('VideosResponses', videosResponses);
 
+
+// komal added:
+
+const techtests = new Schema({
+  
+  jobTitle:{
+  type: String,
+  },
+  jobID: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
+  startDate:{ //from video
+    type: Date,
+    required: true,
+  }
+  ,
+  days:{ //from video
+    type: Number,
+    required: true,
+  }
+  , 
+  questions:[{
+    answer: Number,
+    options: [String],
+    question: [{
+      type: String,
+      text: String,
+      code: String,
+      imageUrl: String,
+    }],
+    points: Number,
+    
+  }] ,
+  duration:{
+    type: Number,
+    required: true,
+  },
+
+  importance:{ // calculate from video
+    type: Number,
+    required: true,
+  },
+  
+ 
+  
+
+}, {
+  timestamps: true,
+});
+
+const TechTests = mongoose.model('TechTests', techtests);
+
 module.exports ={
   Recruiter,
   JobApplication,
@@ -534,4 +586,6 @@ module.exports ={
   Admin,
   CompanyRequest,
   Videos,
+  VideosResponses,
+  TechTests,
 };

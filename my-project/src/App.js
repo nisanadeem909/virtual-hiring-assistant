@@ -39,7 +39,7 @@ import IntroductionPage from './Components/ApplicantVideo/IntroductionPage.js';
 import VideoForm from './Components/ApplicantVideo/VideoForm.js';
 import TechnicalTest from './Components/ApplicantVideo/TechnicalTest.js';
 import TestDone from './Components/ApplicantVideo/TestDone.js';
-import MakeTest from './Components/RecruiterTechTest/MakeTest.js';
+import MakeTest from './Components/RecruiterTechTest/CreateTestPage.js';
 function App() {
   return (
    

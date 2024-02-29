@@ -6,6 +6,7 @@ import JobDetails from './JobDetails'
 import CVCollection from './CVCollection';
 import CVScreening from './CVScreening';
 import FormCreating from './FormCreating';
+import TestCreating from './TestCreateButton';
 import FormResponsesPage from '../RecruiterFormResponses/formresponses';
 import axios from 'axios';
 import ShortlistedFormResponsesPage from '../RecruiterFormResponses/shortlistedformresponses';
@@ -121,6 +122,10 @@ export default function JobDashboardPage() {
         else if (index == 3) {
            // setContent(<img src={loading} className='kjobdashboardpage-loading-img'></img>);
            setContent(<VideoInterview job={job}></VideoInterview>);
+        }
+        else if (index == 4) {
+           // setContent(<img src={loading} className='kjobdashboardpage-loading-img'></img>);
+           setContent(<TestCreating job={job}></TestCreating>)
         }
         else {
           setContent(<img src={loading} className='kjobdashboardpage-loading-img'></img>);
