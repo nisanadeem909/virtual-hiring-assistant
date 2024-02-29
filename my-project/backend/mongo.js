@@ -429,6 +429,99 @@ const formResponses = new Schema({
 });
 
 const FormResponses = mongoose.model('FormResponses', formResponses);
+// Added later by nisa
+const videos = new Schema({
+  
+  jobTitle:{
+  type: String,
+  },
+  jobID: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
+  startDate:{
+    type: Date,
+    required: true,
+  }
+  ,
+  days:{
+    type: Number,
+    required: true,
+  }
+  , 
+  questions:{
+    type: [String],
+    required: true,
+  }
+  , 
+  duration:{
+    type: Number,
+    required: true,
+  },
+
+acceptabilityTraits:[{
+      trait: { 
+        type: String,
+        
+      },
+      weight: {
+        type: Number,
+        
+      }
+      
+  }],
+
+  importance:{
+    type: Number,
+    required: true,
+  },
+  
+ 
+  
+
+}, {
+  timestamps: true,
+});
+
+const Videos = mongoose.model('Videos', videos);
+
+
+const videosResponses = new Schema({
+  
+  jobID: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
+  acceptabilityTraits:[{
+    trait: { 
+      type: String,
+      
+    },
+    score: {
+      type: Number,
+      
+    }
+    
+}],
+  overallScore:{
+    type: Decimal128,
+    required: true,
+  },
+  videoPath:{
+    type: String,
+    required: true,
+  },
+
+  status:{
+    type: String,
+   
+  },
+ 
+  
+
+}, {
+  timestamps: true,
+});
+
+const VideosResponses = mongoose.model('VideosResponses', videosResponses);
 
 module.exports ={
   Recruiter,
@@ -439,5 +532,6 @@ module.exports ={
   FormResponses,
   Company,
   Admin,
-  CompanyRequest
+  CompanyRequest,
+  Videos,
 };

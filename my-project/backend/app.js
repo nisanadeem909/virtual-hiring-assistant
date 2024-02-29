@@ -50,6 +50,7 @@ const ApplicantFormCollection = require('./routes/applicantformcollection')
 const RecruiterFormScreening = require('./routes/recruiterformscreening')
 const AdminHomeRoute = require('./routes/adminhome')
 const CompanyRoute = require('./routes/company')
+const TestRoute = require('./routes/test')
 
 app.use('/komal', createFormRoute);
 app.use('/komal', JobDashboardRoute);
@@ -68,6 +69,7 @@ app.use('/nisa', LoginRoute);
 app.use('/nisa', SignupRoute);
 app.use('/nisa', JobListRoute);
 app.use('/nisa', PostJobRoute);
+app.use('/nisa', TestRoute);
 
 
 app.use(cookieParser());
