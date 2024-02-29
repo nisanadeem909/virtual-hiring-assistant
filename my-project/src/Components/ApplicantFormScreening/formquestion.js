@@ -4,7 +4,7 @@ import './formquestion.css';
 // import home2 from './hp5.png';
 // import Slideshow from './Slideshow';
 import Footer from '../Footer.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; 
 import { useState, useEffect } from 'react';
 export default function Question({ statement, answers, setUserAnswer }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
