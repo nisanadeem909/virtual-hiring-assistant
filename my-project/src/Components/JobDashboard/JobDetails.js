@@ -50,6 +50,7 @@ export default function JobDetails(props) {
       if (response.data.status == "success"){
          setJob(response.data.job);
          props.updateJob({...response.data.job});
+         setStatus("Phase 1 (CV Screening)");
          setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + response.data.job._id}</label>
          <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {response.data.job.AccCVScore.$numberDecimal.toString()}%</label>
          <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>)
