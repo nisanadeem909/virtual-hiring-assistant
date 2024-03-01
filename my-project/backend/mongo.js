@@ -536,19 +536,17 @@ const techtests = new Schema({
   },
   startDate:{ //from video
     type: Date,
-    required: true,
   }
   ,
   days:{ //from video
     type: Number,
-    required: true,
   }
   , 
   questions:[{
     answer: Number,
     options: [String],
     question: [{
-      type: String,
+      type: {type:String},
       text: String,
       code: String,
       imageUrl: String,
@@ -563,7 +561,6 @@ const techtests = new Schema({
 
   importance:{ // calculate from video
     type: Number,
-    required: true,
   },
   
  

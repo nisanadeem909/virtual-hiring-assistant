@@ -22,6 +22,7 @@ const cookieParser = require("cookie-parser");
 
 app.use('/routes/resumes', express.static(path.join(__dirname, 'routes/resumes')));
 app.use('/routes/profilepictures', express.static(path.join(__dirname, 'routes/profilepictures')));
+app.use('/routes/questionimages', express.static(path.join(__dirname, 'routes/questionimages')));
 var nodemailer = require('nodemailer');
 
 var transporter = nodemailer.createTransport({

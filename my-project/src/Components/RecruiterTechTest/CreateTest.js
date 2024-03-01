@@ -14,10 +14,10 @@ export default function CreateTest(props) {
 
     //const [questions, setQuestions] = useState([{ question: '', options: [''] }]);
     const [job,setJob] = useState({'jobTitle':'Loading..','CVFormLink':'Loading..','AccCVScore': { $numberDecimal: '0' },'CVDeadline':'dd/mm/yyyy','status':'0','jobDescription':'Loading..'})
-    const [testDuration, setFormDeadline] = useState('');
+    const [testDuration, setTestDuration] = useState('');
     const [formLink, setFormLink] = useState('');
     const [formEmailBody, setEmail] = useState(
-        "Congatulations! Your application for role at Manafa Technologies has successfully passed Phase 1 of our recruitment.\n\nFor Phase 2, we require candidates to answer a few important questions about their role at our company. \n\nPlease find attached the link to the Form. Please submit it within the deadline specified. Good Luck! \n\n"
+        "Congatulations! Your application has successfully passed Phase 2 of our recruitment.\n\nFor Phase 3 and 4, we require candidates to upload their video-interviews for non-technical assessment and attempt a technical test. \n\nPlease find attached the link to the test and the password you will need for accessing the test. Please submit it within the deadline specified. Good Luck! \n\n"
       );
     const [formEmailSub, setSubject] = useState("Regarding Your Application");
     const [savedjobId, setSavedJob] = useState();  
@@ -32,14 +32,20 @@ export default function CreateTest(props) {
         {
           type: 'text',
           text: '',
-        },{type: 'code',
-        code: 'console.log("Hello, World!");',},{type: 'image',
-        imageUrl: img1,}], options: ['']}]);
+        }], options: ['']}]);
     
 
-    const handleDeadlineChange = (event) => {
-      const selectedDate = event.target.value;
-      setFormDeadline(selectedDate);
+    const handleDurationChange = (event) => {
+      const selectedDuration = event.target.value;
+      setTestDuration(selectedDuration);
+    };
+    
+
+    const handlePointsChange = (index,event) => {
+      const selectedPoints = event.target.value;
+      var copy = [...questions];
+      copy[index].points = selectedPoints;
+      setQuestions(copy);
     };
 
     const handleDefaultEmailChange = (event) => {
@@ -58,46 +64,43 @@ export default function CreateTest(props) {
           setError('');
           setModalIsOpen(false)
 
-        //   var param = {'job':job,'formdeadline':formDeadline,'questions':questions};
-        //     axios.post("http://localhost:8000/komal/createform",param).then((response) => {
-        //     // alert(JSON.stringify(response.data));
-        //     if (response.data.status == "success"){
-        //         setFormLink(response.data.formLink)
-        //         setMessage("Form has been saved and link for applicants is: "+response.data.formLink)
-        //         setMessageTitle('Form Saved');
-        //         setOpenModal(true);
-        //         handleSetForm(response.data.formLink)
-        //         }
-        //         else {
-        //         setMessage(response.data.error);
-        //         setMessageTitle('Error');
-        //         setOpenModal(true);}
-        //     })
-        //     .catch(function (error) {
-        //         setMessage("Something went wrong, please try again..");
-        //         setMessageTitle('Error');
-        //         setOpenModal(true);
-        //         console.error("Axios Error:" + error);
-        //     });
+          var param = {'job':job,'duration':testDuration,'questions':questions};
+            axios.post("http://localhost:8000/nisa/createtest",param).then((response) => {
+            //alert(JSON.stringify(response.data));
+            if (response.data.status == "error"){
+                setMessage(response.data.error);
+                setMessageTitle('Error');
+                setOpenModal(true);}
+            else {
+                    // Append the link to the end of the email body
+                //   const updatedEmailBody = `${formEmailBody}\n\n${formLink}\n\n${formEmailDeadline}${formDeadline}`;
+                //   //alert(updatedEmailBody)
+                //   try {
+                //     const response = await axios.post(`http://localhost:8000/nisa/api/emailForm/${job._id}`, {
+                //       formEmailSub,
+                //       formEmailBody: updatedEmailBody,
+                //     });
+                
+                //     console.log('Updated:', response.data);
+                
+                //     setSavedJob(job._id);
+                //   } catch (error) {
+                //     console.error('Error updating emails and form:', error);
+
+
+                //   }
+                navigate('/recruiter/job', { state: { jobID: job._id} });
+            }
+            })
+            .catch(function (error) {
+                setMessage("Something went wrong, please try again..");
+                setMessageTitle('Error');
+                setOpenModal(true);
+                console.error("Axios Error:" + error);
+            });
       
          
-          // Append the link to the end of the email body
-        //   const updatedEmailBody = `${formEmailBody}\n\n${formLink}\n\n${formEmailDeadline}${formDeadline}`;
-        //   //alert(updatedEmailBody)
-        //   try {
-        //     const response = await axios.post(`http://localhost:8000/nisa/api/emailForm/${job._id}`, {
-        //       formEmailSub,
-        //       formEmailBody: updatedEmailBody,
-        //     });
-        
-        //     console.log('Updated:', response.data);
-           
-        //     setSavedJob(job._id);
-        //   } catch (error) {
-        //     console.error('Error updating emails and form:', error);
-
-
-        //   }
+          
       };
 
     useEffect(() => {
@@ -121,7 +124,7 @@ export default function CreateTest(props) {
         setQuestions(copy);
     }
 
-    const handleSetForm = (formlink) => {
+    const handleSetForm = () => {
         
         navigate('/recruiter/job', { state: { jobID: job._id} });
       };
@@ -190,10 +193,49 @@ export default function CreateTest(props) {
         setQuestions(copy);
     }
 
+    const addImage=(index,file)=>{
+        var copy = [...questions];
+        //alert(file)
+        copy[index].question.push({type: 'image', imageUrl: file,});
+        setQuestions(copy);
+    }
+
     const removeBlock=(index,qIndex)=>{
+        //alert(index)
         var copy = [...questions];
         copy[index].question.splice(qIndex, 1);
         setQuestions(copy);
+    }
+
+    const upload = (index,t) =>{
+        t.preventDefault();
+        
+         //alert(index)
+
+        const img = t.target.files[0];
+  
+        if (img)
+        {
+          var fdata = new FormData();
+          fdata.append("Image", img);
+          axios.post('http://localhost:8000/nisa/uploadquestionpic',fdata)
+          .then(res => {
+            if (res.data.msg.status == 'success'){
+                addImage(index,res.data.msg.NewPath);
+            }
+            else{
+                alert("ERROR UPLOADING")
+            }
+           
+        })
+          .catch(
+            err=>{
+                 alert("ERROR IN UPLOADAXIOS : "+err)
+            });
+        }
+
+        
+         
     }
 
     const saveForm=()=>{
@@ -202,27 +244,18 @@ export default function CreateTest(props) {
 
         if (!testDuration || testDuration.trim() == "")
         {
-            setMessage('Please fill all fields!');
+            setMessage('Please add test duration!');
             setMessageTitle('Error');
             setOpenModal(true);
             return;
         }
 
-        // const currentDate = new Date().toISOString(); 
-        // const selectedDeadline = new Date(formDeadline).toISOString();
-        // if (selectedDeadline <= currentDate) {
-        //     setMessage('Form deadline should be after the current date.');
-        //     setMessageTitle('Error');
-        //     setOpenModal(true);
-        //     return;
-        // }
-
-        // if (selectedDeadline <= job.CVDeadline) {
-        //     setMessage('Form deadline should be after the job CV deadline: '+formatDate(job.CVDeadline));
-        //     setMessageTitle('Error');
-        //     setOpenModal(true);
-        //     return;
-        // }
+        if (testDuration < 20 || testDuration > 480){
+            setMessage('Test duration should be at least 20 minutes and no more than 8 hours!');
+            setMessageTitle('Error');
+            setOpenModal(true);
+            return;
+        }
 
         if (copy.length < 1)
         {
@@ -234,13 +267,47 @@ export default function CreateTest(props) {
         }
 
         for (var i = 0; i < copy.length; i++){
-            if (!copy[i].question || copy[i].question.trim()=='')
+            if (!copy[i].question || copy[i].question.length == 0)
             {
                 flag = false;
                 setMessage("Please fill all fields!")
                 setMessageTitle('Error');
                 setOpenModal(true);
                 break;
+            }
+
+            if (!copy[i].points || copy[i].points.trim() == ''){
+                flag = false;
+                setMessage("Please enter points for each question!")
+                setMessageTitle('Error');
+                setOpenModal(true);
+                break;
+            }
+
+            if (copy[i].points < 1){
+                flag = false;
+                setMessage("Please enter valid points for each question!")
+                setMessageTitle('Error');
+                setOpenModal(true);
+                break;
+            }
+
+            for (var j = 0; j < copy[i].question.length; j++){
+                //alert(JSON.stringify(copy[i].question[j]))
+                if (copy[i].question[j].type == "text" && copy[i].question[j].text.trim() == ''){
+                    flag = false;
+                    setMessage("Please fill all text blocks or remove them!")
+                    setMessageTitle('Error');
+                    setOpenModal(true);
+                    break;
+                }
+                else if (copy[i].question[j].type == "code" && copy[i].question[j].code.trim() == ''){
+                    flag = false;
+                    setMessage("Please fill all code blocks or remove them!")
+                    setMessageTitle('Error');
+                    setOpenModal(true);
+                    break;
+                }
             }
 
             if (copy[i].options.length < 2)
@@ -289,12 +356,12 @@ export default function CreateTest(props) {
     return (<div className='kcreateform-container'>
     <div className='kcreateformpage-btns'>
       <label className='kcreateformpage-formdeadline'>Test Duration<span style={{ color: '#e30211', fontWeight: 'bold' }}>*</span></label>
-      <input type="number" className='kcreateformpage-formdeadline-input' placeholder="Duration in Minutes" min="20" value={testDuration} onChange={handleDeadlineChange}></input>
+      <input type="number" className='kcreateformpage-formdeadline-input' placeholder="Duration in Minutes" min="20" max="480" value={testDuration} onChange={handleDurationChange}></input>
       <button className='kcreateformpage-cancelbtn' onClick={()=>navigate(-1,{state:{'jobID':job._id}})}>Discard Test</button>
       <button className='kcreateformpage-savebtn' onClick={saveForm}>Save Test</button>
     </div>
         <div className='kcreateform-questions'>
-          {questions.map((form, index) => (
+          {questions.map((form, iindex) => (
                 <div key={form.id}>
                 <div className='kformquestion-con' tabindex="0">
                 <div className='ktestquestion-header'>
@@ -304,30 +371,30 @@ export default function CreateTest(props) {
                         <div key={qIndex}>
                             {questionItem.type === 'text' && (
                                 <React.Fragment className='ktest-fragment'>
-                                    <textarea className='ktestquestion-textbox' value={questionItem.text} onChange={(event)=>handleQuestionTextChange(index,qIndex, event)}></textarea>
-                                    <button onClick={()=>removeBlock(index,qIndex)}>X</button>
+                                    <textarea className='ktestquestion-textbox' value={questionItem.text} onChange={(event)=>handleQuestionTextChange(iindex,qIndex, event)}></textarea>
+                                    <button onClick={()=>removeBlock(iindex,qIndex)}>X</button>
                                 </React.Fragment>
                             )}
                             {questionItem.type === 'code' && (
                                 <React.Fragment className='ktest-fragment-code'>
-                                    <pre contentEditable={true} className='ktest-code' onChange={(event)=>handleQuestionCodeChange(index,qIndex, event)}>{questionItem.code}</pre>
-                                    <button className='ktest-codebtn' onClick={()=>removeBlock(index,qIndex)}>X</button>
+                                <textarea className='ktest-code' onChange={(event)=>handleQuestionCodeChange(iindex,qIndex, event)} value ={questionItem.code}></textarea>
+                                <button className='ktest-codebtn' onClick={()=>removeBlock(iindex,qIndex)}>X</button>
                                 </React.Fragment>
                             )}
                             {questionItem.type === 'image' && (
                                 <React.Fragment className='ktest-fragment'>
-                                    <img className='ktest-img' src={questionItem.imageUrl} alt="Image" />
-                                    <button onClick={()=>removeBlock(index,qIndex)}>X</button>
+                                    <img className='ktest-img' src={`http://localhost:8000/routes/questionimages/` + questionItem.imageUrl} alt="Image" />
+                                    <button onClick={()=>removeBlock(iindex,qIndex)}>X</button>
                                 </React.Fragment>
                             )}
                         </div>))}
                     <div className='ktestquestion-q-buttons'>
-                        <button onClick={()=>addCodeBlock(index)}>Add Code Block</button>
-                        <label for="ktest-fileInput" class="ktest-custom-file-upload">
+                        <button onClick={()=>addCodeBlock(iindex)}>Add Code Block</button>
+                        <label for={`ktest-fileInput-${iindex}`} class="ktest-custom-file-upload">
                             Add Image
                         </label>
-                        <input type="file" id="ktest-fileInput" accept='image/*'/>
-                        <button onClick={()=>addTextBlock(index)}>Add Text Block</button>
+                        <input type="file" id={`ktest-fileInput-${iindex}`} className="ktest-fileInput" accept='image/*' onChange={(event)=>upload(iindex,event)}/>
+                        <button onClick={()=>addTextBlock(iindex)}>Add Text Block</button>
                     </div>
                 </div>
         </div>
@@ -342,20 +409,20 @@ export default function CreateTest(props) {
                     className='kformquestion-option-textbox'
                     placeholder='Option'
                     value={option}
-                    onChange={(event)=>handleOptionTextChange(index, oIndex, event)}>
+                    onChange={(event)=>handleOptionTextChange(iindex, oIndex, event)}>
                     </input></div>
                     <button
                     className='kformquestion-option-delete'
-                    onClick={()=>deleteOption(index,oIndex)}>
+                    onClick={()=>deleteOption(iindex,oIndex)}>
                     X
                     </button>
                 </div>
                 ))}
-                    <button className='kformquestion-addbtn' onClick={(event)=>addOption(index,event)}>Add Option</button>
+                    <button className='kformquestion-addbtn' onClick={(event)=>addOption(iindex,event)}>Add Option</button>
                 </div>
                 <hr></hr>
                 <div className='kformquestion-footer'>
-                <select className='kformquestion-dropdown' onChange={(event)=>setAnswer(index,event)}>
+                <select className='kformquestion-dropdown' onChange={(event)=>setAnswer(iindex,event)}>
                 <option value="" disabled selected>Select the correct option:</option>
                 {form.options.map((option, index) => (
                     <option value={index} label={option}>
@@ -365,9 +432,9 @@ export default function CreateTest(props) {
                 </select>
                 <div>
                     <label>Points: </label>
-                    <input type="number" min="1" placeholder='Points for correct option'></input>
+                    <input type="number" min="1" placeholder='Points for correct option' onChange={(event)=>handlePointsChange(iindex,event)} value={form.points}></input>
                 </div>
-                <button className='kformquestion-question-delete' onClick={()=>deleteQuestion(index)}>Delete Question</button>
+                <button className='kformquestion-question-delete' onClick={()=>deleteQuestion(iindex)}>Delete Question</button>
                 </div>
               </div>
               </div>
@@ -398,12 +465,12 @@ export default function CreateTest(props) {
       >
         <div className='nisa-ModalContent'>
         
-        <h2>Set Test Link Email</h2>
-        <p>This will be the default email sent to the shortlisted applicant. The link for the form will automatically attached.</p>
+        <h2>Set Interview and Test Link Email</h2>
+        <p>This will be the default email sent to the shortlisted applicant. The link for attempting the video interview and technical test along with the candidate's password will automatically attached.</p>
         <label><b>Job Title:</b> {job?.jobTitle}</label>
         <div className='krejemail-email'>
           <label><b>Email Subject:</b></label>
-          <label>Regarding Your Application for {job?.jobTitle} at company Manafa Technologies</label>
+          <label>Regarding Your Application for {job?.jobTitle}</label>
          
           <div>
           <label style={{

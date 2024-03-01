@@ -19,6 +19,13 @@
     border: 1px solid rgba(194, 194, 194, 0.527);
     margin-right: 0;
     display: inline-block;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 2vh; 
+    line-height: 1.5; 
+    color: #333;
+    font-weight: bold;
+    resize: none;
+    height: 10vh;
   }
 
 .ktest-img {
@@ -26,7 +33,7 @@
     max-height: 50vh;
 }
 
-#ktest-fileInput {
+.ktest-fileInput {
     display: none;
 }
 

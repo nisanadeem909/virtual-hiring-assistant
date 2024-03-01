@@ -3,7 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 const formidable = require('formidable');
 const cors=require('cors');
-const {Job, Recruiter,JobApplication,Form, Company} = require('../mongo');
+const {Job, Recruiter,JobApplication,Form, Company, TechTests} = require('../mongo');
 router.use(express.static('files'));
 const path = require('path');
 router.use("/static",express.static(path.join(__dirname,'public')));
@@ -15,12 +15,56 @@ router.use('/questionimages', express.static(path.join(__dirname, 'questionimage
 
 
 
+router.post("/createtest", async(req,res)=>{
+    console.log(req.body);
+    const job = req.body.job;
+    const questions = req.body.questions;
+    const duration = req.body.duration;
 
+    const newTest = new TechTests({
+        jobTitle: job.jobTitle,
+        jobID: job._id,
+        duration: duration,
+        questions: questions
+      });
+
+    // check if video and add days,startdate,importance
+
+    var msg;
+
+    try {
+
+        const existingForm = await TechTests.findOne({ jobID: job._id });
+
+        if (existingForm) {
+            msg = {"status": "error","error":"Test already created for this job!"};
+        }
+        else {
+
+            await newTest.save();
+                        
+            msg = { status: "success"};
+
+            // add testCreated flag in job
+        }
+    }
+        catch (error) {
+            console.error('Error adding job:', error);
+            msg = {"status": "error","error":error};
+
+    } 
+
+    res.json(msg);
+
+    res.end();
+
+})
 
 
 router.post('/uploadquestionpic', function(req,res){
     // var name = req.body.name;
     console.log(req.body)
+    var msg;
     try{
     
      var form = new formidable.IncomingForm();
@@ -30,10 +74,11 @@ router.post('/uploadquestionpic', function(req,res){
          var oldpath = String(files.Image.filepath); //this was files.Image.filepath
          //console.log(oldpath);
          const img_file = files.Image.originalFilename;
-         console.log("original file name = " + img_file);
-  
-       
-         newpath = String(__dirname + '/profilepictures/' + files.Image.originalFilename);
+            console.log("original file name = " + img_file);
+            const timestamp = Date.now();
+            const newFileName = `${timestamp}_${img_file}`;
+
+            newpath = path.join(__dirname, '/questionimages/', newFileName);
          
          console.log("old path = " + oldpath);
          console.log("new path = " + newpath);
@@ -44,32 +89,23 @@ router.post('/uploadquestionpic', function(req,res){
              console.log("File uploaded and moved");
          });*/
   
-         try {
           fs.copyFileSync(oldpath,newpath);
-         }
-         catch (err) {
-            console.log(err);
-         }
          
          //console.log(fields.UserType + " " + fields.Username);
-         var pathpfp = newpath;
-
-
-         var uname = fields.username;
-         console.log("username: " + uname)
-         
            
    
-  
+         msg = {status: 'success', NewPath: newFileName}
+         res.json({msg});
+         res.end();
         });
-     res.json({data:{NewPath: newpath}});
-     res.end();
         
 
     }
     catch(ex)
     {
-        console.log("unexpected error")
+        msg = {status:'error',error:ex}
+        res.json({msg});
+        res.end();
     }
       
   });   
