@@ -4,30 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import MessageModal from '../ModalWindows/MessageModal';
 import ReactModal from 'react-modal';
 import './CreateTest.css'
-import img1 from '../finalhome.png'
 
 
 
-export default function CreateTest(props) {
+export default function EditTest(props) {
 
     const navigate = useNavigate();
 
     //const [questions, setQuestions] = useState([{ question: '', options: [''] }]);
     const [job,setJob] = useState({'jobTitle':'Loading..','CVFormLink':'Loading..','AccCVScore': { $numberDecimal: '0' },'CVDeadline':'dd/mm/yyyy','status':'0','jobDescription':'Loading..'})
     const [testDuration, setTestDuration] = useState('');
-    const [formLink, setFormLink] = useState('');
-    const [formEmailBody, setEmail] = useState(
-        "Congatulations! Your application has successfully passed Phase 2 of our recruitment.\n\nFor Phase 3 and 4, we require candidates to upload their video-interviews for non-technical assessment and attempt a technical test. \n\nPlease find attached the link to the test and the password you will need for accessing the test. Please submit it within the deadline specified. Good Luck! \n\n"
-      );
-    const [formEmailSub, setSubject] = useState("Regarding Your Application");
-    const [savedjobId, setSavedJob] = useState();  
     const [message, setMessage] = useState('');
     const [messageTitle, setMessageTitle] = useState('');
     const [openModal, setOpenModal] = useState(false);
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [formEmailDeadline, setDeadline] = useState("Form submission deadline date: ");
-    const [error, setError] = useState('');
-
+    const [testID,setTestID] = useState(null);
     const [questions,setQuestions] = useState([{question: [
         {
           type: 'text',
@@ -48,48 +38,21 @@ export default function CreateTest(props) {
       setQuestions(copy);
     };
 
-    const handleDefaultEmailChange = (event) => {
-        setEmail(event.target.value);
-      };
-
       const handleSave = async () => {
 
 
         
-        if (!formEmailBody.trim()) {
-            setError('Email body cannot be empty. Please provide a valid email body.');
-            return;
-          }
-      
-          setError('');
-          setModalIsOpen(false)
-
-          var param = {'job':job,'duration':testDuration,'questions':questions};
-            axios.post("http://localhost:8000/komal/createtest",param).then((response) => {
+          var param = {'_id':testID,'duration':testDuration,'questions':questions};
+            axios.post("http://localhost:8000/komal/edittest",param).then((response) => {
             //alert(JSON.stringify(response.data));
             if (response.data.status == "error"){
                 setMessage(response.data.error);
                 setMessageTitle('Error');
                 setOpenModal(true);}
             else {
-                    // Append the link to the end of the email body
-                //   const updatedEmailBody = `${formEmailBody}\n\n${formLink}\n\n${formEmailDeadline}${formDeadline}`;
-                //   //alert(updatedEmailBody)
-                //   try {
-                //     const response = await axios.post(`http://localhost:8000/nisa/api/emailForm/${job._id}`, {
-                //       formEmailSub,
-                //       formEmailBody: updatedEmailBody,
-                //     });
-                
-                //     console.log('Updated:', response.data);
-                
-                //     setSavedJob(job._id);
-                //   } catch (error) {
-                //     console.error('Error updating emails and form:', error);
-
-
-                //   }
-                navigate('/recruiter/job', { state: { jobID: job._id} });
+                setMessage("Test has been updated.")
+                setMessageTitle('Test Saved');
+                setOpenModal(true);
             }
             })
             .catch(function (error) {
@@ -107,8 +70,14 @@ export default function CreateTest(props) {
         if (props.job){
             setJob(props.job);
 
+        if (props.test){
+            setQuestions(props.test.questions);
+            setTestDuration(props.test.duration);
+            setTestID(props.test._id)
+        }
+
     }
-      }, [props.job]);
+      }, [props]);
 
     const handleQuestionTextChange = (index,qIndex,ev) =>{
         var text = ev.target.value;
@@ -123,11 +92,6 @@ export default function CreateTest(props) {
         copy[index].question[qIndex].code = text;
         setQuestions(copy);
     }
-
-    const handleSetForm = () => {
-        
-        navigate('/recruiter/job', { state: { jobID: job._id} });
-      };
 
     const setAnswer = (index, event) =>{
         var copy = [...questions];
@@ -243,7 +207,7 @@ export default function CreateTest(props) {
         var flag = true;
         var copy = [...questions];
 
-        if (!testDuration || testDuration.trim() == "")
+        if (!testDuration || testDuration == "")
         {
             setMessage('Please add test duration!');
             setMessageTitle('Error');
@@ -277,7 +241,7 @@ export default function CreateTest(props) {
                 break;
             }
 
-            if (!copy[i].points || copy[i].points.trim() == ''){
+            if (!copy[i].points || copy[i].points == ''){
                 flag = false;
                 setMessage("Please enter points for each question!")
                 setMessageTitle('Error');
@@ -334,7 +298,7 @@ export default function CreateTest(props) {
             if (!flag)
                 break;
 
-            if (!copy[i].answer || copy[i].answer.trim()=='')
+            if (!copy[i].answer || copy[i].answer=='')
             {
                 flag = false;
                 setMessage("Please select acceptable option for all questions!")
@@ -345,13 +309,7 @@ export default function CreateTest(props) {
         }
 
         if (flag)
-        {
-           
-            setModalIsOpen(true);
-
-            
-            
-        }
+            handleSave();
     }
 
     return (<div className='kcreateform-container'>
@@ -425,9 +383,9 @@ export default function CreateTest(props) {
                 <div className='kformquestion-footer'>
                     <div className='ktest-question-footer-input'>
                         <select className='kformquestion-dropdown' onChange={(event)=>setAnswer(iindex,event)}>
-                        <option value="" disabled selected>Select the correct option:</option>
+                        <option value="" disabled>Select the correct option:</option>
                         {form.options.map((option, index) => (
-                            <option value={index} label={option}>
+                            <option value={index} label={option} selected={index === form.answer ? "selected" : null}>
                             {option}
                             </option>
                         ))}
@@ -459,36 +417,7 @@ export default function CreateTest(props) {
             }
         }}
       />
-      {/* Modal for showing the email textarea */}
-      <ReactModal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        className="kcreateformpage-email-modal"
-        overlayClassName="kcreateformpage-email-modal-overlay"
-      >
-        <div className='nisa-ModalContent'>
-        
-        <h2>Set Interview and Test Link Email</h2>
-        <p>This will be the default email sent to the shortlisted applicant. The link for attempting the video interview and technical test along with the candidate's password will automatically attached.</p>
-        <label><b>Job Title:</b> {job?.jobTitle}</label>
-        <div className='krejemail-email'>
-          <label><b>Email Subject:</b></label>
-          <label>Regarding Your Application for {job?.jobTitle}</label>
-         
-          <div>
-          <label style={{
-                marginTop: '2vh'
-              }}>
-                    {/* <b>Deadline:</b> {formatDate2(formDeadline)} */}
-                  </label>
-
-          </div>
-          <textarea className='nabrejemail-textarea' value={formEmailBody} onChange={handleDefaultEmailChange}></textarea>
-        </div>
-        <button onClick={handleSave}>Save</button>
-        <button onClick={()=>setModalIsOpen(false)}>Cancel</button>
-        </div>
-      </ReactModal>
+      
       </div>
     )
   }

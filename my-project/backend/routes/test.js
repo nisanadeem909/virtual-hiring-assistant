@@ -44,12 +44,10 @@ router.post("/createtest", async(req,res)=>{
             await newTest.save();
                         
             msg = { status: "success"};
-
-            // add testCreated flag in job
         }
     }
         catch (error) {
-            console.error('Error adding job:', error);
+            console.error('Error adding test:', error);
             msg = {"status": "error","error":error};
 
     } 
@@ -109,6 +107,79 @@ router.post('/uploadquestionpic', function(req,res){
     }
       
   });   
+
+  router.post("/getjobtest", async(req,res)=>{
+    console.log(req.body);
+
+    const id = req.body.job;
+
+    var msg;
+
+    try {
+
+        const form = await TechTests.findOne({ jobID: id });
+
+        console.log(form)
+
+        if (!form)
+            msg = {"status": "error",error:"not found"}
+        else 
+            msg = {"status": "success","form":form}
+        
+    }
+        catch (error) {
+            console.error('Error adding job:', error);
+            msg = {"status": "error"};
+
+    } 
+    console.log(msg);
+
+    res.json(msg);
+
+    res.end();
+
+})
+
+
+router.post("/edittest", async(req,res)=>{
+    console.log(req.body);
+    const id = req.body._id;
+    const questions = req.body.questions;
+    const duration = req.body.duration;
+
+    const updatedData = {
+        duration: duration,
+        questions: questions
+      };
+
+    var msg;
+
+    try {
+
+        const updatedForm = await TechTests.findOneAndUpdate(
+            { _id: id },
+            { $set: updatedData },
+            { new: true } // To return the updated document
+          );
+
+        if (!updatedForm) {
+            msg = {"status": "error","error":"Test not found!"};
+        }
+        else {
+            msg = { status: "success"};
+        }
+    }
+        catch (error) {
+            console.error('Error editing test:', error);
+            msg = {"status": "error","error":error};
+
+    } 
+
+    res.json(msg);
+
+    res.end();
+
+})
 
 
   module.exports = router;
