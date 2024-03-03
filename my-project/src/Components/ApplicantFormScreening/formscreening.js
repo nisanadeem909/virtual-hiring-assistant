@@ -31,17 +31,37 @@ export default function FormScreening() {
   const[jobDeadline,setJobDeadline] = useState('')
 
   useEffect(() => {
+    
     setJobID(formcollectionid);
 
     axios.post(`http://localhost:8000/nabeeha/getjobdetailsforformcollection`, {"jobID": formcollectionid})
       .then(res => { 
+        if (!res.data.job) //Job does not exist
+        {
+          setErrorMessage("Job does not exist." );
+          return
+        }
+        if (res.data.job.status != 2){ //Job exists but it is Phase 1 CV Screening
+          alert("Job status error")
+          setErrorMessage("We are not currently accepting responses for this role" );
+          return
+        }
+        
+        if (!res.data.form) //Job exists and it is in Phase 2 but form has not been created.
+        {
+          alert("Form does not exist error")
+          setErrorMessage("We are not currently accepting responses for this role" );
+          return
+        }
         if (res.data.job && res.data.form) {
           setJobRole(res.data.job.jobTitle);
           setQuestions(res.data.form.questions);
 
           const currentDate = new Date();
           const formDeadline = new Date(res.data.job.P2FormDeadline);
-
+          
+          
+          //Phase 1 deadline has passed.
           setIsJobAcceptingResponses(currentDate <= formDeadline);
 
           
