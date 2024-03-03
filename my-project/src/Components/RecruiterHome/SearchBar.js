@@ -18,7 +18,10 @@ export default function SearchBar() {
 
     if (query.trim() !== '') {
       try {
-        const response = await axios.get(`http://localhost:8000/nisa/api/jobs/search?q=${query}`);
+
+        const sessionID = sessionStorage.getItem('sessionID');
+        //alert("sessionID= " + sessionID);
+        const response = await axios.get(`http://localhost:8000/nisa/api/jobs/search?q=${query}&sessionID=${sessionID}`);
         setSearchResults(response.data);
       } catch (error) {
         console.error('Error fetching jobs:', error);

@@ -36,12 +36,14 @@
     
     
 }
-#nab-pic-circle {
-  border-radius: 50%;
-  object-fit: cover;
-  width: 50%;
-  height: 50%; /* Add this line to make sure the height is 100% as well */
+.n-nab-pic-circle {
+ border-radius: 50%;
+ width: 50%;
+ height: 43%;
+ object-fit: cover;
+
 }
+
 .profile-pic {
     width: 100%;
     height: 100%;

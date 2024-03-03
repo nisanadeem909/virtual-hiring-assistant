@@ -33,9 +33,10 @@ const RecruiterProfile = ({ data }) => {
     <div>
       <div className='nisa-profile-container'>
         <img className='niss-profilepic' src={`http://localhost:8000/routes/profilepictures/${person || person2}`} alt="Profile Pic" />
-        <h3>{data.name}</h3>
         <h4 className='nisa-head'>@{data.username}</h4>
+        <h3 className='nisa-head'>{data.name}</h3>
         <h4 className='nisa-head2'>{data.designation}</h4>
+        <h4 className='nisa-head3'>{data.companyname}</h4>
         <button className='edit-profile-btn' onClick={handleEditProfile}>
           Edit Profile
         </button>

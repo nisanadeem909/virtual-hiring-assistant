@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {Job, Recruiter,JobApplication,Form} = require('../mongo');
+const {Job, Recruiter,JobApplication,Form,Videos} = require('../mongo');
 const { ObjectId } = require('mongodb')
 var nodemailer = require('nodemailer');
 
@@ -35,25 +35,36 @@ router.get('/alljobs/:recruiterUsername', async (req, res) => {
   }
 });
 
-  router.get('/api/jobs/search', async (req, res) => {
-    const query = req.query.q;
+router.get('/api/jobs/search', async (req, res) => {
+  const query = req.query.q;
+  const recruiterSessionID = req.query.sessionID; // Assuming sessionID holds the companyID
   
-    try {
-      const jobs = await searchJobs(query);
+  try {
+    const recruiter = await Recruiter.findOne({ username: recruiterSessionID });
+     
+    if (!recruiter) {
+        return res.status(404).json({ error: 'Recruiter not found' });
+    }
+
+    const recruiterCompanyID = recruiter.companyID; // Assuming companyID is the field in the recruiter document
+   
+      const jobs = await searchJobs(query, recruiterCompanyID);
+      console.log(jobs);
       res.json(jobs);
-    } catch (error) {
+  } catch (error) {
       console.error('Error fetching jobs:', error);
       res.status(500).send('Internal Server Error');
-    }
-  });
-  
-  // Function to search for jobs in MongoDB
-  const searchJobs = async (query) => {
-    const regex = new RegExp(query, 'i'); // Case-insensitive search
-  
-    const jobs = await Job.find({ jobTitle: { $regex: regex } }).exec();
-    return jobs;
-  };
+  }
+});
+
+// Function to search for jobs in MongoDB
+const searchJobs = async (query, recruiterCompanyID) => {
+  const regex = new RegExp(query, 'i'); // Case-insensitive search
+
+  const jobs = await Job.find({ jobTitle: { $regex: regex }, companyID: recruiterCompanyID }).exec();
+  return jobs;
+};
+
 
   router.get('/getRejectionEmailBody/:jobId', async (req, res) => {
     try {
@@ -277,6 +288,33 @@ router.patch('/updateRejectionStatus/:applicantId', async (req, res) => {
   } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+router.post('/api/save-video', async (req, res) => {
+  try {
+    // Extract video data from the request body
+    const { jobTitle, jobID, questions, duration, acceptabilityTraits, importance } = req.body;
+
+    // Create a new video instance
+    const newVideo = new Videos({
+      jobTitle,
+      jobID,
+      questions,
+      duration,
+      acceptabilityTraits,
+      importance,
+    });
+
+    // Save the video to the database
+    await newVideo.save();
+
+    // Send a success response
+    res.status(200).json({ message: 'Video data saved successfully' });
+  } catch (error) {
+    // Handle errors
+    console.error('Error saving video data:', error);
+    res.status(500).json({ error: 'Failed to save video data' });
   }
 });
 
