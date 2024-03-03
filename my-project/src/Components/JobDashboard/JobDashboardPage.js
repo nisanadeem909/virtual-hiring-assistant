@@ -6,6 +6,8 @@ import JobDetails from './JobDetails'
 import CVCollection from './CVCollection';
 import CVScreening from './CVScreening';
 import FormCreating from './FormCreating';
+import TestCreating from './TestCreateButton';
+import TestEditing from './TestEditButton';
 import FormResponsesPage from '../RecruiterFormResponses/formresponses';
 import axios from 'axios';
 import ShortlistedFormResponsesPage from '../RecruiterFormResponses/shortlistedformresponses';
@@ -24,6 +26,7 @@ export default function JobDashboardPage() {
 
    // var tempJobID = '657d9dd3d75435064f67d066';
     const [job,setJob] = useState(null);
+    const [testExists,setTestExists] = useState(false);
 
     useEffect(() => {
         //openTab(0);
@@ -32,6 +35,18 @@ export default function JobDashboardPage() {
         axios.post("http://localhost:8000/komal/getjob",param).then((response) => {
            if (response.data.status == "success"){
               setJob(response.data.job);
+              axios.post("http://localhost:8000/komal/checktestcreated",param).then((response) => {
+                if (response.data.status == "success"){
+                     setTestExists(response.data.found)
+                  }
+                  else 
+                    setContent(<div className='kjobdashboard-error-div'>Something went wrong, please try again!</div>);
+                  //alert('hi');
+              })
+              .catch(function (error) {
+                  setContent(<div className='kjobdashboard-error-div'>Something went wrong, please try again!</div>);
+                  console.log(error);
+              });
             }
             else 
               setContent(<div className='kjobdashboard-error-div'>Something went wrong, please try again!</div>);
@@ -121,6 +136,14 @@ export default function JobDashboardPage() {
         else if (index == 3) {
            // setContent(<img src={loading} className='kjobdashboardpage-loading-img'></img>);
            setContent(<VideoInterview job={job}></VideoInterview>);
+        }
+        else if (index == 4) {
+          if (!testExists)
+            setContent(<TestCreating job={job}></TestCreating>)
+          else if (job.status <3)
+            setContent(<TestEditing job={job}></TestEditing>)
+          else // test responses page should be here
+            setContent(<img src={loading} className='kjobdashboardpage-loading-img'></img>);
         }
         else {
           setContent(<img src={loading} className='kjobdashboardpage-loading-img'></img>);

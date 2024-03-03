@@ -22,6 +22,7 @@ const cookieParser = require("cookie-parser");
 
 app.use('/routes/resumes', express.static(path.join(__dirname, 'routes/resumes')));
 app.use('/routes/profilepictures', express.static(path.join(__dirname, 'routes/profilepictures')));
+app.use('/routes/questionimages', express.static(path.join(__dirname, 'routes/questionimages')));
 var nodemailer = require('nodemailer');
 
 var transporter = nodemailer.createTransport({
@@ -59,6 +60,7 @@ app.use('/komal', NotificationRoute);
 app.use('/komal', CVScreeningRoute);
 app.use('/komal', AdminHomeRoute);
 app.use('/komal', CompanyRoute);
+app.use('/komal', TestRoute);
 
 app.use('/nabeeha', EditProfileRoute);
 app.use('/nabeeha', ApplicantCVCollectionForm);
@@ -69,7 +71,6 @@ app.use('/nisa', LoginRoute);
 app.use('/nisa', SignupRoute);
 app.use('/nisa', JobListRoute);
 app.use('/nisa', PostJobRoute);
-app.use('/nisa', TestRoute);
 
 
 app.use(cookieParser());

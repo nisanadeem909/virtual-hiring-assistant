@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {Job, Recruiter,JobApplication,Form,Notification} = require('../mongo');
+const {Job, Recruiter,JobApplication,Form,Notification,TechTests} = require('../mongo');
 
 const formatDate = (date) => {
     if (!date) return '';
@@ -364,6 +364,41 @@ router.post("/publicizejob", async(req,res)=>{
         } catch (error) {
             console.error('Error editing job:', error);
             msg = {"status": "error",'error':error};
+
+    } 
+    console.log(msg);
+
+    res.json(msg);
+
+    res.end();
+
+})
+
+
+
+
+router.post("/checktestcreated", async(req,res)=>{
+    console.log(req.body);
+
+    const id = req.body.jobId;
+
+    var msg;
+
+    try {
+
+        const form = await TechTests.findOne({ jobID: id });
+
+        console.log(form)
+
+        if (!form)
+            msg = {"status": "success",found:false}
+        else 
+            msg = {"status": "success",found:true}
+        
+    }
+        catch (error) {
+            console.error('Error finding test:', error);
+            msg = {"status": "error",error: error};
 
     } 
     console.log(msg);

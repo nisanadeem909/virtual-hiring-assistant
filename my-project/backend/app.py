@@ -494,8 +494,7 @@ def FormScreening(job):
     response = requests.post('http://localhost:8000/nabeeha/shortlistformresponses', {'jobId': job['_id']})
     print(response.json())
     
-    if response.status_code == 200:
-        
+    if response.status_code == 200:        
         
         filter_criteria = {'_id': job['_id']}
         update_statement = {

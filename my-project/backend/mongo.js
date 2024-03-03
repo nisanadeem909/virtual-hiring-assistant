@@ -180,7 +180,11 @@ const jobApplicationSchema = new Schema({
     trim: true,
     lowercase: true,
   }
-  ,
+  ,//komal added
+  password:{
+    type: String,
+    minlength: 12,
+  },/////
   name: {
     type: String,
     required: true,
@@ -523,6 +527,55 @@ const videosResponses = new Schema({
 
 const VideosResponses = mongoose.model('VideosResponses', videosResponses);
 
+
+// komal added:
+
+const techtests = new Schema({
+  
+  jobTitle:{
+  type: String,
+  },
+  jobID: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
+  startDate:{ //from video
+    type: Date,
+  }
+  ,
+  days:{ //from video
+    type: Number,
+  }
+  , 
+  questions:[{
+    answer: Number,
+    options: [String],
+    question: [{
+      type: {type:String},
+      text: String,
+      code: String,
+      imageUrl: String,
+    }],
+    points: Number,
+    
+  }] ,
+  duration:{
+    type: Number,
+    required: true,
+  },
+
+  importance:{ // calculate from video
+    type: Number,
+  },
+  
+ 
+  
+
+}, {
+  timestamps: true,
+});
+
+const TechTests = mongoose.model('TechTests', techtests);
+
 module.exports ={
   Recruiter,
   JobApplication,
@@ -534,4 +587,6 @@ module.exports ={
   Admin,
   CompanyRequest,
   Videos,
+  VideosResponses,
+  TechTests,
 };

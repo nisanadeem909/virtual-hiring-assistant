@@ -39,7 +39,8 @@ import IntroductionPage from './Components/ApplicantVideo/IntroductionPage.js';
 import VideoForm from './Components/ApplicantVideo/VideoForm.js';
 import TechnicalTest from './Components/ApplicantVideo/TechnicalTest.js';
 import TestDone from './Components/ApplicantVideo/TestDone.js';
-import MakeTest from './Components/RecruiterTechTest/MakeTest.js';
+import MakeTest from './Components/RecruiterTechTest/CreateTestPage.js';
+import EditTest from './Components/RecruiterTechTest/EditTestPage.js';
 function App() {
   return (
    
@@ -107,6 +108,7 @@ function App() {
             <Route path="changepasswordpage" element={<ChangePasswordPage/>}></Route>
             <Route path="job/createform/phase2email" element={<FormCollectionEmail/>}></Route>
             <Route path="job/maketest" element={<MakeTest/>}></Route>
+            <Route path="job/edittest" element={<EditTest/>}></Route>
             
             
             
