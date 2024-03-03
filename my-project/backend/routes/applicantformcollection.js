@@ -20,45 +20,6 @@ router.post('/getjobdetailsforformcollection', async (req, res) => {
     console.log("I am in get job details for form collection")
     console.log(req.body)
     
-    // const newForm = new Form({
-    //     jobTitle: 'React Native Developer',
-    //     jobID: req.body.jobID, // Replace with an actual job ID
-    //     formDeadline: new Date('2024-12-31'), // Replace with an actual deadline
-      
-    //     questions: [
-    //       {
-    //         _id:  new mongoose.Types.ObjectId() ,
-    //         answer: 1,
-    //         options: ['Yes, I am willing to relocate.', 'No, I am not.'],
-    //         question: 'Can you relocate to Lahore for on-site work?',
-    //       },
-    //       {
-    //         _id: new mongoose.Types.ObjectId(),
-    //         answer: 2,
-    //         options: ['I am a fresh graduate.', 'More than 2 years.'],
-    //         question: 'What is your experience in React JS?',
-    //       },
-    //       {
-    //         _id: new mongoose.Types.ObjectId(),
-    //         answer: 1,
-    //         options: ['Yes, I have graduated.', 'No, I have not graduated.'],
-    //         question: 'Is your current degree completed?',
-    //       },
-    //       // Add more questions as needed
-    //     ],
-    //   });
-      
-      
-    //   // Save the object to the database
-    //   newForm.save()
-    //     .then((form) => {
-    //       console.log('Form saved:', form);
-    //     })
-    //     .catch((error) => {
-    //       console.error('Error saving form:', error);
-    //     });
-
-
 
     try {
         
@@ -78,15 +39,6 @@ router.post('/getjobdetailsforformcollection', async (req, res) => {
           const currentDate = new Date();
           const jobDeadline = new Date(job.CVDeadline);
 
-          // if (jobDeadline < currentDate) {
-          //   res.status(400).json({ error: 'Job Expired' });
-          //   console.log(currentDate) 
-          //   console.log(jobDeadline)
-          //   console.log("Job expired")
-          //   return;
-          // }
-          
-          
 
           const form = await Form.findOne({ jobID: req.body.jobID });
           if (form)
@@ -96,6 +48,7 @@ router.post('/getjobdetailsforformcollection', async (req, res) => {
           }
           else{
             console.log("No form exists against this job ID")
+            res.json({job}); //Added now in form screening check: dont show form if job in phase 1.
           }
 
           
