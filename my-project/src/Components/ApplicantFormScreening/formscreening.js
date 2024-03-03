@@ -42,14 +42,14 @@ export default function FormScreening() {
           return
         }
         if (res.data.job.status != 2){ //Job exists but it is Phase 1 CV Screening
-          alert("Job status error")
+          //alert("Job status error")
           setErrorMessage("We are not currently accepting responses for this role" );
           return
         }
         
         if (!res.data.form) //Job exists and it is in Phase 2 but form has not been created.
         {
-          alert("Form does not exist error")
+          //alert("Form does not exist error")
           setErrorMessage("We are not currently accepting responses for this role" );
           return
         }
