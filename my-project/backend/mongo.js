@@ -441,17 +441,7 @@ const videos = new Schema({
   },
   jobID: {
     type: mongoose.Schema.Types.ObjectId,
-  },
-  startDate:{
-    type: Date,
-    required: true,
-  }
-  ,
-  days:{
-    type: Number,
-    required: true,
-  }
-  , 
+  }, 
   questions:{
     type: [String],
     required: true,

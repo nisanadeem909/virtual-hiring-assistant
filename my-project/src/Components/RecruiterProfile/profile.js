@@ -23,6 +23,7 @@ export default function Profile() {
 
     const [img,setImg] = useState('./personcircle.png'); //this is the default profilepic
     const [imgSet,setImgSet] = useState("false")
+    const [company,setCompany] = useState('')
 
     const [oldImg, setOldImg] = useState('./personcircle.png'); // Old image
     useEffect(()=>{
@@ -40,7 +41,7 @@ export default function Profile() {
                 setEmail(res.data.user.email)
                 // setContact(res.data.user.contact)
                 setJobDes(res.data.user.designation)
-              
+                setCompany(res.data.user.companyname)
                 if (res.data.user.profilePic){
                     setImg(res.data.user.profilePic)
                     
@@ -182,14 +183,13 @@ export default function Profile() {
     <div>
         <div id="nab-profile-outer-div">
             <div id="nab-profile-pic">
-                        {/* <img id="nab-pic-circle" src={profilepic}></img> */}
-                        <img id="nab-pic-circle" src={`http://localhost:8000/routes/profilepictures/` + ( oldImg || {profilepic})} />
+                        
+                        <img className="n-nab-pic-circle" src={`http://localhost:8000/routes/profilepictures/` + ( oldImg || {profilepic})} />
 
                         <div className="profile-info">
                             <div> 
                                 
-                                {/* <button id="change-prof-pic">Upload Picture</button> */}
-                                {/* <label>Upload Pic</label> */}
+                              
                                 <input id="displaynone" type="file" onChange={HandleUpload}></input>
                             </div>
                             <br></br>
@@ -242,6 +242,18 @@ export default function Profile() {
                                 name="jobDes"
                                 value={jobDes}
                                 onChange={handleInputChange}
+                                
+                            />
+                    </div>
+
+                    <div className="profile-field">
+                            <label id="nab-profile-label" htmlFor="comp">Company Name</label>
+                            <input
+                                type="text"
+                                id="nab-profile-input"
+                                name="comp"
+                                value={company}
+                                readOnly
                                 
                             />
                     </div>

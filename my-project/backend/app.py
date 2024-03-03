@@ -433,7 +433,7 @@ def sendCVRejectionEmails():
                 rejection_email_body_response = requests.get(f'http://localhost:8000/nisa/getRejectionEmailBody/{jobId}')
                 rejection_email_body = rejection_email_body_response.json().get('rejectionEmailBody', '')
 
-                rejection_email_body += f"\nUnfortunately, your CV percentage did not meet the required criteria for this position.\n\nYour CV Score is {cvscode} \nWe wish you the best in your job search and future endeavors."
+                rejection_email_body += f"\nUnfortunately, you did not meet the required criteria for this position.\n \nWe wish you the best in your job search and future endeavors."
 
 
                 # Send rejection email
