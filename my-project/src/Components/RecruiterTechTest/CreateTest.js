@@ -25,8 +25,14 @@ export default function CreateTest(props) {
     const [messageTitle, setMessageTitle] = useState('');
     const [openModal, setOpenModal] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [formEmailDeadline, setDeadline] = useState("Form submission deadline date: ");
+    const [formEmailDeadline, setDeadline] = useState("The interview and test will be available starting: ");
     const [error, setError] = useState('');
+
+    const [startDate,setStartDate] = useState();
+    const [days,setDays] = useState();
+
+    const [tab,setTab] = useState(1);
+    const [categories,setCategories] = useState([""]);
 
     const [questions,setQuestions] = useState([{question: [
         {
@@ -64,17 +70,11 @@ export default function CreateTest(props) {
           setError('');
           setModalIsOpen(false)
 
-          var param = {'job':job,'duration':testDuration,'questions':questions};
-            axios.post("http://localhost:8000/komal/createtest",param).then((response) => {
-            //alert(JSON.stringify(response.data));
-            if (response.data.status == "error"){
-                setMessage(response.data.error);
-                setMessageTitle('Error');
-                setOpenModal(true);}
-            else {
-                    // Append the link to the end of the email body
-                //   const updatedEmailBody = `${formEmailBody}\n\n${formLink}\n\n${formEmailDeadline}${formDeadline}`;
-                //   //alert(updatedEmailBody)
+          const link = `localhost:3000/applicant/videointerview/${job._id}`
+
+           // Append the link to the end of the email body
+                  const updatedEmailBody = `${formEmailBody}\n\n${link}\n\n${formEmailDeadline}${startDate}\n\nThe link will be available for ${days} days after the start date!\n\nPlease find your password below which you will need to login:\n`;
+                  //alert(updatedEmailBody)
                 //   try {
                 //     const response = await axios.post(`http://localhost:8000/nisa/api/emailForm/${job._id}`, {
                 //       formEmailSub,
@@ -89,7 +89,19 @@ export default function CreateTest(props) {
 
 
                 //   }
-                navigate('/recruiter/job', { state: { jobID: job._id} });
+
+          var param = {'job':job,'duration':testDuration,'questions':questions,'categories':categories,'startDate':startDate,'days':days,'emailBody':updatedEmailBody,'emailSubject':formEmailSub};
+            axios.post("http://localhost:8000/komal/createtest",param).then((response) => {
+            //alert(JSON.stringify(response.data));
+            if (response.data.status == "error"){
+                setMessage(response.data.error);
+                setMessageTitle('Error');
+                setOpenModal(true);}
+            else {
+                   
+                setMessage("Technical test saved successfully!")
+                setMessageTitle('Test Saved');
+                setOpenModal(true);
             }
             })
             .catch(function (error) {
@@ -106,16 +118,24 @@ export default function CreateTest(props) {
     useEffect(() => {
         if (props.job){
             setJob(props.job);
+            setSubject("Regarding your Application for "+props.job.jobTitle+" at "+props.job.companyname)
 
     }
       }, [props.job]);
 
-    const handleQuestionTextChange = (index,qIndex,ev) =>{
-        var text = ev.target.value;
-        var copy = [...questions];
-        copy[index].question[qIndex].text = text;
-        setQuestions(copy);
-    }
+      const handleQuestionTextChange = (index,qIndex,ev) =>{
+          var text = ev.target.value;
+          var copy = [...questions];
+          copy[index].question[qIndex].text = text;
+          setQuestions(copy);
+      }
+
+      const handleCategoryTextChange = (ev,index) =>{
+          var text = ev.target.value;
+          var copy = [...categories];
+          copy[index] = text;
+          setCategories(copy);
+      }
 
     const handleQuestionCodeChange = (index,qIndex,ev) =>{
         var text = ev.target.value;
@@ -135,6 +155,13 @@ export default function CreateTest(props) {
         setQuestions(copy);
     }
 
+    const setCategory = (index, event) => {
+        var copy = [...questions];
+        copy[index].category = event.target.value
+        setQuestions(copy);
+    };
+    
+
     const handleOptionTextChange = (qIndex,optIndex, ev) =>{
         var text = ev.target.value;
         var copy = [...questions];
@@ -144,6 +171,10 @@ export default function CreateTest(props) {
 
     const deleteOption=(qIndex,optIndex)=>{
         var copy = [...questions];
+
+        if (copy[qIndex].answer == copy[qIndex].options[optIndex])
+            copy[qIndex].answer = "";
+
         copy[qIndex].options.splice(optIndex, 1);
         setQuestions(copy);
     }
@@ -161,6 +192,22 @@ export default function CreateTest(props) {
         setQuestions(copy);
     }
 
+    const deleteCategory=(index)=>{
+
+        for (var i = 0; i < questions.length; i++){
+            if (questions[i].category == categories[index]){
+                setMessage("Please delete questions in this category before deleting the category!")
+                setMessageTitle('Error');
+                setOpenModal(true);
+                return;
+            }
+        }
+
+        var copy = [...categories];
+        copy.splice(index, 1);
+        setCategories(copy);
+    }
+
     const addQuestion=(ev)=>{
         var text = ev.target.value;
         var copy = [...questions];
@@ -172,13 +219,46 @@ export default function CreateTest(props) {
         setQuestions(copy);
     }
 
+    const addCategory=()=>{
+        
+
+        if (categories.length >= 10){
+            setMessage("Cannot add more than 10 categories!")
+            setMessageTitle('Error');
+            setOpenModal(true);
+            return;
+        }
+
+        var copy = [...categories];
+        copy.push("");
+        setCategories(copy);
+    }
+
     const formatDate = (date) => {
         if (!date) return '';
-        const formattedDate = new Date(date); 
+    
+        const formattedDate = new Date(date);
         const year = formattedDate.getFullYear();
-        const month = `${formattedDate.getMonth() + 1}`.padStart(2, '0');
+        const month = `${(formattedDate.getMonth() + 1)}`.padStart(2, '0');
         const day = `${formattedDate.getDate()}`.padStart(2, '0');
-        return `${day}/${month}/${year}`;
+        let hours = formattedDate.getHours();
+        const minutes = `${formattedDate.getMinutes()}`.padStart(2, '0');
+        const amOrPm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12; // Convert to 12-hour clock format
+    
+        return `${day}/${month}/${year} ${hours}:${minutes} ${amOrPm}`;
+    };
+    
+    
+
+    const handleDateChange = (event) => {
+        const selectedDate = event.target.value;
+        setStartDate(selectedDate);
+    };
+
+    const handleDaysChange = (event) => {
+        const selectedDays = event.target.value;
+        setDays(selectedDays);
     };
 
     const addCodeBlock=(index)=>{
@@ -225,18 +305,61 @@ export default function CreateTest(props) {
                 t.target.value = '';
             }
             else{
-                alert("ERROR UPLOADING")
+                setMessage("Error uploading image!")
+                setMessageTitle('Error');
+                setOpenModal(true);
             }
            
         })
           .catch(
             err=>{
-                 alert("ERROR IN UPLOADAXIOS : "+err)
+                setMessage("Something went wrong!")
+                setMessageTitle('Error');
+                setOpenModal(true);
             });
         }
 
         
          
+    }
+
+    const saveTest=()=>{
+
+        if (!startDate || !days)
+        {
+            setMessage('Please fill all fields!');
+            setMessageTitle('Error');
+            setOpenModal(true);
+            return;
+        }
+
+        const currentDate = new Date().toISOString();
+        const selectedDate = new Date(startDate).toISOString();
+
+        if (selectedDate < currentDate) {
+            setMessage('Start date cannot be in the past!');
+            setMessageTitle('Error');
+            setOpenModal(true);
+            return;
+        }
+
+        const deadlineDate = new Date(job.P2FormDeadline).toISOString();
+
+        if (selectedDate <= deadlineDate) {
+            setMessage('Start date must be after Form Deadline:'+formatDate(job.P2FormDeadline));
+            setMessageTitle('Error');
+            setOpenModal(true);
+            return;
+        }
+
+        if (days < 1 || days > 15){
+            setMessage('Please enter valid days (1-15)!');
+            setMessageTitle('Error');
+            setOpenModal(true);
+            return;
+        }
+
+        setModalIsOpen(true);
     }
 
     const saveForm=()=>{
@@ -285,9 +408,9 @@ export default function CreateTest(props) {
                 break;
             }
 
-            if (copy[i].points < 1){
+            if (copy[i].points < 1 || copy[i].points > 10){
                 flag = false;
-                setMessage("Please enter valid points for each question!")
+                setMessage("Please enter valid points (1-10) for each question!")
                 setMessageTitle('Error');
                 setOpenModal(true);
                 break;
@@ -342,32 +465,116 @@ export default function CreateTest(props) {
                 setOpenModal(true);
                 break;
             }
+
+            if (!copy[i].category || copy[i].category.trim()=='')
+            {
+                flag = false;
+                setMessage("Please select a category for all questions!")
+                setMessageTitle('Error');
+                setOpenModal(true);
+                break;
+            }
         }
 
         if (flag)
-        {
-           
-            setModalIsOpen(true);
+            setTab(3);
 
-            
-            
-        }
+        
     }
 
+    const gotoQuestions=()=>{
+
+        if (categories.length == 0){
+            setMessage("Please add at least one category!")
+            setMessageTitle('Error');
+            setOpenModal(true);
+            return;
+        }
+
+        for (var i = 0; i < categories.length; i++) {
+            if (categories[i].trim() === "") {
+                setMessage("Please fill all fields!");
+                setMessageTitle('Error');
+                setOpenModal(true);
+                return;
+            }
+        }
+
+        setTab(2);
+        // alert(JSON.stringify(questions))
+        // alert(JSON.stringify(categories) )
+    }
+
+    const gotoCategories=()=>{
+        setTab(1)
+        //alert(JSON.stringify(questions))
+    }
+
+    if (tab === 1) {
+        return (
+            <div className='kcreateform-container'>
+                <div className='kcreateformpage-btns'>
+                    <label className='kcreateformpage-formdeadline ktest-catlbl'>Create Categories for Questions:</label>
+                    <button className='kcreateformpage-cancelbtn ktest-backbtn' onClick={()=>navigate(-1,{state:{'jobID':job._id}})}>Back</button>
+                    <button className='kcreateformpage-savebtn' onClick={gotoQuestions}>Next</button>
+                </div>
+                <div className='kcreateform-questions'>
+                    {categories.map((form, iindex) => (
+                        <div key={form.id}>
+                            <div className='kformquestion-con' tabindex="0">
+                                <div className='kformquestion-header'>
+                                    <label className='kformquestion-header-label'><b>Category</b><span style={{ color: 'red', fontWeight: 'bold' }}>*</span></label>
+                                    <textarea className='kformquestion-textbox' value={form} onChange={(event)=>handleCategoryTextChange(event,iindex)}></textarea>
+                                </div>
+                                <button className='kformquestion-question-delete ktest-delcat' onClick={()=>deleteCategory(iindex)}>Delete Category</button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div className='kcreateformpage-addq-con'>
+                    <button className='ktestpage-addcat' onClick={addCategory}>
+                        +
+                    </button>
+                </div>
+                <MessageModal
+                    isOpen={openModal}
+                    message={message}
+                    title={messageTitle}
+                    closeModal={() => {
+                        setOpenModal(false);
+                        //alert(messageTitle);
+                        if (messageTitle === 'Test Saved') {
+                        navigate(-1,{state:{'jobID':job._id}});
+                        }
+                    }}
+                />
+            </div>
+        );
+    } else if (tab === 2) {
     return (<div className='kcreateform-container'>
     <div className='kcreateformpage-btns'>
       <label className='kcreateformpage-formdeadline'>Test Duration<span style={{ color: '#e30211', fontWeight: 'bold' }}>*</span></label>
       <input type="number" className='kcreateformpage-formdeadline-input ktest-number-input' placeholder="Duration in Minutes" min="20" max="480" value={testDuration} onChange={handleDurationChange}></input>
-      <button className='kcreateformpage-cancelbtn' onClick={()=>navigate(-1,{state:{'jobID':job._id}})}>Discard Test</button>
-      <button className='kcreateformpage-savebtn' onClick={saveForm}>Save Test</button>
+      <button className='kcreateformpage-cancelbtn ktestq-backbtn' onClick={gotoCategories}>Back</button>
+      <button className='kcreateformpage-savebtn' onClick={saveForm}>Next</button>
     </div>
         <div className='kcreateform-questions'>
           {questions.map((form, iindex) => (
                 <div key={form.id}>
                 <div className='kformquestion-con' tabindex="0">
                 <div className='ktestquestion-header'>
-                <div className='ktestquestion-q'>
+                <div className='ktestquestion-q'><div className='ktest-question-hdr'>
                     <label className='ktestquestion-header-label'><b>Question</b><span style={{ color: 'red', fontWeight: 'bold' }}>*</span></label>
+                    <select className='kformquestion-dropdown' onChange={(event)=>setCategory(iindex,event)} value={form.category ? form.category : ""}>
+                        <option value="" disabled>Category for question:</option>
+                        {categories.map((option, cindex) => (
+                            <option value={option} label={option}>
+                            {option}
+                            </option>
+                        ))}
+                        </select>
+                        </div>
+        <hr></hr>
                     {form.question.map((questionItem, qIndex) => (
                         <div key={qIndex}>
                             {questionItem.type === 'text' && (
@@ -424,17 +631,17 @@ export default function CreateTest(props) {
                 <hr></hr>
                 <div className='kformquestion-footer'>
                     <div className='ktest-question-footer-input'>
-                        <select className='kformquestion-dropdown' onChange={(event)=>setAnswer(iindex,event)}>
-                        <option value="" disabled selected>Select the correct option:</option>
-                        {form.options.map((option, index) => (
-                            <option value={index} label={option}>
+                        <select className='kformquestion-dropdown' onChange={(event)=>setAnswer(iindex,event)} value={form.answer ? form.answer : ""}>
+                        <option value="" disabled>Select the correct option:</option>
+                        {form.options.map((option, jindex) => (
+                            <option value={option} label={option}>
                             {option}
                             </option>
                         ))}
                         </select>
                         <div className='ktest-points-div'>
                             <label className='ktest-points-lbl'>Points: </label>
-                            <input className='ktest-number-input ktest-points' type="number" min="1" placeholder='Points' onChange={(event)=>handlePointsChange(iindex,event)} value={form.points}></input>
+                            <input className='ktest-number-input ktest-points' type="number" min="1" max="10" placeholder='Points' onChange={(event)=>handlePointsChange(iindex,event)} value={form.points}></input>
                         </div>
                     </div>
                     <button className='kformquestion-question-delete' onClick={()=>deleteQuestion(iindex)}>Delete Question</button>
@@ -459,6 +666,47 @@ export default function CreateTest(props) {
             }
         }}
       />
+      </div>
+    )
+    } else if (tab === 3) {
+        return <div>
+            <div className='kcreateform-container'>
+                <div className='ktest-final-con' tabindex="0">
+                <div className='ktest-final-con-hdr'>
+                    <label className='ktest-final-lbl'>Finalize and Save Test</label>
+                    <div className='ktest-final-btns'>
+                        <button className='kcreateformpage-cancelbtn ktestfinal-cancel' onClick={()=>setTab(2)}>Back</button>
+                        <button className='kcreateformpage-savebtn' onClick={saveTest}>Save</button>
+                    </div>
+                </div>
+                <hr className='ktestfinal-hr'></hr>
+                <div className='ktestfinal-innercon'>
+                    <div className='ktestfinal-fields'>
+                        <label className='ktestfinal-fields-lbl'>Start Date:<span style={{color: '#e30211', fontWeight: 'bold'}}>*</span></label>
+                        <input className="ktestfinal-fields-input" type="datetime-local" value={startDate} onChange={(event)=>handleDateChange(event)}></input>
+                    </div>
+                    <div className='ktestfinal-fields ktestfinal-fields-last'>
+                        <label className='ktestfinal-fields-lbl'>Number of days for which link will be open:<span style={{color: '#e30211', fontWeight: 'bold'}}>*</span></label>
+                        <input className="ktestfinal-fields-input" type="number" value={days} min="1" max="15" onChange={(event)=>handleDaysChange(event)}></input>
+                    </div>
+                </div>
+                <hr className='ktestfinal-hr'></hr>
+                <label className='ktestfinal-note'>Note: &nbsp;&nbsp; This will be the starting date and accessible days for both video interview and technical test. The applicants will be able to access the link on these days only.</label>
+                </div>
+                
+            </div>
+        <MessageModal
+        isOpen={openModal}
+        message={message}
+        title={messageTitle}
+        closeModal={() => {
+            setOpenModal(false);
+            //alert(messageTitle);
+            if (messageTitle === 'Test Saved') {
+            navigate(-1,{state:{'jobID':job._id}});
+            }
+        }}
+      />
       {/* Modal for showing the email textarea */}
       <ReactModal
         isOpen={modalIsOpen}
@@ -469,11 +717,11 @@ export default function CreateTest(props) {
         <div className='nisa-ModalContent'>
         
         <h2>Set Interview and Test Link Email</h2>
-        <p>This will be the default email sent to the shortlisted applicant. The link for attempting the video interview and technical test along with the candidate's password will automatically attached.</p>
+        <p>This will be the default email sent to the shortlisted applicant. The link and date for attempting the video interview and technical test along with the candidate's password will be automatically attached.</p>
         <label><b>Job Title:</b> {job?.jobTitle}</label>
         <div className='krejemail-email'>
           <label><b>Email Subject:</b></label>
-          <label>Regarding Your Application for {job?.jobTitle}</label>
+          <label>{formEmailSub}</label>
          
           <div>
           <label style={{
@@ -489,6 +737,6 @@ export default function CreateTest(props) {
         <button onClick={()=>setModalIsOpen(false)}>Cancel</button>
         </div>
       </ReactModal>
-      </div>
-    )
+        </div>; 
+    }
   }

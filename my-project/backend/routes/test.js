@@ -3,7 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 const formidable = require('formidable');
 const cors=require('cors');
-const {Job, Recruiter,JobApplication,Form, Company, TechTests} = require('../mongo');
+const {Job, Recruiter,JobApplication,Form, Company, TechTests,Videos} = require('../mongo');
 router.use(express.static('files'));
 const path = require('path');
 router.use("/static",express.static(path.join(__dirname,'public')));
@@ -20,31 +20,73 @@ router.post("/createtest", async(req,res)=>{
     const job = req.body.job;
     const questions = req.body.questions;
     const duration = req.body.duration;
-
-    const newTest = new TechTests({
-        jobTitle: job.jobTitle,
-        jobID: job._id,
-        duration: duration,
-        questions: questions
-      });
-
-    // check if video and add days,startdate,importance
-
+    const categories = req.body.categories;
+    const startDate = req.body.startDate;
+    const days = req.body.days;
+    const emailBody = req.body.emailBody;
+    const emailSubject = req.body.emailSubject;
     var msg;
 
     try {
 
-        const existingForm = await TechTests.findOne({ jobID: job._id });
+        const updatedJob = await Job.findOneAndUpdate(
+            { _id: job._id }, 
+            { P3Days: days, P3StartDate: startDate }, 
+            { new: true } 
+        );
 
-        if (existingForm) {
-            msg = {"status": "error","error":"Test already created for this job!"};
-        }
-        else {
+        if (updatedJob) {
 
-            await newTest.save();
-                        
-            msg = { status: "success"};
-        }
+    const video = await Videos.findOne({ jobID: job._id });
+
+    if (video) {
+
+        const newTest = new TechTests({
+            jobTitle: job.jobTitle,
+            jobID: job._id,
+            duration: duration,
+            questions: questions,
+            'categories':categories,
+            'startDate':startDate,
+            'days':days,
+            'emailBody':emailBody,
+            'emailSubject':emailSubject,
+            importance: 100 - video.importance
+          });
+    
+            const existingForm = await TechTests.findOne({ jobID: job._id });
+    
+            if (existingForm) {
+                msg = {"status": "error","error":"Test already created for this job!"};
+            }
+            else {
+    
+                await newTest.save();
+
+                const updatedVideo = await Videos.findOneAndUpdate(
+                    { jobID: job._id }, // Filter criteria
+                    { startDate: startDate, days: days }, // New values to be updated
+                    { new: true } // To return the updated document
+                );
+        
+                if (updatedVideo) {
+                    msg = { status: "success"};
+                } else {
+                    console.error('Error adding test: video not updated');
+                    msg = {"status": "error","error":"Video could not be updated!"};
+                }
+                            
+            }
+    } else {
+        console.error('Error adding test: video not found');
+        msg = {"status": "error","error":"Video Interview not found!"};
+    }
+
+    } else {
+        console.error('Error adding test: job not found');
+        msg = {"status": "error","error":"Job not found!"};
+    }
+    
     }
         catch (error) {
             console.error('Error adding test:', error);
@@ -144,17 +186,36 @@ router.post('/uploadquestionpic', function(req,res){
 router.post("/edittest", async(req,res)=>{
     console.log(req.body);
     const id = req.body._id;
+    const job = req.body.job;
     const questions = req.body.questions;
     const duration = req.body.duration;
+    const categories = req.body.categories;
+    const startDate = req.body.startDate;
+    const days = req.body.days;
+
+    try {
+
+        const updatedJob = await Job.findOneAndUpdate(
+            { _id: job._id }, 
+            { P3Days: days, P3StartDate: startDate }, 
+            { new: true } 
+        );
+
+        if (updatedJob) {
+
+    const video = await Videos.findOne({ jobID: job._id });
+
+    if (video) {
 
     const updatedData = {
         duration: duration,
-        questions: questions
+        questions: questions,
+        'categories':categories,
+        'startDate':startDate,
+        'days':days,
       };
 
     var msg;
-
-    try {
 
         const updatedForm = await TechTests.findOneAndUpdate(
             { _id: id },
@@ -167,7 +228,30 @@ router.post("/edittest", async(req,res)=>{
         }
         else {
             msg = { status: "success"};
+
+            const updatedVideo = await Videos.findOneAndUpdate(
+                { jobID: job._id }, // Filter criteria
+                { startDate: startDate, days: days }, // New values to be updated
+                { new: true } // To return the updated document
+            );
+    
+            if (updatedVideo) {
+                msg = { status: "success"};
+            } else {
+                console.error('Error adding test: video not updated');
+                msg = {"status": "error","error":"Video could not be updated!"};
+            }
+                        
         }
+    } else {
+        console.error('Error adding test: video not found');
+        msg = {"status": "error","error":"Video Interview not found!"};
+    }
+
+    } else {
+        console.error('Error adding test: job not found');
+        msg = {"status": "error","error":"Job not found!"};
+    }
     }
         catch (error) {
             console.error('Error editing test:', error);

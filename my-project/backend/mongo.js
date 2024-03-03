@@ -322,6 +322,12 @@ const jobSchema = new Schema({
     type: Boolean,
     default:false,
   },
+  P3StartDate:{
+    type:Date,
+  },
+  P3Days:{
+    type:Number,
+  },
 
 }, {
   timestamps: true,
@@ -468,6 +474,14 @@ acceptabilityTraits:[{
     type: Number,
     required: true,
   },
+
+  days:{
+    type: Number,
+  },
+
+  startDate:{
+    type: Date,
+  },
   
  
   
@@ -528,16 +542,16 @@ const techtests = new Schema({
   jobID: {
     type: mongoose.Schema.Types.ObjectId,
   },
-  startDate:{ //from video
+  startDate:{ 
     type: Date,
   }
   ,
-  days:{ //from video
+  days:{ 
     type: Number,
   }
   , 
   questions:[{
-    answer: Number,
+    answer: String,
     options: [String],
     question: [{
       type: {type:String},
@@ -546,6 +560,7 @@ const techtests = new Schema({
       imageUrl: String,
     }],
     points: Number,
+    category:String,
     
   }] ,
   duration:{
@@ -556,7 +571,15 @@ const techtests = new Schema({
   importance:{ // calculate from video
     type: Number,
   },
-  
+  categories:{
+    type: [String]
+  },
+  emailSubject:{
+    type:String
+  },
+  emailBody:{
+    type:String
+  },
  
   
 

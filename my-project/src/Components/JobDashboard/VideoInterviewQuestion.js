@@ -40,7 +40,7 @@ const handleSaveVideoData = async () => {
   try {
     const videoData = {
       jobTitle: job.jobTitle,
-      jobID: job.jobID,
+      jobID: job._id,
       questions: questions.map((q) => q.question),
       duration: videoDuration,
       acceptabilityTraits: Object.entries(traits).map(([trait, weight]) => ({ trait, weight })),

@@ -295,21 +295,21 @@ export default function CreateForm(props) {
                     onClick={()=>deleteOption(index,oIndex)}>
                     X
                     </button>
-                </div>
-                ))}
-                    <button className='kformquestion-addbtn' onClick={(event)=>addOption(index,event)}>Add Option</button>
-                </div>
-                <hr></hr>
-                <div className='kformquestion-footer'>
-                <select className='kformquestion-dropdown' onChange={(event)=>setAnswer(index,event)}>
-                <option value="" disabled selected>Select the acceptable answer for screening:</option>
-                {form.options.map((option, index) => (
-                    <option value={index} label={option}>
-                    {option}
-                    </option>
-                ))}
-                </select>
-                <button className='kformquestion-question-delete' onClick={()=>deleteQuestion(index)}>Delete Question</button>
+                    </div>
+                    ))}
+                        <button className='kformquestion-addbtn' onClick={(event)=>addOption(index,event)}>Add Option</button>
+                  </div>
+                  <hr></hr>
+                  <div className='kformquestion-footer'>
+                  <select className='kformquestion-dropdown' onChange={(event)=>setAnswer(index,event)}>
+                  <option value="" disabled selected>Select the acceptable answer for screening:</option>
+                  {form.options.map((option, index) => (
+                      <option value={index} label={option}>
+                      {option}
+                      </option>
+                  ))}
+                  </select>
+                  <button className='kformquestion-question-delete' onClick={()=>deleteQuestion(index)}>Delete Question</button>
                 </div>
               </div>
               </div>
