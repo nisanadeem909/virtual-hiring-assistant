@@ -316,7 +316,7 @@ export default function EditTest(props) {
     <div className='kcreateformpage-btns'>
       <label className='kcreateformpage-formdeadline'>Test Duration<span style={{ color: '#e30211', fontWeight: 'bold' }}>*</span></label>
       <input type="number" className='kcreateformpage-formdeadline-input ktest-number-input' placeholder="Duration in Minutes" min="20" max="480" value={testDuration} onChange={handleDurationChange}></input>
-      <button className='kcreateformpage-cancelbtn' onClick={()=>navigate(-1,{state:{'jobID':job._id}})}>Discard Test</button>
+      <button className='kcreateformpage-cancelbtn' onClick={()=>navigate(-1,{state:{'jobID':job._id}})}>Discard Changes</button>
       <button className='kcreateformpage-savebtn' onClick={saveForm}>Save Test</button>
     </div>
         <div className='kcreateform-questions'>

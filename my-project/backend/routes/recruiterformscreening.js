@@ -5,6 +5,7 @@ const {Job, Recruiter,JobApplication,Form,FormResponses,Notification} = require(
 router.use(express.static('files'));
 const path = require('path');
 router.use("/static",express.static(path.join(__dirname,'public')));
+const generatePassword = require('generate-password');
 
 router.use(express.static('public'));
 
@@ -176,6 +177,18 @@ router.post('/shortlistformresponses', async (req, res) => {
           }
       );
       console.log("UPDATED JOB APPS")
+
+      const jobApplications = await JobApplication.find({ jobID: jobIDToFind, status: 3 });
+        for (const application of jobApplications) {
+            var password = generatePassword.generate({
+              length: 12, // Length of the generated password
+              numbers: true, // Include numbers
+              symbols: true, // Include symbols
+              uppercase: true, // Include uppercase letters
+              excludeSimilarCharacters: true, // Exclude similar characters (e.g. i, l, 1, o, 0)
+            });
+            await JobApplication.updateOne({ _id: application._id }, { password: password });
+        }
 
     const updatedFormResponses = await FormResponses.find({ jobID: jobIDToFind }).exec();
     if (flag)

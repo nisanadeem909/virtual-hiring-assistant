@@ -280,8 +280,8 @@
 
   .nisa-t-img{
 
-    width: 50%;
-    height: 50%;
+    max-width: 50%;
+    max-height: 50%;
   }
 
   .nisa-submit-button{
@@ -296,4 +296,14 @@
     margin-left: 45%;
     margin-top: 5%;
     font-size: 14px;
+  }
+
+
+
+
+  .ktest-app-points {
+    float: right;
+    margin-top: -1vh;
+    font-weight: bold;
+    color: rgb(206, 73, 73);
   }

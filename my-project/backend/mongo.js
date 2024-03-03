@@ -180,7 +180,11 @@ const jobApplicationSchema = new Schema({
     trim: true,
     lowercase: true,
   }
-  ,
+  ,//komal added
+  password:{
+    type: String,
+    minlength: 12,
+  },/////
   name: {
     type: String,
     required: true,

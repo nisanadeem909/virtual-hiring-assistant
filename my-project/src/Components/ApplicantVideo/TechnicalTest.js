@@ -4,6 +4,7 @@ import img from './DFS.png'
 import img1 from './stack.png'
 import img2 from './queue.png'
 import img3 from './tree.png'
+import axios from 'axios';
 
 export default function TechnicalTest() {
   const navigate = useNavigate();
@@ -11,10 +12,31 @@ export default function TechnicalTest() {
   const [job, setJob] = useState(null);
   const [timer, setTimer] = useState(60 * 60);
   const [selectedOptions, setSelectedOptions] = useState({});
+  const [questions,setQuestions] = useState([{question: [
+    {
+      type: 'text',
+      text: '',
+    }], options: ['']}]);
 
   useEffect(() => {
     if (location.state && location.state.job) {
       setJob(location.state.job);
+      var param = {'job':location.state.job._id};
+      axios.post("http://localhost:8000/komal/getjobtest",param).then((response) => {
+      // alert(JSON.stringify(response.data));
+      if (response.data.status == "success"){
+        setQuestions(response.data.form.questions)
+        setTimer(response.data.form.duration * 60)
+      }
+      else {
+          console.error(response.data.error)
+          alert(response.data.error)
+      }
+      })
+      .catch(function (error) {
+        console.error("Axios Error:" + error);
+        alert(error)
+      });
     } else {
       navigate(-1);
     }
@@ -48,78 +70,6 @@ export default function TechnicalTest() {
   };
 
   
-  const questions = [
-    {
-      id: 1,
-      type: 'text',
-      text: 'What is the capital of France?',
-      options: ['Berlin', 'Madrid', 'Paris', 'Rome'],
-    },
-    {
-      id: 2,
-      type: 'image',
-      imageUrl: img,
-      question: 'What is shown in the image?',
-      options: ['Option A', 'Option B', 'Option C', 'Option D'],
-    },
-    {
-      id: 3,
-      type: 'code',
-      code: 'console.log("Hello, World!");',
-      question: 'What will be printed to the console?',
-      options: ['Hello, World!', 'Undefined', 'Error', 'NaN'],
-    },
-    {
-      id: 4,
-      type: 'text',
-      text: 'Which planet is known as the Red Planet?',
-      options: ['Earth', 'Mars', 'Venus', 'Jupiter'],
-    },
-    {
-      id: 5,
-      type: 'image',
-      imageUrl: img3,
-      question: 'What is shown in the second image?',
-      options: ['Option X', 'Option Y', 'Option Z', 'Option W'],
-    },
-    {
-      id: 6,
-      type: 'code',
-      code: 'for (let i = 0; i < 5; i++) { console.log(i); }',
-      question: 'What will be printed to the console?',
-      options: ['0 1 2 3 4', '1 2 3 4 5', '0 1 2 3', 'Error'],
-    },
-    {
-      id: 7,
-      type: 'text',
-      text: 'Which country is known as the Land of the Rising Sun?',
-      options: ['China', 'Japan', 'South Korea', 'Thailand'],
-    },
-    {
-      id: 8,
-      type: 'image',
-      imageUrl: img2,
-      question: 'What is shown in the third image?',
-      options: ['Option M', 'Option N', 'Option O', 'Option P'],
-    },
-    {
-      id: 9,
-      type: 'code',
-      code: 'function addNumbers(a, b) { return a + b; }',
-      question: 'What does the addNumbers function do?',
-      options: ['Multiplies numbers', 'Divides numbers', 'Adds numbers', 'Subtracts numbers'],
-    },
-    {
-      id: 10,
-      type: 'text',
-      text: 'Which ocean is the largest?',
-      options: ['Atlantic Ocean', 'Indian Ocean', 'Southern Ocean', 'Pacific Ocean'],
-    },
-
-    
-    
-  ];
-  
   return (
     <div className="post-jobnew-container">
       <div className='video-header'>
@@ -131,67 +81,34 @@ export default function TechnicalTest() {
       <hr className='nisa-horizontal-line'></hr>
 
       <div className="question-list">
-        {questions.map((question) => (
-          <div key={question.id} className="question-container">
-            {question.type === 'text' && (
-              <React.Fragment>
-                <p className='nisa-t-q'>{question.text}</p>
-                <ul>
-                  {question.options.map((option, index) => (
-                    <li className='nisa-t-a' key={index}>
-                      <input
-                        type="radio"
-                        name={`question_${question.id}`}
-                        value={option}
-                        checked={selectedOptions[question.id] === option}
-                        onChange={() => handleOptionChange(question.id, option)}
-                      />
-                      {option}
-                    </li>
-                  ))}
-                </ul>
+        {questions.map((question, index) => (
+          <div key={index} className="question-container">
+            {question.question.map((questionItem, questionIndex) => (
+              <React.Fragment key={questionIndex}>
+                <p className='nisa-t-q'>{questionItem.text}</p>
+                {questionItem.type === 'image' && (
+                  <img className='nisa-t-img' src={`http://localhost:8000/routes/questionimages/` + questionItem.imageUrl} alt="Question" />
+                )}
+                {questionItem.type === 'code' && (
+                  <pre className='nisa-code'>{questionItem.code}</pre>
+                )}
               </React.Fragment>
-            )}
-            {question.type === 'image' && (
-              <React.Fragment>
-                <img className='nisa-t-img' src={question.imageUrl} alt="Question" />
-                <p className='nisa-t-q'>{question.question}</p>
-                <ul>
-                  {question.options.map((option, index) => (
-                    <li className='nisa-t-a' key={index}>
-                      <input
-                        type="radio"
-                        name={`question_${question.id}`}
-                        value={option}
-                        checked={selectedOptions[question.id] === option}
-                        onChange={() => handleOptionChange(question.id, option)}
-                      />
-                      {option}
-                    </li>
-                  ))}
-                </ul>
-              </React.Fragment>
-            )}
-            {question.type === 'code' && (
-              <React.Fragment>
-                <pre className='nisa-code'>{question.code}</pre>
-                <p className='nisa-t-q'>{question.question}</p>
-                <ul>
-                  {question.options.map((option, index) => (
-                    <li className='nisa-t-a' key={index}>
-                      <input
-                        type="radio"
-                        name={`question_${question.id}`}
-                        value={option}
-                        checked={selectedOptions[question.id] === option}
-                        onChange={() => handleOptionChange(question.id, option)}
-                      />
-                      {option}
-                    </li>
-                  ))}
-                </ul>
-              </React.Fragment>
-            )}
+            ))}
+            <ul>
+              {question.options.map((option, optionIndex) => (
+                <li className='nisa-t-a' key={optionIndex}>
+                  <input
+                    type="radio"
+                    name={`question_${index}`}
+                    value={option}
+                    checked={selectedOptions[index] === option}
+                    onChange={() => handleOptionChange(index, option)}
+                  />
+                  {option}
+                </li>
+              ))}
+            </ul>
+            <label className='ktest-app-points'>{question.points} Point(s)</label>
           </div>
         ))}
       </div>
