@@ -63,47 +63,46 @@ export default function CreateForm(props) {
           setError('');
           setModalIsOpen(false)
 
-          var param = {'job':job,'formdeadline':formDeadline,'questions':questions};
-            axios.post("http://localhost:8000/komal/createform",param).then((response) => {
-            // alert(JSON.stringify(response.data));
-            if (response.data.status == "success"){
-                setFormLink(response.data.formLink)
-                setMessage("Form has been saved and link for applicants is: "+response.data.formLink)
-                setMessageTitle('Form Saved');
-                setOpenModal(true);
-                handleSetForm(response.data.formLink)
-                }
-                else {
-                setMessage(response.data.error);
-                setMessageTitle('Error');
-                setOpenModal(true);}
-            })
-            .catch(function (error) {
-                setMessage("Something went wrong, please try again..");
-                setMessageTitle('Error');
-                setOpenModal(true);
-                console.error("Axios Error:" + error);
-            });
-      
+          var param = {'job': job, 'formdeadline': formDeadline, 'questions': questions};
+axios.post("http://localhost:8000/komal/createform", param)
+    .then(async (response) => { 
+        if (response.data.status === "success") { 
+            setFormLink(response.data.formLink);
+            const updatedEmailBody = `${formEmailBody}\n\n${response.data.formLink}\n\n${formEmailDeadline}${formatDate(formDeadline)}`;
+            
+            try {
+                const emailResponse = await axios.post(`http://localhost:8000/nisa/api/emailForm/${job._id}`, {
+                    formEmailSub,
+                    formEmailBody: updatedEmailBody,
+                });
+
+                console.log('Updated:', emailResponse.data);
+
+                setSavedJob(job._id);
+            } catch (error) {
+                console.error('Error updating emails and form:', error);
+            }
+            setMessage("Form has been saved and link for applicants is: " + response.data.formLink);
+            setMessageTitle('Form Saved');
+            setOpenModal(true);
+            handleSetForm(response.data.formLink);
+        } else {
+            setMessage(response.data.error);
+            setMessageTitle('Error');
+            setOpenModal(true);
+        }
+    })
+    .catch(function (error) {
+        setMessage("Something went wrong, please try again..");
+        setMessageTitle('Error');
+        setOpenModal(true);
+        console.error("Axios Error:" + error);
+    });
+
          
-          // Append the link to the end of the email body
-          const updatedEmailBody = `${formEmailBody}\n\n${formLink}\n\n${formEmailDeadline}${formDeadline}`;
-          //alert(updatedEmailBody)
-          try {
-            const response = await axios.post(`http://localhost:8000/nisa/api/emailForm/${job._id}`, {
-              formEmailSub,
-              formEmailBody: updatedEmailBody,
-            });
-        
-            console.log('Updated:', response.data);
-           
-            setSavedJob(job._id);
-          } catch (error) {
-            console.error('Error updating emails and form:', error);
-
-
-          }
-      };
+         
+      
+    };
 
     useEffect(() => {
         if (props.job){

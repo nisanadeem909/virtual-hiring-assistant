@@ -37,6 +37,13 @@ export default function CreateForm(props) {
     setPhase(phase - 1);
   };
 const handleSaveVideoData = async () => {
+
+  if(videoInterviewPercentage < 10 || videoInterviewPercentage > 90){
+    setOpenModal(true);
+    setMessageTitle('Error');
+    setMessage('Video interview percentage should be between 10% and 90%');
+    return;
+  }
   try {
     const videoData = {
       jobTitle: job.jobTitle,
@@ -62,17 +69,25 @@ const handleSaveVideoData = async () => {
 
 const handleVideoDurationChange = (event) => {
     const duration = event.target.value;
+    if(duration > 10){
     setVideoDuration(duration);
+    }
+    else{
+      setOpenModal(true);
+      setMessageTitle('Error');
+      setMessage('Duration should be greater than 10 minutes');
+    }
 };
   const handlePercentageChange = (event, type) => {
       const value = parseInt(event.target.value);
-      if (!isNaN(value) && value >= 0 && value <= 100) {
+      if (!isNaN(value) && value >= 10 && value <= 90) {
           if (type === 'videoInterview') {
               setVideoInterviewPercentage(value);
               setTechnicalTestPercentage(100 - value);
           }
           
       }
+      
   };
 
   const [traits, setTraits] = useState({
@@ -180,6 +195,17 @@ const handleTraitChange = (event, traitName) => {
         }
     }
 
+ 
+  
+  if (videoDuration < 10) {
+    
+        setOpenModal(true);
+        setMessageTitle('Error');
+        setMessage('Duration should be greater than 10 minutes');
+        return;
+  
+  }
+
     setPhase(2);
 };
 
@@ -193,7 +219,7 @@ const handleTraitChange = (event, traitName) => {
          <div className='nnab-createformpage-btns'>
         <div id="nab-vid-interview-btns">
     <div className="video-options">
-        <label className='n-l-vd'>Video Duration (minutes):</label>
+        <label className='n-l-vd'>Video Submission Time (minutes):</label>
         <input
             type="number"
             min="10"
@@ -230,7 +256,7 @@ const handleTraitChange = (event, traitName) => {
                  </div>
              ))}
          </div>
-         <div className='nkcreateformpage-addq-con'>
+         <div className='nnkcreateformpage-addq-con'>
              <button className='nkcreateformpage-addq' onClick={(event) => addQuestion(event)}>+</button>
          </div>
          <MessageModal
