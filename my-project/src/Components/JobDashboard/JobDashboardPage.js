@@ -13,6 +13,7 @@ import axios from 'axios';
 import ShortlistedFormResponsesPage from '../RecruiterFormResponses/shortlistedformresponses';
 import VideoInterview from './VideoInterview';
 import { useLocation, useNavigate } from 'react-router-dom';
+import VideoResponses from '../RecruiterVideoResponses/videoresponsespage'
 
 export default function JobDashboardPage() {
 
@@ -28,6 +29,42 @@ export default function JobDashboardPage() {
     const [job,setJob] = useState(null);
     const [testExists,setTestExists] = useState(false);
 
+    const [questExists,setQuestExists] = useState(false)
+    const [startDatePassed,setStartDatePassed] = useState(false)
+
+    useEffect(() => {
+   
+      
+      if (location.state){
+        var param = {'jobId':location.state.jobID};
+        axios.post("http://localhost:8000/nabeeha/checkifquestionnaireexists",param).then((response) => {
+        
+        //alert(response.data.status)
+        setQuestExists(response.data.status)
+      
+        })
+        .catch(function (error) {
+            //alert("Axios Error:" + error);
+        });
+      }
+    
+  },[location])
+    useEffect(() => {
+      
+        if (location.state){
+        var param = {'jobId':location.state.jobID};
+        axios.post("http://localhost:8000/nabeeha/getvideointerviewstartdate",param).then((response) => {
+          
+        
+        setStartDatePassed(response.data.startdate)
+
+      
+        })
+        .catch(function (error) { 
+            //alert("Axios Error:" + error);
+        });
+      }
+    },[location])
     useEffect(() => {
         //openTab(0);
         if (location.state){
@@ -56,6 +93,8 @@ export default function JobDashboardPage() {
             setContent(<div className='kjobdashboard-error-div'>Something went wrong, please try again!</div>);
             console.log(error);
         });}
+
+        
       }, [location]);
 
       useEffect(() => {
@@ -134,8 +173,10 @@ export default function JobDashboardPage() {
             }
         }
         else if (index == 3) {
-           // setContent(<img src={loading} className='kjobdashboardpage-loading-img'></img>);
-           setContent(<VideoInterview job={job}></VideoInterview>);
+           
+              setContent(<VideoInterview job={job}></VideoInterview>); 
+              //setContent(<VideoResponses job={job}></VideoResponses>)
+
         }
         else if (index == 4) {
           if (!testExists)
