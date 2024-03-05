@@ -338,8 +338,8 @@ export default function EditTest(props) {
             return;
         }
 
-        const currentDate = new Date().toISOString();
-        const selectedDate = new Date(startDate).toISOString();
+        const currentDate = new Date();
+        const selectedDate = new Date(startDate);
 
         if (selectedDate < currentDate) {
             setMessage('Start date cannot be in the past!');
@@ -348,7 +348,7 @@ export default function EditTest(props) {
             return;
         }
 
-        const deadlineDate = new Date(job.P2FormDeadline).toISOString();
+        const deadlineDate = new Date(job.P2FormDeadline);
 
         if (selectedDate <= deadlineDate) {
             setMessage('Start date must be after Form Deadline:'+formatDate(job.P2FormDeadline));

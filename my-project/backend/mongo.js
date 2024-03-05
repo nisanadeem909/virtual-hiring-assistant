@@ -495,6 +495,10 @@ const Videos = mongoose.model('Videos', videos);
 
 const videosResponses = new Schema({
   
+  applicantEmail:{ //added by nabeeha
+    type: String
+  },
+
   jobID: {
     type: mongoose.Schema.Types.ObjectId,
   },
@@ -531,6 +535,38 @@ const videosResponses = new Schema({
 
 const VideosResponses = mongoose.model('VideosResponses', videosResponses);
 
+//Added by Nabeeha
+const testResponses = new Schema({
+  
+  applicantEmail:{ 
+    type: String,
+    
+  },
+
+  jobID: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
+  answers:[{
+    questionIndex: { 
+      type: Number
+    },
+    answer: {
+      type: String
+      
+    },
+    status:{
+      type: Boolean   //true for correct, false for incorrect
+    }
+  }],
+  overallScore:{
+    type: Number
+  }
+  
+}, {
+  timestamps: true,
+});
+
+const TestResponses = mongoose.model('TestResponses', testResponses);
 
 // komal added:
 
