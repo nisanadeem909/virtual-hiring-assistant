@@ -12,35 +12,27 @@ export default function ApplicantVideoTestLogin() {
   const [job, setJob] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const { interviewid } = useParams();
+  const [valid, setValid] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-
-    axios.post(`http://localhost:8000/nabeeha/getjobdetailsforcvcollection`,{"jobID":interviewid}).then(res => {
-          
-     if (res.data.job) {
-      
+    axios.post(`http://localhost:8000/nabeeha/getjobdetailsforcvcollection`, { "jobID": interviewid })
+      .then(res => {
+        if (res.data.job) {
           setJob(res.data.job);
-          
         } else {
           setErrorMessage(res.data.error);
         }
-   
-  
-    })
-    .catch(error => {
-      console.error('Error:', error); 
-      setErrorMessage('An error occurred while fetching job details.');
-    });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        setErrorMessage('An error occurred while fetching job details.');
+      });
 
     if (errorMessage) {
-      
       navigate('/error');
     }
-
-
-
-  }, []); 
+  }, []);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -56,12 +48,28 @@ export default function ApplicantVideoTestLogin() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
-    setEmail('');
-    setPassword('');
-    // checks pending to see if the email password exist in the database
-    navigate('intropage', { state: { job } })
+    validateCredentials();
 
+    
+  };
+
+  const validateCredentials = () => {
+    const param = { jobID: job._id, email: email, password: password };
+    axios.post("http://localhost:8000/nabeeha/checkapplicantcredentials", param)
+      .then((response) => {
+        setValid(response.data.status);
+        if (response.data.status === "true"){
+          
+          
+          sessionStorage.setItem("email",email);
+          navigate('intropage', { state: { job }});
+        }
+        else
+          setErrorMessage(response.data.message);
+      })
+      .catch(function (error) {
+        
+      });
   };
 
   return (
@@ -88,6 +96,7 @@ export default function ApplicantVideoTestLogin() {
                   name="password"
                   class="nisa-video-input"
                   placeholder="Password"
+                  required
                 />
                 <span className="password-toggle-login" onClick={toggleShowPassword1}>
                   {showPassword1 ? "Hide" : "Show"}
@@ -98,6 +107,7 @@ export default function ApplicantVideoTestLogin() {
             <button className="nisa-video-button" type="submit">
               Login
             </button>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
           </form>
         </div>
       </div>

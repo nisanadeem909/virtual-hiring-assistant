@@ -52,6 +52,8 @@ const RecruiterFormScreening = require('./routes/recruiterformscreening')
 const AdminHomeRoute = require('./routes/adminhome')
 const CompanyRoute = require('./routes/company')
 const TestRoute = require('./routes/test')
+const VideoInterview = require('./routes/videointerview')
+const ApplicantVideoandInterview = require('./routes/applicantinterviewandtest')
 
 app.use('/komal', createFormRoute);
 app.use('/komal', JobDashboardRoute);
@@ -66,6 +68,9 @@ app.use('/nabeeha', EditProfileRoute);
 app.use('/nabeeha', ApplicantCVCollectionForm);
 app.use('/nabeeha', ApplicantFormCollection);
 app.use('/nabeeha', RecruiterFormScreening);
+app.use('/nabeeha', VideoInterview);
+app.use('/nabeeha',ApplicantVideoandInterview)
+
 
 app.use('/nisa', LoginRoute);
 app.use('/nisa', SignupRoute);
