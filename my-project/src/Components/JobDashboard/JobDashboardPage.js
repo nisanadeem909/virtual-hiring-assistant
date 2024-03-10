@@ -28,43 +28,8 @@ export default function JobDashboardPage() {
    // var tempJobID = '657d9dd3d75435064f67d066';
     const [job,setJob] = useState(null);
     const [testExists,setTestExists] = useState(false);
+    const [videoExists,setVideoExists] = useState(false);
 
-    const [questExists,setQuestExists] = useState(false)
-    const [startDatePassed,setStartDatePassed] = useState(false)
-
-    useEffect(() => {
-   
-      
-      if (location.state){
-        var param = {'jobId':location.state.jobID};
-        axios.post("http://localhost:8000/nabeeha/checkifquestionnaireexists",param).then((response) => {
-        
-        //alert(response.data.status)
-        setQuestExists(response.data.status)
-      
-        })
-        .catch(function (error) {
-            //alert("Axios Error:" + error);
-        });
-      }
-    
-  },[location])
-    useEffect(() => {
-      
-        if (location.state){
-        var param = {'jobId':location.state.jobID};
-        axios.post("http://localhost:8000/nabeeha/getvideointerviewstartdate",param).then((response) => {
-          
-        
-        setStartDatePassed(response.data.startdate)
-
-      
-        })
-        .catch(function (error) { 
-            //alert("Axios Error:" + error);
-        });
-      }
-    },[location])
     useEffect(() => {
         //openTab(0);
         if (location.state){
@@ -75,6 +40,18 @@ export default function JobDashboardPage() {
               axios.post("http://localhost:8000/komal/checktestcreated",param).then((response) => {
                 if (response.data.status == "success"){
                      setTestExists(response.data.found)
+                  }
+                  else 
+                    setContent(<div className='kjobdashboard-error-div'>Something went wrong, please try again!</div>);
+                  //alert('hi');
+              })
+              .catch(function (error) {
+                  setContent(<div className='kjobdashboard-error-div'>Something went wrong, please try again!</div>);
+                  console.log(error);
+              });
+              axios.post("http://localhost:8000/komal/checkvideocreated",param).then((response) => {
+                if (response.data.status == "success"){
+                     setVideoExists(response.data.found)
                   }
                   else 
                     setContent(<div className='kjobdashboard-error-div'>Something went wrong, please try again!</div>);
@@ -127,7 +104,7 @@ export default function JobDashboardPage() {
 
         if (index == 0)
         {
-            setContent(<JobDetails job={job} updateJob={updateJob}></JobDetails>);
+            setContent(<JobDetails job={job} updateJob={updateJob} testExists={testExists} videoExists={videoExists}></JobDetails>);
         }
         else if (index == 1)
         {
@@ -174,18 +151,26 @@ export default function JobDashboardPage() {
         }
         else if (index == 3) {
            
-              setContent(<VideoInterview job={job}></VideoInterview>); 
-              //setContent(<VideoResponses job={job}></VideoResponses>)
+              if (!videoExists)
+                setContent(<VideoInterview job={job}></VideoInterview>); 
+              else if (!testExists || job.status < 3 || new Date(job.P3StartDate) > new Date())
+              {
+                setContent(<label>Edit Video</label>) // put edit video button here
+              }
+              else {
+                setContent(<VideoResponses job={job}></VideoResponses>)
+              }
 
         }
         else if (index == 4) {
           if (!testExists)
             setContent(<TestCreating job={job}></TestCreating>)
-          else if (job.status <3)
+          else if (job.status < 3 || new Date(job.P3StartDate) > new Date())
             setContent(<TestEditing job={job}></TestEditing>)
           else // test responses page should be here
             setContent(<img src={loading} className='kjobdashboardpage-loading-img'></img>);
         }
+        // else if (index == 5) {} // shortlisting tab
         else {
           setContent(<img src={loading} className='kjobdashboardpage-loading-img'></img>);
         }

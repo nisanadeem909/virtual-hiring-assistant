@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react' 
 import './JobDashboard.css';
 import EditModal from '../ModalWindows/EditNumberModal'
+import EditDaysModal from '../ModalWindows/EditDaysModal'
 import EditDeadlineModal from '../ModalWindows/EditDeadlineModal'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +22,9 @@ export default function JobDetails(props) {
 
     const [isEditScoreModalOpen, setIsEditScoreModalOpen] = useState(false);
     const [isEditJDModalOpen, setIsEditJDModalOpen] = useState(false);
+    const [isEditDaysModalOpen, setIsEditDaysModalOpen] = useState(false);
+    const [videoExists,setVideoExists] = useState(false);
+    const [testExists,setTestExists] = useState(false);
 
     const formatDate = (date) => {
       if (!date) return '';
@@ -74,6 +78,14 @@ export default function JobDetails(props) {
     setIsEditScoreModalOpen(false);
   };
 
+  const openEditDaysModal = () => {
+    setIsEditDaysModalOpen(true);
+  };
+
+  const closeEditDaysModal = () => {
+    setIsEditDaysModalOpen(false);
+  };
+
   const openEditJDModal = () => {
     setIsEditJDModalOpen(true);
   };
@@ -101,6 +113,28 @@ export default function JobDetails(props) {
     const closeEditFormDeadlineModal = () => {
       setIsEditFormDeadlineModalOpen(false);
     };
+
+    const saveDays=(newVal)=>{
+      var param = {'jobId':job._id,'newDays':newVal};
+
+        axios.post("http://localhost:8000/komal/editp3days",param).then((response) => {
+           if (response.data.status == "success"){
+              setJob(response.data.job);
+              props.updateJob({...response.data.job});
+              setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Interview and Test Link remains open for:</b> {newVal} days</label>
+              <button className='kjobdetailspage-editdeadline' onClick={openEditDaysModal}>Edit Number of Days</button></>);
+             }
+            else {
+              setDeadlineDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
+              console.log("Error: "+response.data.error);
+            }
+        })
+        .catch(function (error) {
+            setDeadlineDiv(<div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>)
+            console.log(error);
+        })
+        closeEditDaysModal()
+    }
   
     const saveAcceptableScore = (newVal) => {
       
@@ -244,6 +278,10 @@ export default function JobDetails(props) {
         if (props.job){
             setJob(props.job);
         }
+        if (props.testExists)
+          setTestExists(props.testExists)
+          if (props.videoExists)
+            setVideoExists(props.videoExists)
       }, [props.job]);
 
     useEffect(() => {
@@ -284,15 +322,24 @@ export default function JobDetails(props) {
           }
           else if (job.status == 3)
           {
-            setStatus("Phase 3 (Video-Interview)")
-            setStatusDiv(<img src={loading} className='kjobdetailsstatus-loading-img'></img>)
-            setDeadlineDiv(<label className='kjobdetailspage-appdeadline'>Waiting for Video Interview and Technical Test Creation..</label>)
+            setStatus("Phase 3 (Video-Interview and Technical Test)")
+
+            if (!job.P3StartDate){
+              setStatusDiv(<><label className='kjobdetailspage-cvlink'>Waiting for Video Interview and Technical Test Creation..</label></>);
+              setDeadlineDiv(<label className='kjobdetailspage-appdeadline'>Please create Video Interview Questionnnaire and Technical Test</label>)
+            }
+            else {
+              setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>Interview and Test Start Date:</b><br></br>{formatDate(job.P3StartDate)}<br></br><br></br><b>Interview and Test link:</b> {'http://localhost:3000/applicant/videointerview/'+job._id}</label></>);
+              setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Interview and Test Link remains open for:</b> {job.P3Days} days</label>
+              <button className='kjobdetailspage-editdeadline' onClick={openEditDaysModal}>Edit Number of Days</button></>);
+            
+            }
           }
-          else if (job.status == 4)
-          {
-            setStatus("Phase 4 (Technical Test)")
-          }
-          else if (job.status == 5)
+          // else if (job.status == 4)
+          // {
+          //   setStatus("Phase 4 (Technical Test)")
+          // }
+          else //if (job.status == 5)
           {
             setStatus("Shortlisted")
           }
@@ -330,6 +377,12 @@ export default function JobDetails(props) {
         closeModal={closeEditScoreModal}
         saveValue={saveAcceptableScore}
         originalValue={job.AccCVScore.$numberDecimal}
+      /><EditDaysModal
+        isOpen={isEditDaysModalOpen}
+        title='Interview and Test Open Days'
+        closeModal={closeEditDaysModal}
+        saveValue={saveDays}
+        originalValue={job.P3Days}
       />
         <EditDeadlineModal
         isOpen={isEditCVDeadlineModalOpen}
