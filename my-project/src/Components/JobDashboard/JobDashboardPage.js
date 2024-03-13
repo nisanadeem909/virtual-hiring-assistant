@@ -151,6 +151,7 @@ export default function JobDashboardPage() {
         }
         else if (index == 3) {
            
+
               if (!videoExists)
                 setContent(<VideoInterview job={job}></VideoInterview>); 
               else if (!testExists || job.status < 3 || new Date(job.P3StartDate) > new Date())
@@ -160,6 +161,7 @@ export default function JobDashboardPage() {
               else {
                 setContent(<VideoResponses job={job}></VideoResponses>)
               }
+
 
         }
         else if (index == 4) {

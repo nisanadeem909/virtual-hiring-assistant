@@ -4,6 +4,9 @@
     margin: 3vh 5vh;
     
 }
+.nabcvcollectionpage-table tbody tr {
+    height: 50px; /* Adjust the height as needed */
+  }
 .nabcvcollectionpage-table-container {
       overflow-x: auto;
     max-width: 100%;
@@ -45,6 +48,7 @@
 .nabcvcollectionpage-table {
     min-width: 100%;
     max-width: 100%;
+    
     border: 1px solid rgb(238, 239, 240);
     padding: 1vh;
     border-spacing: 0;
@@ -52,7 +56,9 @@
     box-sizing: border-box;
    
 }
-
+#nab-vid-res{
+    height: 2vh;
+}
 .kcvcollectionpage-table-header {
     overflow: hidden;
     white-space: nowrap; 

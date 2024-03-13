@@ -26,7 +26,7 @@ router.post('/fetchvideoresponses', async (req, res) => {
     
     console.log('Video Responses with job ID', jobIDToFind, ':', formResponses);
     
-    res.json({ formResponses });
+    res.json({ responses: formResponses });
   } catch (error) {
     console.error('Error retrieving form responses:', error);
     res.status(500).json({ error: 'Internal Server Error' });

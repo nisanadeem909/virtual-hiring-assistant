@@ -11,15 +11,16 @@ export default function FormResponsesPage(props) {
     const [jobTitle,setJobTitle] = useState()
     
     const [resps,setResps] = useState([])
-
-    const getFormResponses = () =>{
+    const navigate = useNavigate();
+    const getFormResponses = () =>
+    {
         var param = {'jobId':props.job._id};
         axios.post("http://localhost:8000/nabeeha/fetchvideoresponses",param).then((response) => {
           
         //alert(response.data.formResponses)
         
-        setResps(response.data.formResponses);
-        
+        setResps(response.data.responses);
+       
        
         })
         .catch(function (error) {
@@ -28,14 +29,27 @@ export default function FormResponsesPage(props) {
     }
     useEffect(() => {
          
-        /*Over here props will be used to set the Questions in setQuestions */
-        /*Over here props will be used to set the Responses in setResponses */
-        //alert(JSON.stringify(props.job.jobTitle))
         setJobTitle(props.job.jobTitle)
         getFormResponses()
         
      }, []);
- 
+     
+     const handleWatchVideo = (videoUrl, applicantInfo, traitScores) => {
+      // Navigate to the VideoPage component passing necessary data
+      
+      navigate('/recruiter/job/video', { state: { videoUrl, applicantInfo, traitScores: [
+        { name: 'Excited', score: 8 },
+        { name: 'Confident', score: 5 },
+        { name: 'Engaging Tone', score: 4 },
+        { name: 'Focused', score: 10 },
+        { name: 'Speaking Rate', score: 1 },
+        { name: 'Calm', score: 9 },
+        { name: 'Structured Answers', score: 8 },
+        { name: 'Paused', score: 3 },
+        { name: 'NoFillers', score: 7 }
+        
+      ] } });
+    };
      return (
       <div className='kcvcollectionpage-con'>
         <div className='kcvcollectionpage-header'>
@@ -62,18 +76,49 @@ export default function FormResponsesPage(props) {
                         <tr className='nabcvcollectionpage-table-header-row'>
                         <th align="center">#</th>
                         <th align="center">Email</th>
+                        <th align="center">Status</th>
                         <th align="center">Aggregate Score</th>
+                        
                         <th align="center">Video Link</th>
                         </tr>
                 </thead>
                 <tbody>
                         {resps.map((resp, index) => (
-                        <tr key={index}>
+                        <tr  key={index}>
                             <td align="center">{index + 1}</td>
                             <td align="center">{resp.applicantEmail}</td>
-                            <td align="center">{resp.overallScore}</td>
+                            
+                            
+                            <td align="center">{resp.status}</td>
+                            <td align="center">In process</td> {/*replace with resp.overallScore*/}
                             <td align="center">
-                            <a href={resp.videoPath}>Watch Video</a>
+                            
+                            {/* <a href={`http://localhost:8000/routes/profilepictures/${resp.videoPath}`}>Watch Video</a> */}
+                            <a
+                            href={`/recruiter/job/video/${resp.applicantEmail}`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleWatchVideo(
+                                `http://localhost:8000/routes/applicantvideos/`+resp.videoPath,
+                                resp.applicantEmail,
+                                [
+                                  { name: 'Excited', score: 8 },
+                                  { name: 'Confident', score: 5 },
+                                  { name: 'Engaging Tone', score: 4 },
+                                  { name: 'Focused', score: 10 },
+                                  { name: 'Speaking Rate', score: 1 },
+                                  { name: 'Calm', score: 9 },
+                                  { name: 'Structured Answers', score: 8 },
+                                  { name: 'Paused', score: 3 },
+                                  { name: 'NoFillers', score: 7 }
+                                  
+                                ] 
+                              );
+                            }}
+                          >
+                            Watch Video
+                          </a>
+
                             </td>
                         </tr>
                         ))}

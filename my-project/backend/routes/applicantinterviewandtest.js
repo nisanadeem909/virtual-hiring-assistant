@@ -44,8 +44,8 @@ router.post('/checkapplicantcredentials', async (req, res) => {
       }
       
       //Check Applicant is in Phase 3 of THAT JOB only!
-      const thisApp = await JobApplication.findOne({email:req.body.email})
-
+      const thisApp = await JobApplication.findOne({email:req.body.email, jobID: req.body.jobID})
+      console.log(thisApp)
       
       if (thisApp == null)
       {
@@ -142,6 +142,9 @@ router.post('/getvideointerviewdetails', async (req, res) => {
 
 
   router.post('/uploadapplicantvideo',async(req,res)=>{
+   
+    
+    console.log("I am in uplaod applicant video")
     console.log(req.body)
     try{
     
@@ -220,7 +223,8 @@ router.post('/getvideointerviewdetails', async (req, res) => {
   
     try {
       const thisApp = await TestResponses.findOne({ applicantEmail: req.body.applicantEmail });
-      if (!thisApp) {
+      if (!thisApp) 
+      {
         console.log("does not exist");
         const newTestResp = new TestResponses({
           applicantEmail: req.body.applicantEmail,
@@ -234,7 +238,8 @@ router.post('/getvideointerviewdetails', async (req, res) => {
         });
   
         await newTestResp.save();
-      } else {
+      } 
+      else {
         console.log("already exists");
         const updatedAnswers = Object.keys(req.body.answers).map(questionIndex => ({
           questionIndex: parseInt(questionIndex),
@@ -255,7 +260,7 @@ router.post('/getvideointerviewdetails', async (req, res) => {
         console.log(found);
       }
     } catch (error) {
-      console.error('Error retrieving form responses:', error);
+      console.error('Error:', error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
