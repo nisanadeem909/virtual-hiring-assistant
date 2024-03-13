@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ApplicantVideo.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import img1 from './interview.jpg';
+
 import axios from 'axios'
 export default function IntroductionPage() {
   const location = useLocation();
@@ -134,11 +134,7 @@ export default function IntroductionPage() {
                     </ul>
                   </div>
   
-                  <p className='nisa-intro2-title'>
-                    <span className='nisa-intro3-title'>Important:</span> Position your camera to capture a vision like shown below.
-                  </p>
-  
-                  <img className='nisa-interview-img' src={img1} alt="Interview Demo" />
+                  
                 </div>
               )}
   

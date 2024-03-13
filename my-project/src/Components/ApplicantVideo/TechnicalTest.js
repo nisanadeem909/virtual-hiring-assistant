@@ -35,8 +35,17 @@ export default function TechnicalTest() {
     }], options: ['']}]);
   const [answeredQuestions, setAnsweredQuestions] = useState(Array(questions.length).fill(false)); // State to track answered questions
 
+  // Function to retrieve timer value from local storage
+  const getTimerFromLocalStorage = () => {
+    const storedTimer = localStorage.getItem('timer');
+    return storedTimer ? JSON.parse(storedTimer) : null;
+  };
     useEffect(() => {
-      
+      // Retrieve timer value from local storage on component mount
+    const storedTimer = getTimerFromLocalStorage();
+    if (storedTimer !== null) {
+      setTimer(storedTimer);
+    }
       if (location.state && location.state.job) {
         setJob(location.state.job);
         var param = { job: location.state.job._id };
@@ -44,7 +53,7 @@ export default function TechnicalTest() {
           .then((response) => {
             if (response.data.status === "success") {
               setQuestions(response.data.form.questions);
-              setTimer(response.data.form.duration * 60);
+             // setTimer(response.data.form.duration * 60);
               setAnsweredQuestions(Array(response.data.form.questions.length).fill(false)); // Initialize answeredQuestions state
             } else {
               console.error(response.data.error);
@@ -60,13 +69,17 @@ export default function TechnicalTest() {
       }
     }, [location.state, navigate]);
 
-  useEffect(() => {
-    const timerInterval = setInterval(() => {
-      setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
-    }, 1000);
-
-    return () => clearInterval(timerInterval); 
-  }, []);
+    useEffect(() => {
+      const timerInterval = setInterval(() => {
+        setTimer((prevTimer) => {
+          // Save timer value to local storage on every change
+          localStorage.setItem('timer', JSON.stringify(prevTimer));
+          return prevTimer > 0 ? prevTimer - 1 : 0;
+        });
+      }, 1000);
+  
+      return () => clearInterval(timerInterval);
+    }, []);
 
   const handleOptionChange = (questionId, selectedOption) => {
     setSelectedOptions((prevOptions) => ({
@@ -87,14 +100,17 @@ export default function TechnicalTest() {
     setShowConfirmation(false);
   };
   const handleConfirm=()=>{
-    //navigate('done')
+    
+    navigate('done')
   }
   const handleSubmit = () => {
    
    setShowConfirmation(true)
 
    evaluateTest() 
-  //navigate('done') //UNCOMMENT LATER LAAZMI-----JUST FOR TESTING
+   localStorage.removeItem('timer');
+    localStorage.removeItem('videoFormTimer');
+  navigate('done') //UNCOMMENT LATER LAAZMI
 
   };
 
@@ -147,7 +163,7 @@ export default function TechnicalTest() {
         </div>
       </div>
       <hr className='nisa-horizontal-line'></hr>
-      <p><b>Important: Click submit for every question individually. Otherwise your answers will NOT be submitted.</b></p>
+      <p id="nab-vid-imp-msg"><b>Important: Click submit for every question individually. Otherwise your answers will NOT be submitted.</b></p>
       <div className="question-list">
         {questions.map((question, index) => (
           <div key={index} className="question-container">

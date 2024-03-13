@@ -1,49 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios'
-
-
+import axios from 'axios';
+import img1 from './interview.jpg';
+//import ConfirmationPopup from './ConfirmationPopup'; // Assuming ConfirmationPopup is imported from a separate file
+function ConfirmationPopup({ message, onConfirm, onCancel }) {
+  return (
+    <div className="nab-confirmation-popup-overlay">
+      <div className="nab-confirmation-popup">
+        <p id="nab-conf-msg">{message}</p>
+        <div className="nab-confirmation-buttons">
+          
+          <button  className="nisa-nabeeha-submit-button" onClick={onCancel}>Close</button>
+        </div>
+      </div>
+    </div>
+  );
+}
 export default function VideoForm() {
-  const [duration, setDuration] = useState();
-  const [timer, setTimer] = useState(15 * 60); // Default value is 15 otherwise set by UseEffect
-
-  const [timeLimitReached, setTimeLimitReached] = useState(false);
-  const [videoFile, setVideoFile] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [duration, setDuration] = useState();
+  const [timer, setTimer] = useState(15 * 60);
+  const [timeLimitReached, setTimeLimitReached] = useState(false);
+  const [videoFile, setVideoFile] = useState(null);
   const [job, setJob] = useState(null);
   const [allquestions, setQuestions] = useState([]);
-
-
-  const [img,setImg] = useState('./personcircle.png'); //this is the default profilepic
-  const [imgSet,setImgSet] = useState("false")
+  const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
 
   useEffect(() => {
-    if (duration) {
-      setTimer(duration*60);
+    // Retrieve timer value from local storage on component mount
+    const storedTimer = localStorage.getItem('videoFormTimer');
+    if (storedTimer) {
+      setTimer(parseInt(storedTimer));
     }
-  }, [duration]);
 
-  useEffect(() => {
-    const countdownInterval = setInterval(() => {
-      setTimer((prevTimer) => {
-        if (prevTimer > 0) {
-          return prevTimer - 1;
-        } 
-        else {
-          clearInterval(countdownInterval);
-          setTimeLimitReached(true);
-
-
-          navigate('test', { state: { job } });
-        }
-      });
-    }, 1000);
-
-    return () => clearInterval(countdownInterval);
-  }, [timer, navigate, job]);
-
-  useEffect(() => {
     if (location.state && location.state.job) {
       setJob(location.state.job);
 
@@ -62,6 +52,24 @@ export default function VideoForm() {
     }
   }, [location.state, navigate]);
 
+  useEffect(() => {
+    const countdownInterval = setInterval(() => {
+      setTimer((prevTimer) => {
+        localStorage.setItem('videoFormTimer', prevTimer.toString()); // Save timer value to local storage
+        if (prevTimer > 0) {
+          return prevTimer - 1;
+        } else {
+          clearInterval(countdownInterval);
+          setTimeLimitReached(true);
+          upload(); //if the timer expires and the user has not uploaded anything
+          navigate('test', { state: { job } });
+        }
+      });
+    }, 1000);
+
+    return () => clearInterval(countdownInterval);
+  }, [timer, navigate, job]);
+
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
@@ -74,32 +82,32 @@ export default function VideoForm() {
   };
 
   const handleNextButtonClick = () => {
-    upload();
-    
-    navigate('test', { state: { job } }); 
+    if (!videoFile && !timeLimitReached) {
+      setShowConfirmationPopup(true);
+    } else {
+      upload();
+      navigate('test', { state: { job } });
+    }
   };
 
-  const nextButtonDisabled = timeLimitReached;
+  const handleConfirmSubmission = () => {
+    setShowConfirmationPopup(false);
+  };
 
-  const upload = () =>{
+  const upload = () => {
+    // If video file has not been attached, handle on the server side
+    var formData = new FormData();
+    formData.append("Image", videoFile);
+    formData.append("Email", sessionStorage.getItem('email'));
+    formData.append("JobID", location.state.job._id);
 
-    //If video file has not been attached. that has been handled on server side. dont worry.
-      var fdata = new FormData();
-      fdata.append("Image", videoFile);
-      fdata.append("Email", sessionStorage.getItem('email'));
-      fdata.append("JobID",location.state.job._id)
+    axios.post('http://localhost:8000/nabeeha/uploadapplicantvideo', formData)
+      .then(res => {})
+      .catch(err => {
+        alert(err);
+      });
+  };
 
-      axios.post('http://localhost:8000/nabeeha/uploadapplicantvideo',fdata)
-      .then(res => {
-        
-       
-    }).catch(
-        err=>{
-            alert(err)
-        });
-
-     
-}
   return (
     <div className="post-jobnew-container">
       <div className='video-header'>
@@ -119,16 +127,29 @@ export default function VideoForm() {
           ))}
         </ul>
 
+        
         <p className='nisa-intro2-title'>
-          <span className='nisa-intro3-title'>Important:</span> Press the next button once you have uploaded the video
+                    <span className='nisa-intro3-title'>Important:</span> Position your camera to capture a vision like shown below.
+                  </p>
+  
+                  <img className='nisa-interview-img' src={img1} alt="Interview Demo" />
+                  <p className='nisa-intro2-title'>
+         <b>Press the next button once you have uploaded the video</b> 
         </p>
-          <div className='nisa-v-btns'>
-      <input className='upload-v-btn1' type='file' accept='video/*' onChange={handleFileChange} />
-      <button className='upload-video-btn' onClick={handleNextButtonClick} disabled={nextButtonDisabled}>
-        {nextButtonDisabled ? 'Time Limit Reached' : 'Next'}
-      </button>
+        <div className='nisa-v-btns'>
+          <input className='upload-v-btn1' type='file' accept='video/*' onChange={handleFileChange} />
+          <button className='upload-video-btn' onClick={handleNextButtonClick} disabled={timeLimitReached}>
+            {timeLimitReached ? 'Time Limit Reached' : 'Next'}
+          </button>
+        </div>
+      </div>
+      {showConfirmationPopup && (
+        <ConfirmationPopup
+          message="You cannot proceed before submitting a video file."
+          onConfirm={handleConfirmSubmission}
+          onCancel={() => setShowConfirmationPopup(false)}
+        />
+      )}
     </div>
-  </div>
-</div>
-
-  )}
+  );
+}

@@ -174,8 +174,8 @@ export default function JobDashboardPage() {
         }
         else if (index == 3) {
            
-              setContent(<VideoInterview job={job}></VideoInterview>); 
-              //setContent(<VideoResponses job={job}></VideoResponses>)
+              //setContent(<VideoInterview job={job}></VideoInterview>); 
+              setContent(<VideoResponses job={job}></VideoResponses>)
 
         }
         else if (index == 4) {
