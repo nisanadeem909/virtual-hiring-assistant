@@ -52,6 +52,7 @@ export default function TechnicalTest() {
         axios.post("http://localhost:8000/komal/getjobtest", param)
           .then((response) => {
             if (response.data.status === "success") {
+              //alert(JSON.stringify(response.data.form))
               setQuestions(response.data.form.questions);
              // setTimer(response.data.form.duration * 60);
               setAnsweredQuestions(Array(response.data.form.questions.length).fill(false)); // Initialize answeredQuestions state

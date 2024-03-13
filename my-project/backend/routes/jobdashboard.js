@@ -501,7 +501,7 @@ router.post("/editp3days", async(req,res)=>{
 
 })
 
-router.post('/getjobtest', async (req, res) => {
+router.post('/getjobtestnisa', async (req, res) => {
     try {
       const { job } = req.body;
   
