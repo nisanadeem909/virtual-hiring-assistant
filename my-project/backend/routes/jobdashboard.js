@@ -441,4 +441,45 @@ router.post("/checkvideocreated", async(req,res)=>{
 
 })
 
+router.post('/getjobtest', async (req, res) => {
+    try {
+      const { job } = req.body;
+  
+      // Assuming job is an object containing _id field
+      const jobID = job._id;
+  
+      // Find the test details based on the job ID
+      const testDetails = await Videos.findOne({ jobID });
+  
+      if (!testDetails) {
+        return res.status(404).json({ status: 'error', error: 'Test details not found' });
+      }
+  
+      res.status(200).json({ status: 'success', test: testDetails });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ status: 'error', error: 'Internal Server Error' });
+    }
+  });
+
+  router.post('/updatejobtest', async (req, res) => {
+    try {
+      const { test } = req.body;
+      const { jobID } = req.params; 
+  
+      // Update the job test data in the database based on the jobID
+      const updatedTest = await Videos.findOneAndUpdate({ jobID }, test, { new: true });
+  
+      if (updatedTest) {
+        res.status(200).json({ status: "success", updatedTest });
+      } else {
+        res.status(404).json({ status: "error", error: "Job test not found" });
+      }
+    } catch (error) {
+      console.error("Server Error:", error);
+      res.status(500).json({ status: "error", error: "Server error occurred" });
+    }
+  });
+  
+
 module.exports = router;

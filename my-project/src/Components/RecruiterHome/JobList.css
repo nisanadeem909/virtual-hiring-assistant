@@ -3,6 +3,11 @@
   margin-bottom: 2%;
   position: relative;
 }
+.nisa-load{
+ width: 260px;
+ height: 200px;
+ margin-top: 10%;
+}
 #nab-filter-button{
   background-color: #012641;
   color: white;
