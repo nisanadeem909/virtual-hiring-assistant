@@ -328,7 +328,6 @@ const jobSchema = new Schema({
   P3Days:{
     type:Number,
   },
-
 }, {
   timestamps: true,
 });
@@ -616,6 +615,11 @@ const techtests = new Schema({
   emailBody:{
     type:String
   },
+  emailStatus:{
+    type:Boolean,
+    default:false
+  },
+ 
  
   
 

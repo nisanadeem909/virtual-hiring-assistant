@@ -45,6 +45,15 @@ export default function CreateTest(props) {
       const selectedDuration = event.target.value;
       setTestDuration(selectedDuration);
     };
+
+    const formatDate2 = (date) => {
+        if (!date) return '';
+        const formattedDate = new Date(date); 
+        const year = formattedDate.getFullYear();
+        const month = `${formattedDate.getMonth() + 1}`.padStart(2, '0');
+        const day = `${formattedDate.getDate()}`.padStart(2, '0');
+        return `${day}/${month}/${year}`;
+    };
     
 
     const handlePointsChange = (index,event) => {
@@ -73,7 +82,7 @@ export default function CreateTest(props) {
           const link = `localhost:3000/applicant/videointerview/${job._id}`
 
            // Append the link to the end of the email body
-                  const updatedEmailBody = `${formEmailBody}\n\n${link}\n\n${formEmailDeadline}${startDate}\n\nThe link will be available for ${days} days after the start date!\n\nPlease find your password below which you will need to login:\n`;
+                  const updatedEmailBody = `${formEmailBody}\n<b>${link}</b>\n\n${formEmailDeadline}<b>${formatDate2(startDate)}</b>\n\nThe link will be available for ${days} days after the start date!\n\nPlease find your password below which you will need to login:\n`;
                   //alert(updatedEmailBody)
                 //   try {
                 //     const response = await axios.post(`http://localhost:8000/nisa/api/emailForm/${job._id}`, {

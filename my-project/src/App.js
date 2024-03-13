@@ -41,7 +41,12 @@ import TechnicalTest from './Components/ApplicantVideo/TechnicalTest.js';
 import TestDone from './Components/ApplicantVideo/TestDone.js';
 import MakeTest from './Components/RecruiterTechTest/CreateTestPage.js';
 import EditTest from './Components/RecruiterTechTest/EditTestPage.js';
+
 import VideoPage from './Components/JobDashboard/VideoPage.js'
+
+import VideoEditPage from './Components/JobDashboard/VideoEditPage.js';
+import VideoEditBtn from './Components/JobDashboard/VideoEditBtn.js';
+
 function App() {
   return (
    
@@ -110,7 +115,13 @@ function App() {
             <Route path="job/createform/phase2email" element={<FormCollectionEmail/>}></Route>
             <Route path="job/maketest" element={<MakeTest/>}></Route>
             <Route path="job/edittest" element={<EditTest/>}></Route>
+
             <Route path="job/video" element={<VideoPage />} />
+
+            <Route path="job/editvideobtn" element={<VideoEditBtn/>}></Route>
+            <Route path="job/editvideobtn/editvideo" element={<VideoEditPage/>}></Route>
+
+
             
             
             

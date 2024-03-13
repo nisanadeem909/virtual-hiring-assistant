@@ -441,4 +441,104 @@ router.post("/checkvideocreated", async(req,res)=>{
 
 })
 
+router.post("/editp3days", async(req,res)=>{
+    console.log(req.body);
+
+    const jobId = req.body.jobId;
+    const newP3Days = req.body.newDays;
+
+    var msg;
+
+    try {
+
+        const job = await Job.findOneAndUpdate(
+            { _id: jobId },
+            { $set: { P3Days: newP3Days } },
+            { new: true } // Return the updated document
+          );
+
+        if (!job)
+            msg = {"status": "error",error:"Job not found!"}
+        else {
+            await Videos.findOneAndUpdate(
+                { jobID: jobId },
+                { $set: { days: newP3Days } },
+                { new: true } 
+            );
+
+            await TechTests.findOneAndUpdate(
+                { jobID: jobId },
+                { $set: { days: newP3Days } },
+                { new: true }
+            );
+
+            const newNotification = new Notification({
+                companyname: job.companyname,
+                companyID: job.companyID,
+                jobTitle: job.jobTitle,
+                notifText: "Days for interview/test link to remain open extended to "+newP3Days,
+                recruiterUsername: job.postedby,
+                notifType: 3, 
+                jobID: job._id,
+              });
+          
+              const notification = await newNotification.save();
+
+            msg = {"status": "success",job:job}
+        }
+        
+    }
+        catch (error) {
+            console.error('Error adding job:', error);
+            msg = {"status": "error"};
+
+    } 
+    console.log(msg);
+
+    res.json(msg);
+
+    res.end();
+
+})
+
+router.post('/getjobtest', async (req, res) => {
+    try {
+      const { job } = req.body;
+  
+      // Assuming job is an object containing _id field
+      const jobID = job._id;
+  
+      // Find the test details based on the job ID
+      const testDetails = await Videos.findOne({ jobID });
+  
+      if (!testDetails) {
+        return res.status(404).json({ status: 'error', error: 'Test details not found' });
+      }
+  
+      res.status(200).json({ status: 'success', test: testDetails });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ status: 'error', error: 'Internal Server Error' });
+    }
+  });
+
+  router.post('/updatejobtest', async (req, res) => {
+    try {
+      const { test } = req.body;
+      const { jobID } = req.params; 
+  
+      // Update the job test data in the database based on the jobID
+      const updatedTest = await Videos.findOneAndUpdate({ jobID }, test, { new: true });
+  
+      if (updatedTest) {
+        res.status(200).json({ status: "success", updatedTest });
+      } else {
+        res.status(404).json({ status: "error", error: "Job test not found" });
+      }
+    } catch (error) {
+      console.error("Server Error:", error);
+      res.status(500).json({ status: "error", error: "Server error occurred" });
+    }
+  });
+
 module.exports = router;
