@@ -29,8 +29,10 @@ client = MongoClient(mongo_uri)
 db = client.test  
 notification_collection = db['notifications']
 jobapp_collection = db['jobapplications']  
-job_collection = db['jobs']  
+job_collection = db['jobs'] 
 companyreq_collection = db['companyrequests']  ###KOMAL ADDED
+tech_test_collection = db['techtests']
+videos_collection = db['videos'] #Nisa added
 
 try:
     _ = db.jobs.find_one()
@@ -559,7 +561,53 @@ def sendCompanyEmails():
         for companyreq in reqs:
             send_company_email(companyreq)
             companyreq_collection.delete_one({'_id': companyreq['_id']})
-            
+
+def process_emails():
+    port = 587  # For starttls
+    smtp_server = "smtp.gmail.com"
+    sender_email = "virtualhiringassistant04@gmail.com"
+    app_password = "glke rmyu xnfa yozn"
+    
+    # Fetch all tech tests from the database with email status 0
+    tech_tests = list(tech_test_collection.find({'emailStatus': False}))
+   
+    for tech_test in tech_tests:
+        job_id = tech_test.get('jobID')
+
+        # Check if there is a video for the same job ID
+        video = videos_collection.find_one({'jobID': job_id})
+
+        if video:
+            # Extract email body, email subject, email, and name from the tech test
+            email_body = tech_test.get('emailBody')
+            email_subject = tech_test.get('emailSubject')
+            applications = list(jobapp_collection.find({'jobID': job_id}))
+
+            # Iterate through each application and extract email, name, and password
+            for application in applications:
+                email = application.get('email')
+                name = application.get('name')
+                password = application.get('password')
+
+                # Append password to the email body
+                email_body_with_password = f"{email_body}\n\nPassword: {password}"
+                message = f"Subject: {email_subject}\n\nDear {name},\n\n{email_body_with_password}"
+                
+                if password:
+                    context = ssl.create_default_context()
+
+                    with smtplib.SMTP(smtp_server, port) as server:
+                        server.ehlo()
+                        server.starttls(context=context)
+                        server.ehlo()
+                        server.login(sender_email, app_password)
+                        server.sendmail(sender_email, email, message)
+                    
+                    # Update emailStatus to true in the tech test collection
+                    tech_test_collection.update_one({'_id': tech_test['_id']}, {'$set': {'emailStatus': True}})
+                else:
+                    print(f"Password not found for {email}")
+
 
 ##############################################################################
         
@@ -586,17 +634,19 @@ def Formtimer():
                 FormScreening(job)
                 
 
-#schedule.every(1).minutes.do(sendFormEmails)
+schedule.every(1).minutes.do(sendFormEmails)
 while True:
     CVtimer()
     Formtimer()
     sendFormEmails()
     sendCompanyEmails() #KOMAL ADDED
+    process_emails() #Nisa added
     #schedule.run_pending()
     time.sleep(45)  
     
-if __name__ == '__main__':
-    app.run(debug=True) 
+# if __name__ == '__main__':
+#     #app.run(debug=True) 
+#     process_emails() #Nisa added
     
     
 
