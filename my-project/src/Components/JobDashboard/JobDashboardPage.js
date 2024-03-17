@@ -14,7 +14,11 @@ import ShortlistedFormResponsesPage from '../RecruiterFormResponses/shortlistedf
 import VideoInterview from './VideoInterview';
 import { useLocation, useNavigate } from 'react-router-dom';
 import VideoResponses from '../RecruiterVideoResponses/videoresponsespage'
+
 import TestResponses from '../RecruiterVideoResponses/testresponsespage'
+
+import VideoEditBtn from './VideoEditBtn';
+
 
 export default function JobDashboardPage() {
 
@@ -157,7 +161,8 @@ export default function JobDashboardPage() {
                 setContent(<VideoInterview job={job}></VideoInterview>); 
               else if (!testExists || job.status < 3 || new Date(job.P3StartDate) > new Date())
               {
-                setContent(<label>Edit Video</label>) // put edit video button here
+              
+                setContent(<VideoEditBtn job={job}></VideoEditBtn>) // put edit video button here
               }
               else {
                 setContent(<VideoResponses job={job}></VideoResponses>)
