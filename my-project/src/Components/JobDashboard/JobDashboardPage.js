@@ -14,6 +14,7 @@ import ShortlistedFormResponsesPage from '../RecruiterFormResponses/shortlistedf
 import VideoInterview from './VideoInterview';
 import { useLocation, useNavigate } from 'react-router-dom';
 import VideoResponses from '../RecruiterVideoResponses/videoresponsespage'
+import TestResponses from '../RecruiterVideoResponses/testresponsespage'
 
 export default function JobDashboardPage() {
 
@@ -151,7 +152,7 @@ export default function JobDashboardPage() {
         }
         else if (index == 3) {
           
-
+          //setContent(<VideoResponses job={job}></VideoResponses>)
               if (!videoExists)
                 setContent(<VideoInterview job={job}></VideoInterview>); 
               else if (!testExists || job.status < 3 || new Date(job.P3StartDate) > new Date())
@@ -165,12 +166,14 @@ export default function JobDashboardPage() {
 
         }
         else if (index == 4) {
+          //setContent(<TestResponses job={job}/>);
           if (!testExists)
             setContent(<TestCreating job={job}></TestCreating>)
           else if (job.status < 3 || new Date(job.P3StartDate) > new Date())
             setContent(<TestEditing job={job}></TestEditing>)
           else // test responses page should be here
-            setContent(<img src={loading} className='kjobdashboardpage-loading-img'></img>);
+            setContent(<TestResponses job={job}/>);
+            
         }
         // else if (index == 5) {} // shortlisting tab
         else {

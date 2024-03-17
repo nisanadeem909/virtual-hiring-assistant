@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cors=require('cors');
-const {Job, Recruiter,JobApplication,Form,FormResponses,Notification,VideosResponses,Videos, TechTests} = require('../mongo');
+const {Job, Recruiter,JobApplication,Form,FormResponses,Notification,VideosResponses,Videos, TechTests,TestResponses} = require('../mongo');
 router.use(express.static('files'));
 const path = require('path');
 router.use("/static",express.static(path.join(__dirname,'public')));
@@ -83,6 +83,65 @@ router.post('/getvideointerviewstartdate', async (req, res) => {
     }
   } catch (error) {
     console.error('Error retrieving tech test:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+
+});
+
+router.post('/fetchtestresponsesnabeeha', async (req, res) => {
+
+  console.log("I am in fetch test response")
+  console.log(req.body)
+
+  try {
+    const jobIDToFind = req.body.jobId;
+
+    const formResponses = await TestResponses.find({ jobID: jobIDToFind }).exec();
+    
+    console.log('Test Responses with job ID', jobIDToFind, ':', formResponses);
+    
+    res.json({ responses: formResponses });
+  } catch (error) {
+    console.error('Error retrieving test responses:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+
+});
+router.post('/fetchtestresponsestats', async (req, res) => {
+
+  console.log("I am in fetch test response")
+  console.log(req.body)
+
+  try {
+    const jobIDToFind = req.body.jobID;
+    const appID = req.body.applicantEmail;
+
+    const testResponse = await TestResponses.findOne({ jobID: jobIDToFind, applicantEmail:appID}).exec();
+    
+    console.log('Test Responses with job ID', jobIDToFind, ':', testResponse);
+    
+    let totalCorrect = 0;
+    let totalIncorrect = 0;
+
+    
+      testResponse.answers.forEach(answer => {
+        if (answer.status === true) {
+          totalCorrect++;
+        } else {
+          totalIncorrect++;
+        }
+      });
+    
+
+    res.json({ 
+      timeTaken: 10,
+      overallScore: testResponse.overallScore,
+      totalCorrect: totalCorrect,
+      totalIncorrect: totalIncorrect,
+      totalLeft: 0
+    });
+  } catch (error) {
+    console.error('Error retrieving test responses:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 
