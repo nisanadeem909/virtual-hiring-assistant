@@ -55,7 +55,6 @@ function App() {
       <Route path="/" element={<Navbar />}>
           <Route index element={<HomePage />} />
           <Route path="login" element={<Login/>}></Route>
-          {/*<Route path="signup" element={<Signup/>}></Route>*/}
           <Route path="about" element={<AboutUs/>}></Route>
           <Route path="companysignup" element={<CompanySignup/>}></Route>
           <Route path="*" element={<Error/>}></Route>
@@ -118,8 +117,8 @@ function App() {
 
             <Route path="job/video" element={<VideoPage />} />
 
-            <Route path="job/editvideobtn" element={<VideoEditBtn/>}></Route>
-            <Route path="job/editvideobtn/editvideo" element={<VideoEditPage/>}></Route>
+           
+            <Route path="job/editvideo" element={<VideoEditPage/>}></Route>
 
 
             

@@ -17,8 +17,7 @@ const formatDate = (date) => {
   };
 
 router.post("/getjob", async(req,res)=>{
-    console.log(req.body);
-
+   
     const id = req.body.jobId;
 
     var msg;
@@ -38,7 +37,7 @@ router.post("/getjob", async(req,res)=>{
             msg = {"status": "error"};
 
     } 
-    console.log(msg);
+    
 
     res.json(msg);
 
@@ -47,7 +46,7 @@ router.post("/getjob", async(req,res)=>{
 })
 
 router.post("/getjobform", async(req,res)=>{
-    console.log(req.body);
+
 
     const id = req.body.job;
 
@@ -57,7 +56,7 @@ router.post("/getjobform", async(req,res)=>{
 
         const form = await Form.findOne({ jobID: id });
 
-        console.log(form)
+       
 
         if (!form)
             msg = {"status": "error",error:"not found"}
@@ -70,7 +69,7 @@ router.post("/getjobform", async(req,res)=>{
             msg = {"status": "error"};
 
     } 
-    console.log(msg);
+    
 
     res.json(msg);
 
@@ -79,7 +78,7 @@ router.post("/getjobform", async(req,res)=>{
 })
 
 router.post("/editjobcvscore", async(req,res)=>{
-    console.log(req.body);
+    
 
     const id = req.body.jobId;
 
@@ -115,7 +114,7 @@ router.post("/editjobcvscore", async(req,res)=>{
             msg = {"status": "error",'error':error};
 
     } 
-    console.log(msg);
+   
 
     res.json(msg);
 
@@ -125,7 +124,7 @@ router.post("/editjobcvscore", async(req,res)=>{
 
 
 router.post("/editjobcvscore/notautomated", async(req,res)=>{
-    console.log(req.body);
+    
 
     const id = req.body.jobId;
 
@@ -155,7 +154,7 @@ router.post("/editjobcvscore/notautomated", async(req,res)=>{
             msg = {"status": "error",'error':error};
 
     } 
-    console.log(msg);
+   
 
     res.json(msg);
 
@@ -164,7 +163,7 @@ router.post("/editjobcvscore/notautomated", async(req,res)=>{
 })
 
 router.post("/editjobcvdeadline", async(req,res)=>{
-    console.log(req.body);
+
 
     const id = req.body.jobId;
 
@@ -206,7 +205,7 @@ router.post("/editjobcvdeadline", async(req,res)=>{
             msg = {"status": "error",'error':error};
 
     } 
-    console.log(msg);
+    
 
     res.json(msg);
 
@@ -215,8 +214,7 @@ router.post("/editjobcvdeadline", async(req,res)=>{
 })
 
 router.post("/editjobcvdeadline/notautomated", async(req,res)=>{
-    console.log(req.body);
-
+   
     const id = req.body.jobId;
 
     var msg;
@@ -258,7 +256,7 @@ router.post("/editjobcvdeadline/notautomated", async(req,res)=>{
             msg = {"status": "error",'error':error};
 
     } 
-    console.log(msg);
+   
 
     res.json(msg);
 
@@ -267,7 +265,7 @@ router.post("/editjobcvdeadline/notautomated", async(req,res)=>{
 })
 
 router.post("/editjobformdeadline", async(req,res)=>{
-    console.log(req.body);
+   
 
     const id = req.body.jobId;
 
@@ -302,7 +300,7 @@ router.post("/editjobformdeadline", async(req,res)=>{
             msg = {"status": "error",'error':error};
 
     } 
-    console.log(msg);
+
 
     res.json(msg);
 
@@ -311,7 +309,7 @@ router.post("/editjobformdeadline", async(req,res)=>{
 })
 
 router.post("/editjobdescription", async(req,res)=>{
-    console.log(req.body);
+    
 
     const id = req.body.jobId;
 
@@ -333,7 +331,7 @@ router.post("/editjobdescription", async(req,res)=>{
             msg = {"status": "error",'error':error};
 
     } 
-    console.log(msg);
+
 
     res.json(msg);
 
@@ -344,7 +342,7 @@ router.post("/editjobdescription", async(req,res)=>{
 
 
 router.post("/publicizejob", async(req,res)=>{
-    console.log(req.body);
+    
 
     const id = req.body.jobId;
 
@@ -366,7 +364,7 @@ router.post("/publicizejob", async(req,res)=>{
             msg = {"status": "error",'error':error};
 
     } 
-    console.log(msg);
+    
 
     res.json(msg);
 
@@ -378,7 +376,7 @@ router.post("/publicizejob", async(req,res)=>{
 
 
 router.post("/checktestcreated", async(req,res)=>{
-    console.log(req.body);
+    
 
     const id = req.body.jobId;
 
@@ -388,7 +386,7 @@ router.post("/checktestcreated", async(req,res)=>{
 
         const form = await TechTests.findOne({ jobID: id });
 
-        console.log(form)
+       
 
         if (!form)
             msg = {"status": "success",found:false}
@@ -401,7 +399,7 @@ router.post("/checktestcreated", async(req,res)=>{
             msg = {"status": "error",error: error};
 
     } 
-    console.log(msg);
+  
 
     res.json(msg);
 
@@ -410,7 +408,7 @@ router.post("/checktestcreated", async(req,res)=>{
 })
 
 router.post("/checkvideocreated", async(req,res)=>{
-    console.log(req.body);
+  
 
     const id = req.body.jobId;
 
@@ -420,7 +418,7 @@ router.post("/checkvideocreated", async(req,res)=>{
 
         const form = await Videos.findOne({ jobID: id });
 
-        console.log(form)
+      
 
         if (!form)
             msg = {"status": "success",found:false}
@@ -433,7 +431,7 @@ router.post("/checkvideocreated", async(req,res)=>{
             msg = {"status": "error",error: error};
 
     } 
-    console.log(msg);
+   
 
     res.json(msg);
 
@@ -442,7 +440,7 @@ router.post("/checkvideocreated", async(req,res)=>{
 })
 
 router.post("/editp3days", async(req,res)=>{
-    console.log(req.body);
+   
 
     const jobId = req.body.jobId;
     const newP3Days = req.body.newDays;
@@ -493,7 +491,7 @@ router.post("/editp3days", async(req,res)=>{
             msg = {"status": "error"};
 
     } 
-    console.log(msg);
+    
 
     res.json(msg);
 
@@ -501,35 +499,34 @@ router.post("/editp3days", async(req,res)=>{
 
 })
 
-router.post('/getjobtestnisa', async (req, res) => {
+router.post('/getjobtestnisa', async(req, res) => {
     try {
-      const { job } = req.body;
-  
-      // Assuming job is an object containing _id field
-      const jobID = job._id;
-  
-      // Find the test details based on the job ID
+       
+      const jobID = req.query.jobID;
+     
       const testDetails = await Videos.findOne({ jobID });
-  
+     
       if (!testDetails) {
         return res.status(404).json({ status: 'error', error: 'Test details not found' });
       }
   
       res.status(200).json({ status: 'success', test: testDetails });
+      
     } catch (error) {
       console.error(error);
       res.status(500).json({ status: 'error', error: 'Internal Server Error' });
     }
   });
 
-  router.post('/updatejobtest', async (req, res) => {
+  router.post('/updatejobtestnisa/:jobID', async (req, res) => {
     try {
-      const { test } = req.body;
-      const { jobID } = req.params; 
-  
+      console.log("=============HI==================");
+      const { questions, duration, acceptabilityTraits, importance } = req.body;
+      const { jobID } = req.params;
+      
       // Update the job test data in the database based on the jobID
-      const updatedTest = await Videos.findOneAndUpdate({ jobID }, test, { new: true });
-  
+      const updatedTest = await Videos.findOneAndUpdate({ jobID }, { $set: { questions, duration, acceptabilityTraits, importance } }, { new: true });
+      
       if (updatedTest) {
         res.status(200).json({ status: "success", updatedTest });
       } else {
@@ -540,5 +537,6 @@ router.post('/getjobtestnisa', async (req, res) => {
       res.status(500).json({ status: "error", error: "Server error occurred" });
     }
   });
+  
 
 module.exports = router;
