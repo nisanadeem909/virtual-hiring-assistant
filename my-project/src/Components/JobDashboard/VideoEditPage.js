@@ -32,11 +32,14 @@ export default function VideoEditPage() {
 
       useEffect(() => {
         setJob(stateData.job);
-        const param = { job: stateData.job._id };
-        axios.post("http://localhost:8000/komal/getjobtestnisa", param) // in dashboard
+        
+        
+        axios.post(`http://localhost:8000/komal/getjobtestnisa?jobID=${stateData.job._id}`) // in dashboard
           .then((response) => {
             if (response.data.status === "success") {
-              setVideoTest(response.data.test); // Assuming the response contains the video test data in 'test' field
+               
+              setVideoTest(response.data.test); 
+              
             } else {
               console.error(response.data.error);
               setOpenModal(true);
