@@ -521,10 +521,16 @@ router.post('/getjobtestnisa', async(req, res) => {
   router.post('/updatejobtestnisa/:jobID', async (req, res) => {
     try {
       console.log("=============HI==================");
-      const { questions, duration, acceptabilityTraits, importance } = req.body;
+      console.log(req.body);
+      // Extract the test object from the request body
+      const { test } = req.body;
+
+      // Extract the fields from the test object
+      const { questions, duration, acceptabilityTraits, importance } = test;
       const { jobID } = req.params;
       
-      // Update the job test data in the database based on the jobID
+      console.log(questions)
+        console.log(duration)
       const updatedTest = await Videos.findOneAndUpdate({ jobID }, { $set: { questions, duration, acceptabilityTraits, importance } }, { new: true });
       
       if (updatedTest) {
