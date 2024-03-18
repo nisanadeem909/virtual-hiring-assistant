@@ -20,7 +20,7 @@ export default function EditVideo(props) {
     const [nimp, setnewImp] = useState();
     const [ntraits, setnewTraits] = useState([[]]);
     const [nquestions, setnewQuestions] = useState([]);
-
+    const [njob, setnewJob] = useState({});
     const [message, setMessage] = useState('');
     const [messageTitle, setMessageTitle] = useState('');
     const [openModal, setOpenModal] = useState(false);
@@ -30,13 +30,15 @@ export default function EditVideo(props) {
       
       
       const test = props.test;
+      const job = props.job;
+      setnewJob(job);
       setQuestions(test.questions || []);
       setTraits(test.acceptabilityTraits || []);
       setVideoDuration(test.duration || '');
       setImp(test.importance || '');
 
        
-    }, [props.test]);
+    },[props.job,props.test]);
 
 
     const handleNext = () => {
@@ -56,12 +58,18 @@ export default function EditVideo(props) {
           importance: imp,
         };
     
-        axios.post(`http://localhost:8000/komal/updatejobtestnisa/${props.job.jobID}`, { test: updatedTest })
+       
+        axios.post(`http://localhost:8000/komal/updatejobtestnisa/${njob._id}`, { test: updatedTest })
         .then((response) => {
           if (response.data.status === "success") {
-            // Handle success response
+            setMessageTitle('Form Saved');
+            setMessage('The form has been saved successfully.');
+            setOpenModal(true);
           } else {
-            // Handle error response
+            console.error(response.data.error);
+            setMessageTitle('Error');
+            setMessage('An error occurred while saving the form. Please try again later.');
+            setOpenModal(true);
           }
         })
         .catch(function (error) {
