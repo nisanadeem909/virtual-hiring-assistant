@@ -108,42 +108,70 @@ router.post('/fetchtestresponsesnabeeha', async (req, res) => {
 
 });
 router.post('/fetchtestresponsestats', async (req, res) => {
-
-  console.log("I am in fetch test response")
-  console.log(req.body)
+  console.log("I am in fetch test response");
+  console.log(req.body);
 
   try {
     const jobIDToFind = req.body.jobID;
     const appID = req.body.applicantEmail;
 
-    const testResponse = await TestResponses.findOne({ jobID: jobIDToFind, applicantEmail:appID}).exec();
-    
+    const testResponse = await TestResponses.findOne({ jobID: jobIDToFind, applicantEmail: appID }).exec();
+
     console.log('Test Responses with job ID', jobIDToFind, ':', testResponse);
-    
+
     let totalCorrect = 0;
     let totalIncorrect = 0;
 
-    
-      testResponse.answers.forEach(answer => {
-        if (answer.status === true) {
-          totalCorrect++;
-        } else {
-          totalIncorrect++;
-        }
-      });
-    
+    testResponse.answers.forEach(answer => {
+      if (answer.status === true) {
+        totalCorrect++;
+      } else {
+        totalIncorrect++;
+      }
+    });
 
-    res.json({ 
+    // Fetch the technical test associated with the jobIDToFind
+    const techTest = await TechTests.findOne({ jobID: jobIDToFind }).exec();
+
+    const categories = {}; // Object to store total correct and total answered in each category
+
+    // Initialize categories object with zeros
+    techTest.questions.forEach(question => {
+      const category = question.category;
+      categories[category] = { totalCorrect: 0, totalAnswered: 0 };
+    });
+
+    // Calculate total correct and total answered in each category
+    testResponse.answers.forEach(answer => {
+      const question = techTest.questions[answer.questionIndex];
+      const category = question.category;
+      categories[category].totalAnswered++;
+      if (answer.status === true) {
+        categories[category].totalCorrect++;
+      }
+    });
+
+    const categoryPercentages = {}; // Object to store percentage of correct questions in each category
+
+    // Calculate percentage of correct questions in each category
+    Object.keys(categories).forEach(category => {
+      const { totalCorrect, totalAnswered } = categories[category];
+      const correctPercentage = (totalCorrect / totalAnswered) * 100;
+      categoryPercentages[category] = correctPercentage.toFixed(2); // Round to two decimal places
+    });
+
+    res.json({
       timeTaken: 10,
       overallScore: testResponse.overallScore,
       totalCorrect: totalCorrect,
       totalIncorrect: totalIncorrect,
-      totalLeft: 0
+      totalLeft: 0,
+      categoryPercentages: categoryPercentages
     });
   } catch (error) {
     console.error('Error retrieving test responses:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-
 });
+
 module.exports = router;
