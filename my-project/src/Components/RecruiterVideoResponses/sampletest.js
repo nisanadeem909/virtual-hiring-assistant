@@ -9,6 +9,7 @@ import correcticon from './correct.png'
 import incorrecticon from './incorrect.png'
 import missingicon from './missing.png'
 import BarChart from './BarChart';
+import Footer from '../Footer';
 
 export default function SampleTest() {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ export default function SampleTest() {
 
     useEffect(() => {
         setEmail(location.state.email);
+        setJob(location.state.thisjob)
         var param = {'jobID':location.state.thisjob._id,'applicantEmail':location.state.email};
        //alert(JSON.stringify(param))
         axios.post("http://localhost:8000/nabeeha/fetchtestresponsestats",param).then((response) => {
@@ -40,7 +42,7 @@ export default function SampleTest() {
  
 
 
-   return (
+   return (<> 
     <div className="post-jobnew-container">
       <div className='video-header'>
         <h3 id="nab-t-resp-head">Technical Test Response for {email} </h3>
@@ -63,7 +65,7 @@ export default function SampleTest() {
                     <br></br>
                     <p id="timeiconptage"><img src={correcticon} alt="icon" style={{ width:"23px",height:"21px" }} /><span style={{fontWeight: "bold"}}> &nbsp;Questions correctly attempted:</span>&nbsp; {resp.totalCorrect}</p>
                     <br></br>
-                    <p id="timeiconptage"><img src={incorrecticon} alt="icon" style={{ width:"30px",height:"28px" }} /><span style={{fontWeight: "bold"}}>Questions incorrectly attempted:</span>&nbsp; {resp.totalIncorrect}</p>
+                    <p id="timeiconptage"><img src={incorrecticon} alt="icon" style={{ width:"23px",height:"23px" }} /><span style={{fontWeight: "bold"}}>&nbsp; Questions incorrectly attempted:</span>&nbsp; {resp.totalIncorrect}</p>
                     <br></br>
                     <p id="timeiconptage"><img src={missingicon} alt="icon" style={{ width:"25px",height:"18px" }} /><span style={{fontWeight: "bold"}}>&nbsp;Questions not attempted:</span>&nbsp; {resp.totalLeft}</p>
                 </div>
@@ -83,10 +85,12 @@ export default function SampleTest() {
         
       </div>
       
-      <button className="nisa-submit-button" >
+      <button className="nisa-submit-button" onClick={()=>navigate("fullresponse", { state: { job,'applicant':email } })}>
         View Test
       </button>
       
     </div>
+    <Footer></Footer>
+    </>
   );
 }

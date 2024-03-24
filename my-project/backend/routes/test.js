@@ -3,7 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 const formidable = require('formidable');
 const cors=require('cors');
-const {Job, Recruiter,JobApplication,Form, Company, TechTests,Videos} = require('../mongo');
+const {Job, Recruiter,JobApplication,Form, Company, TechTests,Videos,TestResponses} = require('../mongo');
 router.use(express.static('files'));
 const path = require('path');
 router.use("/static",express.static(path.join(__dirname,'public')));
@@ -265,5 +265,35 @@ router.post("/edittest", async(req,res)=>{
 
 })
 
+router.post("/gettestresponse", async(req,res)=>{
+    console.log(req.body);
+
+    const id = req.body.jobID;
+    const email = req.body.email;
+
+    var msg;
+
+    try {
+
+        const testResponse = await TestResponses.findOne({ jobID: id, applicantEmail: email });
+
+        if (!testResponse)
+            msg = {"status": "error",error:"not found"}
+        else 
+            msg = {"status": "success","resp":testResponse}
+        
+    }
+        catch (error) {
+            console.error('Error adding job:', error);
+            msg = {"status": "error"};
+
+    } 
+    console.log(msg);
+
+    res.json(msg);
+
+    res.end();
+
+})
 
   module.exports = router;

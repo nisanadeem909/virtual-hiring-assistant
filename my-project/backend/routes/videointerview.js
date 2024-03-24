@@ -121,6 +121,8 @@ router.post('/fetchtestresponsestats', async (req, res) => {
 
     let totalCorrect = 0;
     let totalIncorrect = 0;
+    let totalAnswered = 0; // Track total answered questions
+    let totalQ = 0;
 
     testResponse.answers.forEach(answer => {
       if (answer.status === true) {
@@ -128,6 +130,7 @@ router.post('/fetchtestresponsestats', async (req, res) => {
       } else {
         totalIncorrect++;
       }
+      totalAnswered++; // Increment total answered for each answer processed
     });
 
     // Fetch the technical test associated with the jobIDToFind
@@ -140,6 +143,8 @@ router.post('/fetchtestresponsestats', async (req, res) => {
       const category = question.category;
       categories[category] = { totalCorrect: 0, totalAnswered: 0 };
     });
+
+    totalQ = techTest.questions.length;
 
     // Calculate total correct and total answered in each category
     testResponse.answers.forEach(answer => {
@@ -160,12 +165,15 @@ router.post('/fetchtestresponsestats', async (req, res) => {
       categoryPercentages[category] = correctPercentage.toFixed(2); // Round to two decimal places
     });
 
+    // Calculate total unanswered questions
+    const totalUnanswered = totalQ - totalAnswered;
+
     res.json({
       timeTaken: 10,
       overallScore: testResponse.overallScore,
       totalCorrect: totalCorrect,
       totalIncorrect: totalIncorrect,
-      totalLeft: 0,
+      totalLeft: totalUnanswered, // Include total unanswered in the response
       categoryPercentages: categoryPercentages
     });
   } catch (error) {
@@ -173,5 +181,6 @@ router.post('/fetchtestresponsestats', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 module.exports = router;
