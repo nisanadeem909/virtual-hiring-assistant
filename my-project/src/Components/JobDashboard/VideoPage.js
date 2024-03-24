@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import aicon from './aiicon.jpg'
 import './videofile.css'
+import Footer from '../Footer';
 
 function TraitSlider({ name, score, accepted }) {
   const getColorForScore = (score) => {
@@ -90,7 +91,7 @@ const VideoPage = ({ email, videoUrl, traitScores }) => {
  
 
   return (
-    
+    <>
     <div className="nab-video-page-container">
         <h3 style={{ textAlign: 'center' }}>Video Interview for Applicant {location.state.applicantInfo}</h3>
         <div className="content-container" style={{marginTop:'15px',paddingTop:'5px'}}>
@@ -120,7 +121,8 @@ const VideoPage = ({ email, videoUrl, traitScores }) => {
             </div>
         </div>
     </div>
-
+    <Footer></Footer>
+</>
 
   );
 };

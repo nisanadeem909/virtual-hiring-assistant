@@ -97,6 +97,7 @@ export default function FormResponsesPage(props) {
                             
                             {/* <a href={`http://localhost:8000/routes/profilepictures/${resp.videoPath}`}>Watch Video</a> */}
                             <a
+                            className='k-watchvideo-btn'
                             href={`/recruiter/job/video/${resp.applicantEmail}`}
                             onClick={(e) => {
                               e.preventDefault();
