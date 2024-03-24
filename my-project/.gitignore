@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 /my-project/src/checking
+/my-project/src/checking3
 
 # testing
 /coverage
