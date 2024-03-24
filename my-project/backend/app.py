@@ -917,6 +917,18 @@ def VideoScreening(job):
             {'_id': job_id},
             {'$set': {'status': 5}}
         )
+    
+    notification_data = {
+            "jobTitle": job['jobTitle'],
+            "jobID": job['_id'],
+            "companyname":job['companyname'],
+            "companyID":job['companyID'],
+            "notifText": "Phase 3: Video Interviews have been evaluated!",
+            "recruiterUsername": job['postedby'],
+            "notifType": 3,
+            "createdAt": datetime.now().astimezone(pytz.utc)
+        }
+    notification_collection.insert_one(notification_data)
     print('updated')
         
     
