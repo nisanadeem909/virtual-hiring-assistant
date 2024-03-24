@@ -4,8 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-/my-project/src/checking
-/my-project/src/checking3
+/src/checking4
 
 # testing
 /coverage
