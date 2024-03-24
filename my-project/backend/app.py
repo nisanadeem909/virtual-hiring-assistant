@@ -12,7 +12,7 @@ import spacy
 from spacy.lang.en import English
 from sklearn.metrics.pairwise import cosine_similarity
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from threading import Thread
 from bson import Decimal128
 import pytz
@@ -839,9 +839,9 @@ def loadVideoModels():
 
 # Assuming 'models' contains the trained SVR models for each target variable
 
-def predictVideaTraits(audio_file_path):
+def predictVideoTraits(audio_file_path,models):
     
-    scaler = StandardScaler()
+    scaler = load("./model/scaler.joblib")
     new_input = audio_file_analysis(audio_file_path)
     new_input_scaled = scaler.transform([new_input])
 # Make sure 'new_input' is scaled using the same scaler used for training the models
@@ -867,8 +867,28 @@ def scale_prediction(prediction):
     # Scale from 1-7 to 1-5
     return np.round(((prediction - 1) * (5 - 1) / (7 - 1)) + 1, 2)
 
+def processVideo(video_path):
+    extract_audio(video_path, "./routes/extractedaudios/PP50.wav")
+    models = loadVideoModels()
+    predictVideoTraits("./routes/extractedaudios/PP50.wav",models)
+    
+def VideoScreening(job):
+    print("Screening for ",job['jobTitle'])
+
 def VideoTimer():
-    pass
+    #processVideo("./routes/applicantvideos/PP50.mp4")
+    print("Video Timer")
+    current_datetime = datetime.now(pytz.utc)
+    all_jobs = list(job_collection.find({}))
+    
+    for job in all_jobs:
+        print(job['jobTitle'])
+        if job.get('P3StartDate') and job.get('P3Days'):
+            startDate = job['P3StartDate']
+            days = job['P3Days']
+            print(startDate + timedelta(days=days))
+            if job['status'] == 3 and current_datetime >= (startDate + timedelta(days=days)).replace(tzinfo=pytz.utc):
+                VideoScreening(job)
                 
 
 schedule.every(1).minutes.do(sendFormEmails)
