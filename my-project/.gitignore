@@ -4,7 +4,8 @@
 /node_modules
 /.pnp
 .pnp.js
-/src/checking4
+/backend/routes/applicantvideos
+/backend/routes/extractedaudios
 
 # testing
 /coverage
