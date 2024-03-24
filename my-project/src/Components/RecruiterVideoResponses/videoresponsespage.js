@@ -36,8 +36,8 @@ export default function FormResponsesPage(props) {
      
      const handleWatchVideo = (videoUrl, applicantInfo, traitScores) => {
       // Navigate to the VideoPage component passing necessary data
-      
-      navigate('/recruiter/job/video', { state: { videoUrl, applicantInfo, traitScores: [
+
+      /**traitScores: [
         { name: 'Excited', score: 8 },
         { name: 'Confident', score: 5 },
         { name: 'Engaging Tone', score: 4 },
@@ -48,7 +48,9 @@ export default function FormResponsesPage(props) {
         { name: 'Paused', score: 3 },
         { name: 'NoFillers', score: 7 }
         
-      ] } });
+      ] */
+      
+      navigate('/recruiter/job/video', { state: { videoUrl, applicantInfo,  traitScores: traitScores} });
     };
      return (
       <div className='kcvcollectionpage-con'>
@@ -90,7 +92,7 @@ export default function FormResponsesPage(props) {
                             
                             
                             <td align="center">{resp.status}</td>
-                            <td align="center">In process</td> {/*replace with resp.overallScore*/}
+                            <td align="center">{resp.status == 'processed' ? resp.overallScore.$numberDecimal +'/'+resp.acceptabilityTraits.length : 'In process'}</td> {/*replace with resp.overallScore*/}
                             <td align="center">
                             
                             {/* <a href={`http://localhost:8000/routes/profilepictures/${resp.videoPath}`}>Watch Video</a> */}
@@ -101,18 +103,7 @@ export default function FormResponsesPage(props) {
                               handleWatchVideo(
                                 `http://localhost:8000/routes/applicantvideos/`+resp.videoPath,
                                 resp.applicantEmail,
-                                [
-                                  { name: 'Excited', score: 8 },
-                                  { name: 'Confident', score: 5 },
-                                  { name: 'Engaging Tone', score: 4 },
-                                  { name: 'Focused', score: 10 },
-                                  { name: 'Speaking Rate', score: 1 },
-                                  { name: 'Calm', score: 9 },
-                                  { name: 'Structured Answers', score: 8 },
-                                  { name: 'Paused', score: 3 },
-                                  { name: 'NoFillers', score: 7 }
-                                  
-                                ] 
+                                resp.acceptabilityTraits
                               );
                             }}
                           >

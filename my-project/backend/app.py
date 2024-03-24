@@ -44,6 +44,7 @@ job_collection = db['jobs']
 companyreq_collection = db['companyrequests']  ###KOMAL ADDED
 tech_test_collection = db['techtests']
 videos_collection = db['videos'] #Nisa added
+VideosResponses = db['videosresponses'] ###KOMAL ADDED - PHASE 3
 
 try:
     _ = db.jobs.find_one()
@@ -817,7 +818,7 @@ def audio_file_analysis(audio_file):
         formant(sound)
         audio_row = [0 if pd.isna(value) else value for value in audio_row]
         data.append(audio_row)
-        print(audio_row)
+        #print(audio_row)
         return audio_row
     except Exception as e:
         print(f"Error analyzing audio file: {audio_file}")
@@ -857,23 +858,69 @@ def predictVideoTraits(audio_file_path,models):
         # Scale the predicted value
         scaled_value = scale_prediction(predicted_value)
         predicted_values[column] = scaled_value
-
-    # Print the predicted values
-    for column, value in predicted_values.items():
-        print(f"Predicted {column}: {value}")
+    
+    return predicted_values
 
 # Define the scaling function
 def scale_prediction(prediction):
     # Scale from 1-7 to 1-5
     return np.round(((prediction - 1) * (5 - 1) / (7 - 1)) + 1, 2)
 
-def processVideo(video_path):
-    extract_audio(video_path, "./routes/extractedaudios/PP50.wav")
-    models = loadVideoModels()
-    predictVideoTraits("./routes/extractedaudios/PP50.wav",models)
+def processVideo(video_path, audio_path, models):
+    extract_audio(video_path, audio_path)
+    predicted_values = predictVideoTraits(audio_path,models)
+    return predicted_values
     
 def VideoScreening(job):
-    print("Screening for ",job['jobTitle'])
+    print("Screening for ",job['_id'])
+    
+    models = loadVideoModels()
+    
+    job_id = job['_id']
+    video = videos_collection.find_one({'jobID': job_id})
+    
+    if video.get('processed') and video['processed'] == True:
+        print('already screened')
+        return
+    
+    video_responses = list(VideosResponses.find({'jobID': job_id}))
+    
+    for video_response in video_responses:
+        if (video_response.get('videoPath')):
+            print(video_response['videoPath'])
+            current_time = datetime.now().strftime("%Y%m%d%H%M%S")
+            video_path = "./routes/applicantvideos/"+video_response['videoPath']
+            audio_path = f"./routes/extractedaudios/{video_response['videoPath']}_{current_time}.wav"
+            predicted_values = processVideo(video_path,audio_path,models)
+            acceptability_traits = []
+            overall_score = 0
+            for column, value in predicted_values.items():
+                trait_data = next(trait for trait in video['acceptabilityTraits'] if trait['trait'] == column)
+                weight = float(trait_data['weight'])
+                score = float(value)
+                accepted = score >= weight
+                acceptability_traits.append({
+                    'trait': column,
+                    'score': score,
+                    'accepted': accepted
+                })
+                overall_score += int(accepted)
+            VideosResponses.update_one(
+                    {'_id': video_response['_id']},
+                    {'$set': {'acceptabilityTraits': acceptability_traits, 'status': 'processed','overallScore': overall_score}}
+                )
+    videos_collection.update_one(
+            {'jobID': job_id},
+            {'$set': {'processed': True}}
+        )
+    job_collection.update_one(
+            {'_id': job_id},
+            {'$set': {'status': 5}}
+        )
+    print('updated')
+        
+    
+    
 
 def VideoTimer():
     #processVideo("./routes/applicantvideos/PP50.mp4")
