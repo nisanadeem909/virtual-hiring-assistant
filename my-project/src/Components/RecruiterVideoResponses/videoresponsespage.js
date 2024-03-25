@@ -92,8 +92,15 @@ export default function FormResponsesPage(props) {
                             
                             
                             <td align="center">{resp.status}</td>
-                            <td align="center">{resp.status == 'processed' ? resp.overallScore.$numberDecimal +'/'+resp.acceptabilityTraits.length : 'In process'}</td> {/*replace with resp.overallScore*/}
                             <td align="center">
+                              {resp.status === 'processed' 
+                                ? `${resp.overallScore.$numberDecimal}/${resp.acceptabilityTraits.length}`
+                                : resp.status === 'missing' 
+                                  ? 'N/A'
+                                  : 'In process'
+                              }
+                            </td>
+<td align="center">
                             
                             {/* <a href={`http://localhost:8000/routes/profilepictures/${resp.videoPath}`}>Watch Video</a> */}
                             <a

@@ -896,7 +896,7 @@ def VideoScreening(job):
             overall_score = 0
             for column, value in predicted_values.items():
                 trait_data = next(trait for trait in video['acceptabilityTraits'] if trait['trait'] == column)
-                weight = float(trait_data['weight'])
+                weight = float(str(trait_data['weight']))
                 score = float(value)
                 accepted = score >= weight
                 acceptability_traits.append({
@@ -908,6 +908,11 @@ def VideoScreening(job):
             VideosResponses.update_one(
                     {'_id': video_response['_id']},
                     {'$set': {'acceptabilityTraits': acceptability_traits, 'status': 'processed','overallScore': overall_score}}
+                )
+        else:
+            VideosResponses.update_one(
+                    {'_id': video_response['_id']},
+                    {'$set': {'status': 'missing','overallScore': 0}}
                 )
     videos_collection.update_one(
             {'jobID': job_id},
