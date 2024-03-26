@@ -40,7 +40,8 @@ export default function SampleTest() {
         const timeTakenSeconds = response.data.timeTaken;
         const formattedTime = timeTakenSeconds < 60 ? `${timeTakenSeconds} seconds` : `${Math.floor(timeTakenSeconds / 60)} minutes`;
         setTime(formattedTime);
-       alert(time)
+       
+        // alert(timeTakenSeconds)
        
        
         })
@@ -65,7 +66,7 @@ export default function SampleTest() {
       
       <div className="question-list">
        
-          <div className="nab-question-container">
+          <div className="nab-question-container-techtest">
             
               <div >
                 <div id="quick-stats">Quick Stats</div>
