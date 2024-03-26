@@ -361,3 +361,27 @@
     font-weight: bold;
     color: rgb(206, 73, 73);
   }
+
+  .k-actual-answer {
+    font-size: large;
+    padding: 1vh;
+    color: #d31111;
+  }
+
+  .k-correct-answer {
+    font-size: large;
+    margin-top: 4vh;
+    background-color: #b3e882c1;
+    padding: 1vh;
+    margin-bottom: 2vh;
+    border-radius: 2vh;
+  }
+
+  .k-incorrect-answer {
+    font-size: large;
+    margin-top: 4vh;
+    background-color: #ff645996;
+    padding: 1vh;
+    margin-bottom: 2vh;
+    border-radius: 2vh;
+  }

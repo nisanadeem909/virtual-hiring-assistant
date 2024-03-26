@@ -48,7 +48,7 @@ export default function IntroductionPage() {
         const currentDate = new Date();
         const endDate = new Date(startDate.getTime() + days * 24 * 60 * 60 * 1000); // Convert days to milliseconds
         const isCurrentDateLessThanOrEqual = currentDate <= endDate;
-        setFlag(isCurrentDateLessThanOrEqual)
+        setFlag(isCurrentDateLessThanOrEqual) 
 
         //alert(currentDate + " < " + endDate + " = " + isCurrentDateLessThanOrEqual)
         //alert(isCurrentDateLessThanOrEqual)

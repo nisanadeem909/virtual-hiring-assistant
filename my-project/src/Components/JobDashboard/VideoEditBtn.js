@@ -24,10 +24,10 @@ export default function VideoEditBtn({job}) {
     return (
       <div className='kp2formcreating-con'>
         <div className='kp2formcreating-header'>
-            <label className='kp2formcreating-header-title'>Edit Video Test for {job.jobTitle}</label>
+            <label className='kp2formcreating-header-title'>Edit Video Questionnaire for {job.jobTitle}</label>
         </div>
         <div className='kp2formcreating-inner'>
-            <button className='kp2formcreating-createbtn' onClick={()=>navigate('\editvideo',{state:{'job':currjob}})}>Edit Video Test</button>
+            <button className='kp2formcreating-createbtn' onClick={()=>navigate('\editvideo',{state:{'job':currjob}})}>Edit Video Questionnaire</button>
           
         </div>
       </div>

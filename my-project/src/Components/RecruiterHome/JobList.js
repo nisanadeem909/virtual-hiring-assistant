@@ -66,6 +66,8 @@ export default function JobList() {
         case 3:
           case 4:
             return 'Phase 3/4 - Video and Technical Test';
+      case 5:
+        return 'Shortlisted';
       default:
         return 'Phase 0 - Hiring has not yet started!';
     }
@@ -182,18 +184,21 @@ export default function JobList() {
               <span className="nisa-label1">Status:</span>
               <span className="nisa-value">{getPhaseLabel(job.status,job.postjob)}</span>
             </div>
-            <div className='nisa-job-dead'>
-              <span className="nisa-label2">Deadline:</span>
-              <span className='nisa-value'>
-                      {job.status === 1
-                        ? formatDate(job.CVDeadline)
-                        : job.status === 2
-                        ? job.P2FormDeadline
-                          ? formatDate(job.P2FormDeadline)
-                          : 'Deadline not set'
-                        : calculateDeadlineForPhase3or4(job.P3StartDate, job.P3Days)}
-                    </span>
-            </div>
+            {job.status !== 5 && (
+              <div className='nisa-job-dead'>
+                <span className="nisa-label2">Deadline:</span>
+                <span className='nisa-value'>
+                  {job.status === 1
+                    ? formatDate(job.CVDeadline)
+                    : job.status === 2
+                    ? job.P2FormDeadline
+                      ? formatDate(job.P2FormDeadline)
+                      : 'Deadline not set'
+                    : calculateDeadlineForPhase3or4(job.P3StartDate, job.P3Days)}
+                </span>
+              </div>
+            )}
+
           </div>
         </div>
       </div>

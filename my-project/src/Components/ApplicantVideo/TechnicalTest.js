@@ -117,7 +117,7 @@ export default function TechnicalTest() {
 
   const evaluateTest = ()=>{
     const email = sessionStorage.getItem('email');
-    
+    //alert(location.state.job._id)
     const param = {applicantEmail:email,jobID:location.state.job._id}
     axios.post("http://localhost:8000/nabeeha/evaluatetest", param)
           .then((response) => { 
