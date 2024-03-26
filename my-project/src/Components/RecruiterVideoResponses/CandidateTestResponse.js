@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../Footer';
+import MessageModal from '../ModalWindows/MessageModal';
 
 export default function CandidateTestResponse() {
   const navigate = useNavigate();
@@ -11,6 +12,10 @@ export default function CandidateTestResponse() {
   const [questions, setQuestions] = useState([{ question: [{ type: 'text', text: '' }], options: [''] }]);
   const [answeredQuestions, setAnsweredQuestions] = useState(Array(questions.length).fill(false)); // State to track answered questions
   const [response, setResponse] = useState();
+  
+  const [message, setMessage] = useState('');
+  const [messageTitle, setMessageTitle] = useState('');
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     if (location.state && location.state.job) {
@@ -28,24 +33,34 @@ export default function CandidateTestResponse() {
                 if (response.data.status === "success") {
                   setResponse(response.data.resp)
                 } else {
-                  alert(response.data.error)
+                  console.log("Error:" + response.data.error);
+                  setMessage("Something went wrong, please try again..");
+                  setMessageTitle('Error');
+                  setOpenModal(true);
                 }
               })
               .catch(function (error) {
-                alert("error: " + error)
+                console.log("Axios Error:" + error);
+                setMessage("Something went wrong, please try again..");
+                setMessageTitle('Error');
+                setOpenModal(true);
               });
 
           } else {
-            console.error(response.data.error);
-            alert(response.data.error);
+            console.log("Error:" + response.data.error);
+                  setMessage("Something went wrong, please try again..");
+                  setMessageTitle('Error');
+                  setOpenModal(true);
           }
         })
         .catch(function (error) {
-          console.error("Axios Error:" + error);
-          alert(error);
+          console.log("Axios Error:" + error);
+                setMessage("Something went wrong, please try again..");
+                setMessageTitle('Error');
+                setOpenModal(true);
         });
     } else {
-      alert("error")
+      console.log("error");
     }
   }, [location.state]);
 
@@ -88,6 +103,14 @@ export default function CandidateTestResponse() {
         Back
       </button>
     </div>
+    <MessageModal
+        isOpen={openModal}
+        message={message}
+        title={messageTitle}
+        closeModal={() => {
+            setOpenModal(false);
+        }}
+      />
       <Footer></Footer></>
   );
 }

@@ -10,6 +10,7 @@ import incorrecticon from './incorrect.png'
 import missingicon from './missing.png'
 import BarChart from './BarChart';
 import Footer from '../Footer';
+import MessageModal from '../ModalWindows/MessageModal';
 
 export default function SampleTest() {
   const navigate = useNavigate();
@@ -19,6 +20,9 @@ export default function SampleTest() {
   const [resp,setResp] = useState({overallScore:"-",totalCorrect:"-",totalIncorrect:"-",timeTaken:"-",totalLeft:"-", "categoryPercentages":{
     'Loading..': 0
   }})
+  const [openModal, setOpenModal] = useState(false);
+  const [message, setMessage] = useState('');
+  const [messageTitle, setMessageTitle] = useState('');
   
 
     useEffect(() => {
@@ -36,7 +40,10 @@ export default function SampleTest() {
        
         })
         .catch(function (error) {
-            //alert("Axios Error:" + error);
+            console.log("Axios Error:" + error);
+            setMessage("Something went wrong, please try again..");
+            setMessageTitle('Error');
+            setOpenModal(true);
         });
     }, [location.state.thisjob,location.state.email]);
  
@@ -90,6 +97,14 @@ export default function SampleTest() {
       </button>
       
     </div>
+    <MessageModal
+        isOpen={openModal}
+        message={message}
+        title={messageTitle}
+        closeModal={() => {
+            setOpenModal(false);
+        }}
+      />
     <Footer></Footer>
     </>
   );
