@@ -87,7 +87,7 @@ export default function FormResponsesPage(props) {
                            
                             <a
                            href={`/recruiter/job/ttest/${resp.applicantEmail}`}
-                            onClick={(e) => {
+                           className='k-viewtest-btn' onClick={(e) => {
                               e.preventDefault();
                              displayTest(resp.applicantEmail);
                             }}>

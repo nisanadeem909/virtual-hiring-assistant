@@ -12,7 +12,7 @@ import spacy
 from spacy.lang.en import English
 from sklearn.metrics.pairwise import cosine_similarity
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from threading import Thread
 from bson import Decimal128
 import pytz
@@ -20,6 +20,17 @@ import requests
 import smtplib
 import ssl
 import schedule
+import os
+from moviepy.editor import VideoFileClip
+from pathlib import Path
+import time
+import parselmouth as pm
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVR
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import make_pipeline
+from joblib import load
 
 app = Flask(__name__)
 
@@ -33,6 +44,7 @@ job_collection = db['jobs']
 companyreq_collection = db['companyrequests']  ###KOMAL ADDED
 tech_test_collection = db['techtests']
 videos_collection = db['videos'] #Nisa added
+VideosResponses = db['videosresponses'] ###KOMAL ADDED - PHASE 3
 
 try:
     _ = db.jobs.find_one()
@@ -633,6 +645,315 @@ def Formtimer():
             if job['status'] == 2 and current_datetime >= job['P2FormDeadline'].replace(tzinfo=pytz.utc):
                 FormScreening(job)
                 
+                
+###############################   VIDEO INTERVIEW ########################################
+
+def extract_audio(video_path, audio_output_path):
+    try:
+        video_clip = VideoFileClip(video_path)
+        audio_clip = video_clip.audio
+        audio_clip.write_audiofile(audio_output_path)
+        print(f"Audio extracted successfully from {video_path}!")
+    except Exception as e:
+        print(f"Error extracting audio from {video_path}: {e}")
+        
+audio_Column = ['Video Name', 'Length', 'Average Band Energy', 'Avg Intensity', 'Max Intensity', 'Mean Intensity', 'Range Intensity', 'SD Intensity', 
+		   'Avg Pitch', 'Max Pitch', 'Mean Pitch', 'Range Pitch', 'SD Pitch',
+		   'Mean F1', 'Mean F2', 'Mean F3', 'Mean B1', 'Mean B2', 'Mean B3', 'SD F1', 'SD F2', 'SD F3', 
+		   'Mean F2/F1', 'Mean F3/F1', 'SD F2/F1', 'SD F3/F1']
+audio_row = []
+
+def amplitude(sound):
+	x_sample = sound.xs()
+	amplitude = sound.values[:,0]
+
+	# print('Time: ',x_sample)
+	# print('Amplitude: ',amplitude)
+	
+	# plt.figure()
+	# plt.plot(x_sample, amplitude)
+	# plt.xlim([sound.xmin, sound.xmax])
+	# plt.xlabel("Time [s]")
+	# plt.ylabel("Amplitude")
+
+def intensity(sound):
+	intensity = sound.to_intensity()
+	
+	x_sample = intensity.xs()
+	y_intensity = intensity.values
+	# print('Time: ',x_sample)
+	# print('Intensity: ',y_intensity)
+
+	avg_intensity = intensity.get_average(intensity.end_time,intensity.start_time,'ENERGY')
+	max_intensity = np.max(y_intensity)
+	min_intensity = np.min(y_intensity)
+	range_intensity = max_intensity - min_intensity
+	sd_intensity = np.std(y_intensity)
+	# print(sd_intensity)
+	
+	# plt.figure()
+	# plt.plot(x_sample, y_intensity, linewidth=3, color='w')
+	# plt.plot(x_sample, y_intensity, linewidth=1)
+	# plt.grid(False)
+	# plt.xlim(intensity.start_time,intensity.end_time)
+	# plt.xlabel("Time [s]")
+	# plt.ylabel("intensity [dB]")
+	audio_row.extend([avg_intensity, max_intensity, min_intensity, range_intensity, sd_intensity])
+
+def pitch(sound):
+	pitch = sound.to_pitch()
+	
+	x_sample = pitch.xs()
+	y_pitch = pitch.to_matrix().values
+	# print('Time: ',x_sample)
+	# print('Pitch: ',y_pitch)
+	
+	y_pitch[y_pitch == 0] = np.nan
+
+	avg_pitch =	np.nanmean(y_pitch)
+	max_pitch =	np.nanmax(y_pitch)
+	min_pitch =	np.nanmin(y_pitch)
+	range_pitch	= max_pitch - min_pitch
+	sd_pitch = np.nanstd(y_pitch)
+	# print(sd_pitch)
+
+	# plt.figure()
+	# plt.plot(x_sample, y_pitch, linewidth=3, color='w')
+	# plt.plot(x_sample, y_pitc, linewidth=1)
+	# plt.grid(False)
+	# plt.xlim(intensity.start_time,intensity.end_time)
+	# plt.xlabel("Time [s]")
+	# plt.ylabel("Frequency [dB]")
+	audio_row.extend([avg_pitch, max_pitch, min_pitch, range_pitch, sd_pitch])
+
+
+def formant(sound):
+	formant = sound.to_formant_burg(max_number_of_formants = 5)
+	f1 = []
+	b1 = []
+	f2 = []
+	b2 = []
+	f3 = []
+	b3 = []
+
+	x_sample = formant.xs()
+	# print(x_sample)
+	
+	# start_time_formant = formant.get_start_time()
+	# end_time_formant = formant.get_end_time()
+	# time_step_formant = formant.get_time_step()
+	# print(len(np.linspace(0.027,end_time_formant,len(formant.xs()))))
+	# print(len(np.arange(0.027,end_time_formant,time_step_formant)))
+	# print(start_time_formant,end_time_formant,time_step_formant)
+	# print('Time: ',x_sample)
+	# print(formant.get_value_at_time(1,0.039513))
+	# print(formant.get_value_at_time(1,0.03325792))
+	# print('Pitch: ',y_formant)
+
+	for x in x_sample:
+		f1.append(formant.get_value_at_time(1,x))
+		f2.append(formant.get_value_at_time(2,x))
+		f3.append(formant.get_value_at_time(3,x))
+		b1.append(formant.get_bandwidth_at_time(1,x))
+		b2.append(formant.get_bandwidth_at_time(2,x))
+		b3.append(formant.get_bandwidth_at_time(3,x))
+
+	mean_f1 = np.mean(f1)
+	mean_f2 = np.mean(f2)
+	mean_f3 = np.mean(f3)
+
+	mean_b1 = np.mean(b1)
+	mean_b2 = np.mean(b2)
+	mean_b3 = np.mean(b3)
+
+	sd_f1 = np.std(f1)
+	sd_f2 = np.std(f2)
+	sd_f3 = np.std(f3)
+
+	mean_f2_by_f1 = np.mean(np.array(f2)/np.array(f1))
+	mean_f3_by_f1 = np.mean(np.array(f3)/np.array(f1))
+	
+	sd_f2_by_f1 = np.std(np.array(f2)/np.array(f1))
+	sd_f3_by_f1 = np.std(np.array(f3)/np.array(f1))
+
+	audio_row.extend([mean_f1, mean_f2, mean_f3, mean_b1, mean_b2, mean_b3, sd_f1, sd_f2, sd_f3, 
+				mean_f2_by_f1, mean_f3_by_f1, sd_f2_by_f1, sd_f3_by_f1])
+
+
+def spectrum(sound):
+	spectrum = sound.to_spectrum()
+	band_energy_spectrum = spectrum.get_band_energy()
+	# print(band_energy_spectrum)
+	# spectrogram = spectrum.to_spectrogram()
+	# drawSpectrogram(sound)
+	audio_row.append(band_energy_spectrum)
+
+def drawSpectrogram(sound, dynamic_range=70):
+
+	spectrogram = sound.to_spectrogram(window_length=0.05)
+	X, Y = spectrogram.x_grid(), spectrogram.y_grid()
+	sg_db = 10 * np.log10(spectrogram.values.T)
+	plt.pcolormesh(X, Y, sg_db, vmin=sg_db.max() - dynamic_range, cmap='afmhot')
+	plt.ylim([spectrogram.ymin, spectrogram.ymax])
+	plt.xlabel("time [s]")
+	plt.ylabel("frequency [Hz]")
+	
+	plt.xlim([sound.xmin, sound.xmax])
+
+def audio_file_analysis(audio_file):
+    print("Starting Audio analysis")
+    global audio_row 
+    audio_row = []
+    data = []
+    try:
+        sound = pm.Sound(audio_file)
+        print(f"Analyzing audio file: {audio_file}")
+        #audio_row.append(audio_file)
+        end_time = sound.get_total_duration()
+        audio_row.append(end_time)
+        amplitude(sound)
+        spectrum(sound)
+        intensity(sound)
+        pitch(sound)
+        formant(sound)
+        audio_row = [0 if pd.isna(value) else value for value in audio_row]
+        data.append(audio_row)
+        #print(audio_row)
+        return audio_row
+    except Exception as e:
+        print(f"Error analyzing audio file: {audio_file}")
+        print(e)
+
+def loadVideoModels():
+    # Dictionary to store loaded SVR models
+    models = {}
+
+    # List of target variable names
+    target_variables = ['Focused', 'EngagingTone', 'Excited', 'SpeakingRate', 'Calm', 'StructuredAnswers', 'Paused', 'NoFillers', 'Friendly']
+
+    # Load the saved SVR models
+    for column in target_variables:
+        model = load(f"./model/{column}_model.joblib")
+        models[column] = model
+        
+    return models
+
+# Assuming 'models' contains the trained SVR models for each target variable
+
+def predictVideoTraits(audio_file_path,models):
+    
+    scaler = load("./model/scaler.joblib")
+    new_input = audio_file_analysis(audio_file_path)
+    new_input_scaled = scaler.transform([new_input])
+# Make sure 'new_input' is scaled using the same scaler used for training the models
+    new_input_scaled = scaler.transform([new_input])  # Assuming 'new_input' is a list of features
+
+    # Dictionary to store predicted values for each target variable
+    predicted_values = {}
+    
+    # Iterate over each target variable and predict its value using the corresponding SVR model
+    for column, model in models.items():
+        # Predict the value for the current target variable
+        predicted_value = model.predict(new_input_scaled)
+        # Scale the predicted value
+        scaled_value = scale_prediction(predicted_value)
+        predicted_values[column] = scaled_value
+    
+    return predicted_values
+
+# Define the scaling function
+def scale_prediction(prediction):
+    # Scale from 1-7 to 1-5
+    return np.round(((prediction - 1) * (5 - 1) / (7 - 1)) + 1, 2)
+
+def processVideo(video_path, audio_path, models):
+    extract_audio(video_path, audio_path)
+    predicted_values = predictVideoTraits(audio_path,models)
+    return predicted_values
+    
+def VideoScreening(job):
+    print("Screening for ",job['_id'])
+    
+    models = loadVideoModels()
+    
+    job_id = job['_id']
+    video = videos_collection.find_one({'jobID': job_id})
+    
+    if video.get('processed') and video['processed'] == True:
+        print('already screened')
+        return
+    
+    video_responses = list(VideosResponses.find({'jobID': job_id}))
+    
+    for video_response in video_responses:
+        if (video_response.get('videoPath')):
+            print(video_response['videoPath'])
+            current_time = datetime.now().strftime("%Y%m%d%H%M%S")
+            video_path = "./routes/applicantvideos/"+video_response['videoPath']
+            audio_path = f"./routes/extractedaudios/{video_response['videoPath']}_{current_time}.wav"
+            predicted_values = processVideo(video_path,audio_path,models)
+            acceptability_traits = []
+            overall_score = 0
+            for column, value in predicted_values.items():
+                trait_data = next(trait for trait in video['acceptabilityTraits'] if trait['trait'] == column)
+                weight = float(str(trait_data['weight']))
+                score = float(value)
+                accepted = score >= weight
+                acceptability_traits.append({
+                    'trait': column,
+                    'score': score,
+                    'accepted': accepted
+                })
+                overall_score += int(accepted)
+            VideosResponses.update_one(
+                    {'_id': video_response['_id']},
+                    {'$set': {'acceptabilityTraits': acceptability_traits, 'status': 'processed','overallScore': overall_score}}
+                )
+        else:
+            VideosResponses.update_one(
+                    {'_id': video_response['_id']},
+                    {'$set': {'status': 'missing','overallScore': 0}}
+                )
+    videos_collection.update_one(
+            {'jobID': job_id},
+            {'$set': {'processed': True}}
+        )
+    job_collection.update_one(
+            {'_id': job_id},
+            {'$set': {'status': 5}}
+        )
+    
+    notification_data = {
+            "jobTitle": job['jobTitle'],
+            "jobID": job['_id'],
+            "companyname":job['companyname'],
+            "companyID":job['companyID'],
+            "notifText": "Phase 3: Video Interviews have been evaluated!",
+            "recruiterUsername": job['postedby'],
+            "notifType": 3,
+            "createdAt": datetime.now().astimezone(pytz.utc)
+        }
+    notification_collection.insert_one(notification_data)
+    print('updated')
+        
+    
+    
+
+def VideoTimer():
+    #processVideo("./routes/applicantvideos/PP50.mp4")
+    print("Video Timer")
+    current_datetime = datetime.now(pytz.utc)
+    all_jobs = list(job_collection.find({}))
+    
+    for job in all_jobs:
+        print(job['jobTitle'])
+        if job.get('P3StartDate') and job.get('P3Days'):
+            startDate = job['P3StartDate']
+            days = job['P3Days']
+            print(startDate + timedelta(days=days))
+            if job['status'] == 3 and current_datetime >= (startDate + timedelta(days=days)).replace(tzinfo=pytz.utc):
+                VideoScreening(job)   
+                
 
 schedule.every(1).minutes.do(sendFormEmails)
 while True:
@@ -641,6 +962,7 @@ while True:
     sendFormEmails()
     sendCompanyEmails() #KOMAL ADDED
     process_emails() #Nisa added
+    VideoTimer()
     #schedule.run_pending()
     time.sleep(45)  
     

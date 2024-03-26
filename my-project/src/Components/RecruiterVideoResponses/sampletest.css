@@ -16,7 +16,7 @@
     font-size: 30px;
 }
 #statsdiv{
-    margin-left: 20vh;
+    margin-left: 15vh;
     
 }
 #border-sample-test{
@@ -26,6 +26,7 @@
 }
 #statsdiv1{
     font-size: 18px;
+    margin-top: 3vh;
 }
 #timeiconptage{
     display: flex;

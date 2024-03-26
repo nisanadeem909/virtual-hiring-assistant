@@ -108,18 +108,17 @@ router.post('/fetchtestresponsesnabeeha', async (req, res) => {
 
 });
 router.post('/fetchtestresponsestats', async (req, res) => {
-
-  console.log("I am in fetch test response")
-  console.log(req.body)
+  console.log("I am in fetch test response");
+  console.log(req.body);
 
   try {
     const jobIDToFind = req.body.jobID;
     const appID = req.body.applicantEmail;
 
-    const testResponse = await TestResponses.findOne({ jobID: jobIDToFind, applicantEmail:appID}).exec();
-    
+    const testResponse = await TestResponses.findOne({ jobID: jobIDToFind, applicantEmail: appID }).exec();
+
     console.log('Test Responses with job ID', jobIDToFind, ':', testResponse);
-    
+
     let totalCorrect = 0;
     let totalIncorrect = 0;
 
@@ -132,34 +131,19 @@ router.post('/fetchtestresponsestats', async (req, res) => {
         }
       });
     
-      // Calculate total points the test was out of
-      const test = await TechTests.findOne({ jobID: jobIDToFind }).exec();
 
-      if (!test) {
-        return res.status(404).json({ error: 'Test not found' });
-      }
-
-      let totalTestScore = 0;
-
-      // Iterate over the questions array and sum up the points
-      test.questions.forEach((question) => {
-        totalTestScore += question.points || 0; // Add points to the total score, defaulting to 0 if points field is missing
-      });
-
-    let questionsmissed;
-    questionsmissed = test.questions.length - totalCorrect - totalIncorrect;
     res.json({ 
       timeTaken: 10,
       overallScore: testResponse.overallScore,
       totalCorrect: totalCorrect,
       totalIncorrect: totalIncorrect,
-      totalLeft: questionsmissed,
-      total:totalTestScore
+      totalLeft: 0
     });
   } catch (error) {
     console.error('Error retrieving test responses:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-
 });
+
+
 module.exports = router;
