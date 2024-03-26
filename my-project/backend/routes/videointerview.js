@@ -121,23 +121,60 @@ router.post('/fetchtestresponsestats', async (req, res) => {
 
     let totalCorrect = 0;
     let totalIncorrect = 0;
+    let totalAnswered = 0; // Track total answered questions
+    let totalQ = 0;
 
-    
-      testResponse.answers.forEach(answer => {
-        if (answer.status === true) {
-          totalCorrect++;
-        } else {
-          totalIncorrect++;
-        }
-      });
-    
+    testResponse.answers.forEach(answer => {
+      if (answer.status === true) {
+        totalCorrect++;
+      } else {
+        totalIncorrect++;
+      }
+      totalAnswered++; // Increment total answered for each answer processed
+    });
 
-    res.json({ 
+    // Fetch the technical test associated with the jobIDToFind
+    const techTest = await TechTests.findOne({ jobID: jobIDToFind }).exec();
+
+    const categories = {}; // Object to store total correct and total answered in each category
+
+    // Initialize categories object with zeros
+    techTest.questions.forEach(question => {
+      const category = question.category;
+      categories[category] = { totalCorrect: 0, totalAnswered: 0 };
+    });
+
+    totalQ = techTest.questions.length;
+
+    // Calculate total correct and total answered in each category
+    testResponse.answers.forEach(answer => {
+      const question = techTest.questions[answer.questionIndex];
+      const category = question.category;
+      categories[category].totalAnswered++;
+      if (answer.status === true) {
+        categories[category].totalCorrect++;
+      }
+    });
+
+    const categoryPercentages = {}; // Object to store percentage of correct questions in each category
+
+    // Calculate percentage of correct questions in each category
+    Object.keys(categories).forEach(category => {
+      const { totalCorrect, totalAnswered } = categories[category];
+      const correctPercentage = (totalCorrect / totalAnswered) * 100;
+      categoryPercentages[category] = correctPercentage.toFixed(2); // Round to two decimal places
+    });
+
+    // Calculate total unanswered questions
+    const totalUnanswered = totalQ - totalAnswered;
+
+    res.json({
       timeTaken: 10,
       overallScore: testResponse.overallScore,
       totalCorrect: totalCorrect,
       totalIncorrect: totalIncorrect,
-      totalLeft: 0
+      totalLeft: totalUnanswered, // Include total unanswered in the response
+      categoryPercentages: categoryPercentages
     });
   } catch (error) {
     console.error('Error retrieving test responses:', error);
