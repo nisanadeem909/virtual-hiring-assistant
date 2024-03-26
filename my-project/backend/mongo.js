@@ -463,7 +463,7 @@ acceptabilityTraits:[{
         
       },
       weight: {
-        type: Number,
+        type: Decimal128,
         
       }
       
@@ -481,7 +481,10 @@ acceptabilityTraits:[{
   startDate:{
     type: Date,
   },
-  
+
+  processed:{
+    type: Boolean,
+  },
  
   
 
@@ -507,8 +510,11 @@ const videosResponses = new Schema({
       
     },
     score: {
-      type: Number,
+      type: Decimal128,
       
+    },
+    accepted: {
+      type: Boolean,
     }
     
 }],
