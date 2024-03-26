@@ -2,25 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import aicon from './aiicon.jpg'
 import './videofile.css'
+import Footer from '../Footer';
 
-function TraitSlider({ name, score }) {
+function TraitSlider({ name, score, accepted }) {
   const getColorForScore = (score) => {
     // Define different color gradients based on the score
     let color1, color2;
 
-    if (score <= 3) {
-      color1 = 'hsl(240, 60%, 80%)'; // Light blue
-      color2 = 'hsl(240, 100%, 40%)'; // Dark blue
-    } else if (score <= 7) {
-      color1 = 'hsl(240, 60%, 80%)'; // Light purple
-      color2 = 'hsl(240, 100%, 40%)'; // Dark purple
+    if (!accepted) {
+      // If not accepted, set color to red gradient
+      color1 = 'hsl(0, 70%, 80%)'; // Light red
+      color2 = 'hsl(0, 100%, 40%)'; // Dark red
+    // } else if (score <= 1.5) {
+    //   color1 = 'hsl(240, 60%, 80%)'; // Light blue
+    //   color2 = 'hsl(240, 100%, 40%)'; // Dark blue
+    // } else if (score <= 3.5) {
+    //   color1 = 'hsl(240, 60%, 80%)'; // Light purple
+    //   color2 = 'hsl(240, 100%, 40%)'; // Dark purple
     } else {
       color1 = 'hsl(240, 60%, 80%)'; // Light blue
       color2 = 'hsl(240, 100%, 40%)'; // Dark blue
     }
 
     // Apply the gradient based on the score
-    const gradientColor = `linear-gradient(to right, ${color1}, ${color2} ${(score / 10) * 100}%, transparent ${(score / 10) * 100}%)`;
+    const gradientColor = `linear-gradient(to right, ${color1}, ${color2} ${(score / 5) * 100}%, transparent ${(score / 5) * 100}%)`;
 
     return gradientColor;
   };
@@ -55,7 +60,7 @@ function TraitSlider({ name, score }) {
     cursor: 'pointer',
     position: 'absolute',
     top: '-15px',
-    left: `calc(${(score / 10) * 100}% - 10px)`, // Adjust thumb position based on score
+    left: `calc(${(score / 5) * 100}% - 10px)`, // Adjust thumb position based on score
     transform: 'translateX(-50%)',
   };
 
@@ -67,13 +72,13 @@ function TraitSlider({ name, score }) {
         <input
           type="range"
           min="0"
-          max="10"
+          max="5"
           value={score}
           readOnly
+          className='k-video-traitslider'
           style={{ ...inputStyle, background: getColorForScore(score) }}
         />
       </div> {/* Apply the gradient */}
-      <div style={thumbStyle}></div>
     </div>
   );
 }
@@ -86,7 +91,7 @@ const VideoPage = ({ email, videoUrl, traitScores }) => {
  
 
   return (
-    
+    <>
     <div className="nab-video-page-container">
         <h3 style={{ textAlign: 'center' }}>Video Interview for Applicant {location.state.applicantInfo}</h3>
         <div className="content-container" style={{marginTop:'15px',paddingTop:'5px'}}>
@@ -110,13 +115,14 @@ const VideoPage = ({ email, videoUrl, traitScores }) => {
                 <div>
                     {/* {alert(location.state.videoUrl)} */}
                     {location.state.traitScores.map((trait, index) => (
-                    <TraitSlider key={index} name={trait.name} score={trait.score} />
+                    <TraitSlider key={index} name={trait.trait+" ("+trait.score.$numberDecimal+")"} score={trait.score.$numberDecimal} accepted={trait.accepted} />
                     ))}
                 </div>
             </div>
         </div>
     </div>
-
+    <Footer></Footer>
+</>
 
   );
 };

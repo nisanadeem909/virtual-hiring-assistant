@@ -322,7 +322,7 @@ export default function CreateTest(props) {
         })
           .catch(
             err=>{
-                setMessage("Something went wrong!")
+                setMessage("Something went wrong, please try again..");
                 setMessageTitle('Error');
                 setOpenModal(true);
             });

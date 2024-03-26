@@ -314,13 +314,17 @@ export default function EditTest(props) {
                 t.target.value = '';
             }
             else{
-                alert("ERROR UPLOADING")
+                setMessage("Error uploading image!")
+                setMessageTitle('Error');
+                setOpenModal(true);
             }
            
         })
           .catch(
             err=>{
-                 alert("ERROR IN UPLOADAXIOS : "+err)
+                setMessage("Something went wrong, please try again..")
+                setMessageTitle('Error');
+                setOpenModal(true);
             });
         }
 

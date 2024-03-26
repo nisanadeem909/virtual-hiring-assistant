@@ -132,4 +132,30 @@
 }
 
 
-  
+.k-viewtest-btn {
+    background-color: #012641;
+    color: white;
+    display: flex;
+    font-size: 2.1vh;
+    border: 1px solid #0066ae;
+    border-radius: 2vh;
+    padding: 0.5vh 1.5vh;
+    width: 12vh;
+}
+
+.k-viewtest-btn:hover, .k-watchvideo-btn:hover {
+    background-color: #60B3D1;
+    border-color: #519eba;
+    color: white;
+}
+
+.k-watchvideo-btn {
+    background-color: #012641;
+    color: white;
+    display: flex;
+    font-size: 2.1vh;
+    border: 1px solid #0066ae;
+    border-radius: 2vh;
+    padding: 0.5vh 1.5vh;
+    width: 14.2vh;
+}

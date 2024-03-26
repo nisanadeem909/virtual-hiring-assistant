@@ -108,58 +108,79 @@ router.post('/fetchtestresponsesnabeeha', async (req, res) => {
 
 });
 router.post('/fetchtestresponsestats', async (req, res) => {
-
-  console.log("I am in fetch test response")
-  console.log(req.body)
+  console.log("I am in fetch test response");
+  console.log(req.body);
 
   try {
     const jobIDToFind = req.body.jobID;
     const appID = req.body.applicantEmail;
 
-    const testResponse = await TestResponses.findOne({ jobID: jobIDToFind, applicantEmail:appID}).exec();
-    
+    const testResponse = await TestResponses.findOne({ jobID: jobIDToFind, applicantEmail: appID }).exec();
+
     console.log('Test Responses with job ID', jobIDToFind, ':', testResponse);
-    
+
     let totalCorrect = 0;
     let totalIncorrect = 0;
+    let totalAnswered = 0; // Track total answered questions
+    let totalQ = 0;
 
-    
-      testResponse.answers.forEach(answer => {
-        if (answer.status === true) {
-          totalCorrect++;
-        } else {
-          totalIncorrect++;
-        }
-      });
-    
-      // Calculate total points the test was out of
-      const test = await TechTests.findOne({ jobID: jobIDToFind }).exec();
-
-      if (!test) {
-        return res.status(404).json({ error: 'Test not found' });
+    testResponse.answers.forEach(answer => {
+      if (answer.status === true) {
+        totalCorrect++;
+      } else {
+        totalIncorrect++;
       }
+      totalAnswered++; // Increment total answered for each answer processed
+    });
 
-      let totalTestScore = 0;
+    // Fetch the technical test associated with the jobIDToFind
+    const techTest = await TechTests.findOne({ jobID: jobIDToFind }).exec();
 
-      // Iterate over the questions array and sum up the points
-      test.questions.forEach((question) => {
-        totalTestScore += question.points || 0; // Add points to the total score, defaulting to 0 if points field is missing
-      });
+    const categories = {}; // Object to store total correct and total answered in each category
 
-    let questionsmissed;
-    questionsmissed = test.questions.length - totalCorrect - totalIncorrect;
-    res.json({ 
+    // Initialize categories object with zeros
+    techTest.questions.forEach(question => {
+      const category = question.category;
+      categories[category] = { totalCorrect: 0, totalAnswered: 0 };
+    });
+
+    totalQ = techTest.questions.length;
+
+    // Calculate total correct and total answered in each category
+    testResponse.answers.forEach(answer => {
+      const question = techTest.questions[answer.questionIndex];
+      const category = question.category;
+      categories[category].totalAnswered++;
+      if (answer.status === true) {
+        categories[category].totalCorrect++;
+      }
+    });
+
+    const categoryPercentages = {}; // Object to store percentage of correct questions in each category
+
+    // Calculate percentage of correct questions in each category
+    Object.keys(categories).forEach(category => {
+      const { totalCorrect, totalAnswered } = categories[category];
+      const correctPercentage = (totalCorrect / totalAnswered) * 100;
+      categoryPercentages[category] = correctPercentage.toFixed(2); // Round to two decimal places
+    });
+
+    // Calculate total unanswered questions
+    const totalUnanswered = totalQ - totalAnswered;
+
+    res.json({
       timeTaken: 10,
       overallScore: testResponse.overallScore,
       totalCorrect: totalCorrect,
       totalIncorrect: totalIncorrect,
-      totalLeft: questionsmissed,
-      total:totalTestScore
+      totalLeft: totalUnanswered, // Include total unanswered in the response
+      categoryPercentages: categoryPercentages
     });
   } catch (error) {
     console.error('Error retrieving test responses:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-
 });
+
+
 module.exports = router;

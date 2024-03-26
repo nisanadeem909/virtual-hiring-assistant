@@ -322,7 +322,7 @@ export default function JobDetails(props) {
           }
           else if (job.status == 3)
           {
-            setStatus("Phase 3 (Video-Interview and Technical Test)")
+            setStatus("Phase 3/4 (Video-Interview and Technical Test)")
 
             if (!job.P3StartDate){
               setStatusDiv(<><label className='kjobdetailspage-cvlink'>Waiting for Video Interview and Technical Test Creation..</label></>);
@@ -342,6 +342,8 @@ export default function JobDetails(props) {
           else //if (job.status == 5)
           {
             setStatus("Shortlisted")
+            setStatusDiv(<>Waiting for Shortlisting Module...</>);
+            setDeadlineDiv(<>Waiting for Shortlisting Module...</>);
           }
         }, [job.status]);
 

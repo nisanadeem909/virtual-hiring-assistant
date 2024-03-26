@@ -47,6 +47,7 @@ import VideoPage from './Components/JobDashboard/VideoPage.js'
 import VideoEditPage from './Components/JobDashboard/VideoEditPage.js';
 import VideoEditBtn from './Components/JobDashboard/VideoEditBtn.js';
 import SampleTestPage from './Components/RecruiterVideoResponses/sampletest.js';
+import CandidateTestResponse from './Components/RecruiterVideoResponses/CandidateTestResponse.js';
 
 function App() {
   return (
@@ -119,6 +120,7 @@ function App() {
             <Route path="job/video" element={<VideoPage />} />
 
             <Route path="job/ttest" element={<SampleTestPage />} />
+            <Route path="job/ttest/fullresponse" element={<CandidateTestResponse />} />
 
 
            
