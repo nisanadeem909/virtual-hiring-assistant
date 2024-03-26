@@ -20,7 +20,7 @@ export default function EditVideo(props) {
     const [nimp, setnewImp] = useState();
     const [ntraits, setnewTraits] = useState([[]]);
     const [nquestions, setnewQuestions] = useState([]);
-
+    const [njob, setnewJob] = useState({});
     const [message, setMessage] = useState('');
     const [messageTitle, setMessageTitle] = useState('');
     const [openModal, setOpenModal] = useState(false);
@@ -28,15 +28,17 @@ export default function EditVideo(props) {
 
     useEffect(() => {
       
-      
+
       const test = props.test;
+      const job = props.job;
+      setnewJob(job);
       setQuestions(test.questions || []);
       setTraits(test.acceptabilityTraits || []);
       setVideoDuration(test.duration || '');
       setImp(test.importance || '');
 
        
-    }, [props.test]);
+    },[props.job,props.test]);
 
 
     const handleNext = () => {
@@ -56,12 +58,18 @@ export default function EditVideo(props) {
           importance: imp,
         };
     
-        axios.post(`http://localhost:8000/komal/updatejobtestnisa/${props.job.jobID}`, { test: updatedTest })
+       
+        axios.post(`http://localhost:8000/komal/updatejobtestnisa/${njob._id}`, { test: updatedTest })
         .then((response) => {
           if (response.data.status === "success") {
-            // Handle success response
+            setMessageTitle('Form Saved');
+            setMessage('The form has been saved successfully.');
+            setOpenModal(true);
           } else {
-            // Handle error response
+            console.error(response.data.error);
+            setMessageTitle('Error');
+            setMessage('An error occurred while saving the form. Please try again later.');
+            setOpenModal(true);
           }
         })
         .catch(function (error) {
@@ -112,14 +120,18 @@ export default function EditVideo(props) {
       //alert(questions[index].question)
     };
   
-    const addQuestion = () => {
-      setQuestions([...questions, { question: '' }]);
-    };
+   
+  const addQuestion=(ev)=>{
+   
+    var copy = [...questions];
+    copy.push("");
+    setQuestions(copy);
+}
   
     const deleteQuestion = (index) => {
-      const newQuestions = [...questions];
-      newQuestions.splice(index, 1);
-      setQuestions(newQuestions);
+      var copy = [...questions];
+      copy.splice(index, 1);
+      setQuestions(copy);
     };
   
     return (
@@ -139,12 +151,12 @@ export default function EditVideo(props) {
                     className='n-vd-dur'
                   />
                 </div>
-                <button className='n-nab-createformpage-cancelbtn'>Discard</button>
+                <button className='n-nab-createformpage-cancelbtn' onClick={() => navigate(-1, { state: { 'jobID': njob._id } })}>Discard</button>
                 <button className='kcreateformpage-savebtn' onClick={handleNext}>Next</button>
               </div>
               <div className='n-kcreateform-questions'>
               {questions.map((question, index) => (
-                <div key={index}>
+                <div >
                   <div className='nkformquestion-con' tabIndex="0">
                     <div className='kformquestion-header'>
                       <label className='kformquestion-header-label'>
@@ -153,7 +165,7 @@ export default function EditVideo(props) {
                       </label>
                       <textarea
                         className='kformquestion-textbox'
-                        defaultValue={question}
+                        value={question}
                         onChange={(event) => handleQuestionTextChange(index, event)}
                       ></textarea>
                     </div>
@@ -165,7 +177,7 @@ export default function EditVideo(props) {
                 </div>
               ))}
               <div className='nnkcreateformpage-addq-con'>
-              <button className='nkcreateformpage-addq' onClick={addQuestion} style={{ marginTop: '10px' }}>+</button>
+              <button className='nkcreateformpage-addq' onClick={(event) => addQuestion(event)} style={{ marginTop: '10px' }}>+</button>
 
               </div>
             </div>
@@ -189,7 +201,7 @@ export default function EditVideo(props) {
                 defaultValue={trait.weight}
                 onChange={(e) => handleTraitChange(e, index)}
               >
-                {[...Array(10)].map((_, i) => (
+                {[...Array(5)].map((_, i) => (
                   <option key={i + 1} value={i + 1}>{i + 1}</option>
                 ))}
               </select>
