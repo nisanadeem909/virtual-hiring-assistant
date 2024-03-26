@@ -222,7 +222,7 @@ router.post('/getvideointerviewdetails', async (req, res) => {
     console.log(req.body);
   
     try {
-      const thisApp = await TestResponses.findOne({ applicantEmail: req.body.applicantEmail });
+      const thisApp = await TestResponses.findOne({ applicantEmail: req.body.applicantEmail, jobID: req.body.jobID});
       if (!thisApp) 
       {
         console.log("does not exist");
@@ -265,7 +265,7 @@ router.post('/getvideointerviewdetails', async (req, res) => {
     }
   });
   
-  router.post('/evaluatetest', async (req, res) => {
+  router.post('/evaluatemytestplease', async (req, res) => {
     console.log("I am in evaluate test");
     console.log(req.body);
   
@@ -283,6 +283,7 @@ router.post('/getvideointerviewdetails', async (req, res) => {
           applicantEmail: req.body.applicantEmail,
           jobID: req.body.jobID,
           overallScore: 0,
+          timeTake: req.body.timeTaken
         });
       
           
@@ -321,7 +322,7 @@ router.post('/getvideointerviewdetails', async (req, res) => {
       
       // Update the overall score in the testResp object
       testResp.overallScore = totalScore;
-  
+      testResp.timeTaken = req.body.timeTaken;
       // Save the updated test response
       await testResp.save();
       console.log("saved successfully")

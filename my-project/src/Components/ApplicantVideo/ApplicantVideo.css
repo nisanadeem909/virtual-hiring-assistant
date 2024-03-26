@@ -354,7 +354,10 @@
     font-size: 14px;
   }
 
-
+  .nisa-nabeeha-submit-button[disabled] {
+    opacity: 0.5; /* Reduce opacity when button is disabled */
+    cursor: not-allowed; /* Change cursor to not-allowed when button is disabled */
+  }
   .ktest-app-points {
     float: right;
     margin-top: -1vh;

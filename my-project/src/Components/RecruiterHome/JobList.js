@@ -128,7 +128,7 @@ export default function JobList() {
     setSelectedFilters([]);
     
   };
-  const filters = ['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4','Clear All'];
+  const filters = ['On Hold','Phase 1', 'Phase 2', 'Phase 3 & 4','Shortlisted','Clear All'];
   return (
     <div>
       <div className='nisa-joblist-con'>

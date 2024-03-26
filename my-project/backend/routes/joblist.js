@@ -110,7 +110,19 @@ const searchJobs = async (query, recruiterCompanyID) => {
         // If a recruiter is found with the provided username
         const { companyname, companyID } = recruiterInfo;
         const filters = req.body.selectedFilters; 
-        const statusFilters = [];
+       
+        for (let i = 0; i < filters.length; i++) {
+          
+          if (filters[i] === 'Phase 3 & 4') {
+            
+            filters.splice(i, 1, 'Phase 3', 'Phase 4');
+          }
+          if (filters[i] === 'Shortlisted') {
+            
+            filters.splice(i, 1, 'Phase 5');
+          }
+        }
+        let statusFilters = [];
 
    
         // Iterate through filters and map phases to status values
@@ -128,28 +140,67 @@ const searchJobs = async (query, recruiterCompanyID) => {
                 case 'Phase 4':
                         statusFilters.push(4);
                         break;
+                case 'Phase 5':
+                          statusFilters.push(5);
+                          break;
+                case 'On Hold':
+                            statusFilters.push("On Hold");
+                            break;
                 default:
                     break;
             }
         });
 
         console.log("status filters: ")
-        console.log(statusFilters)
+        
       
 
         // Apply filters to the query based on the selected phases
         if (statusFilters.length > 0) {
-          const query = {
-            status: { $in: statusFilters },
-            companyID: recruiterInfo.companyID, // Add this condition to filter by company name
-          }; 
- 
-          console.log( query)
-          const filteredJobs = await Job.find(query).sort({ createdAt: -1 });
+           
 
-
-          console.log("filtered jobs now: ")
-          console.log(filteredJobs);
+            let filteredJobs;
+            if (statusFilters.includes("On Hold"))
+            {
+              query = {
+                
+                companyID: recruiterInfo.companyID,
+                postjob: false
+                
+              };
+          
+            const index = statusFilters.indexOf('On Hold');
+            if (index !== -1) {
+              statusFilters.splice(index, 1); // Remove 'On Hold'
+            }
+            filteredJobs =await Job.find(query).sort({ createdAt: -1 });
+            
+            new_query = {
+              status: { $in: statusFilters },
+              companyID: recruiterInfo.companyID,
+              postjob: true
+              
+            };
+            const additionalFilteredJobs = await Job.find(new_query).sort({ createdAt: -1 });
+            
+            filteredJobs = filteredJobs.concat(additionalFilteredJobs);
+            
+            console.log(filteredJobs)
+            
+          }
+          
+          
+          
+          else{
+            new_query = {
+              status: { $in: statusFilters },
+              companyID: recruiterInfo.companyID,
+              postjob: true
+              
+            };
+            filteredJobs = await Job.find(new_query).sort({ createdAt: -1 });
+            
+          }
   
           res.status(200).json(filteredJobs);
         }
@@ -164,7 +215,7 @@ const searchJobs = async (query, recruiterCompanyID) => {
 
 
         console.log("filtered jobs now: ")
-        console.log(filteredJobs);
+       // console.log(filteredJobs);
 
         res.status(200).json(filteredJobs);
         }

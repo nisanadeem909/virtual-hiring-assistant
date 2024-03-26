@@ -13,6 +13,7 @@ export default function SampleTest() {
   const navigate = useNavigate();
   const location = useLocation();
   const [job, setJob] = useState(null);
+  const [time,setTime] = useState("-")
   const [resp,setResp] = useState({overallScore:"-",totalCorrect:"-",totalIncorrect:"-",timeTaken:"-",totalLeft:"-"})
 
     useEffect(() => {
@@ -24,6 +25,9 @@ export default function SampleTest() {
         //alert(response.data.formResponses)
         
         setResp(response.data);
+        const timeTakenSeconds = response.data.timeTaken;
+        const formattedTime = timeTakenSeconds < 60 ? `${timeTakenSeconds} seconds` : `${Math.floor(timeTakenSeconds / 60)} minutes`;
+        setTime(formattedTime);
        //alert(JSON.stringify(response.data))
        
        
@@ -52,9 +56,9 @@ export default function SampleTest() {
                 <div id="quick-stats">Quick Stats</div>
                 <br></br>
                 <div id="statsdiv1">
-                    <p id="timeiconptage"><img src={timeicon} alt="icon" style={{ width:"28px",height:"25px" }} /><span style={{fontWeight: "bold"}}>&nbsp;Test Completed in:  &nbsp;</span> 13 minutes</p>
+                    <p id="timeiconptage"><img src={timeicon} alt="icon" style={{ width:"28px",height:"25px" }} /><span style={{fontWeight: "bold"}}>&nbsp;Test Completed in:  &nbsp;</span> {time}</p>
                     <br></br>
-                    <p id="timeiconptage"><img src={scoreicon} alt="icon" style={{ width:"28px",height:"25px" }} /><span style={{fontWeight: "bold"}}>&nbsp;Test Score:</span>&nbsp; 10 Points</p>
+                    <p id="timeiconptage"><img src={scoreicon} alt="icon" style={{ width:"28px",height:"25px" }} /><span style={{fontWeight: "bold"}}>&nbsp;Test Score:</span>&nbsp; {resp.overallScore} out of {resp.total} Points</p>
                     <br></br>
                     <p id="timeiconptage"><img src={correcticon} alt="icon" style={{ width:"23px",height:"21px" }} /><span style={{fontWeight: "bold"}}> &nbsp;Questions correctly attempted:</span>&nbsp; {resp.totalCorrect}</p>
                     <br></br>

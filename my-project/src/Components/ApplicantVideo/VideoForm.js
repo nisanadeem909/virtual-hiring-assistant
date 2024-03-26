@@ -19,8 +19,9 @@ function ConfirmationPopup({ message, onConfirm, onCancel }) {
 export default function VideoForm() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [loading, setLoading] = useState(true); // Add loading state
   const [duration, setDuration] = useState();
-  const [timer, setTimer] = useState(15 * 60);
+  const [timer, setTimer] = useState();
   const [timeLimitReached, setTimeLimitReached] = useState(false);
   const [videoFile, setVideoFile] = useState(null);
   const [job, setJob] = useState(null);
@@ -28,28 +29,28 @@ export default function VideoForm() {
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
 
   useEffect(() => {
-    // Retrieve timer value from local storage on component mount
-    const storedTimer = localStorage.getItem('videoFormTimer');
-    if (storedTimer) {
-      setTimer(parseInt(storedTimer));
-    }
-
-    if (location.state && location.state.job) {
-      setJob(location.state.job);
-
-      const param = { jobID: location.state.job._id };
-      axios
-        .post("http://localhost:8000/nabeeha/getvideointerviewquestions", param)
-        .then((response) => {
+    const fetchData = async () => {
+      if (location.state && location.state.job) {
+        setJob(location.state.job);
+  
+        const param = { jobID: location.state.job._id };
+        try {
+          const response = await axios.post("http://localhost:8000/nabeeha/getvideointerviewquestions", param);
           setQuestions(response.data.questions);
+          //alert(response.data.duration)
+
           setDuration(response.data.duration);
-        })
-        .catch(function (error) {
+          setTimer(response.data.duration * 60)
+          setLoading(false); // Data loading is complete
+        } catch (error) {
           alert(error);
-        });
-    } else {
-      navigate(-1);
-    }
+        }
+      } else {
+        navigate(-1);
+      }
+    };
+
+    fetchData();
   }, [location.state, navigate]);
 
   useEffect(() => {
@@ -119,30 +120,34 @@ export default function VideoForm() {
 
       <hr className='nisa-horizontal-line'></hr>
 
-      <div className='video-mid'>
-        <h4>Record a maximum 5-minute video answering the following questions:</h4>
-        <ul className='nisa-v-q'>
-          {allquestions.map((question, index) => (
-            <li className='nisa-v-q2' key={index}>{question}</li>
-          ))}
-        </ul>
+      {loading ? ( // Show loading message if data is still loading
+        <div>Loading...</div>
+      ) : (
+        <div className='video-mid'>
+          <h4>Record a maximum 5-minute video answering the following questions:</h4>
+          <ul className='nisa-v-q'>
+            {allquestions.map((question, index) => (
+              <li className='nisa-v-q2' key={index}>{question}</li>
+            ))}
+          </ul>
 
-        
-        <p className='nisa-intro2-title'>
-                    <span className='nisa-intro3-title'>Important:</span> Position your camera to capture a vision like shown below.
-                  </p>
-  
-                  <img className='nisa-interview-img' src={img1} alt="Interview Demo" />
-                  <p className='nisa-intro2-title'>
-         <b>Press the next button once you have uploaded the video</b> 
-        </p>
-        <div className='nisa-v-btns'>
-          <input className='upload-v-btn1' type='file' accept='video/*' onChange={handleFileChange} />
-          <button className='upload-video-btn' onClick={handleNextButtonClick} disabled={timeLimitReached}>
-            {timeLimitReached ? 'Time Limit Reached' : 'Next'}
-          </button>
+          
+          <p className='nisa-intro2-title'>
+                      <span className='nisa-intro3-title'>Important:</span> Position your camera to capture a vision like shown below.
+                    </p>
+    
+                    <img className='nisa-interview-img' src={img1} alt="Interview Demo" />
+                    <p className='nisa-intro2-title'>
+           <b>Press the next button once you have uploaded the video</b> 
+          </p>
+          <div className='nisa-v-btns'>
+            <input className='upload-v-btn1' type='file' accept='video/*' onChange={handleFileChange} />
+            <button className='upload-video-btn' onClick={handleNextButtonClick} disabled={timeLimitReached}>
+              {timeLimitReached ? 'Time Limit Reached' : 'Next'}
+            </button>
+          </div>
         </div>
-      </div>
+      )}
       {showConfirmationPopup && (
         <ConfirmationPopup
           message="You cannot proceed before submitting a video file."

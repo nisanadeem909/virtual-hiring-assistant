@@ -132,13 +132,29 @@ router.post('/fetchtestresponsestats', async (req, res) => {
         }
       });
     
+      // Calculate total points the test was out of
+      const test = await TechTests.findOne({ jobID: jobIDToFind }).exec();
 
+      if (!test) {
+        return res.status(404).json({ error: 'Test not found' });
+      }
+
+      let totalTestScore = 0;
+
+      // Iterate over the questions array and sum up the points
+      test.questions.forEach((question) => {
+        totalTestScore += question.points || 0; // Add points to the total score, defaulting to 0 if points field is missing
+      });
+
+    let questionsmissed;
+    questionsmissed = test.questions.length - totalCorrect - totalIncorrect;
     res.json({ 
       timeTaken: 10,
       overallScore: testResponse.overallScore,
       totalCorrect: totalCorrect,
       totalIncorrect: totalIncorrect,
-      totalLeft: 0
+      totalLeft: questionsmissed,
+      total:totalTestScore
     });
   } catch (error) {
     console.error('Error retrieving test responses:', error);

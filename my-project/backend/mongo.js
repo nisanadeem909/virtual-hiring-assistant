@@ -559,6 +559,9 @@ const testResponses = new Schema({
   }],
   overallScore:{
     type: Number
+  },
+  timeTaken:{ //Nabeeha
+    type: Number
   }
   
 }, {

@@ -28,6 +28,7 @@ export default function TechnicalTest() {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [msg,setMsg] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [answeredQuestionsIndices, setAnsweredQuestionsIndices] = useState([]);
   const [questions,setQuestions] = useState([{question: [
     {
       type: 'text',
@@ -102,13 +103,28 @@ export default function TechnicalTest() {
   };
   const handleConfirm=()=>{
     
-    navigate('done')
+  const email = sessionStorage.getItem('email');
+    
+   const param = {applicantEmail:email,jobID:location.state.job._id}
+   
+    
+    
   }
   const handleSubmit = () => {
    
    setShowConfirmation(true)
+   const email = sessionStorage.getItem('email');
+   const param = { applicantEmail: email, jobID: location.state.job._id,timeTaken: (60 * 60) - timer  };
+   axios.post("http://localhost:8000/nabeeha/evaluatemytestplease", param)
+         .then((response) => { 
+           //alert(JSON.stringify(response.data))
+           navigate('done')
+         })
+         .catch(function (error) {
+          alert(error)
+         });
 
-   evaluateTest() 
+
    localStorage.removeItem('timer');
     localStorage.removeItem('videoFormTimer');
   navigate('done') //UNCOMMENT LATER LAAZMI
@@ -116,16 +132,7 @@ export default function TechnicalTest() {
   };
 
   const evaluateTest = ()=>{
-    const email = sessionStorage.getItem('email');
     
-    const param = {applicantEmail:email,jobID:location.state.job._id}
-    axios.post("http://localhost:8000/nabeeha/evaluatetest", param)
-          .then((response) => { 
-            
-          })
-          .catch(function (error) {
-           
-          });
   }
   const handleAnswer = (index) => {
     
@@ -137,10 +144,17 @@ export default function TechnicalTest() {
 
     }
 
+    //this handles the button disabling feature
+    const updatedAnsweredQuestionsIndices = [...answeredQuestionsIndices, index];
+    setAnsweredQuestionsIndices(updatedAnsweredQuestionsIndices);
+
+
+    //this handles the updated answers array
     const updatedAnsweredQuestions = [...answeredQuestions];
     updatedAnsweredQuestions[index] = true;
     setAnsweredQuestions(updatedAnsweredQuestions);
-    // Your logic for submitting the answer goes here
+    
+
     const param = {
       applicantEmail: sessionStorage.getItem("email"),
       jobID: location.state.job._id,
@@ -197,7 +211,7 @@ export default function TechnicalTest() {
             <button
               className="nisa-nabeeha-submit-button"
               onClick={() => handleAnswer(index)} // Pass question index to handleAnswer
-              disabled={answeredQuestions[index]} // Disable "Submit Answer" button if question is answered
+              disabled={answeredQuestionsIndices.includes(index)} // Disable "Submit Answer" button if question is answered
             >
               Submit Answer
             </button>
@@ -213,7 +227,7 @@ export default function TechnicalTest() {
           onCancel={handleCancel}
         />
       )}
-      <button className="nisa-submit-button" onClick={handleSubmit}>
+      <button className="nisa-submit-button" onClick={() => handleSubmit()}>
         End Test
       </button>
     </div>
