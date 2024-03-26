@@ -29,6 +29,7 @@ export default function SampleTest() {
     useEffect(() => {
         setEmail(location.state.email);
         setJob(location.state.thisjob)
+        
         var param = {'jobID':location.state.thisjob._id,'applicantEmail':location.state.email};
        //alert(JSON.stringify(param))
         axios.post("http://localhost:8000/nabeeha/fetchtestresponsestats",param).then((response) => {
@@ -39,7 +40,7 @@ export default function SampleTest() {
         const timeTakenSeconds = response.data.timeTaken;
         const formattedTime = timeTakenSeconds < 60 ? `${timeTakenSeconds} seconds` : `${Math.floor(timeTakenSeconds / 60)} minutes`;
         setTime(formattedTime);
-       //alert(JSON.stringify(response.data))
+       alert(time)
        
        
         })

@@ -173,7 +173,10 @@ router.post('/fetchtestresponsestats', async (req, res) => {
       overallScore: testResponse.overallScore,
       totalCorrect: totalCorrect,
       totalIncorrect: totalIncorrect,
-      totalLeft: totalUnanswered, // Include total unanswered in the response
+      
+      totalLeft: totalUnanswered, // Include total unanswered in the response,
+    
+      total: totalCorrect+totalIncorrect+totalUnanswered,
       categoryPercentages: categoryPercentages
     });
   } catch (error) {

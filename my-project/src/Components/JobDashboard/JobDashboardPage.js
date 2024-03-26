@@ -171,13 +171,13 @@ export default function JobDashboardPage() {
 
         }
         else if (index == 4) {
-          //setContent(<TestResponses job={job}/>);
-          if (!testExists)
-            setContent(<TestCreating job={job}></TestCreating>)
-          else if (job.status < 3 || new Date(job.P3StartDate) > new Date())
-            setContent(<TestEditing job={job}></TestEditing>)
-          else // test responses page should be here
-            setContent(<TestResponses job={job}/>);
+          setContent(<TestResponses job={job}/>);
+          // if (!testExists)
+          //   setContent(<TestCreating job={job}></TestCreating>)
+          // else if (job.status < 3 || new Date(job.P3StartDate) > new Date())
+          //   setContent(<TestEditing job={job}></TestEditing>)
+          // else // test responses page should be here
+          //   setContent(<TestResponses job={job}/>);
             
         }
         // else if (index == 5) {} // shortlisting tab
