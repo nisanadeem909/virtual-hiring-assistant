@@ -952,7 +952,7 @@ def VideoTimer():
             days = job['P3Days']
             print(startDate + timedelta(days=days))
             if job['status'] == 3 and current_datetime >= (startDate + timedelta(days=days)).replace(tzinfo=pytz.utc):
-                VideoScreening(job)
+                VideoScreening(job)   
                 
 
 schedule.every(1).minutes.do(sendFormEmails)
