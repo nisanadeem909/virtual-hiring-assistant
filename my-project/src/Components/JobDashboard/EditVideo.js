@@ -28,7 +28,7 @@ export default function EditVideo(props) {
 
     useEffect(() => {
       
-      
+
       const test = props.test;
       const job = props.job;
       setnewJob(job);
@@ -120,14 +120,18 @@ export default function EditVideo(props) {
       //alert(questions[index].question)
     };
   
-    const addQuestion = () => {
-      setQuestions([...questions, { question: '' }]);
-    };
+   
+  const addQuestion=(ev)=>{
+   
+    var copy = [...questions];
+    copy.push("");
+    setQuestions(copy);
+}
   
     const deleteQuestion = (index) => {
-      const newQuestions = [...questions];
-      newQuestions.splice(index, 1);
-      setQuestions(newQuestions);
+      var copy = [...questions];
+      copy.splice(index, 1);
+      setQuestions(copy);
     };
   
     return (
@@ -147,12 +151,12 @@ export default function EditVideo(props) {
                     className='n-vd-dur'
                   />
                 </div>
-                <button className='n-nab-createformpage-cancelbtn'>Discard</button>
+                <button className='n-nab-createformpage-cancelbtn' onClick={() => navigate(-1, { state: { 'jobID': njob._id } })}>Discard</button>
                 <button className='kcreateformpage-savebtn' onClick={handleNext}>Next</button>
               </div>
               <div className='n-kcreateform-questions'>
               {questions.map((question, index) => (
-                <div key={index}>
+                <div >
                   <div className='nkformquestion-con' tabIndex="0">
                     <div className='kformquestion-header'>
                       <label className='kformquestion-header-label'>
@@ -161,7 +165,7 @@ export default function EditVideo(props) {
                       </label>
                       <textarea
                         className='kformquestion-textbox'
-                        defaultValue={question}
+                        value={question}
                         onChange={(event) => handleQuestionTextChange(index, event)}
                       ></textarea>
                     </div>
@@ -173,7 +177,7 @@ export default function EditVideo(props) {
                 </div>
               ))}
               <div className='nnkcreateformpage-addq-con'>
-              <button className='nkcreateformpage-addq' onClick={addQuestion} style={{ marginTop: '10px' }}>+</button>
+              <button className='nkcreateformpage-addq' onClick={(event) => addQuestion(event)} style={{ marginTop: '10px' }}>+</button>
 
               </div>
             </div>
@@ -197,7 +201,7 @@ export default function EditVideo(props) {
                 defaultValue={trait.weight}
                 onChange={(e) => handleTraitChange(e, index)}
               >
-                {[...Array(10)].map((_, i) => (
+                {[...Array(5)].map((_, i) => (
                   <option key={i + 1} value={i + 1}>{i + 1}</option>
                 ))}
               </select>

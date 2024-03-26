@@ -290,7 +290,7 @@ const handleTraitChange = (event, traitName) => {
     <div className="trait-item">
         <label>{Object.keys(traits)[0]}:</label>
         <select value={traits.Focused} onChange={(e) => handleTraitChange(e, 'Focused')}>
-            {[...Array(10)].map((_, index) => (
+            {[...Array(5)].map((_, index) => (
                 <option key={index} value={index + 1}>{index + 1}</option>
             ))}
         </select>
@@ -298,7 +298,7 @@ const handleTraitChange = (event, traitName) => {
     <div className="trait-item">
         <label>{Object.keys(traits)[1]}:</label>
         <select value={traits.EngagingTone} onChange={(e) => handleTraitChange(e, 'EngagingTone')}>
-            {[...Array(10)].map((_, index) => (
+            {[...Array(5)].map((_, index) => (
                 <option key={index} value={index + 1}>{index + 1}</option>
             ))}
         </select>
@@ -306,7 +306,7 @@ const handleTraitChange = (event, traitName) => {
     <div className="trait-item">
         <label>{Object.keys(traits)[2]}:</label>
         <select value={traits.Excited} onChange={(e) => handleTraitChange(e, 'Excited')}>
-            {[...Array(10)].map((_, index) => (
+            {[...Array(5)].map((_, index) => (
                 <option key={index} value={index + 1}>{index + 1}</option>
             ))}
         </select>
@@ -314,7 +314,7 @@ const handleTraitChange = (event, traitName) => {
     <div className="trait-item">
         <label>{Object.keys(traits)[3]}:</label>
         <select value={traits.SpeakingRate} onChange={(e) => handleTraitChange(e, 'SpeakingRate')}>
-            {[...Array(10)].map((_, index) => (
+            {[...Array(5)].map((_, index) => (
                 <option key={index} value={index + 1}>{index + 1}</option>
             ))}
         </select>
@@ -322,7 +322,7 @@ const handleTraitChange = (event, traitName) => {
     <div className="trait-item">
         <label>{Object.keys(traits)[4]}:</label>
         <select value={traits.Calm} onChange={(e) => handleTraitChange(e, 'Calm')}>
-            {[...Array(10)].map((_, index) => (
+            {[...Array(5)].map((_, index) => (
                 <option key={index} value={index + 1}>{index + 1}</option>
             ))}
         </select>
@@ -330,7 +330,7 @@ const handleTraitChange = (event, traitName) => {
     <div className="trait-item">
         <label>{Object.keys(traits)[5]}:</label>
         <select value={traits.StructuredAnswers} onChange={(e) => handleTraitChange(e, 'StructuredAnswers')}>
-            {[...Array(10)].map((_, index) => (
+            {[...Array(5)].map((_, index) => (
                 <option key={index} value={index + 1}>{index + 1}</option>
             ))}
         </select>
@@ -338,7 +338,7 @@ const handleTraitChange = (event, traitName) => {
     <div className="trait-item">
         <label>{Object.keys(traits)[6]}:</label>
         <select value={traits.Paused} onChange={(e) => handleTraitChange(e, 'Paused')}>
-            {[...Array(10)].map((_, index) => (
+            {[...Array(5)].map((_, index) => (
                 <option key={index} value={index + 1}>{index + 1}</option>
             ))}
         </select>
@@ -346,7 +346,7 @@ const handleTraitChange = (event, traitName) => {
     <div className="trait-item">
         <label>{Object.keys(traits)[7]}:</label>
         <select value={traits.NoFillers} onChange={(e) => handleTraitChange(e, 'NoFillers')}>
-            {[...Array(10)].map((_, index) => (
+            {[...Array(5)].map((_, index) => (
                 <option key={index} value={index + 1}>{index + 1}</option>
             ))}
         </select>
@@ -354,7 +354,7 @@ const handleTraitChange = (event, traitName) => {
     <div className="trait-item">
         <label>{Object.keys(traits)[8]}:</label>
         <select value={traits.Friendly} onChange={(e) => handleTraitChange(e, 'Friendly')}>
-            {[...Array(10)].map((_, index) => (
+            {[...Array(5)].map((_, index) => (
                 <option key={index} value={index + 1}>{index + 1}</option>
             ))}
         </select>
