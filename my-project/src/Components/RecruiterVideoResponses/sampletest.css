@@ -1,4 +1,4 @@
-.nab-question-container {
+.nab-question-container-techtest {
     margin-top: 4%;
     padding: 40px;
     padding-left: 10vh;
@@ -7,6 +7,12 @@
     height: 60vh;
     display: flex;
     flex-direction: row;
+
+    
+    border-radius: 8px;
+    
+    width: 100%;
+    height: 100%;
     
 }
 #quick-stats{
@@ -27,6 +33,7 @@
 #statsdiv1{
     font-size: 18px;
     margin-top: 3vh;
+    width: 100%;
 }
 #timeiconptage{
     display: flex;

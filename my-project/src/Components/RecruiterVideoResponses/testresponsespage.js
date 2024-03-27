@@ -31,8 +31,8 @@ export default function FormResponsesPage(props) {
          
         setJobTitle(props.job.jobTitle)
         getFormResponses()
-        
-     }, []);
+         
+     }, []); 
      
      const displayTest =(email)=>
      {
