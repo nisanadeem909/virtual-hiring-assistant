@@ -33,6 +33,7 @@ export default function EditVideo(props) {
       const job = props.job;
       setnewJob(job);
       setQuestions(test.questions || []);
+      //alert(JSON.stringify(test.acceptabilityTraits))
       setTraits(test.acceptabilityTraits || []);
       setVideoDuration(test.duration || '');
       setImp(test.importance || '');
@@ -88,11 +89,16 @@ export default function EditVideo(props) {
     const handleTraitChange = (e, traitIndex) => {
       const value = e.target.value;
       
-      setTraits((prevTraits) =>
-        prevTraits.map((trait, index) =>
-          index === traitIndex ? { ...trait, weight: value } : trait
-        )
-      );
+      // setTraits((prevTraits) =>
+      //   prevTraits.map((trait, index) =>
+      //     index === traitIndex ? { ...trait, weight: value } : trait
+      //   )
+      // );
+
+      var copy = [...traits];
+      copy[traitIndex].weight.$numberDecimal = value;
+      setTraits(copy);
+
     };
 
     const handlePercentageChange = (event, type) => {
@@ -192,13 +198,13 @@ export default function EditVideo(props) {
         <hr className='nisa-vertical-line' />
         <div className="nisa-right-section">
         <h2 className='n-trait-head'>Personality Traits</h2>
-        <p className='n-trait-p'>Rate the following personality traits from 1 to 10, where 1 is the lowest and 10 is the highest.</p>
+        <p className='n-trait-p'>Rate the following personality traits from 1 to 5, where 1 is the lowest and 5 is the highest.</p>
             <div className="n-personality-traits">
           {traits.map((trait, index) => (
             <div key={index} className="trait-item">
               <label>{trait.trait}:</label>
               <select
-                defaultValue={trait.weight}
+                defaultValue={trait.weight.$numberDecimal}
                 onChange={(e) => handleTraitChange(e, index)}
               >
                 {[...Array(5)].map((_, i) => (
@@ -229,6 +235,7 @@ export default function EditVideo(props) {
           type="number"
           defaultValue={imp}
           onChange={(e) => handlePercentageChange(e, 'videoInterview')}
+          
         />
         <span>%</span>
       </div>
