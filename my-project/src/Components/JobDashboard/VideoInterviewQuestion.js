@@ -28,7 +28,7 @@ export default function CreateForm(props) {
   const [phase, setPhase] = useState(1);
   
   const [formDeadline, setFormDeadline] = useState('');
-  const [videoInterviewPercentage, setVideoInterviewPercentage] = useState(80);
+  const [videoInterviewPercentage, setVideoInterviewPercentage] = useState(50);
   const [technicalTestPercentage, setTechnicalTestPercentage] = useState(100 - videoInterviewPercentage);  // save in technical test schema
   const [videoDuration, setVideoDuration] = useState(15); // Default duration set to 15 minutes
 
@@ -285,7 +285,7 @@ const handleTraitChange = (event, traitName) => {
         <hr className='nisa-vertical-line' />
         <div className="nisa-right-section">
         <h2 className='n-trait-head'>Personality Traits</h2>
-        <p className='n-trait-p'>Rate the following personality traits from 1 to 10, where 1 is the lowest and 10 is the highest.</p>
+        <p className='n-trait-p'>Rate the following personality traits from 1 to 5, where 1 is the lowest and 5 is the highest.</p>
 <div className="n-personality-traits">
     <div className="trait-item">
         <label>{Object.keys(traits)[0]}:</label>

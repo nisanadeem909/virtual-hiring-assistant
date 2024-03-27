@@ -81,7 +81,7 @@ export default function IntroductionPage() {
         <div>Loading...</div>
       ) : !flag ? (
         <div className="nab-intro-head">
-          <h1>Sorry. This job link form has expired.</h1>
+          <h1>Sorry. This job interview/test is unavailable.</h1>
           <p>If you think this is a mistake, please contact HR.</p>
         </div>
       ) : (

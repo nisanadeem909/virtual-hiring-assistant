@@ -17,7 +17,7 @@ export default function CreateTest(props) {
     const [testDuration, setTestDuration] = useState('');
     const [formLink, setFormLink] = useState('');
     const [formEmailBody, setEmail] = useState(
-        "Congatulations! Your application has successfully passed Phase 2 of our recruitment.\n\nFor Phase 3 and 4, we require candidates to upload their video-interviews for non-technical assessment and attempt a technical test. \n\nPlease find attached the link to the test and the password you will need for accessing the test. Please submit it within the deadline specified. Good Luck! \n\n"
+        "Congatulations! Your application has successfully passed Phase 2 of our recruitment.\n\nFor Phase 3 and 4, we require candidates to upload their video-interviews for non-technical assessment and attempt a technical test.\n\nMake sure you have the following before starting the test:\nA working webcam.\nA stable internet connection. \n\nPlease find attached the link to the test and the password you will need for accessing the test. Please submit it within the deadline specified. Good Luck! \n\n"
       );
     const [formEmailSub, setSubject] = useState("Regarding Your Application");
     const [savedjobId, setSavedJob] = useState();  

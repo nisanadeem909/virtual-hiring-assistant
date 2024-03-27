@@ -24,7 +24,7 @@ export default function TechnicalTest() {
   const navigate = useNavigate();
   const location = useLocation();
   const [job, setJob] = useState(null);
-  const [timer, setTimer] = useState(60 * 60);
+  const [timer, setTimer] = useState();
   const [selectedOptions, setSelectedOptions] = useState({});
   const [msg,setMsg] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -55,7 +55,7 @@ export default function TechnicalTest() {
             if (response.data.status === "success") {
               //alert(JSON.stringify(response.data.form))
               setQuestions(response.data.form.questions);
-             // setTimer(response.data.form.duration * 60);
+              setTimer(response.data.form.duration * 60);
               setAnsweredQuestions(Array(response.data.form.questions.length).fill(false)); // Initialize answeredQuestions state
             } else {
               console.error(response.data.error);
@@ -64,7 +64,7 @@ export default function TechnicalTest() {
           })
           .catch(function (error) {
             console.error("Axios Error:" + error);
-            alert(error);
+            //alert(error);
           });
       } else {
         navigate(-1);
@@ -121,7 +121,7 @@ export default function TechnicalTest() {
            navigate('done')
          })
          .catch(function (error) {
-          alert(error)
+          //alert(error)
          });
 
 
@@ -165,7 +165,7 @@ export default function TechnicalTest() {
         // Handle response if needed
       })
       .catch(function (error) {
-        alert(error);
+        //alert(error);
       });
   };
   
