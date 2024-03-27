@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './sampletest.css'
 import axios from 'axios';
-import pie from './piechart.png'
+import pie from './piechart.png' 
 import timeicon from './time.png'
 import scoreicon from './score.png'
 import correcticon from './correct.png'

@@ -64,7 +64,6 @@ router.post('/checkapplicantcredentials', async (req, res) => {
         console.log("You can only take this test once!")
         return res.json({status:"false",message:"You can only take this test once."})
       }
-
       //Check Applicant password is the same
       if (thisApp.password != req.body.password)
       {
