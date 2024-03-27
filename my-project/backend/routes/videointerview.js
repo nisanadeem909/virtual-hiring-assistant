@@ -169,7 +169,7 @@ router.post('/fetchtestresponsestats', async (req, res) => {
     const totalUnanswered = totalQ - totalAnswered;
 
     res.json({
-      timeTaken: 10,
+      timeTaken: testResponse.timeTaken,
       overallScore: testResponse.overallScore,
       totalCorrect: totalCorrect,
       totalIncorrect: totalIncorrect,
