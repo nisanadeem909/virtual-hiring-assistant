@@ -59,10 +59,11 @@ router.post('/checkapplicantcredentials', async (req, res) => {
       }
 
       //Check if Applicant has already taken the test //AFTER TESTING UNCOMMENT THIS
-      // const thisVidRes = await VideosResponses.findOne({applicantEmail:req.body.email})
-      // if (thisVidRes)
-      //   return res.json({status:"false",message:"You can only take this test once."})
-
+      const thisVidRes = await VideosResponses.findOne({applicantEmail:req.body.email,jobID: req.body.jobID})
+      if (thisVidRes){
+        console.log("You can only take this test once!")
+        return res.json({status:"false",message:"You can only take this test once."})
+      }
       //Check Applicant password is the same
       if (thisApp.password != req.body.password)
       {
