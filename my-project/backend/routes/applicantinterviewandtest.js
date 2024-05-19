@@ -259,6 +259,7 @@ router.post('/getvideointerviewdetails', async (req, res) => {
         );
   
         console.log(found);
+        res.status(200).json({'status':true});
       }
     } catch (error) {
       console.error('Error:', error);

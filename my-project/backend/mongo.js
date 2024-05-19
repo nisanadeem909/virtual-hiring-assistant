@@ -303,6 +303,14 @@ const jobSchema = new Schema({
     type: String,
   }
   ,
+  acceptEmailSub: { // new - komal
+    type: String,
+  }
+  ,
+  acceptEmailBody: { // new - komal
+    type: String,
+  }
+  ,
   noShortlisted:{
     type: Boolean,
     default: false,

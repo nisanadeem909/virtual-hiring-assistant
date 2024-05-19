@@ -136,13 +136,18 @@ router.post('/fetchtestresponsestats', async (req, res) => {
     // Fetch the technical test associated with the jobIDToFind
     const techTest = await TechTests.findOne({ jobID: jobIDToFind }).exec();
 
-    const categories = {}; // Object to store total correct and total answered in each category
+    // Initialize categories object with zeros and store total number of questions in each category
+const categories = {};
+techTest.questions.forEach(question => {
+  const category = question.category;
+  categories[category] = { totalCorrect: 0, totalAnswered: 0, totalQuestions: 0 };
+});
 
-    // Initialize categories object with zeros
-    techTest.questions.forEach(question => {
-      const category = question.category;
-      categories[category] = { totalCorrect: 0, totalAnswered: 0 };
-    });
+// Calculate total number of questions in each category
+techTest.questions.forEach(question => {
+  const category = question.category;
+  categories[category].totalQuestions++;
+});
 
     totalQ = techTest.questions.length;
 
@@ -160,8 +165,8 @@ router.post('/fetchtestresponsestats', async (req, res) => {
 
     // Calculate percentage of correct questions in each category
     Object.keys(categories).forEach(category => {
-      const { totalCorrect, totalAnswered } = categories[category];
-      const correctPercentage = (totalCorrect / totalAnswered) * 100;
+      const { totalCorrect, totalAnswered, totalQuestions } = categories[category];
+      const correctPercentage = (totalCorrect / totalQuestions) * 100;
       categoryPercentages[category] = correctPercentage.toFixed(2); // Round to two decimal places
     });
 

@@ -112,7 +112,7 @@ export default function TechnicalTest() {
   }
   const handleSubmit = () => {
    
-   setShowConfirmation(true)
+   //setShowConfirmation(true)
    const email = sessionStorage.getItem('email');
    const param = { applicantEmail: email, jobID: location.state.job._id,timeTaken: (60 * 60) - timer  };
    axios.post("http://localhost:8000/nabeeha/evaluatemytestplease", param)
@@ -127,7 +127,7 @@ export default function TechnicalTest() {
 
    localStorage.removeItem('timer');
     localStorage.removeItem('videoFormTimer');
-  navigate('done') //UNCOMMENT LATER LAAZMI
+  //navigate('done') //UNCOMMENT LATER LAAZMI
 
   };
 
