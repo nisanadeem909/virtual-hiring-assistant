@@ -11,6 +11,7 @@ export default function FormResponsesPage(props) {
     const [jobTitle,setJobTitle] = useState()
     
     const [resps,setResps] = useState([])
+    const [totalPoints,setPoints] = useState('10')
     const navigate = useNavigate();
     const getFormResponses = () =>
     {
@@ -20,6 +21,7 @@ export default function FormResponsesPage(props) {
         //alert(response.data.formResponses)
         
         setResps(response.data.responses);
+        setPoints(response.data.total);
        
        
         })
@@ -80,7 +82,7 @@ export default function FormResponsesPage(props) {
                             <td align="center">{index + 1}</td>
                             <td align="center">{resp.applicantEmail}</td>
                             
-                            <td align="center">{resp.overallScore}</td> {/*replace with resp.overallScore*/}
+                            <td align="center">{resp.overallScore}/{totalPoints}</td> {/*replace with resp.overallScore*/}
                             <td align="center">
                             
                             {/* <a href={`http://localhost:8000/routes/profilepictures/${resp.videoPath}`}>Watch Video</a> */}
