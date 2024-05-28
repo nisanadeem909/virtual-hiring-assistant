@@ -55,14 +55,11 @@ export default function PostJobPage() {
         setValidationError('Please select Fully Automated or Automated.');
         return;
       }
-    } else if (phase === 3) {
-      // Validate required fields for Phase 3
-     
       if (jobpost === undefined) {
         setValidationError('Please select Post Job or Hold Job.');
         return;
       }
-    }
+    } 
   
     setValidationError('');
     setPhase(phase + 1);
@@ -277,98 +274,79 @@ export default function PostJobPage() {
                 </div>
               )}
 
-              {phase === 2 && (
-                <div className="phase-details">
-                <h1 className="nisa-phase1">Automated or Manual</h1>
-                {/* ... (Phase 2 content) */}
-               
-                {validationError && <p style={{ color: 'red' }}>{validationError}</p>}
-                
-               
-                <div className="options-container">
-                  <label className='nisa-j-l'>
-                    <input
-                      type="radio"
-                      className="nisa-option-checkbox"
-                      name="recruitmentOption"
-                      onChange={handleAutomated}
-                      checked={automate === 1}
-                    />
-                    Fully Automated
-                  </label>
-                  <p className='nisa-s'>This will ensure that the job process proceeds automatically from one phase to the next</p>
+{phase === 2 && (
+  <div className="phase-details">
+    <h1 className="nisa-phase1">Select the required options</h1>
 
-                  <hr className="nisa-horizontal-line" />
-                  
-                  <label className='nisa-j-l'>
-                    <input
-                      type="radio"
-                      className="nisa-option-checkbox"
-                      name="recruitmentOption"
-                      onChange={handleManual}
-                      checked={automate === 0}
-                    />
-                    Automated
-                  </label>
-                  <p>This will require recruiters confirmation to proceed from one phase to the next</p>
-                </div>
+    {validationError && <p style={{ color: 'red' }}>{validationError}</p>}
 
-                
-               
-                <button className="nisa-postJ2-button" onClick={handleBack}>
-                  Back
-                </button>
-                <button className="nisa-postJ2-button" onClick={handleNext}>
-                  Next
-                </button>
-              </div>
-              
-              
-              )}
+    <div className="options-container">
+      <label className='nisa-j-l'>
+        <input
+          type="radio"
+          className="nisa-option-checkbox"
+          name="recruitmentOption"
+          onChange={handleAutomated}
+          checked={automate === 1}
+        />
+        Fully Automated
+      </label>
+      <p className='nisa-s'>This will ensure that the job process proceeds automatically from one phase to the next</p>
+
+     
+      
+      <label className='nisa-j-l'>
+        <input
+          type="radio"
+          className="nisa-option-checkbox"
+          name="recruitmentOption"
+          onChange={handleManual}
+          checked={automate === 0}
+        />
+        Automated
+      </label>
+      <p className='nisa-p-jb'>This will require recruiters confirmation to proceed from one phase to the next</p>
+
+      <hr className="nisa-horizontal-line" />
+
+      <label className='nisa-j-l'>
+        <input
+          type="radio"
+          className="nisa-option-checkbox"
+          name="jobPostOption"
+          onChange={handlePost}
+          checked={jobpost === 1}
+        />
+        Post Job
+      </label>
+      <p className='nisa-s'>This will post the job and generate the CV collection link</p>
+
+    
+      
+      <label className='nisa-j-l'>
+        <input
+          type="radio"
+          className="nisa-option-checkbox"
+          name="jobPostOption"
+          onChange={handleHold}
+          checked={jobpost === 0}
+        />
+        Hold Job
+      </label>
+      <p>This will not post the job and will be on hold.</p>
+    </div>
+
+    <button className="nisa-postJ2-button" onClick={handleBack}>
+      Back
+    </button>
+    <button className="nisa-postJ2-button" onClick={handleNext}>
+      Next
+    </button>
+  </div>
+)}
+
 
 {phase === 3 && (
-              <div className="phase-details">
-                <h1 className="nisa-phase1">Post Job or Hold Job</h1>
-                {validationError && <p style={{ color: 'red' }}>{validationError}</p>}
-                 <div className="options-container">
-                  <label className='nisa-j-l'>
-                    <input
-                      type="radio"
-                      className="nisa-option-checkbox"
-                      name="recruitmentOption"
-                      onChange={handlePost}
-                      checked={jobpost === 1}
-                    />
-                    Post Job
-                  </label>
-                  <p className='nisa-s'>This will post the job and generate the CV collection link</p>
-
-                  <hr className="nisa-horizontal-line" />
-                  
-                  <label className='nisa-j-l'>
-                    <input
-                      type="radio"
-                      className="nisa-option-checkbox"
-                      name="recruitmentOption"
-                      onChange={handleHold}
-                      checked={jobpost === 0}
-                    />
-                    Hold Job
-                  </label>
-                  <p>This will not post the job and will be on hold.</p>
-                </div>
-
-              
-                <button className="nisa-postJ2-button" onClick={handleBack}>
-                  Back
-                </button>
-                <button className="nisa-postJ2-button" onClick={handleNext}>
-                  Next
-                </button>
-              </div>
-            )}
-
-{phase === 4 && (
   <div className="phase-details">
     <h1 className="nisa-phase1">Set Rejection Email</h1>
 

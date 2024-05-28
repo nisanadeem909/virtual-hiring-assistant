@@ -98,9 +98,13 @@ router.post('/fetchtestresponsesnabeeha', async (req, res) => {
 
     const formResponses = await TestResponses.find({ jobID: jobIDToFind }).exec();
     
-    console.log('Test Responses with job ID', jobIDToFind, ':', formResponses);
+    const techTest = await TechTests.findOne({ jobID: jobIDToFind }).exec();
+    // Sum the points of all questions in the test
+    const totalPoints = techTest.questions.reduce((sum, question) => sum + (question.points || 0), 0);
+
+    console.log("totalps: " + totalPoints);
     
-    res.json({ responses: formResponses });
+    res.json({ responses: formResponses, total:totalPoints});
   } catch (error) {
     console.error('Error retrieving test responses:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -184,6 +188,8 @@ techTest.questions.forEach(question => {
       total: totalCorrect+totalIncorrect+totalUnanswered,
       categoryPercentages: categoryPercentages
     });
+
+
   } catch (error) {
     console.error('Error retrieving test responses:', error);
     res.status(500).json({ error: 'Internal Server Error' });

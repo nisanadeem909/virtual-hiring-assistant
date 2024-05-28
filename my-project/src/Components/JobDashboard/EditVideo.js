@@ -43,8 +43,22 @@ export default function EditVideo(props) {
 
 
     const handleNext = () => {
-        setPhase(phase + 1);
-      };
+      if (phase === 1) {
+        if (questions.length < 3) {
+          setMessageTitle('Validation Error');
+          setMessage('You must have at least 3 questions.');
+          setOpenModal(true);
+          return;
+        }
+        if (questions.some((q) => q.trim() === '')) {
+          setMessageTitle('Validation Error');
+          setMessage('Questions cannot be empty.');
+          setOpenModal(true);
+          return;
+        }
+      }
+      setPhase(phase + 1);
+    };
     
       const handleBack = () => {
         setPhase(phase - 1);
@@ -188,7 +202,20 @@ export default function EditVideo(props) {
               </div>
             </div>
             </div>
+            <MessageModal
+             isOpen={openModal}
+             message={message}
+             title={messageTitle}
+             closeModal={() => {
+                 setOpenModal(false);
+                 if (messageTitle === 'Form Saved') {
+                     navigate(-1, { state: { 'jobID': props.job._id } });
+                 }
+             }}
+            
+         />
           </div>
+          
         )}
         {phase === 2 && (
           <div className='nab-set-acceptability-criteria'>

@@ -131,7 +131,7 @@ router.post('/getvideointerviewdetails', async (req, res) => {
       const qs = video.questions;
       const duration = video.duration;
    
-    res.json({questions: qs,duration:duration });
+    res.json({questions: qs,duration:duration }); 
 
       
     } catch (error) {
@@ -142,7 +142,7 @@ router.post('/getvideointerviewdetails', async (req, res) => {
   });
 
 
-  router.post('/uploadapplicantvideo',async(req,res)=>{
+router.post('/uploadapplicantvideo',async(req,res)=>{
    
     
     console.log("I am in uplaod applicant video")
@@ -161,17 +161,21 @@ router.post('/getvideointerviewdetails', async (req, res) => {
             var oldpath = String(files.Image.filepath); //this was files.Image.filepath
             
             const img_file = files.Image.originalFilename;
-            console.log("original file name = " + img_file);
+            console.log("original file name = " + img_file); 
       
-          
+           
             newpath = String(__dirname + '/applicantvideos/' + files.Image.originalFilename);
             
             console.log("old path = " + oldpath);
             console.log("new path = " + newpath);
           
+            
+
       
             try {
               fs.copyFileSync(oldpath,newpath);
+              
+              
             }
             catch (err) {
                 console.log(err);
@@ -213,6 +217,7 @@ router.post('/getvideointerviewdetails', async (req, res) => {
     catch(ex)
     {
         console.log("unexpected error" + ex)
+        res.status(500).send({ error: 'Unexpected error occurred.' });
     }
       
   })

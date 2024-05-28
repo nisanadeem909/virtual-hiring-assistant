@@ -2,24 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import img1 from './interview.jpg';
-//import ConfirmationPopup from './ConfirmationPopup'; // Assuming ConfirmationPopup is imported from a separate file
+
 function ConfirmationPopup({ message, onConfirm, onCancel }) {
   return (
     <div className="nab-confirmation-popup-overlay">
       <div className="nab-confirmation-popup">
         <p id="nab-conf-msg">{message}</p>
         <div className="nab-confirmation-buttons">
-          
-          <button  className="nisa-nabeeha-submit-button" onClick={onCancel}>Close</button>
+          <button className="nisa-nabeeha-submit-button" onClick={onCancel}>Close</button>
         </div>
       </div>
     </div>
   );
 }
+
 export default function VideoForm() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
   const [duration, setDuration] = useState();
   const [timer, setTimer] = useState();
   const [timeLimitReached, setTimeLimitReached] = useState(false);
@@ -32,17 +32,18 @@ export default function VideoForm() {
     const fetchData = async () => {
       if (location.state && location.state.job) {
         setJob(location.state.job);
-  
+
         const param = { jobID: location.state.job._id };
         try {
           const response = await axios.post("http://localhost:8000/nabeeha/getvideointerviewquestions", param);
           setQuestions(response.data.questions);
-          //alert(response.data.duration)
 
           setDuration(response.data.duration);
-          setTimer(response.data.duration * 60)
-          setLoading(false); // Data loading is complete
-        } catch (error) {
+          const savedTimer = localStorage.getItem('videoFormTimer');
+          setTimer(savedTimer ? parseInt(savedTimer) : response.data.duration * 60);
+          setLoading(false);
+        } 
+        catch (error) {
           alert(error);
         }
       } else {
@@ -56,20 +57,28 @@ export default function VideoForm() {
   useEffect(() => {
     const countdownInterval = setInterval(() => {
       setTimer((prevTimer) => {
-        localStorage.setItem('videoFormTimer', prevTimer.toString()); // Save timer value to local storage
         if (prevTimer > 0) {
+          localStorage.setItem('videoFormTimer', prevTimer.toString());
           return prevTimer - 1;
         } else {
           clearInterval(countdownInterval);
           setTimeLimitReached(true);
-          upload(); //if the timer expires and the user has not uploaded anything
+          upload();
           navigate('test', { state: { job } });
+          return 0;
         }
       });
     }, 1000);
 
     return () => clearInterval(countdownInterval);
   }, [timer, navigate, job]);
+
+  useEffect(() => {
+    const savedTimer = localStorage.getItem('videoFormTimer');
+    if (savedTimer) {
+      setTimer(parseInt(savedTimer));
+    }
+  }, []);
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
@@ -79,6 +88,16 @@ export default function VideoForm() {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
+    if (file) {
+      const validVideoTypes = ['video/mp4', 'video/avi', 'video/mov', 'video/mpeg', 'video/wmv'];
+
+      if (!validVideoTypes.includes(file.type)) {
+        alert('Invalid file type. Please upload a video file.');
+        setVideoFile(null);
+        event.target.value = null; // Reset the file input
+        return;
+      }
+    }
     setVideoFile(file);
   };
 
@@ -96,8 +115,7 @@ export default function VideoForm() {
   };
 
   const upload = () => {
-    // If video file has not been attached, handle on the server side
-    var formData = new FormData();
+    const formData = new FormData();
     formData.append("Image", videoFile);
     formData.append("Email", sessionStorage.getItem('email'));
     formData.append("JobID", location.state.job._id);
@@ -120,7 +138,7 @@ export default function VideoForm() {
 
       <hr className='nisa-horizontal-line'></hr>
 
-      {loading ? ( // Show loading message if data is still loading
+      {loading ? (
         <div>Loading...</div>
       ) : (
         <div className='video-mid'>
@@ -131,14 +149,13 @@ export default function VideoForm() {
             ))}
           </ul>
 
-          
           <p className='nisa-intro2-title'>
-                      <span className='nisa-intro3-title'>Important:</span> Position your camera to capture a vision like shown below.
-                    </p>
-    
-                    <img className='nisa-interview-img' src={img1} alt="Interview Demo" />
-                    <p className='nisa-intro2-title'>
-           <b>Press the next button once you have uploaded the video</b> 
+            <span className='nisa-intro3-title'>Important:</span> Position your camera to capture a vision like shown below.
+          </p>
+
+          <img className='nisa-interview-img' src={img1} alt="Interview Demo" />
+          <p className='nisa-intro2-title'>
+            <b>Press the next button once you have uploaded the video</b>
           </p>
           <div className='nisa-v-btns'>
             <input className='upload-v-btn1' type='file' accept='video/*' onChange={handleFileChange} />
