@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import img from './DFS.png'
-import img1 from './stack.png'
-import img2 from './queue.png'
-import img3 from './tree.png'
 import axios from 'axios';
-
 
 function ConfirmationPopup({ message, onConfirm, onCancel }) {
   return (
@@ -13,75 +8,77 @@ function ConfirmationPopup({ message, onConfirm, onCancel }) {
       <div className="nab-confirmation-popup">
         <p id="nab-conf-msg">{message}</p>
         <div className="nab-confirmation-buttons">
-          <button  className="nisa-nabeeha-submit-button" onClick={onConfirm}>Confirm</button>
-          <button  className="nisa-nabeeha-submit-button" onClick={onCancel}>Cancel</button>
+          <button className="nisa-nabeeha-submit-button" onClick={onConfirm}>Confirm</button>
+          <button className="nisa-nabeeha-submit-button" onClick={onCancel}>Cancel</button>
         </div>
       </div>
     </div>
   );
 }
+
 export default function TechnicalTest() {
   const navigate = useNavigate();
   const location = useLocation();
   const [job, setJob] = useState(null);
-  const [timer, setTimer] = useState();
+  const [timer, setTimer] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState({});
-  const [msg,setMsg] = useState('');
+  const [msg, setMsg] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [answeredQuestionsIndices, setAnsweredQuestionsIndices] = useState([]);
-  const [questions,setQuestions] = useState([{question: [
-    {
-      type: 'text',
-      text: '',
-    }], options: ['']}]);
-  const [answeredQuestions, setAnsweredQuestions] = useState(Array(questions.length).fill(false)); // State to track answered questions
+  const [questions, setQuestions] = useState([{ question: [{ type: 'text', text: '' }], options: [''] }]);
+  const [answeredQuestions, setAnsweredQuestions] = useState(Array(questions.length).fill(false));
 
-  // Function to retrieve timer value from local storage
-  const getTimerFromLocalStorage = () => {
+  const [duration,setDuration] = useState(0)
+  useEffect(() => {
+    //alert("Hello")
+    //alert(location.state.job)
+ 
+
+
     const storedTimer = localStorage.getItem('timer');
-    return storedTimer ? JSON.parse(storedTimer) : null;
-  };
-    useEffect(() => {
-      // Retrieve timer value from local storage on component mount
-    const storedTimer = getTimerFromLocalStorage();
     if (storedTimer !== null) {
-      setTimer(storedTimer);
+      setTimer(JSON.parse(storedTimer));
     }
-      if (location.state && location.state.job) {
-        setJob(location.state.job);
-        var param = { job: location.state.job._id };
-        axios.post("http://localhost:8000/komal/getjobtest", param)
-          .then((response) => {
-            if (response.data.status === "success") {
-              //alert(JSON.stringify(response.data.form))
-              setQuestions(response.data.form.questions);
-              setTimer(response.data.form.duration * 60);
-              setAnsweredQuestions(Array(response.data.form.questions.length).fill(false)); // Initialize answeredQuestions state
-            } else {
-              console.error(response.data.error);
-              alert(response.data.error);
-            }
-          })
-          .catch(function (error) {
-            console.error("Axios Error:" + error);
-            //alert(error);
-          });
-      } else {
-        navigate(-1);
-      }
-    }, [location.state, navigate]);
 
-    useEffect(() => {
-      const timerInterval = setInterval(() => {
-        setTimer((prevTimer) => {
-          // Save timer value to local storage on every change
-          localStorage.setItem('timer', JSON.stringify(prevTimer));
-          return prevTimer > 0 ? prevTimer - 1 : 0;
+    if (location.state && location.state.job) {
+      setJob(location.state.job);
+      const param = { job: location.state.job._id };
+      axios.post("http://localhost:8000/komal/getjobtest", param)
+        .then((response) => {
+          if (response.data.status === "success") {
+            setQuestions(response.data.form.questions);
+            const savedTimer = localStorage.getItem('timer');
+            if (savedTimer === null) {
+              setTimer(response.data.form.duration * 60);
+
+              setDuration(response.data.form.duration)
+            }
+            setAnsweredQuestions(Array(response.data.form.questions.length).fill(false));
+          } else {
+            console.error(response.data.error);
+            alert(response.data.error);
+          }
+        })
+        .catch((error) => {
+          console.error("Axios Error:" + error);
         });
-      }, 1000);
-  
-      return () => clearInterval(timerInterval);
-    }, []);
+    } else {
+      alert("Redirecting")
+      navigate(-1);
+    }
+  }, [location.state, navigate]);
+
+  useEffect(() => {
+    const timerInterval = setInterval(() => {
+      setTimer((prevTimer) => {
+        const newTimer = prevTimer > 0 ? prevTimer - 1 : 0;
+        localStorage.setItem('timer', JSON.stringify(newTimer));
+        return newTimer;
+      });
+    }, 1000);
+
+    return () => clearInterval(timerInterval);
+  }, []);
 
   const handleOptionChange = (questionId, selectedOption) => {
     setSelectedOptions((prevOptions) => ({
@@ -89,7 +86,6 @@ export default function TechnicalTest() {
       [questionId]: selectedOption,
     }));
   };
-
 
   const formatTime = (time) => {
     const hours = Math.floor(time / 3600);
@@ -101,59 +97,55 @@ export default function TechnicalTest() {
   const handleCancel = () => {
     setShowConfirmation(false);
   };
-  const handleConfirm=()=>{
-    
-  const email = sessionStorage.getItem('email');
-    
-   const param = {applicantEmail:email,jobID:location.state.job._id}
-   
-    
-    
-  }
-  const handleSubmit = () => {
-   
-   setShowConfirmation(true)
-   const email = sessionStorage.getItem('email');
-   const param = { applicantEmail: email, jobID: location.state.job._id,timeTaken: (60 * 60) - timer  };
-   axios.post("http://localhost:8000/nabeeha/evaluatemytestplease", param)
-         .then((response) => { 
-           //alert(JSON.stringify(response.data))
-           navigate('done')
-         })
-         .catch(function (error) {
-          //alert(error)
-         });
 
-
-   localStorage.removeItem('timer');
-    localStorage.removeItem('videoFormTimer');
-  navigate('done') //UNCOMMENT LATER LAAZMI
-
+  const handleConfirm = () => {
+    handleSubmit();
+    setShowConfirmation(false);
   };
 
-  const evaluateTest = ()=>{
-    
-  }
-  const handleAnswer = (index) => {
-    
-    setMsg('')
-    if (!selectedOptions[index]) {
-      //alert('No option selected'); 
-      setMsg("No option selected")
-      return; 
+  const handleSubmit = () => {
+    const email = sessionStorage.getItem('email');
+    const initialDuration = duration * 60; // assuming duration is in minutes
+    const timeTaken = initialDuration - timer;
 
+   
+    // Calculate the time taken in hours, minutes, and seconds
+    const hours = Math.floor(timeTaken / 3600);
+    const minutes = Math.floor((timeTaken % 3600) / 60);
+    const seconds = timeTaken % 60;
+    const timeTakenFormatted = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+    //alert(`You took ${timeTakenFormatted} to complete the test.`);
+    //console.log(hours + ","  + minutes +  "," + seconds)
+
+    //timeTaken format error(FIX IT)
+
+    const param = { applicantEmail: email, jobID: location.state.job._id, timeTaken: timeTaken };//, timeTaken: timeTakenFormatted
+
+    axios.post("http://localhost:8000/nabeeha/evaluatemytestplease", param)
+      .then((response) => {
+        localStorage.removeItem('timer');
+        localStorage.removeItem('videoFormTimer');
+        navigate('done');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleAnswer = (index) => {
+    setMsg('');
+    if (!selectedOptions[index]) {
+      setMsg("No option selected");
+      return;
     }
 
-    //this handles the button disabling feature
     const updatedAnsweredQuestionsIndices = [...answeredQuestionsIndices, index];
     setAnsweredQuestionsIndices(updatedAnsweredQuestionsIndices);
 
-
-    //this handles the updated answers array
     const updatedAnsweredQuestions = [...answeredQuestions];
     updatedAnsweredQuestions[index] = true;
     setAnsweredQuestions(updatedAnsweredQuestions);
-    
 
     const param = {
       applicantEmail: sessionStorage.getItem("email"),
@@ -164,12 +156,12 @@ export default function TechnicalTest() {
       .then((response) => {
         // Handle response if needed
       })
-      .catch(function (error) {
-        //alert(error);
+      .catch((error) => {
+        console.error(error);
       });
   };
-  
-   return (
+
+  return (
     <div className="post-jobnew-container">
       <div className='video-header'>
         <h3 className='nisa-video-heading1'>Part 2: Technical Test</h3>
@@ -202,7 +194,7 @@ export default function TechnicalTest() {
                     value={option}
                     checked={selectedOptions[index] === option}
                     onChange={() => handleOptionChange(index, option)}
-                    disabled={answeredQuestions[index]} // Disable radio button if question is answered
+                    disabled={answeredQuestions[index]}
                   />
                   {option}
                 </li>
@@ -210,8 +202,8 @@ export default function TechnicalTest() {
             </ul>
             <button
               className="nisa-nabeeha-submit-button"
-              onClick={() => handleAnswer(index)} // Pass question index to handleAnswer
-              disabled={answeredQuestionsIndices.includes(index)} // Disable "Submit Answer" button if question is answered
+              onClick={() => handleAnswer(index)}
+              disabled={answeredQuestionsIndices.includes(index)}
             >
               Submit Answer
             </button>

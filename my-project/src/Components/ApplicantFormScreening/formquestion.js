@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 export default function Question({ statement, answers, setUserAnswer }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-
+ 
   return (
     <div className="nab-question-container">
       <div className="question-statement">
