@@ -18,6 +18,8 @@ import VideoResponses from '../RecruiterVideoResponses/videoresponsespage'
 import TestResponses from '../RecruiterVideoResponses/testresponsespage'
 
 import VideoEditBtn from './VideoEditBtn';
+import ShortlistBefore from './ShortlistTabBefore';
+import Shortlisted from './ShortlistedCandidates';
 
 
 export default function JobDashboardPage() {
@@ -180,7 +182,12 @@ export default function JobDashboardPage() {
             setContent(<TestResponses job={job}/>);
             
         }
-        // else if (index == 5) {} // shortlisting tab
+         else if (index == 5) {
+          if (job.status < 5)
+            setContent(<ShortlistBefore job={job}></ShortlistBefore>)
+          else 
+            setContent(<Shortlisted job={job}></Shortlisted>)
+         }
         else {
           setContent(<img src={loading} className='kjobdashboardpage-loading-img'></img>);
         }

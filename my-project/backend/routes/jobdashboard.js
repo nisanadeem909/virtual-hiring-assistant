@@ -1,6 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const {Job, Recruiter,JobApplication,Form,Notification,TechTests,Videos} = require('../mongo');
+const {Job, Recruiter,JobApplication,Form,Notification,TechTests,Videos,TestResponses,VideosResponses} = require('../mongo');
+
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+    port: 465,
+    host:"smtp.gmail.com",
+    auth: {
+    user: 'virtualhiringassistant04@gmail.com',
+    pass: 'glke rmyu xnfa yozn'
+    },
+    secure: true,
+    });
 
 const formatDate = (date) => {
     if (!date) return '';
@@ -543,6 +555,284 @@ router.post('/getjobtestnisa', async(req, res) => {
       res.status(500).json({ status: "error", error: "Server error occurred" });
     }
   });
+
+
+
+
+
+
+  // shortlisting routes
+
+
+  router.post("/setacceptanceemail", async (req, res) => {
+    const { jobId, acceptEmailSub, acceptEmailBody } = req.body;
+    let msg;
+
+    console.log(req.body);
+
+    try {
+        // Find the job by ID and update the acceptEmailSub and acceptEmailBody fields
+        const job = await Job.findOneAndUpdate(
+            { _id: jobId },
+            { 
+                $set: { 
+                    acceptEmailSub: acceptEmailSub,
+                    acceptEmailBody: acceptEmailBody
+                }
+            },
+            { new: true } // Return the updated document
+        );
+
+        if (!job) {
+            msg = { "status": "error", "error": "Job not found!" };
+        } else {
+            msg = { "status": "success", "job": job };
+        }
+    } catch (error) {
+        console.error('Error updating job:', error);
+        msg = { "status": "error", "error": error.message };
+    }
+
+    res.json(msg);
+    res.end();
+});
+
+router.post("/getacceptanceemail", async (req, res) => {
+    const { jobId } = req.body;
+    let msg;
+
+
+    console.log("Getting acceptance email: "+jobId);
+
+    try {
+        // Find the job by ID
+        const job = await Job.findById(jobId, 'acceptEmailSub acceptEmailBody');
+
+        if (!job) {
+            msg = { "status": "error", "error": "Job not found!" };
+        } else if (!job.acceptEmailSub && !job.acceptEmailBody) {
+            msg = { "status": "not found", "error": "Acceptance email details not found!" };
+        } else {
+            msg = { 
+                "status": "success", 
+                "email": job.acceptEmailBody 
+            };
+        }
+    } catch (error) {
+        console.error('Error fetching job:', error);
+        msg = { "status": "error", "error": error.message };
+    }
+
+    res.json(msg);
+    res.end();
+});
+
+router.post("/getshortlistedapplications", async (req, res) => {
+    const { jobID } = req.body;
+
+    try {
+        // Find all job applications for the given jobID whose status is 3
+        const applications = await JobApplication.find({ 
+            jobID: jobID, 
+            status: { $in: [3, 5, -5] } 
+        }).lean();
+        
+
+        if (!applications.length) {
+            return res.json({ "status": "error", "error": "No shortlisted applications found!" });
+        }
+
+        // Get video importance for the job
+        const video = await Videos.findOne({ jobID: jobID }, 'importance').lean();
+        const videoImportance = video ? video.importance : 50; 
+
+        const techTest = await TechTests.findOne({ jobID: jobID }, 'questions').lean();
+        const testTotalPoints = techTest ? calculateTestTotalPoints(techTest.questions) : 1; 
+
+        // Populate each application with test and video scores and calculate final score
+        const applicationDetails = await Promise.all(applications.map(async (application) => {
+            const testResponse = await TestResponses.findOne({ applicantEmail: application.email, jobID: jobID }, 'overallScore').lean();
+            const videoResponse = await VideosResponses.findOne({ applicantEmail: application.email, jobID: jobID }, 'overallScore').lean();
+
+            // Calculate final score
+            const finalScore = calculateFinalScore(testResponse ? testResponse.overallScore : 0, testTotalPoints, videoResponse ? videoResponse.overallScore : 0, videoImportance);
+
+            return {
+                ...application,
+                testOverallScore: testResponse ? testResponse.overallScore : 0,
+                videoOverallScore: videoResponse ? videoResponse.overallScore : 0,
+                finalScore: finalScore
+            };
+        }));
+
+        applicationDetails.sort((a, b) => b.finalScore - a.finalScore);
+
+
+        console.log(applicationDetails)
+
+        res.json({ "status": "success", "applications": applicationDetails });
+    } catch (error) {
+        console.error('Error fetching applications:', error);
+        res.json({ "status": "error", "error": error.message });
+    }
+});
+
+function calculateFinalScore(testOverallScore, testTotalPoints, videoOverallScore, videoImportance) {
+    const finalScore = ((testOverallScore/testTotalPoints * (100 - videoImportance) / 100) + (videoOverallScore/9 * videoImportance / 100)) * 100;
+    return finalScore;
+}
+
+function calculateTestTotalPoints(questions) {
+    return questions.reduce((total, question) => total + (question.points || 0), 0);
+}
+
+
+router.post("/acceptcandidate", async (req, res) => {
+    const { selectedApps, jobApps } = req.body;
+    let msg;
+
+    try {
+        // Validate selectedApps input
+        if (!Array.isArray(selectedApps) || selectedApps.length === 0) {
+            throw new Error("Invalid job applications list.");
+        }
+
+        const updated = await Promise.all(selectedApps.map(async (applicationId) => {
+            const updatedApplication = await JobApplication.findOneAndUpdate(
+                { _id: applicationId },
+                { $set: { status: 5 } },
+                { new: true } // Return the updated document
+            );
+            if (!updatedApplication) {
+                throw new Error(`Job application with ID ${applicationId} not found.`);
+            }
+            return updatedApplication;
+        }));
+
+        // Create a copy of jobApps and update status for selected applications
+        const updatedApplications = jobApps.map(application => {
+            const selectedApp = selectedApps.find(app => app._id === application._id);
+            if (selectedApp) {
+                return { ...application, status: 5 };
+            } else {
+                return application;
+            }
+        });
+
+        console.log("**********************************************\n\n\n\n\n\n\n")
+        console.log(updatedApplications)
+        console.log("**********************************************\n\n\n\n\n")
+
+        // Retrieve job information (assuming all applications belong to the same job)
+        const jobId = selectedApps[0].jobID; // Assuming jobID exists in original applications
+        const job = await Job.findById(jobId);
+        if (!job) {
+            throw new Error("Job not found.");
+        }
+
+        Promise.all(selectedApps.map(async (selectedApp) => {
+            const mailOptions = {
+                from: 'virtualhiringassistant04@gmail.com',
+                to: selectedApp.email,
+                subject: job.acceptEmailSub, 
+                text: job.acceptEmailBody 
+            };
+
+            // Send email
+            const info = await transporter.sendMail(mailOptions);
+            console.log('Email sent: ' + info.response);
+        }));
+
+        // Prepare the response message
+        msg = {
+            "status": "success",
+            "updatedApplications": updatedApplications
+        };
+    } catch (error) {
+        console.error('Error accepting candidates:', error);
+        msg = { "status": "error", "error": error.message };
+    }
+
+    res.json(msg);
+    res.end();
+});
+
+
+router.post("/rejectcandidate", async (req, res) => {
+    const { selectedApps, jobApps } = req.body;
+    let msg;
+
+    try {
+        // Validate selectedApps input
+        if (!Array.isArray(selectedApps) || selectedApps.length === 0) {
+            throw new Error("Invalid job applications list.");
+        }
+
+        const updated = await Promise.all(selectedApps.map(async (applicationId) => {
+            const updatedApplication = await JobApplication.findOneAndUpdate(
+                { _id: applicationId },
+                { $set: { status: -5 } },
+                { new: true } // Return the updated document
+            );
+            if (!updatedApplication) {
+                throw new Error(`Job application with ID ${applicationId} not found.`);
+            }
+            return updatedApplication;
+        }));
+
+        // Create a copy of jobApps and update status for selected applications
+        const updatedApplications = jobApps.map(application => {
+            const selectedApp = selectedApps.find(app => app._id === application._id);
+            if (selectedApp) {
+                return { ...application, status: -5 };
+            } else {
+                return application;
+            }
+        });
+
+        console.log("**********************************************\n\n\n\n\n\n\n")
+        console.log(updatedApplications)
+        console.log("**********************************************\n\n\n\n\n")
+
+        // Retrieve job information (assuming all applications belong to the same job)
+        const jobId = selectedApps[0].jobID; // Assuming jobID exists in original applications
+        const job = await Job.findById(jobId);
+        if (!job) {
+            throw new Error("Job not found.");
+        }
+
+        let emailBody = job.rejectEmailBody + "\n\nBest of luck for your future endeavours!\n\n"
+
+        Promise.all(selectedApps.map(async (selectedApp) => {
+            const mailOptions = {
+                from: 'virtualhiringassistant04@gmail.com',
+                to: selectedApp.email,
+                subject: job.acceptEmailSub, 
+                text: emailBody 
+            };
+
+            // Send email
+            const info = await transporter.sendMail(mailOptions);
+            console.log('Email sent: ' + info.response);
+        }));
+
+        // Prepare the response message
+        msg = {
+            "status": "success",
+            "updatedApplications": updatedApplications
+        };
+    } catch (error) {
+        console.error('Error rejecting candidates:', error);
+        msg = { "status": "error", "error": error.message };
+    }
+
+    res.json(msg);
+    res.end();
+});
+
+
+
+  /////////////////////////////////
   
 
 module.exports = router;

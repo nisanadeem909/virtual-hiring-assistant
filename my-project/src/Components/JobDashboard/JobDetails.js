@@ -339,11 +339,11 @@ export default function JobDetails(props) {
           // {
           //   setStatus("Phase 4 (Technical Test)")
           // }
-          else //if (job.status == 5)
+          else if (job.status == 5)
           {
             setStatus("Shortlisted")
             setStatusDiv(<>Waiting for Shortlisting Module...</>);
-            setDeadlineDiv(<>Waiting for Shortlisting Module...</>);
+            setDeadlineDiv(<>Candidates have been shortlisted! Go to shortlisted tab to accept/reject.</>);
           }
         }, [job.status]);
 

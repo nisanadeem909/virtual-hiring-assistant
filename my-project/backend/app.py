@@ -334,7 +334,7 @@ def CVScreening(job):
     notification_data = {
             "jobTitle": job['jobTitle'],
             "jobID": job['_id'],
-            "notifText": "CVs have been shortlisted!",
+            "notifText": "Phase 1 CVs have been shortlisted!",
             "recruiterUsername": job['postedby'],
             "notifType": 1,
             "companyname":job['companyname'],
@@ -928,7 +928,7 @@ def VideoScreening(job):
             "jobID": job['_id'],
             "companyname":job['companyname'],
             "companyID":job['companyID'],
-            "notifText": "Phase 3: Video Interviews have been evaluated!",
+            "notifText": "Phase 3 Candidates have been shortlisted for the job!",
             "recruiterUsername": job['postedby'],
             "notifType": 3,
             "createdAt": datetime.now().astimezone(pytz.utc)
