@@ -30,7 +30,7 @@ export default function CreateForm(props) {
   const [formDeadline, setFormDeadline] = useState('');
   const [videoInterviewPercentage, setVideoInterviewPercentage] = useState(50);
   const [technicalTestPercentage, setTechnicalTestPercentage] = useState(100 - videoInterviewPercentage);  // save in technical test schema
-  const [videoDuration, setVideoDuration] = useState(15); // Default duration set to 15 minutes
+  const [videoDuration, setVideoDuration] = useState(30); // Default duration set to 30 minutes
 
   // Function to handle moving back to the previous phase
   const moveToPreviousPhase = () => {

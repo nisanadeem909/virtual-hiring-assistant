@@ -1,6 +1,6 @@
 .post-job-container {
     width: 80%;
-    height: 550px;
+    height: 690px;
     margin: 5% auto;
     padding: 20px;
     border-radius: 10px;
@@ -12,6 +12,10 @@
   text-align: center;
   font-size: 50px;
   margin-top: 5%;
+}
+
+.nisa-p-jb{
+  margin-bottom: 8%;
 }
 
 .nisa-phase1-h{
@@ -151,6 +155,7 @@
   }
   
   .options-container{
+    flex-direction: row;
     margin-top: 5%;
     margin-bottom: 8%;
   }
