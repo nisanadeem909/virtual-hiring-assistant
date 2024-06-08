@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import MessageModal from '../ModalWindows/MessageModal';
 import ReactModal from 'react-modal';
 import ConfirmModal from '../ModalWindows/ConfirmRequestModal';
+import BarChart from './OverviewChart';
+import DonutChart from './ShortlistedChart';
 
 export default function Shortlisted(props) {
 
@@ -275,6 +277,10 @@ export default function Shortlisted(props) {
                     <label className='kshortlistedpage-deadline'>{applications.length}</label>
                     <label className='kshortlistedpage-deadline-title'>Candidates</label>
                 </div>
+            </div>
+            <div className='kshortlisted-overviewchart-div'>
+                <BarChart job={job} className="kshortlisted-overview-barchart"></BarChart>
+                <DonutChart applications={applications} className="kshortlisted-overview-donutchart"></DonutChart>
             </div>
             {errorStatus ? (
                 <div className='kjobdashboard-error-div'>Something went wrong, please try again..</div>
