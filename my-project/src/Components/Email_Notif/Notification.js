@@ -68,7 +68,8 @@ export default function NotificationPage() {
               if (response.data.data.length != 0){
                 //alert("hello")
                 setNotifs(response.data.data.map((notification)=>(
-                    <div className='knotif-notification' onClick={()=>navigate('/recruiter/job', { state: { 'jobID': notification.jobID } })}>
+                    <div className='knotif-notification' onClick={()=>{navigate('/recruiter/job', { state: { 'jobID': notification.jobID } }); 
+                                                                       sessionStorage.removeItem('activeTab')}}>
                         <img className="knotif-icon" src={notifImg[notification.notifType-1]}></img>
                         <div className='knotif-content'>
                             <div className='knotif-content-top'>

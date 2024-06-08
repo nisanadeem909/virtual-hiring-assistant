@@ -61,6 +61,8 @@ export default function RejectionEmailPage({ data }) {
   const handleModalClose = () => {
     const jobID = job._id
     setShowModal(false);
+    sessionStorage.removeItem('activeTab')
+    
     navigate('/recruiter/job', { state: { jobID } });
   };
 

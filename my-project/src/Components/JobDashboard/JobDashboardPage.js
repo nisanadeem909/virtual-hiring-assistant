@@ -83,9 +83,14 @@ export default function JobDashboardPage() {
 
       useEffect(() => {
         if (job) {
-          openTab(0);
+          const savedTab = sessionStorage.getItem('activeTab');
+          if (savedTab !== null) {
+            openTab(parseInt(savedTab));
+          }
+          else
+            openTab(0);
         }
-      }, [job]);
+      }, [job,testExists,videoExists]);
 
       const updateJob = (newVal) => {
         //window.location.reload()
@@ -193,6 +198,8 @@ export default function JobDashboardPage() {
         }
 
         setActiveTab(index);
+        
+        sessionStorage.setItem('activeTab', index);
     }
 
   return (

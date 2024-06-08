@@ -34,6 +34,8 @@ export default function SearchBar() {
   const handleSearchResultClick = (job) => {
   
     var jobID = job._id; 
+
+    sessionStorage.removeItem('activeTab')
    
     navigate("/recruiter/job", { state: { jobID } });
 

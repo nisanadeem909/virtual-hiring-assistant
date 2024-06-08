@@ -13,6 +13,7 @@ export default function RecruiterHomePage() {
   const location = useLocation();
 
   useEffect(() => {
+
     //if (location && location.state && location.state.sessionID) {
       if (sessionStorage.getItem("sessionID")){
       const sessionID = sessionStorage.getItem("sessionID");
