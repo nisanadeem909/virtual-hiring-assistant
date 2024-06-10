@@ -41,6 +41,7 @@ export default function FormResponsesPage(props) {
       <div className='kcvcollectionpage-con'>
         <div className='kcvcollectionpage-header'>
           <label className='kcvcollectionpage-header-title'>Video Interview Responses for {jobTitle}</label>
+          
           <div className='kcvcollectionpage-header-vr'></div>
           <div className='kcvcollectionpage-deadline-div'>
             <label className='kcvcollectionpage-deadline'>{resps.length}</label> 

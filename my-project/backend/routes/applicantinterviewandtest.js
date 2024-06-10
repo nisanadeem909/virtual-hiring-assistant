@@ -150,6 +150,7 @@ router.post('/uploadapplicantvideo',async(req,res)=>{
     try{
     
      var form = new formidable.IncomingForm();
+     form.keepExtensions = true;
      var newpath;
 
      form.parse(req,async function(err,fields,files){
