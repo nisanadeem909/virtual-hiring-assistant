@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import loading from '../images/loading3.gif';
 import EditJDModal from '../ModalWindows/EditJDModal';
 import MessageModal from '../ModalWindows/MessageModal';
+import FunnelChart from './FunnelChart';
 
 export default function JobDetails(props) {
 
@@ -342,7 +343,7 @@ export default function JobDetails(props) {
           else if (job.status == 5)
           {
             setStatus("Shortlisted")
-            setStatusDiv(<>Waiting for Shortlisting Module...</>);
+            setStatusDiv(<FunnelChart job={job}></FunnelChart>);
             setDeadlineDiv(<>Candidates have been shortlisted! Go to shortlisted tab to accept/reject.</>);
           }
         }, [job.status]);

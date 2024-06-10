@@ -128,7 +128,7 @@
 .kshortlistedpage-appbuttons {
     display: flex;
     justify-content: space-between;
-    margin: 4vh 1vh 0vh 1vh;
+    margin: 0vh 1vh 0vh 1vh;
 }
 
 .kshortlistedpage-appbuttons button {
@@ -160,4 +160,12 @@
     background-color: #f15e5e;
     border-color: #be4343;
     color: white;
+}
+
+.kshortlisted-overviewchart-div{
+    max-height: 40vh;
+    display: flex;
+    justify-content: space-between;
+    margin: 4vh 15vh;
+    margin-right: 17vh;
 }

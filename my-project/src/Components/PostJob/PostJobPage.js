@@ -80,6 +80,9 @@ export default function PostJobPage() {
   const handleAnotherPhase = (j) => {
     
     var jobID = j._id
+
+    
+    sessionStorage.removeItem('activeTab')
    
     navigate('/recruiter/job', { state: { jobID } });
   };

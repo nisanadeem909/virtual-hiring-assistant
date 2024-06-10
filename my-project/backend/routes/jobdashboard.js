@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {Job, Recruiter,JobApplication,Form,Notification,TechTests,Videos,TestResponses,VideosResponses} = require('../mongo');
+const {Job, Recruiter,JobApplication,Form,Notification,TechTests,Videos,TestResponses,VideosResponses,FormResponses} = require('../mongo');
 
 var nodemailer = require('nodemailer');
 
@@ -692,7 +692,6 @@ router.post("/acceptcandidate", async (req, res) => {
     let msg;
 
     try {
-        // Validate selectedApps input
         if (!Array.isArray(selectedApps) || selectedApps.length === 0) {
             throw new Error("Invalid job applications list.");
         }
@@ -701,7 +700,7 @@ router.post("/acceptcandidate", async (req, res) => {
             const updatedApplication = await JobApplication.findOneAndUpdate(
                 { _id: applicationId },
                 { $set: { status: 5 } },
-                { new: true } // Return the updated document
+                { new: true } 
             );
             if (!updatedApplication) {
                 throw new Error(`Job application with ID ${applicationId} not found.`);
@@ -709,7 +708,6 @@ router.post("/acceptcandidate", async (req, res) => {
             return updatedApplication;
         }));
 
-        // Create a copy of jobApps and update status for selected applications
         const updatedApplications = jobApps.map(application => {
             const selectedApp = selectedApps.find(app => app._id === application._id);
             if (selectedApp) {
@@ -723,8 +721,7 @@ router.post("/acceptcandidate", async (req, res) => {
         console.log(updatedApplications)
         console.log("**********************************************\n\n\n\n\n")
 
-        // Retrieve job information (assuming all applications belong to the same job)
-        const jobId = selectedApps[0].jobID; // Assuming jobID exists in original applications
+        const jobId = selectedApps[0].jobID;
         const job = await Job.findById(jobId);
         if (!job) {
             throw new Error("Job not found.");
@@ -743,7 +740,6 @@ router.post("/acceptcandidate", async (req, res) => {
             console.log('Email sent: ' + info.response);
         }));
 
-        // Prepare the response message
         msg = {
             "status": "success",
             "updatedApplications": updatedApplications
@@ -763,7 +759,6 @@ router.post("/rejectcandidate", async (req, res) => {
     let msg;
 
     try {
-        // Validate selectedApps input
         if (!Array.isArray(selectedApps) || selectedApps.length === 0) {
             throw new Error("Invalid job applications list.");
         }
@@ -772,7 +767,7 @@ router.post("/rejectcandidate", async (req, res) => {
             const updatedApplication = await JobApplication.findOneAndUpdate(
                 { _id: applicationId },
                 { $set: { status: -5 } },
-                { new: true } // Return the updated document
+                { new: true } 
             );
             if (!updatedApplication) {
                 throw new Error(`Job application with ID ${applicationId} not found.`);
@@ -780,7 +775,6 @@ router.post("/rejectcandidate", async (req, res) => {
             return updatedApplication;
         }));
 
-        // Create a copy of jobApps and update status for selected applications
         const updatedApplications = jobApps.map(application => {
             const selectedApp = selectedApps.find(app => app._id === application._id);
             if (selectedApp) {
@@ -794,8 +788,7 @@ router.post("/rejectcandidate", async (req, res) => {
         console.log(updatedApplications)
         console.log("**********************************************\n\n\n\n\n")
 
-        // Retrieve job information (assuming all applications belong to the same job)
-        const jobId = selectedApps[0].jobID; // Assuming jobID exists in original applications
+        const jobId = selectedApps[0].jobID; 
         const job = await Job.findById(jobId);
         if (!job) {
             throw new Error("Job not found.");
@@ -816,7 +809,6 @@ router.post("/rejectcandidate", async (req, res) => {
             console.log('Email sent: ' + info.response);
         }));
 
-        // Prepare the response message
         msg = {
             "status": "success",
             "updatedApplications": updatedApplications
@@ -828,6 +820,53 @@ router.post("/rejectcandidate", async (req, res) => {
 
     res.json(msg);
     res.end();
+});
+
+
+
+
+
+router.post("/getJobApplicationStatistics", async (req, res) => {
+    const { job } = req.body;
+    const jobID = job._id;
+    const AccCVScore = job.AccCVScore;
+
+    console.log("\n\n\n\n\nSTATSSS")
+    console.log(job)
+
+    try {
+        const totalApplications = await JobApplication.countDocuments({ jobID });
+
+        const cvScoreGreaterThanAcceptable = await JobApplication.countDocuments({ jobID:jobID, 'CVMatchScore': { $gt: AccCVScore } });
+
+        const shortlistedFormResponses = await FormResponses.countDocuments({ jobID:jobID, 'status': "Shortlisted" });
+
+        const totalVideoResponses = await VideosResponses.countDocuments({ jobID:jobID });
+
+        const totalTestResponses = await TestResponses.countDocuments({ jobID:jobID });
+
+        const applicationsShortlisted = await JobApplication.find({ 
+            jobID: jobID, 
+            status: { $in: [3, 5, -5] } 
+        }).lean();
+
+        const totalShortlistedApplications = applicationsShortlisted.length;
+
+        res.json({
+            "status": "success",
+            "statistics": [
+                totalApplications,
+                cvScoreGreaterThanAcceptable,
+                shortlistedFormResponses,
+                totalVideoResponses,
+                totalTestResponses,
+                totalShortlistedApplications
+            ]
+        });
+    } catch (error) {
+        console.error('Error fetching job application statistics:', error);
+        res.json({ "status": "error", "error": error.message });
+    }
 });
 
 

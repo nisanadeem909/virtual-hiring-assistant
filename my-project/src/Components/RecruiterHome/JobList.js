@@ -175,7 +175,8 @@ export default function JobList() {
       <div
         key={index}
         className="job-row"
-        onClick={() => navigate('/recruiter/job', { state: { 'jobID': job._id } })}
+        onClick={() => {navigate('/recruiter/job', { state: { 'jobID': job._id } }); 
+                        sessionStorage.removeItem('activeTab');}}
       >
         <div className="job-details">
           <div className="job-title">{job.jobTitle}</div>
