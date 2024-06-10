@@ -23,7 +23,7 @@ import Shortlisted from './ShortlistedCandidates';
 
 
 export default function JobDashboardPage() {
-
+     var hi = ''
     const tabs = ["Job Details","Phase 1: CV Screening","Phase 2: Form Screening","Phase 3: Video Interview","Phase 4: Technical Test","Shortlisted Candidates"];
 
     const [content,setContent] = useState(<img src={loading} className='kjobdashboardpage-loading-img'></img>)
