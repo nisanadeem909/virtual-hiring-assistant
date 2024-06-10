@@ -45,6 +45,7 @@ import EditTest from './Components/RecruiterTechTest/EditTestPage.js';
 import VideoPage from './Components/JobDashboard/VideoPage.js'
 
 import VideoEditPage from './Components/JobDashboard/VideoEditPage.js';
+import CandidateDetails from './Components/JobDashboard/CandidateDetails.js';
 import VideoEditBtn from './Components/JobDashboard/VideoEditBtn.js';
 import SampleTestPage from './Components/RecruiterVideoResponses/sampletest.js';
 import CandidateTestResponse from './Components/RecruiterVideoResponses/CandidateTestResponse.js';
@@ -118,11 +119,12 @@ function App() {
             <Route path="job/edittest" element={<EditTest/>}></Route>
 
             <Route path="job/video" element={<VideoPage />} />
-
+            <Route path="job/candidatedetails/video" element={<VideoPage />} />
             <Route path="job/ttest" element={<SampleTestPage />} />
             <Route path="job/ttest/fullresponse" element={<CandidateTestResponse />} />
 
-
+            <Route path="job/candidatedetails" element={<CandidateDetails />} />
+            <Route path="job/candidatedetails/cvview" element={<CVView/>}></Route>
            
             <Route path="job/editvideo" element={<VideoEditPage/>}></Route>
 

@@ -14,6 +14,27 @@ router.use(express.static('public'));
 
 const mongoose = require('mongoose');
 
+router.post('/fetchacceptabilitytraits', async (req, res) => {
+  console.log("Fetching acceptability traits for job ID:", req.body.jobId);
+
+  try {
+    const jobIDToFind = req.body.jobId;
+
+    
+    const videoData = await Videos.findOne({ jobID: jobIDToFind }).select('acceptabilityTraits').exec();
+    
+    if (videoData) {
+      console.log('Acceptability Traits:', videoData.acceptabilityTraits);
+      res.json({ acceptabilityTraits: videoData.acceptabilityTraits });
+    } else {
+      res.status(404).json({ error: 'No video data found for the given job ID' });
+    }
+  } catch (error) {
+    console.error('Error retrieving acceptability traits:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 router.post('/fetchvideoresponses', async (req, res) => {
 
   console.log("I am in fetch video response")

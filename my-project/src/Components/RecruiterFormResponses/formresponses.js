@@ -17,6 +17,7 @@ export default function FormResponsesPage(props) {
 
     const getFormResponses = () =>{
         var param = {'jobId':props.job._id};
+        
         axios.post("http://localhost:8000/nabeeha/fetchformresponses",param).then((response) => {
           
         
@@ -26,7 +27,7 @@ export default function FormResponsesPage(props) {
         setQuesLen(response.data.formResponses[0].answers.length)
         response.data.formResponses[0].answers.forEach((answer) => { 
             
-                // Add the unique question to the state array
+               
                 if (!questions.includes(answer.question)) {
                     setQuestions((prevQuestions) => [...prevQuestions, answer.question]);
                 }
@@ -36,14 +37,12 @@ export default function FormResponsesPage(props) {
        
         })
         .catch(function (error) {
-            //alert("Axios Error:" + error);
+            
         });
     }
     useEffect(() => {
          
-        /*Over here props will be used to set the Questions in setQuestions */
-        /*Over here props will be used to set the Responses in setResponses */
-        //alert(JSON.stringify(props.job.jobTitle))
+      
         setJobTitle(props.job.jobTitle)
         getFormResponses()
         

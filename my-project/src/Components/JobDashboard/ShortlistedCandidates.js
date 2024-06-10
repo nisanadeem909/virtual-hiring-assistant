@@ -208,6 +208,10 @@ export default function Shortlisted(props) {
         setModal3Open(true);
     };
 
+    const handleDetails = (candidate) => {
+        navigate("candidatedetails", { state: { candidate, job } });
+    };
+
     const confirmAccept = (list) => {
         let param = { selectedApps: selectedCandidates,jobApps: applications  };
         axios.post('http://localhost:8000/komal/acceptcandidate',param)
@@ -328,8 +332,8 @@ export default function Shortlisted(props) {
                                             <td align="center">{app.email}</td>
                                             <td align="center">{app.finalScore.toFixed(2)}</td>
                                             <td align="center">
-                                                <button className='kshortlistedpage-table-cvbtn'>
-                                                    View<img src={cvImg} className='kshortlistedpage-table-cvimg' alt="CV" />
+                                                <button className='kshortlistedpage-table-cvbtn' onClick={() => handleDetails(app)}>
+                                                    View<img src={cvImg}  className='kshortlistedpage-table-cvimg' alt="CV" />
                                                 </button>
                                             </td>
                                         </tr>
