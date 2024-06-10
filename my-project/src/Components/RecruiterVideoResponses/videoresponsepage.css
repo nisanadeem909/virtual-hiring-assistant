@@ -1,0 +1,161 @@
+#nab-t-resp-head{
+    font-size: 35px;
+    text-align: center;
+}
+.kcvcollectionpage-con {
+    display: flex;
+    flex-direction: column;
+    margin: 3vh 5vh;
+    
+}
+.nabcvcollectionpage-table tbody tr {
+    height: 50px; /* Adjust the height as needed */
+  }
+.nabcvcollectionpage-table-container {
+      overflow-x: auto;
+    max-width: 100%;
+}
+.kcvcollectionpage-header {
+    background-color: #012641;
+    color: white;
+    padding: 2vh 3vh;
+    border-radius: 2vh;
+    display: flex;
+}
+
+.kcvcollectionpage-header-title {
+    font-size: xx-large;
+}
+
+.kcvcollectionpage-header-vr {
+    width: 0.2%;
+    background-color: #60B3D1;
+    margin-left: 10%;
+    margin-right: 1vh;
+}
+
+.kcvcollectionpage-deadline-div, .kcvcollectionpage-accScore-div {
+    display: flex;
+    flex-direction: column;
+}
+
+.kcvcollectionpage-deadline, .kcvcollectionpage-accScore {
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.kcvcollectionpage-deadline-title, .kcvcollectionpage-accScore-title {
+    color:#60B3D1
+}
+
+
+.nabcvcollectionpage-table {
+    min-width: 100%;
+    max-width: 100%;
+    
+    border: 1px solid rgb(238, 239, 240);
+    padding: 1vh;
+    border-spacing: 0;
+    border-collapse: collapse;
+    box-sizing: border-box;
+   
+}
+#nab-vid-res{
+    height: 2vh;
+}
+.kcvcollectionpage-table-header {
+    overflow: hidden;
+    white-space: nowrap; 
+    text-overflow: ellipsis; 
+}
+
+.nabcvcollectionpage-table-header-row th {
+    padding: 1.5vh;
+    font-size: 2.2vh;
+    overflow: auto;
+    /* width: 10%; Set the width for each header column */
+    
+    
+    text-overflow: ellipsis;
+}
+
+.kcvcollectionpage-table-row {
+    border: 2px solid rgb(238, 239, 240);
+}
+
+.nabcvcollectionpage-table-row td {
+    padding: 1.5vh;
+    font-size: 2.5vh;
+    overflow: auto;
+}
+
+.kcvcollectionpage-table-cvimg {
+    width: 3vh;
+    height: 2.8vh;
+    margin-left: 1vh;
+}
+
+.kcvcollectionpage-table-cvbtn {
+    background-color: #012641;
+    color: white;
+    display: flex;
+    font-size: 2.1vh;
+    border: 1px solid #0066ae;
+    border-radius: 2vh;
+    padding: 0.5vh 1.5vh;
+}
+
+.kcvcollectionpage-table-cvbtn:hover {
+    background-color: #60B3D1;
+    border-color: #519eba;
+    color: white;
+}
+
+.kcvcollectionpage-table-header-rowth:last-child,.kcvcollectionpage-table-row td:last-child {
+    width: 20vh;
+}
+
+.kcvcollectionpage-table-header-rowth:first-child,.kcvcollectionpage-table-row td:first-child {
+    width: 5vh;
+}
+/* Different colors for shortlisted */
+.nabcvcollectionpage-table-row.shortlisted {
+    background-color: #b3e882; /* or any other light green color */
+}
+
+.nabcvcollectionpage-table-row.rejected {
+    background-color: #ff6459; /* or any other light red color */
+}
+
+@media (max-width: 768px) {
+   
+}
+
+
+.k-viewtest-btn {
+    background-color: #012641;
+    color: white;
+    display: flex;
+    font-size: 2.1vh;
+    border: 1px solid #0066ae;
+    border-radius: 2vh;
+    padding: 0.5vh 1.5vh;
+    width: 12vh;
+}
+
+.k-viewtest-btn:hover, .k-watchvideo-btn:hover {
+    background-color: #60B3D1;
+    border-color: #519eba;
+    color: white;
+}
+
+.k-watchvideo-btn {
+    background-color: #012641;
+    color: white;
+    display: flex;
+    font-size: 2.1vh;
+    border: 1px solid #0066ae;
+    border-radius: 2vh;
+    padding: 0.5vh 1.5vh;
+    width: 14.2vh;
+}

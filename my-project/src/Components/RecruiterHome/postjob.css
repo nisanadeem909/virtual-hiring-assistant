@@ -1,0 +1,40 @@
+.nisa-postjob-con {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    text-align: center;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    border-radius: 18px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    
+  
+  }
+
+  .nisa-postjob-img{
+ 
+      height: 150px;
+      width: 150px;
+      margin: 10%;
+      text-align: center;
+    
+        
+  }
+
+  .nisa-postjob-head{
+    color: #012641;
+    margin-top: -10px;
+  }
+
+  .nisa-postjob-btn{
+    background-color: #012641;
+    width: 100px;
+    height: 30px;
+    border: none;
+    border-radius: 11px;
+    color: white;
+    margin-bottom: 5%;
+    
+  }

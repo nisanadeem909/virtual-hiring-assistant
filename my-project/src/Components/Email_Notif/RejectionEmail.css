@@ -1,0 +1,190 @@
+.krejemailpage-con {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-areas: 'main' 'footer';
+    grid-template-rows: 1fr auto;
+    grid-gap: 0;
+}
+
+.krejemailpage-main {
+    grid-area: main;
+    width: 75%;
+    margin-left: 13%;
+    margin-bottom: 2vh;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.krejemailpage-footer {
+    grid-area: footer;
+}
+
+.krejemail-container {
+    width: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    border-radius: 2vh;
+}
+
+.krejemail-header {
+    width: 100%;
+    background-color: #012641;
+    display: flex;
+    flex-direction: column;
+    padding: 1vh 3vh;
+    border-radius: 2vh 2vh 0vh 0vh;
+}
+
+.krejemail-header-title {
+    font-weight: bold;
+    font-size: xx-large;
+    color: white;
+}
+
+.krejemail-header-desc {
+    font-size: large;
+    color: white;
+}
+
+.krejemail-header hr {
+    margin: 1vh 0vh;
+    border:none;
+    height: 1px;
+    background-color: white;
+}
+
+.krejemail-main {
+    display: flex;
+    flex-direction: column;
+    padding: 4vh;
+}
+
+.krejemail-main label {
+    font-size:large;
+}
+
+.krejemail-email {
+    margin: 2vh 0vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.krejemail-email label {
+    margin-bottom: 1vh;
+}
+
+.krejemail-textbox {
+    margin-bottom: 2vh;
+    font-size: 2vh;
+    border-radius: 1.5vh;
+    border: 1px solid #d2d9dc;
+    padding:1vh;
+}
+
+.krejemail-textarea {
+    height: 45vh;
+    font-size: 2vh;
+    resize: none;
+    padding: 1.2vh;
+    border-radius: 2vh;
+    border: 1px solid #d2d9dc;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.krejemail-buttons {
+    display: flex;
+}
+
+.krejemail-cancel-btn {
+    background-color: #dadada;
+    border: 0.3vh solid #c8c8c8;
+    padding: 0.5vh 1.5vh;
+    font-size: 2.5vh;
+    color: #012641;
+    border-radius: 3vh;
+    font-weight: bold;
+    margin-left: 2vh;
+}
+
+.krejemail-save-btn {
+    background-color: #012641;
+    border: 0.3vh solid #0066ae;
+    color: #f4fbfd;
+    padding: 0.5vh 1.5vh;
+    font-size: 2.5vh;
+    border-radius: 3vh;
+    font-weight: bold;
+}
+
+.krejemail-cancel-btn:hover, .krejemail-save-btn:hover{
+    background-color: #60B3D1;
+    border: 0.3vh solid #519eba;
+    color: white;
+}
+
+/* Add this to your RejectionEmail.css */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 999;
+    height: 200px;
+    width: 300px;
+  }
+  
+  .modal p {
+    margin-bottom: 20px;
+  }
+
+  .nisa-modal{
+    font-size: 20px;
+    text-align: center;
+    margin-top: 15%;
+  }
+
+  .krej-emailerror {
+    color:red;
+    font-weight: bold;
+  }
+  
+  .nisa-modal-btn {
+    background-color: #0066ae;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-top: 0%;
+    height: 40px;
+    margin-left: 90px;
+  }
+  
+  /* Add more styles as needed */
+  
+
+@media screen and (max-width: 856px) {
+    .krejemailpage-main {
+        margin-left: 13%;
+        margin-top: 2vh;
+        width: 70%;
+    }
+} 
+
+@media screen and (max-width: 690px) {
+    .krejemailpage-main {
+        margin-left: 10%;
+        margin-top: 2vh;
+        width: 50%;
+    }
+} 

@@ -1,0 +1,175 @@
+#nab-form-outer-div {
+    margin-top: 2%;
+    margin-left: 17%;
+    /* position: absolute;
+    top: 55%;
+    left: 50%; */
+    /* transform: translate(-50%, -50%); */
+    font-family: Arial, sans-serif;
+    width:70%;
+    
+   /* margin-top: 50%;*/
+    
+}
+#nab-form-all-questions{
+    display: flex;
+    flex-direction: column;
+    
+}
+#nab-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
+    /* Remove 'height: 100vh;' */
+    
+}
+#nab-q1{
+    padding-bottom: 4%;
+}
+#nab-cv-fullname-div{
+    display:flex;
+    flex-direction: row;
+    
+}
+#nab-cv-fullname{
+    /* display:flex;
+    flex-direction: row; */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+}
+
+#nab-form-label {
+    /* display: block; */
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+#nab-cv-label-fullname {
+    /* display: block; */
+    
+    font-weight: bold;
+    
+}
+#nab-cv-input1 {
+    width: 200%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+   
+}
+#nab-cv-input2 {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-left: 70%;
+}
+#nab-cv-fullname {
+    display: block;
+    margin-top: 5px; /* Adjust this value for spacing between input and label */
+}
+#nab-cv-label-below{
+    display: block;
+    margin-top: 5px; /* Adjust this value for spacing between input and label */
+    /* margin-left:45px; */
+}
+#nab-formcoll-group {
+    margin-bottom: 20px;
+
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px; /* Adjust this value to set the space between items */
+}
+#nab-form-group1 {
+    margin-bottom: 20px;
+   width:21%;
+    margin-right: 2%; /*controls space between first name and last name*/
+
+    display:flex;
+    flex-direction: column;
+    
+}
+#nab-form-group2 {
+    width:44%;
+    display:flex;
+    flex-direction: column;
+    
+}
+#nab-cv-label-below-firstname {
+    display: block;
+    margin-bottom: 8px;
+    font-weight:normal;
+    font-size: small;
+    color: gray
+    
+}
+#nab-cv-label-below-lastname {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: lighter;
+    font-size: small;
+    color: gray;
+    margin-left: 49vh;
+}
+#nab-form-input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+#nab-upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+#nab-cv-btn {
+    border: 2px solid gray;
+    color: gray;
+    background-color: white;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#nab-cv-upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
+
+#nab-form-heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+#nab-form-required-field {
+    color: red;
+}
+
+#nab-form-hr {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid #ccc;
+}
+#nab-cv-button {
+    background-color: #012641; 
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+   
+    font-size: 16px;
+  }

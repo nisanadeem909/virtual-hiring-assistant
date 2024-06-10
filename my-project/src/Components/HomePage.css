@@ -1,0 +1,359 @@
+#nab-discover-opp{
+    text-align:center;
+    font-size: 22px;
+    font-weight: bolder;
+    width:100%;
+    color: #012641;
+    margin-bottom: 5%;
+
+    
+}
+#nab-text{
+    font-size: 17px;
+    text-align:center;
+    color: #3498db;
+    font-weight: bolder;
+    /*width: 27vh;*/
+}
+.container-home{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.img1{
+  float: right;
+  margin-right: -400px;
+  height: 750px;
+  width: 800px;
+}
+
+.nisa-img1
+{
+
+        
+        margin-right: -400px;
+        height: 730px;
+        width: 700px;
+    
+}
+
+.box1{
+    width: 600px;
+    margin-left: 6%;
+    margin-top: 16%;
+    display: flex;
+    flex-direction: column;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+}
+
+h2{
+    font-size: 70px;
+    margin-top: -100px;
+}
+
+.b1 {
+    margin-top: 1vh;
+    font-weight: bold;
+    width: 150px;
+    background-color: #012641;
+    color: white;
+    border-radius: 20px;
+    height: 45px;
+    border: 1px solid #012641;
+    font-size: large;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+    margin-right: 2vh;
+  }
+  
+  .b1:hover {
+    background-color: #60B3D1;
+    color: white;
+    cursor: pointer;
+  }
+  
+
+.b2{
+    width: 150px;
+    background-color: white;
+    color: black;
+    border-radius: 50px;
+    height: 45px;
+    border: 1px solid #012641;
+    font-size: large;
+
+}
+
+.service{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 0;
+}
+
+.box3{
+    height: 350px;
+    width: 300px;
+    background-color: white;
+    
+    /* margin-left: 170px;*/
+    margin-top: 100px;
+    text-align: center;
+    padding: 100px 20px 80px 20px;
+    color: #012641;
+    font-size: 16px;
+    box-shadow: 0 8px 8px 0 rgba(2, 53, 77, 0.407), 0 8px 30px 0 rgba(3, 71, 108, 0.19);
+   
+}
+
+.box6{
+    height: 350px;
+    width: 300px;
+    background-color: white;
+    
+    /* margin-left: 170px;*/
+    margin-top: 100px;
+    text-align: center;
+    padding: 100px 20px 80px 20px;
+    color: #012641;
+    font-size: 16px;
+     box-shadow: 0 8px 8px 0 rgba(2, 53, 77, 0.407), 0 8px 30px 0 rgba(3, 71, 108, 0.19);
+   
+}
+
+.box3:hover{
+    height: 370px;
+    width: 330px;
+    background-color: white;
+    cursor: pointer;
+    
+    color: #012641;
+
+}
+
+.box6:hover{
+    height: 370px;
+    width: 330px;
+    background-color: white;
+    cursor: pointer;
+    
+    color: #012641;
+
+}
+
+.box4:hover{
+    height: 370px;
+    width: 330px;
+    background-color: white;
+    cursor: pointer;
+    
+    color: #012641;
+
+}
+.box5:hover{
+    height: 370px;
+    width: 330px;
+    background-color: white;
+    cursor: pointer;
+    
+    color: #012641;
+
+}
+
+.nisa-homeh{
+    margin-top: 0;
+}
+
+.nisa-box1{
+    display: flex;
+    flex-direction: row;
+}
+
+.container-home::before {
+    content: "";
+    position: absolute;
+    top: 50px;
+    left: 60px;
+    right: 0px;
+    width: 100%;
+    height: 100%;
+    background-image: url('./design6.svg'); /* Replace with the correct path */
+    background-size: 900px 800px; /* Adjust as needed */
+    background-repeat: no-repeat;
+    z-index: -1;
+    transform: rotate(180deg);
+    animation: moveBackground 4s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite alternate;
+    margin-left: -120px;
+  }
+  
+  @keyframes moveBackground {
+    0% {
+      transform: translateX(0) rotate(180deg);
+    }
+    100% {
+      transform: translateX(50px) rotate(180deg); /* Adjust the values as needed */
+    }
+  }
+  
+  
+
+.box4{
+    height: 350px;
+    width: 300px;
+    background-color: white;
+    
+   /* margin-left: 170px;*/
+    margin-top: 100px;
+    text-align: center;
+    padding: 100px 20px 80px 20px;
+    color: #012641;
+    font-size: 16px;
+     box-shadow: 0 8px 8px 0 rgba(2, 53, 77, 0.407), 0 8px 30px 0 rgba(3, 71, 108, 0.19);
+}
+
+.box5{
+    height: 350px;
+    width: 300px;
+    background-color: white;
+    
+    /* margin-left: 170px;*/
+    margin-top: 100px;
+    text-align: center;
+    padding: 100px 20px 80px 20px;
+    color: #012641;
+    font-size: 16px;
+     box-shadow: 0 8px 8px 0 rgba(2, 53, 77, 0.407), 0 8px 30px 0 rgba(3, 71, 108, 0.19);
+}
+
+.l{
+    margin-right: 62%;
+}
+
+.bs1{
+    width: 120px;
+    height: 35px;
+    background-color: #012641;
+    border-radius: 50px;
+    border: 1px solid #C6CDC0;
+    margin-top: 20px;
+    color: white;
+    
+}
+
+
+#loginp{
+    margin-top: 5%;
+    font-size: large;
+}
+
+#loginp a {
+    color: #60B3D1;
+   
+}
+
+#loginp a:hover {
+    color: #012641;
+    text-decoration: underline;
+    background: none;
+    cursor: pointer;
+}
+
+.sld{
+    margin-top: 120px;
+}
+
+.ft{
+    margin-top: 15%;
+}
+
+.nisa-choose{
+    display: flex;
+    flex-direction: row;
+    margin-top: 10%;
+}
+.nisa-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5%;
+    margin-left: 40%;
+  }
+  
+  .container {
+    position: relative;
+    width: 200px; /* Adjust the container width as needed */
+    margin: 0 auto;
+    margin-left: -18%;
+  }
+  
+  .vertical-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 500px;
+    width: 3px;
+    background-color: gray;
+  }
+  
+  .circle-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px; /* Adjust the distance between the circles */
+    width: 100%;
+  }
+  
+  .circle {
+    width: 20px; /* Adjust the circle size as needed */
+    height: 20px;
+    background-color: #3498db;
+    border-radius: 50%;
+    margin-bottom: 10px; /* Adjust the distance between the circle and text */
+  }
+  
+  .circle-wrapper p {
+   margin-left: 240px;
+   margin-top: -17%;
+   width: 100%;
+  }
+  
+  .nisa-text::before {
+    content: "";
+    position: absolute;
+    top: 1500px;
+    left: -650px;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('./design6.svg'); /* Replace with the correct path */
+    background-size: 1000px 800px; /* Adjust as needed */
+    background-repeat: no-repeat;
+    z-index: -1;
+    transform: rotate(180deg);
+    animation: moveBackground 4s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite alternate;
+  }
+  
+  .nisa-details{
+    display: flex;
+    flex-direction: column;
+    margin-top: -50%;
+
+  }
+
+  .nisa-details-text{
+    color: #012641;
+    font-size: larger;
+    font-weight: bold;
+  }
+
+  .kom-home-btns {
+    display: flex;
+    margin-top: 1vh;
+  }

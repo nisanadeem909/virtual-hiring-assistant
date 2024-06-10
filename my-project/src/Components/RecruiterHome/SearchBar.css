@@ -1,0 +1,63 @@
+.search-bar-container {
+    display: flex;
+    align-items: center;
+    width: 70%;
+    height: 100%;
+  }
+  
+  .search-input {
+    padding: 10px;
+    border: 2px solid #012641;
+    border-radius: 5px;
+    margin-right: 5px;
+    font-size: 16px;
+    flex-grow: 1;
+    box-shadow: 4px 6px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .nisa-search-btn {
+    background-color: #012641;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+
+  }
+  
+  .search-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+ /* Your existing styles for search bar container, input, and button remain unchanged */
+
+/* Add this to your existing CSS file */
+.search-results {
+  list-style: none;
+  padding: 0;
+  position: absolute;
+  width: 632px; /* Limit the width to 600px */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  z-index: 1; 
+  
+}
+
+.search-result-item {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-item:hover {
+  background-color: #f0f0f0;
+}

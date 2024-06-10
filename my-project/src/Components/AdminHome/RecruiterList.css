@@ -1,0 +1,82 @@
+.kom-joblist-con {
+    width: 100%;
+    height: 570px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    text-align: center;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 18px;
+    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.2);
+    overflow-y: scroll;
+    margin-bottom: 20%;
+    padding-top: 120px; 
+  }
+  
+  
+    .kom-joblists-head{
+      font-size: 50px;
+    }
+  
+    .k-job-row {
+      display: flex;
+      align-items:flex-start;
+      border-bottom: 1px solid #ccc;
+      padding: 10px;
+      min-width: 85%;
+      margin-top: 10px; 
+    }
+    
+    .k-job-details {
+      display: flex;
+      flex-grow: 1; 
+      flex-direction: column;
+      align-items: flex-start; 
+    }
+    
+    .k-job-title {
+      font-size: 19px;
+      font-weight: bold;
+      text-align: left;
+    }
+    
+    .k-job-status {
+      font-size: 16px;
+      text-align: left;
+      color: #3498db;
+      font-weight: bolder;
+    }
+    
+    .open-k-job-button {
+      background-color: #012641;
+      color: white;
+      border: none;
+      padding: 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 10px; 
+      width: 150px;
+    }
+  
+    .k-job-icon{
+      width: 80px;
+      height: 80px;
+      margin-right: 32%;
+      margin-bottom: 1%;
+      margin-top: -10%;
+    }
+    
+    .kjob-nojob {
+      margin-top: 20vh;
+      color: red;
+      font-weight: bold;
+      font-size: 3vh;
+    }
+  
+    .k-joblist-error-message{
+      font-size: 2.5vh;
+      font-weight: bold;
+      color: rgb(230, 0, 0);
+      margin: 7vh;
+    }

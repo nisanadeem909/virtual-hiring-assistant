@@ -1,0 +1,10 @@
+Php – Laravel Developer 
+Required Qualifications: BS Computer Science/Software Engineering/Information Technology 
+Manafa tech requires a talented “PHP Developer”. 
+- You must have very strong programming skills, specially in open source technologies (PHP Core and Frameworks CI, YII, Laravel, CakePHP, Zend) , JS libraries. 
+- Must be graduate or master in computer sciences from reputable university 
+- Personal Characteristics: Ability to work quickly but with a strong attention to detail and accuracy Team player and good interpersonal skills Ability to perform under stress and aggressive deadlines Self-organized with the ability to plan ahead Punctual and organized 
+- Tools and Technologies : 
+• PHP Core and Frameworks CI, YII, Laravel, CakePHP, Zend, Symphony 
+• MySQL 
+• JavaScript, Angular.js, JQuery, Node.js

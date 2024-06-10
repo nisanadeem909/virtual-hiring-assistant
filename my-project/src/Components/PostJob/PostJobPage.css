@@ -1,0 +1,171 @@
+.post-job-container {
+    width: 80%;
+    height: 690px;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+.nisa-setemail-h{
+  text-align: center;
+  font-size: 50px;
+  margin-top: 5%;
+}
+
+.nisa-p-jb{
+  margin-bottom: 8%;
+}
+
+.nisa-phase1-h{
+  color: #056487;
+  font-weight: bolder;
+  text-align: center;
+}
+
+  .content-container {
+    display: flex;
+    margin-left: 2%;
+    margin-top: 2%;
+  }
+  
+  .left-content {
+    flex: 1;
+  }
+
+  .nisa-post-img{
+    width: 600px;
+    height: 600px;
+    margin-top: -14%;
+    margin-left: 10%;
+  }
+  
+  .nisa-post-img2{
+    width: 500px;
+    height: 450px;
+    margin-top: 0%;
+    margin-left: 10%;
+  }
+  
+  .nisa-phase1{
+    color: #056487;
+    font-weight: bolder;
+  }
+
+  .right-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+
+  
+  
+  .job-details,
+  .phase-details {
+    margin-bottom: 20px;
+  }
+  
+  .nisa-pj-label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .nisa-pj-input{
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+  }
+  .nisa-pj-textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    height: 200px; /* Set the desired height */
+    resize: none;
+    
+  }
+  
+ .nisa-postJ-button {
+    background-color: #012641;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10%;
+  }
+
+  .nisa-postJ2-button {
+    background-color: #012641;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+   
+  }
+
+  .nisa-postJ-button2 {
+    background-color: #012641;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 10%;
+    width: 200px;
+    margin-left: 30%;
+    margin-top: 6%;
+  }
+
+  .nisa-postJ-button3 {
+    background-color: #012641;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 10%;
+    width: 200px;
+    margin-left: 5%;
+    margin-top: 2%;
+  }
+
+  .nisa-option-checkbox{
+    margin-top: 4%;
+  }
+  
+  .options-container{
+    flex-direction: row;
+    margin-top: 5%;
+    margin-bottom: 8%;
+  }
+
+  .nisa-j-l{
+    font-weight: bold;
+    font-size: 19px;
+  }
+
+  .nisa-s{
+    margin-bottom: 6%;
+  }
+ 

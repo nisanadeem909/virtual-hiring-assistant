@@ -1,0 +1,52 @@
+.k-rec-profilepic {
+    width: 7vh;
+    height: 7vh;
+    margin-right: 2vh;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+.k-recdiv {
+    display: flex
+}
+
+.k-postjob-con {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    text-align: center;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    border-radius: 18px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    
+  
+  }
+
+  .k-postjob-img{
+ 
+      height: 14vh;
+      width: 14vh;
+      margin: 10%;
+      text-align: center;
+    
+        
+  }
+
+  .k-postjob-head{
+    color: #012641;
+    margin-top: -10px;
+  }
+
+  .k-postjob-btn{
+    background-color: #012641;
+    width: 100px;
+    height: 30px;
+    border: none;
+    border-radius: 11px;
+    color: white;
+    margin-bottom: 5%;
+    
+  }

@@ -1,0 +1,456 @@
+.nab-set-acceptability-criteria {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    min-height: 600px; /* Changed from height to min-height */
+    margin-top: 1%;
+    font-size: large;
+    font-weight: bold;
+    border-radius: 2vh;
+    padding: 1vh;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    padding-bottom: 100px;
+}
+
+#nab-set-acceptability{
+    font-size: medium;
+    font-weight: lighter;
+}
+
+.kcreateformpage-con {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-areas: 'header' 'main' 'footer';
+    grid-template-rows: auto 1fr auto;
+    grid-gap: 0;
+}
+
+.kcreateformpage-middle {
+    grid-area: main;
+    width: 73%;
+    margin-left: 13%;
+    margin-bottom: 2vh;
+}
+
+.kcreateformpage-footer {
+    grid-area: footer;
+}
+
+.kcreateformpage-header {
+    grid-area: header;
+    background-color: #012641;
+    color: white;
+    width: 73%;
+    margin-left: 13%;
+    border-radius: 2vh;
+    padding: 2vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.kcreateformpage-header-title {
+    font-size: xx-large;
+}
+
+.kcreateformpage-header hr {
+    margin: 1vh 0vh;
+    border:none;
+    height: 1px;
+    background-color: white;
+}
+
+.kcreateformpage-header-job {
+    font-size: large;
+}
+
+.kcreateform-container {
+    width: 100%;
+}
+
+.n-kcreateform-questions {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2vh;
+    font-size: large;
+    margin-top: 5%;
+    width: 100%;
+    
+}
+
+.nkformquestion-con {
+    background-color: white;
+    width: 100%;
+    border-radius: 2vh;
+    padding: 2vh;
+    margin-top: 2vh;
+    display: flex;
+    flex-direction: column;
+    border-left:1vh solid white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.kformquestion-header {
+    display: flex;
+}
+
+.kformquestion-textbox {
+    margin-left: 3vh;
+    width: 89%;
+    font-size: 2vh;
+    resize: none;
+    padding: 0.6vh;
+    border-radius: 1vh;
+    border: 2px solid rgb(229,229,229);
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(248,248,248);
+}
+
+.kcreateform-questions hr {
+    border:none;
+    height: 2px;
+    background-color: rgb(229,229,229);
+    margin: 2vh 2vh 2vh 0vh;
+}
+
+.kformquestion-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-right: 2vh;
+}
+
+.kformquestion-option {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.kformquestion-option-left {
+    display: flex;
+}
+
+.kformquestion-radio {
+    border: 2px solid rgb(210, 210, 210);
+    width: 2.5vh;
+    height: 2.5vh;
+    margin-top: 0.3vh;
+    border-radius: 50%;
+}
+
+.kformquestion-option-textbox {
+    margin-left: 3vh;
+    margin-bottom: 1.5vh;
+    width: 40vh;
+    padding: 0.5vh;
+    font-size: 2vh;
+    border: none;
+    border-bottom: 2px solid rgb(236, 236, 236);
+    background-color: white;
+}
+
+.kformquestion-option-delete {
+    background-color: white;
+    border: 2px solid rgb(210, 210, 210);
+    padding: 0vh 1vh;
+    height: 4vh;
+    border-radius: 50%;
+    font-size: 2vh;
+    color: darkgray;
+    font-weight: bold;
+}
+
+.kformquestion-option-delete:hover{
+    color: white;
+    background-color: rgb(210, 210, 210);
+}
+
+.kformquestion-addbtn {
+    width: 15vh;
+    height: 3.5vh;
+    font-size: 2vh;
+    margin-left: 5vh;
+    background-color: #012641;
+    border: 0.3vh solid #0066ae;
+    color: white;
+    border-radius: 3vh;
+}
+
+.kformquestion-footer{
+    display: flex;
+    justify-content: space-between;
+    margin-right: 2vh;
+}
+
+.kformquestion-dropdown {
+    width: 46vh;
+    padding: 0.5vh;
+    font-size: 2vh;
+    border: none;
+    border: 2px solid rgb(236, 236, 236);
+    background-color: white;
+}
+
+.nabformquestion-question-delete {
+    width: 20vh;
+    height: 3.5vh;
+    font-size: 2vh;
+    margin-top: 1vh;
+    margin-left: 5vh;
+    background-color: #dadada;
+    border: 0.3vh solid #c8c8c8;
+    color: #012641;
+    border-radius: 3vh;
+    padding: 0.5vh;
+    font-weight: bold;
+}
+
+.nnkcreateformpage-addq-con {
+    
+    margin-left: 50%;
+   
+}
+
+.nkcreateformpage-addq {
+    border: 2px solid #012641;
+    background-color: white;
+    color:#012641;
+    border-radius: 50%;
+    font-size: 6vh;
+    padding: 0vh 1.7vh;
+    height: 50px;
+    width: 50px;
+}
+
+.nnab-createformpage-btns {
+    margin-top:2vh;
+    padding: 1.5vh;
+    border-radius: 2vh;
+    display: flex;
+    flex-direction: column;
+    width: 100%; /*added by nabeeha*/
+}
+#nab-vid-interview-btns{
+    display: flex;
+    margin-left: 17%;
+    
+}
+.nab-createformpage-formdeadline {
+    font-size: large;
+    margin-top: 1vh;
+    width: 23%;
+}
+
+.kcreateformpage-formdeadline-input {
+    width: 28%;
+    margin-left: 5%;
+}
+
+.kcreateformpage-savebtn {
+    height: 5vh;
+    padding: 0vh 4vh;
+    font-size: 3vh;
+    background-color: #012641;
+    border: 0.3vh solid #0066ae;
+    color: white;
+    border-radius: 3vh;
+    font-weight: bold;
+}
+.nab-createformpage-savebtn {
+    margin-left: 90%;
+    height: 5vh;
+    padding: 0vh 4vh;
+    font-size: 3vh;
+    background-color: #012641;
+    border: 0.3vh solid #0066ae;
+    color: white;
+    border-radius: 3vh;
+    font-weight: bold;
+}
+.n-nab-createformpage-cancelbtn {
+    margin-right: 2vh;
+    height: 5vh;
+    font-size: 3vh;
+    padding: 0vh 4vh; 
+    background-color: #ececec;
+    border: 0.3vh solid #c8c8c8;
+    color: #012641;
+    border-radius: 3vh;
+    font-weight: bold;
+    margin-left: 70%;
+
+    width: 130px;
+}
+
+.n2-nab-createformpage-cancelbtn {
+    
+    height: 5vh;
+    font-size: 3vh;
+    padding: 0vh 4vh; 
+    background-color: #ececec;
+    border: 0.3vh solid #c8c8c8;
+    color: #012641;
+    border-radius: 3vh;
+    font-weight: bold;
+   margin-right: 2%;
+    width: 110px;
+}
+
+.kformquestion-addbtn:hover, .kformquestion-question-delete:hover,.kcreateformpage-addq:hover,.kcreateformpage-cancelbtn:hover,.kcreateformpage-savebtn:hover{
+    background-color: #60B3D1;
+    border-color: #519eba;
+    color: white;
+}
+
+.kformquestion-header-label {
+    margin-top: 1.5vh;
+}
+
+.kformquestion-con:focus,.kformquestion-con:focus-within{
+    border-color:#012641;
+}
+
+.kformquestion-option-textbox:focus, .kformquestion-textbox:focus, .kformquestion-dropdown:focus{
+    outline:none;
+    border-color:#60B3D1;
+}
+
+.nisa-left-section {
+    flex: 1;
+    text-align: center;
+}
+
+.nisa-right-section {
+    flex: 2;
+    padding: 0 20px; /* Adjust the padding as needed */
+    margin-left: 10%;
+}
+
+.nisa-right-section div {
+    margin-bottom: 10px; /* Adjust the margin between input fields */
+}
+
+.nisa-vd-img1{
+    width: 420px;
+    height: 420px;
+    margin-left: 5%;
+}
+
+.nisa-createformpage-savebtn {
+    margin-top: 10%;
+    height: 5vh;
+    padding: 0vh 4vh;
+    font-size: 3vh;
+    background-color: #012641;
+    border: 0.3vh solid #0066ae;
+    color: white;
+    border-radius: 3vh;
+    font-weight: bold;
+}
+
+.nisa-vertical-line {
+    position: absolute;
+    height: 1px; /* Adjust the height of the vertical line */
+    width: 50%; /* Set width to fill the parent container */
+    background-color: #5a5959; /* Adjust the color of the vertical line */
+    border: none;
+    margin: 0;
+    margin-left: 20%;
+    margin-top: 30%;
+    padding: 0;
+    top: 30%; /* Position in the middle of the parent container vertically */
+    left: 0; /* Align to the left of the parent container */
+    transform: rotate(90deg); 
+    z-index: 1; /* Ensure the line appears above other content */
+}
+
+.trait-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    padding: 1vh;
+    border-radius: 2vh;
+    box-shadow: 0 2px 7px rgba(42, 33, 214, 0.461);
+    background-color: white;
+}
+
+.n-personality-traits{
+    font-size: 2.5vh;
+    font-weight: bold;
+    margin-top: 8%;
+}
+
+.n-vd2{
+    font-size: 5vh;
+    margin-top: -8%;
+}
+
+.n-video-warning{
+    font-size: 2.5vh;
+    font-weight: bold;
+    margin-top: 2%;
+    color: #0066ae;
+    padding-left: 10px;
+    padding-right: 10px;
+
+}
+
+.n-vd-s2{
+    display: flex;
+}
+
+.video-options{
+    display: flex;
+    margin-left: -20%;
+}
+
+.n-l-vd{
+    margin-right: 25px;
+    font-weight: bold;
+}
+
+.n-vd-dur{
+    font-size: 2.5vh;
+    font-weight: bold;
+    border-radius: 5px;
+    border: 1px solid gray;
+    width: 50px;
+    text-align: center;
+}
+
+
+.n-trait-head{
+    margin-top: 16%;
+    font-size: 8vh;
+    font-weight: bold;
+    text-align: center;
+}
+
+.n-trait-p{
+    font-size: 2.5vh;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 2%;
+    color: #0066ae;
+
+}
+
+.nisa-vertical-line2 {
+    position: absolute;
+    height: 1px; /* Adjust the height of the vertical line */
+    width: 30%; /* Set width to fill the parent container */
+    background-color: #5a5959; /* Adjust the color of the vertical line */
+    border: none;
+    margin: 0;
+    margin-left: 30%;
+    margin-top: 19%;
+    padding: 0;
+    top: 30%; /* Position in the middle of the parent container vertically */
+    left: 0; /* Align to the left of the parent container */
+    transform: rotate(90deg); 
+     /* Ensure the line appears above other content */
+}

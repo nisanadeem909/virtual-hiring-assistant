@@ -1,0 +1,84 @@
+.knotifpage-con {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-areas: 'main' 'footer';
+    grid-template-rows: 1fr auto;
+    grid-gap: 0;
+}
+
+.knotifpage-main {
+    grid-area: main;
+    width: 60%;
+    margin-left: 20%;
+    margin-bottom: 2vh;
+}
+
+.knotifpage-footer {
+    grid-area: footer;
+}
+
+.knotif-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
+}
+
+.knotif-pagetitle {
+    text-align: center;
+    font-size: 6vh;
+    font-weight: bold;
+    margin-bottom: 2vh;
+}
+
+.knotif-notification {
+    background-color: white;
+    padding: 2vh;
+    border-radius: 3vh;
+    display: flex;
+    margin-bottom: 2vh;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.knotif-icon {
+    width: 7vh;
+    height: 7vh;
+    border-radius: 50%;
+    border: 1px solid #60B3D1;
+}
+
+.knotif-content {
+    margin-left: 3vh;
+    margin-top: 1vh;
+    font-size: 2.2vh;
+    width: 90%;
+}
+
+.knotif-content-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.7vh;
+}
+
+.knotif-time {
+    color: darkgray;
+}
+
+.knotif-desc {
+    margin-left: 1vh;
+}
+
+.knotif-loading-img {
+    margin-left: 47%;
+    margin-top: 12vh;
+    width: 10vh;
+    height: 10vh;
+}
+
+.knotif-error-div {
+    font-size: 2.5vh;
+    font-weight: bold;
+    color: rgb(230, 0, 0);
+    margin: 5vh 45vh;
+}

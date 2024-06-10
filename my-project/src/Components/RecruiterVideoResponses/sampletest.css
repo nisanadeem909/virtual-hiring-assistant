@@ -1,0 +1,40 @@
+.nab-question-container-techtest {
+    margin-top: 4%;
+    padding: 40px;
+    padding-left: 10vh;
+    box-shadow: 0px 0px 20px rgba(8, 25, 174, 0.2); /* Increased shadow */
+    border: 5px solid  rgba(8, 25, 174, 0.2) ;
+    height: 60vh;
+    display: flex;
+    flex-direction: row;
+
+    
+    border-radius: 8px;
+    
+    width: 100%;
+    height: 100%;
+    
+}
+#quick-stats{
+    text-align: center;
+    width:100%;
+    font-weight: bold;
+    font-size: 30px;
+}
+#statsdiv{
+    margin-left: 15vh;
+    
+}
+#border-sample-test{
+    border-left: 1px solid #ccc;
+    height: 100%;
+    margin-left: 10vh;
+}
+#statsdiv1{
+    font-size: 18px;
+    margin-top: 3vh;
+    width: 100%;
+}
+#timeiconptage{
+    display: flex;
+}

@@ -1,0 +1,50 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 2.25fr 1fr;
+    grid-template-areas:
+      "search search search"
+      "profile-box job-list job-list"
+      "post-job job-list job-list"
+      "footer footer footer";
+    grid-template-rows: auto 1fr auto;
+    grid-gap: 2rem;
+    width: 100%;
+    min-height: 100vh;
+  }
+  
+  .profile-box {
+    grid-area: profile-box;
+    display: flex;
+    flex-direction: column;
+    margin-left: 2rem;
+    margin-bottom: -20%;
+    margin-top: 7%;
+    height: 100%;
+    
+  }
+  
+  .post-job {
+    grid-area: post-job;
+    margin-left: 10%;
+    margin-bottom: 100%;
+    margin-top: 13%;
+    height: 100%;
+
+  }
+  
+  .search-bar {
+    grid-area: search;
+    margin-left: 40%;
+    margin-bottom: -2%;
+  }
+  
+  .job-list {
+    grid-area: job-list;
+    margin-right: 3%;
+    margin-top: 2%;
+  }
+  
+  .uh_footer {
+    grid-area: footer;
+  }
+  
