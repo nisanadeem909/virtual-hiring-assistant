@@ -186,27 +186,33 @@
   }
 
   .nisa-intro2-title{
-    font-size: 16px;
+    font-size: 20px;
     color: red;
-    margin-bottom: 4px;
+   
     margin-top: 5%;
+    margin-left: 15%;
    
   }
 
   .nisa-intro3-title{
-    font-size: 16px;
+    font-size: 25px;
     color:black;
     margin-bottom: 4px;
     font-weight: bold;
+    margin-left: 20%;
   }
 
   .nisa-interview-img{
-    width: 40%;
-    height: 40%;
+    width: 70%;
+    height: 60%;
     border-radius: 4px;
     margin-bottom: 5%;
+    margin-left:15%;
   }
-
+.nab-btn-vid{
+  margin-bottom: 2%;
+  max-height: 90px;
+}
   .nisa-inter-btn{
     width: 15%;
     height: 40px;
@@ -251,6 +257,13 @@
     color: #2980b9;
 
   }
+  .nisa-nab-video-timer{
+    font-size: 40px;
+    
+    color: #2980b9;
+    margin-left: 27%;
+
+  }
 
   .nisa-timer-div{
     margin-left: 47%;
@@ -265,9 +278,23 @@
     margin-bottom: 15px;
   }
 
-  .upload-video-btn{
-    width: 100px;
+  .upload-video-btn-1{
+    width: 15%;
     height: 40px;
+    text-align: center;
+    
+    background-color: #012641;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 25%;
+    margin-top: 2%;
+  }
+  .upload-video-btn-2{
+    width: 150px;
+    height: 50px;
     text-align: center;
     margin-top: 5%;
     background-color: #012641;
@@ -275,13 +302,16 @@
     border-radius: 8px;
     color: white;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 18px;
+    margin-left: 85%;
   }
-
   .nisa-v-btns{
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    /* justify-content: space-between; */
+    margin-left: 15%;
+    width: 100%;
+    height: 60%;
   }
 
   .upload-v-btn1{
@@ -388,3 +418,11 @@
     margin-bottom: 2vh;
     border-radius: 2vh;
   }
+  .video-preview {
+    width: 70%;
+    
+    height: auto;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+  }
+  
