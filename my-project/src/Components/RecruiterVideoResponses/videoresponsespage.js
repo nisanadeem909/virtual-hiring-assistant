@@ -17,7 +17,7 @@ export default function FormResponsesPage(props) {
         var param = {'jobId':props.job._id};
         axios.post("http://localhost:8000/nabeeha/fetchvideoresponses",param).then((response) => {
           
-        //alert(response.data.formResponses)
+        //alert(response.data.videoResponses)
         
         setResps(response.data.responses);
        

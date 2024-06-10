@@ -1,0 +1,123 @@
+.nisa-candidate-details{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.nisa-cd-post-job-container {
+    width: 80%;
+    min-height: 690px;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+
+.nisa-view-cv-btn{
+    width: 100px;
+    height: 35px;
+    text-align: center;
+    border-radius: 25px;
+    border-color: #012641;
+    background-color: #012641;
+    color: white;
+
+
+}
+.nisa-cd-bar{
+    height: 700px;
+    margin-left: 22%;
+    width: 700px;
+}
+
+.nisa-cd-B{
+    margin-top: 50px;
+}
+
+.nisa-p-cv{
+    color: #012641;
+    margin-bottom: 10px;
+}
+.nisa-cd-ph-details{
+margin: 40px;
+}
+
+.nisa-cand-header{
+ font-size: 40px;
+ margin-top: 70px;
+ text-align: center;
+ margin-bottom: 150px;
+}
+.nisa-cd-phase {
+    margin-bottom: 200px;
+   
+}
+
+.nisa-cd-hr{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.nisa-cd-traits{
+    margin-top: 30px;
+}
+.nisa-cd-headd{
+    color: black;
+}
+
+.traits-radar-chart{
+    margin-top: -15%;
+    height: 1000px;
+}
+.nisa-cd-phase h2 {
+    font-size: 1.8em;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.nisa-cd-phase p {
+    font-size: 1.1em;
+    color: #777;
+    line-height: 1.6;
+}
+
+.nisa-cand-btn{
+    width: 100px;
+    height: 35px;
+    text-align: center;
+    border-radius: 25px;
+    border-color: #012641;
+    background-color: #012641;
+    color: white;
+    margin-left: 45%;
+    margin-top: -30%;
+}
+
+.candidate-info{
+    display: flex;
+    flex-direction: row;
+}
+
+.candidate-phases{
+    flex-direction: row;
+}
+
+.nisa-cand-img{
+    height: 300px;
+    height: 400px;
+    margin: 70px;
+}
+
+.nisa-cand-text{
+    margin-left: 80px;
+}
+
+.nisa-cand-right{
+    margin-top: 80px;
+    margin-left: 70px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
