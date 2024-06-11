@@ -352,13 +352,16 @@ export default function EditTest(props) {
             return;
         }
 
-        const deadlineDate = new Date(job.P2FormDeadline);
 
-        if (selectedDate <= deadlineDate) {
-            setMessage('Start date must be after Form Deadline:'+formatDate(job.P2FormDeadline));
-            setMessageTitle('Error');
-            setOpenModal(true);
-            return;
+        if (job.P2FormDeadline){
+            const deadlineDate = new Date(job.P2FormDeadline);
+
+            if (selectedDate <= deadlineDate) {
+                setMessage('Start date must be after Form Deadline:'+formatDate(job.P2FormDeadline));
+                setMessageTitle('Error');
+                setOpenModal(true);
+                return;
+            }
         }
 
         if (days < 1 || days > 15){
