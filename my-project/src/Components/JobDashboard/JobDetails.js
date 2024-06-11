@@ -393,6 +393,8 @@ export default function JobDetails(props) {
         closeModal={closeEditCVDeadlineModal}
         saveValue={saveCVDeadline}
         originalValue={job.CVDeadline}
+        next={job.P2FormDeadline}
+        phase={1}
       />
         <EditDeadlineModal
         isOpen={isEditFormDeadlineModalOpen}
@@ -400,6 +402,8 @@ export default function JobDetails(props) {
         closeModal={closeEditFormDeadlineModal}
         saveValue={saveFormDeadline}
         originalValue={job.P2FormDeadline}
+        next={job.P3StartDate}
+        phase={2}
       />
       <EditJDModal
         isOpen={isEditJDModalOpen}

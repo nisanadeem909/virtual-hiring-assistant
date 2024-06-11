@@ -841,7 +841,11 @@ router.post("/getJobApplicationStatistics", async (req, res) => {
 
         const shortlistedFormResponses = await FormResponses.countDocuments({ jobID:jobID, 'status': "Shortlisted" });
 
-        const totalVideoResponses = await VideosResponses.countDocuments({ jobID:jobID });
+        const totalVideoResponses = await VideosResponses.countDocuments({ 
+            jobID: jobID, 
+            status: { $ne: 'missing' }
+          });
+          
 
         const totalTestResponses = await TestResponses.countDocuments({ jobID:jobID });
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import './Modal.css'
 
-const EditModal = ({ isOpen, title, closeModal, saveValue, originalValue }) => {
+const EditModal = ({ isOpen, title, closeModal, saveValue, originalValue, next, phase }) => {
 
   const [inputVal,setInputVal] = useState(new Date(originalValue));
   const [err,setErr] = useState("");
@@ -15,13 +15,24 @@ const EditModal = ({ isOpen, title, closeModal, saveValue, originalValue }) => {
     setInputVal(event.target.value);
   };
 
+  
+
   const saveNewValue = () => {
     const currentDate = new Date().toISOString(); 
     const inputDate = new Date(inputVal).toISOString();
   
     if (inputDate < currentDate) {
       setErr("Deadline cannot be a past date.");
-    } else {
+    } 
+    else if (next && inputDate >= new Date(next).toISOString()) {
+        if (phase == 1){
+            setErr("CV deadline must be before form deadline! ("+formatDate2(next)+")")
+        }
+        else if (phase == 2){
+          setErr("Form deadline must be before video and test start date! ("+formatDate2(next)+")")
+        }
+    }
+    else {
       setErr("");
       saveValue(inputVal);
     }
