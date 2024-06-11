@@ -223,6 +223,7 @@ export default function Shortlisted(props) {
                 setTitle("Candidates Accepted")
                 setMessage("The acceptance emails have been sent successfully!");
                 setOpenModal(true);
+                setSelectedCandidates([]);
             }
             else {
                 console.error('Error accepting:', response.data.error);
@@ -253,6 +254,7 @@ export default function Shortlisted(props) {
                 setTitle("Candidates Rejected")
                 setMessage("The rejection emails have been sent successfully.");
                 setOpenModal(true);
+                setSelectedCandidates([]);
             }
             else {
                 console.error('Error rejecting:', response.data.error);
