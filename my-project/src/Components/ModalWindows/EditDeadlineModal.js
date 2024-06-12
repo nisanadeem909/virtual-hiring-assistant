@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import './Modal.css'
 
-const EditModal = ({ isOpen, title, closeModal, saveValue, originalValue, next, phase }) => {
+const EditModal = ({ isOpen, title, closeModal, saveValue, originalValue, next,nextnext, phase }) => {
 
   const [inputVal,setInputVal] = useState(new Date(originalValue));
   const [err,setErr] = useState("");
@@ -31,6 +31,9 @@ const EditModal = ({ isOpen, title, closeModal, saveValue, originalValue, next, 
         else if (phase == 2){
           setErr("Form deadline must be before video and test start date! ("+formatDate2(next)+")")
         }
+    }
+    else if (nextnext &&  inputDate >= new Date(nextnext).toISOString()){
+      setErr("CV deadline must be before video and test start date! ("+formatDate2(nextnext)+")")
     }
     else {
       setErr("");

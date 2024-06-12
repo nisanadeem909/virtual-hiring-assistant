@@ -928,7 +928,7 @@ def VideoScreening(job):
             "jobID": job['_id'],
             "companyname":job['companyname'],
             "companyID":job['companyID'],
-            "notifText": "Phase 3 Candidates have been shortlisted for the job!",
+            "notifText": "Candidates have been shortlisted for the job!",
             "recruiterUsername": job['postedby'],
             "notifType": 3,
             "createdAt": datetime.now().astimezone(pytz.utc)

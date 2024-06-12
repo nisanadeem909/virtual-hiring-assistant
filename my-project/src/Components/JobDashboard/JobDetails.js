@@ -394,6 +394,7 @@ export default function JobDetails(props) {
         saveValue={saveCVDeadline}
         originalValue={job.CVDeadline}
         next={job.P2FormDeadline}
+        nextnext={job.P3StartDate}
         phase={1}
       />
         <EditDeadlineModal
