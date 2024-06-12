@@ -193,7 +193,14 @@ axios.post("http://localhost:8000/komal/createform", param)
         }
 
         if (selectedDeadline <= job.CVDeadline) {
-            setMessage('Form deadline should be after the job CV deadline: '+formatDate(job.CVDeadline));
+            setMessage('Form deadline should be after the job CV deadline: '+formatDate2(job.CVDeadline));
+            setMessageTitle('Error');
+            setOpenModal(true);
+            return;
+        }
+
+        if (job.P3StartDate && selectedDeadline >= job.P3StartDate){
+            setMessage('Form deadline should be before video and test start date: '+formatDate2(job.P3StartDate));
             setMessageTitle('Error');
             setOpenModal(true);
             return;

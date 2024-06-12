@@ -37,6 +37,8 @@ export default function Shortlisted(props) {
     const [message, setMessage] = useState("");
     const [title, setTitle] = useState("");
 
+    const [replyTo,setReplyTo] = useState("");
+
     const formatDate = (date) => {
         if (!date) return '';
         const formattedDate = new Date(date);
@@ -56,15 +58,22 @@ export default function Shortlisted(props) {
       };
 
     const handleSave=()=>{
-        //alert("hei")
-        if (!formEmailBody || formEmailBody.trim() == ""){
+        if (!formEmailBody || formEmailBody.trim() == "" || !replyTo || !replyTo.trim()){
             setTitle("Error")
-            setMessage("Please enter an email body!");
+            setMessage("Please fill all fields!");
             setOpenModal(true);
             return;
         }
 
-        let param = { jobId: job._id, acceptEmailSub: "Regarding Your Application for "+ job?.jobTitle + " at company "+ job?.companyname, acceptEmailBody: formEmailBody   };
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(replyTo.trim())) {
+            setTitle("Error");
+            setMessage("Please enter a valid email address!");
+            setOpenModal(true);
+            return;
+        }
+
+        let param = { jobId: job._id, acceptEmailSub: "Regarding Your Application for "+ job?.jobTitle + " at company "+ job?.companyname, acceptEmailBody: formEmailBody , acceptEmailReplyTo: replyTo     };
         axios.post('http://localhost:8000/komal/setacceptanceemail',param)
         .then(response => {
 
@@ -111,18 +120,19 @@ export default function Shortlisted(props) {
                     setErrStat(true);
                 });
 
-                if (props.job.acceptEmailBody){
+                if (props.job.acceptEmailBody && props.job.replyTo){
                     setEmail(props.job.acceptEmailBody);
+                    setReplyTo(props.job.replyTo)
                     setEmailSet(true);
                 }
                 else {
                     let param2 = { jobId: props.job._id  };
                     axios.post('http://localhost:8000/komal/getacceptanceemail',param2)
                     .then(response => {
-
                         if (response.data.status == "success"){
-                    
+                            //alert(JSON.stringify(response.data))
                             setEmail(response.data.email);
+                            setReplyTo(response.data.replyTo)
                             setEmailSet(true);
                         }
                         else if (response.data.status == "error") {
@@ -223,6 +233,7 @@ export default function Shortlisted(props) {
                 setTitle("Candidates Accepted")
                 setMessage("The acceptance emails have been sent successfully!");
                 setOpenModal(true);
+                setSelectedCandidates([]);
             }
             else {
                 console.error('Error accepting:', response.data.error);
@@ -253,6 +264,7 @@ export default function Shortlisted(props) {
                 setTitle("Candidates Rejected")
                 setMessage("The rejection emails have been sent successfully.");
                 setOpenModal(true);
+                setSelectedCandidates([]);
             }
             else {
                 console.error('Error rejecting:', response.data.error);
@@ -355,6 +367,8 @@ export default function Shortlisted(props) {
         <h2>Set Acceptance Email</h2>
         <p>This will be the default email sent to the accepted applicants. Please add job-specific details including the offer/ call for in-person interview as required.</p>
         <label><b>Job Title:</b> {job?.jobTitle}</label>
+        <label className='kshortlistemail-replyto-label'><b>Email address for candidate to reply to<span className='kreq'>*</span>: </b></label>
+         <input type="email" className='kshortlistemail-replyto' value={replyTo} onChange={(event)=>{setReplyTo(event.target.value)}}></input>
         <div className='krejemail-email'>
           <label><b>Email Subject:</b></label>
           <label>Regarding Your Application for {job?.jobTitle} at company {job?.companyname}</label>

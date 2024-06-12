@@ -565,7 +565,7 @@ router.post('/getjobtestnisa', async(req, res) => {
 
 
   router.post("/setacceptanceemail", async (req, res) => {
-    const { jobId, acceptEmailSub, acceptEmailBody } = req.body;
+    const { jobId, acceptEmailSub, acceptEmailBody, acceptEmailReplyTo } = req.body;
     let msg;
 
     console.log(req.body);
@@ -577,7 +577,8 @@ router.post('/getjobtestnisa', async(req, res) => {
             { 
                 $set: { 
                     acceptEmailSub: acceptEmailSub,
-                    acceptEmailBody: acceptEmailBody
+                    acceptEmailBody: acceptEmailBody,
+                    acceptEmailReplyTo: acceptEmailReplyTo
                 }
             },
             { new: true } // Return the updated document
@@ -606,7 +607,7 @@ router.post("/getacceptanceemail", async (req, res) => {
 
     try {
         // Find the job by ID
-        const job = await Job.findById(jobId, 'acceptEmailSub acceptEmailBody');
+        const job = await Job.findById(jobId, 'acceptEmailSub acceptEmailBody acceptEmailReplyTo');
 
         if (!job) {
             msg = { "status": "error", "error": "Job not found!" };
@@ -615,13 +616,16 @@ router.post("/getacceptanceemail", async (req, res) => {
         } else {
             msg = { 
                 "status": "success", 
-                "email": job.acceptEmailBody 
+                "email": job.acceptEmailBody ,
+                "replyTo": job.acceptEmailReplyTo
             };
         }
     } catch (error) {
         console.error('Error fetching job:', error);
         msg = { "status": "error", "error": error.message };
     }
+
+    console.log(msg);
 
     res.json(msg);
     res.end();
@@ -631,12 +635,11 @@ router.post("/getshortlistedapplications", async (req, res) => {
     const { jobID } = req.body;
 
     try {
-        // Find all job applications for the given jobID whose status is 3
-        const applications = await JobApplication.find({ 
-            jobID: jobID, 
-            status: { $in: [3, 5, -5] } 
+        // Find all job applications for the given jobID whose status is 3, 5, or -5
+        const applications = await JobApplication.find({
+            jobID: jobID,
+            status: { $in: [3, 5, -5] }
         }).lean();
-        
 
         if (!applications.length) {
             return res.json({ "status": "error", "error": "No shortlisted applications found!" });
@@ -644,15 +647,22 @@ router.post("/getshortlistedapplications", async (req, res) => {
 
         // Get video importance for the job
         const video = await Videos.findOne({ jobID: jobID }, 'importance').lean();
-        const videoImportance = video ? video.importance : 50; 
+        const videoImportance = video ? video.importance : 50;
 
         const techTest = await TechTests.findOne({ jobID: jobID }, 'questions').lean();
-        const testTotalPoints = techTest ? calculateTestTotalPoints(techTest.questions) : 1; 
+        const testTotalPoints = techTest ? calculateTestTotalPoints(techTest.questions) : 1;
 
         // Populate each application with test and video scores and calculate final score
         const applicationDetails = await Promise.all(applications.map(async (application) => {
             const testResponse = await TestResponses.findOne({ applicantEmail: application.email, jobID: jobID }, 'overallScore').lean();
-            const videoResponse = await VideosResponses.findOne({ applicantEmail: application.email, jobID: jobID }, 'overallScore').lean();
+            const videoResponse = await VideosResponses.findOne({ applicantEmail: application.email, jobID: jobID }, 'overallScore status').lean();
+
+            // Check if video response status is 'missing' and test response does not exist
+            if (videoResponse?.status === 'missing' && !testResponse) {
+                // Update status to -3
+                await JobApplication.updateOne({ _id: application._id }, { $set: { status: -3 } });
+                return null;
+            }
 
             // Calculate final score
             const finalScore = calculateFinalScore(testResponse ? testResponse.overallScore : 0, testTotalPoints, videoResponse ? videoResponse.overallScore : 0, videoImportance);
@@ -665,17 +675,21 @@ router.post("/getshortlistedapplications", async (req, res) => {
             };
         }));
 
-        applicationDetails.sort((a, b) => b.finalScore - a.finalScore);
+        // Filter out null entries from the applicationDetails array
+        const filteredApplicationDetails = applicationDetails.filter(application => application !== null);
 
+        filteredApplicationDetails.sort((a, b) => b.finalScore - a.finalScore);
 
-        console.log(applicationDetails)
+        console.log(filteredApplicationDetails);
 
-        res.json({ "status": "success", "applications": applicationDetails });
+        res.json({ "status": "success", "applications": filteredApplicationDetails });
     } catch (error) {
         console.error('Error fetching applications:', error);
         res.json({ "status": "error", "error": error.message });
     }
 });
+
+
 
 function calculateFinalScore(testOverallScore, testTotalPoints, videoOverallScore, videoImportance) {
     const finalScore = ((testOverallScore/testTotalPoints * (100 - videoImportance) / 100) + (videoOverallScore/9 * videoImportance / 100)) * 100;
@@ -732,7 +746,8 @@ router.post("/acceptcandidate", async (req, res) => {
                 from: 'virtualhiringassistant04@gmail.com',
                 to: selectedApp.email,
                 subject: job.acceptEmailSub, 
-                text: job.acceptEmailBody 
+                text: job.acceptEmailBody,
+                replyTo: job.acceptEmailReplyTo 
             };
 
             // Send email
@@ -841,7 +856,11 @@ router.post("/getJobApplicationStatistics", async (req, res) => {
 
         const shortlistedFormResponses = await FormResponses.countDocuments({ jobID:jobID, 'status': "Shortlisted" });
 
-        const totalVideoResponses = await VideosResponses.countDocuments({ jobID:jobID });
+        const totalVideoResponses = await VideosResponses.countDocuments({ 
+            jobID: jobID, 
+            status: { $ne: 'missing' }
+          });
+          
 
         const totalTestResponses = await TestResponses.countDocuments({ jobID:jobID });
 

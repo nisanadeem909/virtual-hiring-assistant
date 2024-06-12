@@ -886,7 +886,7 @@ def VideoScreening(job):
     video_responses = list(VideosResponses.find({'jobID': job_id}))
     
     for video_response in video_responses:
-        if (video_response.get('videoPath')):
+        if (video_response.get('status') != "missing"):
             print(video_response['videoPath'])
             current_time = datetime.now().strftime("%Y%m%d%H%M%S")
             video_path = "./routes/applicantvideos/"+video_response['videoPath']
@@ -928,7 +928,7 @@ def VideoScreening(job):
             "jobID": job['_id'],
             "companyname":job['companyname'],
             "companyID":job['companyID'],
-            "notifText": "Phase 3 Candidates have been shortlisted for the job!",
+            "notifText": "Candidates have been shortlisted for the job!",
             "recruiterUsername": job['postedby'],
             "notifType": 3,
             "createdAt": datetime.now().astimezone(pytz.utc)

@@ -82,12 +82,17 @@ export default function EditForm(props) {
     }
 
     const formatDateSlash = (date) => {
-      if (!date) return '';
-      const formattedDate = new Date(date); 
-      const year = formattedDate.getFullYear();
-      const month = `${formattedDate.getMonth() + 1}`.padStart(2, '0');
-      const day = `${formattedDate.getDate()}`.padStart(2, '0');
-      return `${day}/${month}/${year}`;
+        if (!date) return '';
+        const formattedDate = new Date(date); 
+        const year = formattedDate.getFullYear();
+        const month = `${formattedDate.getMonth() + 1}`.padStart(2, '0');
+        const day = `${formattedDate.getDate()}`.padStart(2, '0');
+        let hours = formattedDate.getHours();
+        const minutes = `${formattedDate.getMinutes()}`.padStart(2, '0');
+        const amOrPm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12; // Convert 0 to 12 for midnight
+    
+        return `${day}-${month}-${year} ${hours}:${minutes} ${amOrPm}`;
   };
 
     const saveForm=()=>{
@@ -119,8 +124,14 @@ export default function EditForm(props) {
             setMessageTitle('Error');
             setOpenModal(true);
             return;
+        }              
+
+        if (job.P3StartDate && selectedDeadline >= job.P3StartDate){
+            setMessage('Form deadline should be before video and test start date: '+formatDateSlash(job.P3StartDate));
+            setMessageTitle('Error');
+            setOpenModal(true);
+            return;
         }
-        //alert('hi3');
 
         if (copy.length < 1)
         {

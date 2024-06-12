@@ -311,6 +311,9 @@ const jobSchema = new Schema({
     type: String,
   }
   ,
+  acceptEmailReplyTo: { // !!!!!!!!!!!!!!!!! NEW - KOMAL !!!!!!!!!!!!!!!
+    type: String,
+  },
   noShortlisted:{
     type: Boolean,
     default: false,
