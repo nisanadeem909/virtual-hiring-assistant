@@ -565,7 +565,7 @@ router.post('/getjobtestnisa', async(req, res) => {
 
 
   router.post("/setacceptanceemail", async (req, res) => {
-    const { jobId, acceptEmailSub, acceptEmailBody } = req.body;
+    const { jobId, acceptEmailSub, acceptEmailBody, acceptEmailReplyTo } = req.body;
     let msg;
 
     console.log(req.body);
@@ -577,7 +577,8 @@ router.post('/getjobtestnisa', async(req, res) => {
             { 
                 $set: { 
                     acceptEmailSub: acceptEmailSub,
-                    acceptEmailBody: acceptEmailBody
+                    acceptEmailBody: acceptEmailBody,
+                    acceptEmailReplyTo: acceptEmailReplyTo
                 }
             },
             { new: true } // Return the updated document
@@ -606,7 +607,7 @@ router.post("/getacceptanceemail", async (req, res) => {
 
     try {
         // Find the job by ID
-        const job = await Job.findById(jobId, 'acceptEmailSub acceptEmailBody');
+        const job = await Job.findById(jobId, 'acceptEmailSub acceptEmailBody acceptEmailReplyTo');
 
         if (!job) {
             msg = { "status": "error", "error": "Job not found!" };
@@ -615,13 +616,16 @@ router.post("/getacceptanceemail", async (req, res) => {
         } else {
             msg = { 
                 "status": "success", 
-                "email": job.acceptEmailBody 
+                "email": job.acceptEmailBody ,
+                "replyTo": job.acceptEmailReplyTo
             };
         }
     } catch (error) {
         console.error('Error fetching job:', error);
         msg = { "status": "error", "error": error.message };
     }
+
+    console.log(msg);
 
     res.json(msg);
     res.end();
@@ -742,7 +746,8 @@ router.post("/acceptcandidate", async (req, res) => {
                 from: 'virtualhiringassistant04@gmail.com',
                 to: selectedApp.email,
                 subject: job.acceptEmailSub, 
-                text: job.acceptEmailBody 
+                text: job.acceptEmailBody,
+                replyTo: job.acceptEmailReplyTo 
             };
 
             // Send email
