@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import img1 from './interview.jpg';
+import { v4 as uuidv4 } from 'uuid';
 
 function ConfirmationPopup({ message, onConfirm, onCancel }) {
   return (
@@ -9,7 +10,8 @@ function ConfirmationPopup({ message, onConfirm, onCancel }) {
       <div className="nab-confirmation-popup">
         <p id="nab-conf-msg">{message}</p>
         <div className="nab-confirmation-buttons">
-          <button className="nisa-nabeeha-submit-button" onClick={onCancel}>Close</button>
+          <button className="nisa-nabeeha-submit-button" onClick={onConfirm}>Submit & Move to Test</button>
+          <button className="nisa-nabeeha-submit-button" onClick={onCancel}>Cancel</button>
         </div>
       </div>
     </div>
@@ -25,8 +27,18 @@ export default function VideoForm() {
   const [timeLimitReached, setTimeLimitReached] = useState(false);
   const [videoFile, setVideoFile] = useState(null);
   const [job, setJob] = useState(null);
-  const [allquestions, setQuestions] = useState([]);
+  const [allQuestions, setQuestions] = useState([]);
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
+  const [showSubmitPopup, setShowSubmitPopup] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isRecording, setIsRecording] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [recordingTimer, setRecordingTimer] = useState(300); // 5 minutes in seconds
+
+  const videoRef = useRef(null);
+  const mediaRecorderRef = useRef(null);
+  const recordedChunks = useRef([]);
+  const countdownIntervalRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,11 +51,21 @@ export default function VideoForm() {
           setQuestions(response.data.questions);
 
           setDuration(response.data.duration);
-          const savedTimer = localStorage.getItem('videoFormTimer');
-          setTimer(savedTimer ? parseInt(savedTimer) : response.data.duration * 60);
-          setLoading(false);
-        } 
-        catch (error) {
+          const savedEndTime = localStorage.getItem('videoFormEndTime');
+          if (savedEndTime) {
+            const remainingTime = Math.max((new Date(savedEndTime).getTime() - new Date().getTime()) / 1000, 0);
+            setTimer(Math.floor(remainingTime));
+            setLoading(false);
+            if (remainingTime <= 0) {
+              setTimeLimitReached(true);
+            }
+          } else {
+            const newEndTime = new Date().getTime() + response.data.duration * 60 * 1000;
+            localStorage.setItem('videoFormEndTime', new Date(newEndTime).toISOString());
+            setTimer(response.data.duration * 60);
+            setLoading(false);
+          }
+        } catch (error) {
           alert(error);
         }
       } else {
@@ -58,12 +80,11 @@ export default function VideoForm() {
     const countdownInterval = setInterval(() => {
       setTimer((prevTimer) => {
         if (prevTimer > 0) {
-          localStorage.setItem('videoFormTimer', prevTimer.toString());
           return prevTimer - 1;
         } else {
           clearInterval(countdownInterval);
           setTimeLimitReached(true);
-          upload();
+          upload(videoFile);
           navigate('test', { state: { job } });
           return 0;
         }
@@ -71,14 +92,36 @@ export default function VideoForm() {
     }, 1000);
 
     return () => clearInterval(countdownInterval);
-  }, [timer, navigate, job]);
+  }, [timer, navigate, job, videoFile]);
 
   useEffect(() => {
-    const savedTimer = localStorage.getItem('videoFormTimer');
-    if (savedTimer) {
-      setTimer(parseInt(savedTimer));
+    const savedEndTime = localStorage.getItem('videoFormEndTime');
+    if (savedEndTime) {
+      const remainingTime = Math.max((new Date(savedEndTime).getTime() - new Date().getTime()) / 1000, 0);
+      setTimer(Math.floor(remainingTime));
+      if (remainingTime <= 0) {
+        setTimeLimitReached(true);
+      }
     }
   }, []);
+
+  useEffect(() => {
+    if (isRecording && recordingTimer > 0) {
+      countdownIntervalRef.current = setInterval(() => {
+        setRecordingTimer((prevTimer) => {
+          if (prevTimer > 0) {
+            return prevTimer - 1;
+          } else {
+            stopRecording();
+            clearInterval(countdownIntervalRef.current);
+            return 0;
+          }
+        });
+      }, 1000);
+    }
+
+    return () => clearInterval(countdownIntervalRef.current);
+  }, [isRecording, recordingTimer]);
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
@@ -92,39 +135,128 @@ export default function VideoForm() {
       const validVideoTypes = ['video/mp4', 'video/avi', 'video/mov', 'video/mpeg', 'video/wmv'];
 
       if (!validVideoTypes.includes(file.type)) {
-        alert('Invalid file type. Please upload a video file.');
+        setErrorMessage('Invalid file type. Please upload a video file.');
         setVideoFile(null);
-        event.target.value = null; // Reset the file input
+        event.target.value = null; 
         return;
       }
+
+      setErrorMessage('');
+      setVideoFile(file);
+      
     }
-    setVideoFile(file);
   };
 
   const handleNextButtonClick = () => {
     if (!videoFile && !timeLimitReached) {
       setShowConfirmationPopup(true);
     } else {
-      upload();
+      upload(videoFile);
+
+    
+      
       navigate('test', { state: { job } });
     }
   };
 
-  const handleConfirmSubmission = () => {
-    setShowConfirmationPopup(false);
-  };
-
-  const upload = () => {
+  const upload = (file) => {
     const formData = new FormData();
-    formData.append("Image", videoFile);
+    formData.append("Image", file);
     formData.append("Email", sessionStorage.getItem('email'));
     formData.append("JobID", location.state.job._id);
 
-    axios.post('http://localhost:8000/nabeeha/uploadapplicantvideo', formData)
+    axios.post('http://localhost:8000/nabeeha/uploadapplicantvideo', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
       .then(res => {})
       .catch(err => {
         alert(err);
       });
+  };
+
+  const startRecording = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    videoRef.current.srcObject = stream;
+    const mediaRecorder = new MediaRecorder(stream);
+    mediaRecorderRef.current = mediaRecorder;
+
+    mediaRecorder.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        recordedChunks.current.push(event.data);
+      }
+    };
+
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(recordedChunks.current, { type: 'video/mp4' });
+      const uniqueFileName = `${uuidv4()}.mp4`;
+
+      const file = new File([blob], uniqueFileName, { type: 'video/mp4' });
+      setVideoFile(file);
+      recordedChunks.current = [];
+    };
+
+    mediaRecorder.start();
+    setIsRecording(true);
+    setIsPaused(false);
+    setRecordingTimer(300); // Reset the recording timer to 5 minutes
+  };
+
+  const pauseRecording = () => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+      mediaRecorderRef.current.pause();
+      setIsPaused(true);
+      clearInterval(countdownIntervalRef.current); // Pause the timer
+    }
+  };
+
+  const resumeRecording = () => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'paused') {
+      mediaRecorderRef.current.resume();
+      setIsPaused(false);
+      // Resume the timer
+      countdownIntervalRef.current = setInterval(() => {
+        setRecordingTimer((prevTimer) => {
+          if (prevTimer > 0) {
+            return prevTimer - 1;
+          } else {
+            stopRecording();
+            clearInterval(countdownIntervalRef.current);
+            return 0;
+          }
+        });
+      }, 1000);
+    }
+  };
+
+  const discardRecording = () => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach(track => track.stop());
+      setIsRecording(false);
+      setIsPaused(false);
+      recordedChunks.current = [];
+      setVideoFile(null);
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach(track => track.stop());
+      setIsRecording(false);
+      setIsPaused(false);
+    }
+    clearInterval(countdownIntervalRef.current);
+    setShowSubmitPopup(true); // Show submit confirmation popup
+  };
+
+  const confirmSubmitRecording = () => {
+    setShowSubmitPopup(false);
+    handleNextButtonClick();
   };
 
   return (
@@ -142,34 +274,74 @@ export default function VideoForm() {
         <div>Loading...</div>
       ) : (
         <div className='video-mid'>
-          <h4>Record a maximum 5-minute video answering the following questions:</h4>
-          <ul className='nisa-v-q'>
-            {allquestions.map((question, index) => (
-              <li className='nisa-v-q2' key={index}>{question}</li>
-            ))}
-          </ul>
-
-          <p className='nisa-intro2-title'>
-            <span className='nisa-intro3-title'>Important:</span> Position your camera to capture a vision like shown below.
+          <p className='nisa-intro22-title'>
+            <span className='nisa-intro3-title'>Position your camera to capture a vision like shown below.</span> 
           </p>
-
           <img className='nisa-interview-img' src={img1} alt="Interview Demo" />
+          <div id="nab-vid-question-box">
+            <span>Record a maximum 5-minute video answering the following questions:</span>
+          </div>
+          <div id="nab-vid-question-box-q">
+            <ul className='nisa-v-q'>
+              {allQuestions.map((question, index) => (
+                <li className='nisa-v-q2' key={index}>{question}</li>
+              ))}
+            </ul>
+          </div>
+
           <p className='nisa-intro2-title'>
-            <b>Press the next button once you have uploaded the video</b>
+            <b>Once you're ready, click Start Recording. &nbsp; To save, click Stop Recording.</b>
           </p>
           <div className='nisa-v-btns'>
+            <div className='nab-btn-vid'>
+              {!isRecording ? (
+                <button className='upload-video-btn-1' onClick={startRecording} disabled={timeLimitReached}>
+                  Start Recording
+                </button>
+              ) : (
+                <>
+                  <button className='upload-video-btn-11' onClick={stopRecording} disabled={timeLimitReached}>
+                    Submit Recording
+                  </button>
+                  {isPaused ? (
+                    <button className='upload-video-btn-1' onClick={resumeRecording} disabled={timeLimitReached}>
+                      Resume Recording
+                    </button>
+                  ) : (
+                    <button className='upload-video-btn-1' onClick={pauseRecording} disabled={timeLimitReached}>
+                      Pause Recording
+                    </button>
+                  )}
+                  <button className='upload-video-btn-13' onClick={discardRecording} disabled={timeLimitReached}>
+                    Discard Recording
+                  </button>
+                </>
+              )}
+              {isRecording && <h3 className='nisa-nab-video-timer'>{formatTime(recordingTimer)}</h3>}
+            </div>
+            <video ref={videoRef} autoPlay muted className="video-preview"></video>
+
+<div> {/*Delete this div later*/}
             <input className='upload-v-btn1' type='file' accept='video/*' onChange={handleFileChange} />
-            <button className='upload-video-btn' onClick={handleNextButtonClick} disabled={timeLimitReached}>
+            <button className='upload-video-btn-1' onClick={handleNextButtonClick} disabled={timeLimitReached}>
               {timeLimitReached ? 'Time Limit Reached' : 'Next'}
             </button>
+</div>
           </div>
+          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         </div>
       )}
       {showConfirmationPopup && (
         <ConfirmationPopup
           message="You cannot proceed before submitting a video file."
-          onConfirm={handleConfirmSubmission}
           onCancel={() => setShowConfirmationPopup(false)}
+        />
+      )}
+      {showSubmitPopup && (
+        <ConfirmationPopup
+          message="This action will submit your video and take you to the test section. Continue?"
+          onConfirm={confirmSubmitRecording}
+          onCancel={() => setShowSubmitPopup(false)}
         />
       )}
     </div>
