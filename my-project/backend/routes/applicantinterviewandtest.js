@@ -37,7 +37,7 @@ router.post('/checkapplicantcredentials', async (req, res) => {
         console.log("job not found")
         return res.json({status:"false",message:"An error occured"}) //Job not found
       }
-      if (thisJob.status != 3)
+      if (thisJob.status != 3) //COMMENT this check FOR TESTING
       {
         console.log("job not in phase 3")
         return res.json({status:"false",message:"An error occured."}) //Job not in phase 3
@@ -228,49 +228,61 @@ router.post('/uploadapplicantvideo',async(req,res)=>{
     console.log(req.body);
   
     try {
-      const thisApp = await TestResponses.findOne({ applicantEmail: req.body.applicantEmail, jobID: req.body.jobID});
-      if (!thisApp) 
-      {
+      const { applicantEmail, jobID, answers } = req.body;
+      const thisApp = await TestResponses.findOne({ applicantEmail, jobID });
+  
+      if (!thisApp) {
         console.log("does not exist");
+  
         const newTestResp = new TestResponses({
-          applicantEmail: req.body.applicantEmail,
-          jobID: req.body.jobID,
+          applicantEmail,
+          jobID,
           overallScore: 0,
-          answers: Object.keys(req.body.answers).map(questionIndex => ({
+          answers: Object.keys(answers).map(questionIndex => ({
             questionIndex: parseInt(questionIndex),
-            answer: req.body.answers[questionIndex],
-            
-          }))
+            answer: answers[questionIndex],
+          })),
         });
   
         await newTestResp.save();
-      } 
-      else {
+        res.status(200).json({ status: true, message: 'New test response created.' });
+      } else {
         console.log("already exists");
-        const updatedAnswers = Object.keys(req.body.answers).map(questionIndex => ({
+  
+        const updatedAnswers = Object.keys(answers).map(questionIndex => ({
           questionIndex: parseInt(questionIndex),
-          answer: req.body.answers[questionIndex],
-          
+          answer: answers[questionIndex],
         }));
   
+        // Merge existing answers with new answers
+        const mergedAnswers = [...thisApp.answers];
+  
+        updatedAnswers.forEach(newAnswer => {
+          const index = mergedAnswers.findIndex(existingAnswer => existingAnswer.questionIndex === newAnswer.questionIndex);
+          if (index !== -1) {
+            // Update existing answer
+            mergedAnswers[index] = newAnswer;
+          } else {
+            // Add new answer
+            mergedAnswers.push(newAnswer);
+          }
+        });
+  
         const found = await TestResponses.findOneAndUpdate(
-          { applicantEmail: req.body.applicantEmail, jobID: req.body.jobID },
-          {
-            $set: {
-              answers: updatedAnswers
-            }
-          },
-          { new: true } // To return the updated document
+          { applicantEmail, jobID },
+          { $set: { answers: mergedAnswers } },
+          { new: true }
         );
   
         console.log(found);
-        res.status(200).json({'status':true});
+        res.status(200).json({ status: true, message: 'Test response updated.' });
       }
     } catch (error) {
       console.error('Error:', error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+  
   
   router.post('/evaluatemytestplease', async (req, res) => {
     console.log("I am in evaluate test");

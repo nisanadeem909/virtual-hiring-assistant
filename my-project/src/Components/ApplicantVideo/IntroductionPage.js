@@ -1,255 +1,148 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import './ApplicantVideo.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import img1 from './interview.jpg';
-import { v4 as uuidv4 } from 'uuid';
 
-function ConfirmationPopup({ message, onCancel }) {
-  return (
-    <div className="nab-confirmation-popup-overlay">
-      <div className="nab-confirmation-popup">
-        <p id="nab-conf-msg">{message}</p>
-        <div className="nab-confirmation-buttons">
-          <button className="nisa-nabeeha-submit-button" onClick={onCancel}>Close</button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default function VideoForm() {
-  const navigate = useNavigate();
+import axios from 'axios'
+export default function IntroductionPage() {
   const location = useLocation();
-  const [loading, setLoading] = useState(true);
-  const [duration, setDuration] = useState();
-  const [timer, setTimer] = useState();
-  const [timeLimitReached, setTimeLimitReached] = useState(false);
-  const [videoFile, setVideoFile] = useState(null);
+  const navigate = useNavigate();
+
   const [job, setJob] = useState(null);
-  const [allQuestions, setQuestions] = useState([]);
-  const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isRecording, setIsRecording] = useState(false);
-  const [recordingTimer, setRecordingTimer] = useState(300); // 5 minutes in seconds
+  const [countdown, setCountdown] = useState(5);
+  const [showCountdown, setShowCountdown] = useState(false);
+  const [showBestOfLuck, setShowBestOfLuck] = useState(false);
+  const [showHeading, setShowHeading] = useState(true);
 
-  const videoRef = useRef(null);
-  const mediaRecorderRef = useRef(null);
-  const recordedChunks = useRef([]);
-  const countdownIntervalRef = useRef(null);
-
+ 
+  const [videoSubmission,setVideoSub] = useState()
+  const [techtestLen,setTechTestLen] = useState()
+  const [startDate,setStartDate] = useState()
+  const [flag,setFlag] = useState(false) //False flag indicates there is time. True means expired.
+  const [email,setEmail] = useState('')
   useEffect(() => {
-    const fetchData = async () => {
-      localStorage.removeItem('videoFormTimer');
+    if (location.state && location.state.job) {
+      setJob(location.state.job);
 
-      if (location.state && location.state.job) {
-        setJob(location.state.job);
+      setDetails()
 
-        const param = { jobID: location.state.job._id };
-        try {
-          const response = await axios.post("http://localhost:8000/nabeeha/getvideointerviewquestions", param);
-          setQuestions(response.data.questions);
+      setEmail(sessionStorage.getItem('email'))
+      
 
-          setDuration(response.data.duration);
-          const savedTimer = localStorage.getItem('videoFormTimer');
-          setTimer(savedTimer ? parseInt(savedTimer) : response.data.duration * 60);
-          setLoading(false);
-        } catch (error) {
-          alert(error);
-        }
-      } else {
-        navigate(-1);
-      }
-    };
 
-    fetchData();
+    } else {
+      navigate(-1);
+    }
   }, [location.state, navigate]);
 
-  useEffect(() => {
-    const countdownInterval = setInterval(() => {
-      setTimer((prevTimer) => {
-        if (prevTimer > 0) {
-          localStorage.setItem('videoFormTimer', prevTimer.toString());
-          return prevTimer - 1;
-        } else {
-          clearInterval(countdownInterval);
-          setTimeLimitReached(true);
-          upload(videoFile);
-          navigate('test', { state: { job } });
-          return 0;
-        }
+  const setDetails =() =>{
+    
+    const param = { jobID: location.state.job._id};
+    axios.post("http://localhost:8000/nabeeha/getvideointerviewdetails", param)
+      .then((response) => {
+        setVideoSub(response.data.videoSubmissionTime)
+        setTechTestLen(response.data.testSubmissionTime)
+
+        localStorage.removeItem('videoFormTimer');
+        localStorage.removeItem('videoFormEndTime');
+       
+
+        const startDate = new Date(response.data.startDate);
+        const days = response.data.days;
+        const currentDate = new Date();
+        const endDate = new Date(startDate.getTime() + days * 24 * 60 * 60 * 1000); // Convert days to milliseconds
+        const isCurrentDateLessThanOrEqual = currentDate <= endDate;
+        
+        
+        setFlag(isCurrentDateLessThanOrEqual) //COMMENT this for testing and set as true
+
+        
+
+      })
+      .catch(function (error) {
+        
       });
+  }
+ 
+
+  const handleStartTest = () => {
+    setCountdown(5);
+    setShowCountdown(true);
+
+    const countdownInterval = setInterval(() => {
+      setCountdown((prevCountdown) => prevCountdown - 1);
     }, 1000);
 
-    return () => clearInterval(countdownInterval);
-  }, [timer, navigate, job, videoFile]);
-
-  useEffect(() => {
-    const savedTimer = localStorage.getItem('videoFormTimer');
-    if (savedTimer) {
-      setTimer(parseInt(savedTimer));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (isRecording && recordingTimer > 0) {
-      countdownIntervalRef.current = setInterval(() => {
-        setRecordingTimer((prevTimer) => {
-          if (prevTimer > 0) {
-            return prevTimer - 1;
-          } else {
-            stopRecording();
-            clearInterval(countdownIntervalRef.current);
-            return 0;
-          }
-        });
+    setTimeout(() => {
+      clearInterval(countdownInterval);
+      setShowBestOfLuck(true);
+      setTimeout(() => {
+        
+        navigate('video', { state: { job } })
       }, 1000);
-    }
+    }, 5000);
 
-    return () => clearInterval(countdownIntervalRef.current);
-  }, [isRecording, recordingTimer]);
-
-  const formatTime = (time) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-  };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const validVideoTypes = ['video/mp4', 'video/avi', 'video/mov', 'video/mpeg', 'video/wmv'];
-
-      if (!validVideoTypes.includes(file.type)) {
-        setErrorMessage('Invalid file type. Please upload a video file.');
-        setVideoFile(null);
-        event.target.value = null; // Reset the file input
-        return;
-      }
-
-      setErrorMessage('');
-      setVideoFile(file);
-    }
-  };
-
-  const handleNextButtonClick = () => {
-    if (!videoFile && !timeLimitReached) {
-      setShowConfirmationPopup(true);
-    } else {
-      upload(videoFile);
-      navigate('video/test', { state: { job } });
-    }
-  };
-
-  const upload = (file) => {
-    const formData = new FormData();
-    formData.append("Image", file);
-    formData.append("Email", sessionStorage.getItem('email'));
-    formData.append("JobID", location.state.job._id);
-
-    axios.post('http://localhost:8000/nabeeha/uploadapplicantvideo', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-      .then(res => {})
-      .catch(err => {
-        alert(err);
-      });
-  };
-
-  const startRecording = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-    videoRef.current.srcObject = stream;
-    const mediaRecorder = new MediaRecorder(stream);
-    mediaRecorderRef.current = mediaRecorder;
-
-    mediaRecorder.ondataavailable = (event) => {
-      if (event.data.size > 0) {
-        recordedChunks.current.push(event.data);
-      }
-    };
-
-    mediaRecorder.onstop = () => {
-      const blob = new Blob(recordedChunks.current, { type: 'video/mp4' });
-      const uniqueFileName = `${uuidv4()}.mp4`;
-
-      const file = new File([blob], uniqueFileName, { type: 'video/mp4' });
-      setVideoFile(file);
-      recordedChunks.current = [];
-      upload(file);
-    };
-
-    mediaRecorder.start();
-    setIsRecording(true);
-    setRecordingTimer(300); // Reset the recording timer to 5 minutes
-  };
-
-  const stopRecording = () => {
-    if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop();
-      const tracks = videoRef.current.srcObject.getTracks();
-      tracks.forEach(track => track.stop());
-      setIsRecording(false);
-    }
-    clearInterval(countdownIntervalRef.current);
+   
+    setShowHeading(false);
   };
 
   return (
     <div className="post-jobnew-container">
-      <div className='video-header'>
-        <h3 className='nisa-video-heading1'>Part 1: Video Interview</h3>
-        <div className='nisa-timer-div'>
-          <h3 className='nisa-video-timer'>{formatTime(timer)}</h3>
+      {!flag ? (
+        <div className="nab-intro-head">
+          {/* //{alert(flag)} */}
+          <h1>Sorry. This job link form has expired.</h1>
+          <p>If you think this is a mistake, please contact HR.</p>
         </div>
-      </div>
-
-      <hr className='nisa-horizontal-line'></hr>
-
-      {loading ? (
-        <div>Loading...</div>
       ) : (
-        <div className='video-mid'>
-          <h4>Record a maximum 5-minute video answering the following questions:</h4>
-          <ul className='nisa-v-q'>
-            {allQuestions.map((question, index) => (
-              <li className='nisa-v-q2' key={index}>{question}</li>
-            ))}
-          </ul>
-
-          <p className='nisa-intro22-title'>
-            <span className='nisa-intro3-title'>Important:</span> Position your camera to capture a vision like shown below.
-          </p>
-
-          <img className='nisa-interview-img' src={img1} alt="Interview Demo" />
-          <p className='nisa-intro2-title'>
-            <b>Once you're ready, click Start Recording. &nbsp; To save, click Stop Recording.</b>
-          </p>
-          <div className='nisa-v-btns'>
-            <div className='nab-btn-vid'>
-              {!isRecording ? (
-                <button className='upload-video-btn-1' onClick={startRecording} disabled={timeLimitReached}>
-                  Start Recording
-                </button>
-              ) : (
-                <button className='upload-video-btn-1' onClick={stopRecording} disabled={timeLimitReached}>
-                  Stop Recording
-                </button>
-              )}
-              {isRecording && <h3 className='nisa-nab-video-timer'>{formatTime(recordingTimer)}</h3>}
+        <div className="nisa-intro-head">
+          {showHeading && <h3 className='nisa-intro-heading'>Instructions</h3>}
+          {showCountdown ? (
+            <div className='countdown-container'>
+              <p className='countdown-text'>{countdown}</p>
             </div>
-            <video ref={videoRef} autoPlay muted className="video-preview"></video>
-          </div>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          ) : (
+            <>
+              {job && (
+                <div>
+                  <p className='nisa-intro1-title'>
+                    <span className='nisa-intro-title'>Job Title:</span> {job.jobTitle}
+                  </p>
+  
+                  <div className='nisa-points-section'>
+                    <h4>Points to Note:</h4>
+                    <ul>
+                      <li>The interview will consist of two parts: a non-technical and a technical phase.</li>
+                      <li>Part 1: Upload a 5-minute video answering the provided questions.</li>
+                      <li>Ensure your environment is well-lit and quiet for optimal video quality.</li>
+                      <li>Make sure your camera and microphone are working correctly.</li>
+                      <li>Position your camera at a distance to capture a clear view. A demo position picture will be attached below.</li>
+                      <li>Review the provided questions before starting to record the video.</li>
+                      <li><b>Submit your video within the specified {videoSubmission}-minute time frame.</b></li>
+                      <li>Once the video is uploaded, Part 2: the technical test (MCQs) will automatically start.</li>
+                      <li><b>Complete the technical test within the given {techtestLen}-minute frame.</b></li>
+                      <li>The interview link will be active on the specified date.</li>
+                      <li>Do not refresh or navigate away from the page during the interview process.</li>
+                      <li>Check your internet connectivity to avoid interruptions.</li>
+                      <li>Click the "Start" button when you are ready to begin the interview.</li>
+                    </ul>
+                  </div>
+  
+                  
+                </div>
+              )}
+  
+              <button className='nisa-inter-btn' onClick={handleStartTest}>
+                Start Test
+              </button>
+            </>
+          )}
+  
+          {showBestOfLuck && (
+            <div className='good-luck-message'>
+              <p>Best of Luck!</p>
+            </div>
+          )}
         </div>
-      )}
-      <button className='upload-video-btn-2' onClick={handleNextButtonClick} disabled={timeLimitReached || isRecording}>
-        {timeLimitReached ? 'Time Limit Reached' : 'Next'}
-      </button>
-      {showConfirmationPopup && (
-        <ConfirmationPopup
-          message="You cannot proceed before submitting a video file."
-          onCancel={() => setShowConfirmationPopup(false)}
-        />
       )}
     </div>
   );

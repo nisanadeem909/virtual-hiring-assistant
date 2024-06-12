@@ -28,13 +28,9 @@ export default function TechnicalTest() {
   const [questions, setQuestions] = useState([{ question: [{ type: 'text', text: '' }], options: [''] }]);
   const [answeredQuestions, setAnsweredQuestions] = useState(Array(questions.length).fill(false));
 
-  const [duration,setDuration] = useState(0)
+  const [duration, setDuration] = useState(0);
+
   useEffect(() => {
-    //alert("Hello")
-    //alert(location.state.job)
- 
-
-
     const storedTimer = localStorage.getItem('timer');
     if (storedTimer !== null) {
       setTimer(JSON.parse(storedTimer));
@@ -50,8 +46,7 @@ export default function TechnicalTest() {
             const savedTimer = localStorage.getItem('timer');
             if (savedTimer === null) {
               setTimer(response.data.form.duration * 60);
-
-              setDuration(response.data.form.duration)
+              setDuration(response.data.form.duration);
             }
             setAnsweredQuestions(Array(response.data.form.questions.length).fill(false));
           } else {
@@ -63,7 +58,7 @@ export default function TechnicalTest() {
           console.error("Axios Error:" + error);
         });
     } else {
-      alert("Redirecting")
+      //alert("Redirecting");
       navigate(-1);
     }
   }, [location.state, navigate]);
@@ -108,19 +103,14 @@ export default function TechnicalTest() {
     const initialDuration = duration * 60; // assuming duration is in minutes
     const timeTaken = initialDuration - timer;
 
-   
+    alert(initialDuration + "," + timer)
     // Calculate the time taken in hours, minutes, and seconds
     const hours = Math.floor(timeTaken / 3600);
     const minutes = Math.floor((timeTaken % 3600) / 60);
     const seconds = timeTaken % 60;
     const timeTakenFormatted = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-    //alert(`You took ${timeTakenFormatted} to complete the test.`);
-    //console.log(hours + ","  + minutes +  "," + seconds)
-
-    //timeTaken format error(FIX IT)
-
-    const param = { applicantEmail: email, jobID: location.state.job._id, timeTaken: timeTaken };//, timeTaken: timeTakenFormatted
+    const param = { applicantEmail: email, jobID: location.state.job._id, timeTaken: timeTaken };
 
     axios.post("http://localhost:8000/nabeeha/evaluatemytestplease", param)
       .then((response) => {
@@ -150,7 +140,7 @@ export default function TechnicalTest() {
     const param = {
       applicantEmail: sessionStorage.getItem("email"),
       jobID: location.state.job._id,
-      answers: selectedOptions
+      answers: { [index]: selectedOptions[index] }
     };
     axios.post("http://localhost:8000/nabeeha/submitquestionanswer", param)
       .then((response) => {
@@ -219,7 +209,7 @@ export default function TechnicalTest() {
           onCancel={handleCancel}
         />
       )}
-      <button className="nisa-submit-button" onClick={() => handleSubmit()}>
+      <button className="nisa-submit-button" onClick={() => setShowConfirmation(true)}>
         End Test
       </button>
     </div>
