@@ -218,8 +218,8 @@ export default function Shortlisted(props) {
         setModal3Open(true);
     };
 
-    const handleDetails = (candidate) => {
-        navigate("candidatedetails", { state: { candidate, job } });
+    const handleDetails = (candidate,index) => {
+        navigate("candidatedetails", { state: { candidate, job,index } });
     };
 
     const confirmAccept = (list) => {
@@ -344,7 +344,7 @@ export default function Shortlisted(props) {
                                             <td align="center">{app.email}</td>
                                             <td align="center">{app.finalScore.toFixed(2)}</td>
                                             <td align="center">
-                                                <button className='kshortlistedpage-table-cvbtn' onClick={() => handleDetails(app)}>
+                                                <button className='kshortlistedpage-table-cvbtn' onClick={() => handleDetails(app,index+1)}>
                                                     View<img src={cvImg}  className='kshortlistedpage-table-cvimg' alt="CV" />
                                                 </button>
                                             </td>

@@ -8,6 +8,7 @@ import incorrecticon from './incorrect.png'
 import missingicon from './missing.png'
 import axios from 'axios';
 import { Radar, Bar } from 'react-chartjs-2';
+import Footer from '../Footer'
 
 import {
     Chart as ChartJS,
@@ -40,6 +41,7 @@ export default function CandidateDetails() {
     const navigate = useNavigate();
     const candidate = location.state.candidate;
     const job = location.state.job; 
+    const rank = location.state.index; 
     const [questions, setQuestions] = useState([]);  
     const [questionslength, setQuesLen] = useState(0);
     const [resps, setResp] = useState([]);
@@ -179,7 +181,7 @@ export default function CandidateDetails() {
             layout: {
                 padding: {
                     top: 200, 
-                    bottom: 200, 
+                    bottom: 0, 
                     left: 180, 
                     right: 180 
                 }
@@ -210,19 +212,25 @@ export default function CandidateDetails() {
         navigate("cvview", { state: path });
     }
 
-    return (
+    return (<>
         <div className="nisa-cd-post-job-container">
             <div className='nisa-candidate-details'>
                 <h1 className='nisa-cand-header'>Candidate Overview</h1>
+                <div className="kcand-details">
+                    <label className='kcand-label'><b>Candidate Name:</b> {candidate.name}</label>
+                    <label className='kcand-label'><b>Candidate Email:</b> {candidate.email}</label>
+                    <label className='kcand-label'><b>Candidate Rank:</b> {rank}</label>
+                    <label className='kcand-label'><b>Candidate Aggregate Score:</b> {candidate.finalScore.toFixed(2)}%</label>
+                </div>
                 <div className='nisa-cd-ph-details'>
                     <div className="nisa-cd-phase">
-                        <h2 className='nisa-cd-head'>Phase 1: CV Screening</h2>
+                        <h2 className='nisa-cd-head'>Phase 1: &nbsp; CV Screening</h2>
                         <p className='nisa-p-cv'>Candidate's Percentage: {candidate.CVMatchScore}%</p>
                         <button className="nisa-view-cv-btn" onClick={() => openCV(candidate)}>View CV</button>
                     </div>
 
                     <div className='nisa-cd-phase'>
-                        <h2>Phase 2: Form Screening</h2>
+                        <h2>Phase 2: &nbsp; Form Screening</h2>
                         <div className='nabcvcollectionpage-table-container'>
                             <table className='nabcvcollectionpage-table'>
                                 <thead className='kcvcollectionpage-table-header'>
@@ -250,7 +258,7 @@ export default function CandidateDetails() {
                     </div>
 
                     <div className='nisa-cd-phase'>
-                        <h2 className='nisa-cd-headd'>Phase 3: Video Interview</h2>
+                        <h2 className='nisa-cd-headd'>Phase 3: &nbsp; Video Interview</h2>
                         {videoResponse ? (
                             <div className='video-response'>
                                 <p>Overall Score: {videoResponse.overallScore?.$numberDecimal || 'N/A'}/{videoResponse.acceptabilityTraits?.length}</p>
@@ -268,7 +276,7 @@ export default function CandidateDetails() {
                     </div>
 
                     <div className='nisa-cd-phase'>
-                    <h2>Phase 4: Technical Interview</h2>
+                    <h2>Phase 4: &nbsp; Technical Interview</h2>
                     <div>
                         <p id="quick-stats">Quick Stats</p>
                         <p><img src={timeicon} alt="icon" style={{ width: "28px", height: "25px" }} /> Test Completed in: {time}</p>
@@ -288,5 +296,7 @@ export default function CandidateDetails() {
                 <button className='nisa-cand-btn' onClick={() => window.history.back()}>Back</button>
             </div>
         </div>
+        <Footer></Footer>
+        </>
     );
 }
