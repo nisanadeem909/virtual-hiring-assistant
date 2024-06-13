@@ -47,9 +47,9 @@ margin: 40px;
 
 .nisa-cand-header{
  font-size: 40px;
- margin-top: 70px;
+ margin-top: 20px;
  text-align: center;
- margin-bottom: 150px;
+ margin-bottom: 70px;
 }
 .nisa-cd-phase {
     margin-bottom: 200px;
@@ -120,4 +120,29 @@ margin: 40px;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+}
+
+.kcand-details {
+    margin-bottom: 13%;
+    padding: 40px;
+    padding-left: 10vh;
+    box-shadow: 0px 0px 20px rgba(8, 25, 174, 0.141); /* Increased shadow */
+    border: 5px solid  rgba(127, 130, 154, 0.249) ;
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 8px;
+    margin-left: 30px;
+
+    
+    width: 95%;
+    height: 100%;
+}
+
+.kcand-label{
+    font-size: 2.5vh;
+    margin-top: 1vh;
+    text-align: center;
+    margin-left: -5%;
 }

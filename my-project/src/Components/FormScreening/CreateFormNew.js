@@ -16,7 +16,7 @@ export default function CreateForm(props) {
     const [formDeadline, setFormDeadline] = useState('');
     const [formLink, setFormLink] = useState('');
     const [formEmailBody, setEmail] = useState(
-        "Congatulations! Your application for role at Manafa Technologies has successfully passed Phase 1 of our recruitment.\n\nFor Phase 2, we require candidates to answer a few important questions about their role at our company. \n\nPlease find attached the link to the Form. Please submit it within the deadline specified. Good Luck! \n\n"
+        "Congratulations! Your application for role at Manafa Technologies has successfully passed Phase 1 of our recruitment.\n\nFor Phase 2, we require candidates to answer a few important questions about their role at our company. \n\nPlease find attached the link to the Form. Please submit it within the deadline specified. Good Luck! \n\n"
       );
     const [formEmailSub, setSubject] = useState("Regarding Your Application");
     const [savedjobId, setSavedJob] = useState();  

@@ -96,8 +96,17 @@ export default function EditVideo(props) {
     
   
     const handleVideoDurationChange = (e) => {
+
+      const duration = e.target.value;
+      if(duration >= 10){
+      setVideoDuration(duration);
+      }
+      else{
+        setOpenModal(true);
+        setMessageTitle('Error');
+        setMessage('Duration should be at least 10 minutes');
+      }
       
-      setVideoDuration(e.target.value);
     };
   
     const handleTraitChange = (e, traitIndex) => {

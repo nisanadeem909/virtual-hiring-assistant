@@ -167,6 +167,7 @@
     border: 1px solid #0066ae;
     width: 50%;
     margin-left: 23%;
+    margin-top: -20%;
 }
 
 .kjobdetailspage-editdeadline {
@@ -300,4 +301,10 @@
 .kjobdetailspage-jd-header {
     display: flex;
     justify-content: space-between;
+}
+
+.kcopy-icon {
+    width: 2.8vh;
+    height: 2.8vh;
+    margin-left: 5%;
 }
