@@ -51,7 +51,7 @@ export default function TechnicalTest() {
             setAnsweredQuestions(Array(response.data.form.questions.length).fill(false));
           } else {
             console.error(response.data.error);
-            alert(response.data.error);
+            //alert(response.data.error);
           }
         })
         .catch((error) => {
@@ -103,7 +103,7 @@ export default function TechnicalTest() {
     const initialDuration = duration * 60; // assuming duration is in minutes
     const timeTaken = initialDuration - timer;
 
-    alert(initialDuration + "," + timer)
+   // alert(initialDuration + "," + timer)
     // Calculate the time taken in hours, minutes, and seconds
     const hours = Math.floor(timeTaken / 3600);
     const minutes = Math.floor((timeTaken % 3600) / 60);
