@@ -315,9 +315,9 @@ export default function JobDetails(props) {
 
             if (!job.P2FormLink || job.P2FormLink.trim() == ''){
               setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>Phase 2 form link</b> will be available once form has been created</label></>);
-              setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'>Waiting for Form Creation..</label><button className='kjobdetailspage-editcvscore' onClick={()=>navigate('\createform',{state:{'job':job}})}>Create Phase 2 Form</button></>);
+              setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'>Waiting for Form Creation..</label></>);
             } else{
-              setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>Phase 2 form link:</b> {job.P2FormLink}</label></>);
+              setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>Phase 2 form link:</b> {job.P2FormLink}<img src={copyicon} className='kcopy-icon' onClick={()=>navigator.clipboard.writeText(job.P2FormLink)}></img></label></>);
               setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Deadline for form responses:</b> {formatDate(job.P2FormDeadline)}</label>
               <button className='kjobdetailspage-editdeadline' onClick={openEditFormDeadlineModal}>Edit Deadline</button></>);
             }
@@ -331,7 +331,7 @@ export default function JobDetails(props) {
               setDeadlineDiv(<label className='kjobdetailspage-appdeadline'>Please create Video Interview Questionnnaire and Technical Test</label>)
             }
             else {
-              setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>Interview and Test Start Date:</b><br></br>{formatDate(job.P3StartDate)}<br></br><br></br><b>Interview and Test link:</b> {'http://localhost:3000/applicant/videointerview/'+job._id}<img src={copyicon} className='kcopy-icon' onClick={()=>navigator.clipboard.writeText("http://localhost:3000/applicant/cvcollection/" + job._id)}></img></label></>);
+              setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>Interview and Test Start Date:</b><br></br>{formatDate(job.P3StartDate)}<br></br><br></br><b>Interview and Test link:</b> {'http://localhost:3000/applicant/videointerview/'+job._id}<img src={copyicon} className='kcopy-icon' onClick={()=>navigator.clipboard.writeText("http://localhost:3000/applicant/videointerview/" + job._id)}></img></label></>);
               setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Interview and Test Link remains open for:</b> {job.P3Days} days</label>
               <button className='kjobdetailspage-editdeadline' onClick={openEditDaysModal}>Edit Number of Days</button></>);
             
