@@ -302,3 +302,9 @@
     display: flex;
     justify-content: space-between;
 }
+
+.kcopy-icon {
+    width: 2.8vh;
+    height: 2.8vh;
+    margin-left: 5%;
+}

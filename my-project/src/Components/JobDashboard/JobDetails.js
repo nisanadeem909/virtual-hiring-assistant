@@ -9,6 +9,7 @@ import loading from '../images/loading3.gif';
 import EditJDModal from '../ModalWindows/EditJDModal';
 import MessageModal from '../ModalWindows/MessageModal';
 import FunnelChart from './FunnelChart';
+import copyicon from '../images/copy.png'
 
 export default function JobDetails(props) {
 
@@ -56,7 +57,7 @@ export default function JobDetails(props) {
          setJob(response.data.job);
          props.updateJob({...response.data.job});
          setStatus("Phase 1 (CV Screening)");
-         setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + response.data.job._id}</label>
+         setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + response.data.job._id}<img src={copyicon} className='kcopy-icon' onClick={()=>navigator.clipboard.writeText("http://localhost:3000/applicant/cvcollection/" + job._id)}></img></label>
          <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {response.data.job.AccCVScore.$numberDecimal.toString()}%</label>
          <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>)
        }
@@ -148,7 +149,7 @@ export default function JobDetails(props) {
               setJob(response.data.job);
               props.updateJob({...response.data.job});
               if (response.data.job.postjob)
-                setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + job._id}</label>
+                setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + job._id}<img src={copyicon} className='kcopy-icon' onClick={()=>navigator.clipboard.writeText("http://localhost:3000/applicant/cvcollection/" + job._id)}></img></label>
                 <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {newVal}%</label>
                 <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>)
               else
@@ -172,7 +173,7 @@ export default function JobDetails(props) {
               setJob(response.data.job);
               props.updateJob({...response.data.job});
               if (response.data.job.postjob)
-                setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + job._id}</label>
+                setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + job._id}<img src={copyicon} className='kcopy-icon' onClick={()=>navigator.clipboard.writeText("http://localhost:3000/applicant/cvcollection/" + job._id)}></img></label>
                 <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {newVal}%</label>
                 <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>)
               else 
@@ -297,7 +298,7 @@ export default function JobDetails(props) {
           {
               if (job.postjob){
                 setStatus("Phase 1 (CV Screening)");
-                setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + job._id}</label>
+                setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>CV collection form link: </b>{"http://localhost:3000/applicant/cvcollection/" + job._id}<img src={copyicon} className='kcopy-icon' onClick={()=>navigator.clipboard.writeText("http://localhost:3000/applicant/cvcollection/" + job._id)}></img></label>
                 <label className='kjobdetailspage-cvscore'><b>Acceptable CV-JD Match Score:</b> {job.AccCVScore.$numberDecimal.toString()}%</label>
                 <button className='kjobdetailspage-editcvscore' onClick={openEditScoreModal}>Edit Acceptable Score</button></>);
               }else {
@@ -330,7 +331,7 @@ export default function JobDetails(props) {
               setDeadlineDiv(<label className='kjobdetailspage-appdeadline'>Please create Video Interview Questionnnaire and Technical Test</label>)
             }
             else {
-              setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>Interview and Test Start Date:</b><br></br>{formatDate(job.P3StartDate)}<br></br><br></br><b>Interview and Test link:</b> {'http://localhost:3000/applicant/videointerview/'+job._id}</label></>);
+              setStatusDiv(<><label className='kjobdetailspage-cvlink'><b>Interview and Test Start Date:</b><br></br>{formatDate(job.P3StartDate)}<br></br><br></br><b>Interview and Test link:</b> {'http://localhost:3000/applicant/videointerview/'+job._id}<img src={copyicon} className='kcopy-icon' onClick={()=>navigator.clipboard.writeText("http://localhost:3000/applicant/cvcollection/" + job._id)}></img></label></>);
               setDeadlineDiv(<><label className='kjobdetailspage-appdeadline'><b>Interview and Test Link remains open for:</b> {job.P3Days} days</label>
               <button className='kjobdetailspage-editdeadline' onClick={openEditDaysModal}>Edit Number of Days</button></>);
             
