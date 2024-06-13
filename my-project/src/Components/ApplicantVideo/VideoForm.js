@@ -66,7 +66,7 @@ export default function VideoForm() {
             setLoading(false);
           }
         } catch (error) {
-          alert(error);
+         // alert(error);
         }
       } else {
         navigate(-1);
@@ -172,7 +172,7 @@ export default function VideoForm() {
     })
       .then(res => {})
       .catch(err => {
-        alert(err);
+        //alert(err);
       });
   };
 
